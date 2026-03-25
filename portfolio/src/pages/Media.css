@@ -1,0 +1,42 @@
+/* Media specific styles using our new variables */
+.media-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 4rem;
+  margin-top: 3rem;
+}
+
+.media-category h3 {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+
+.accent-slash {
+  color: var(--accent-primary);
+  margin-right: 0.25rem;
+}
+
+.media-category ul {
+  list-style-type: none;
+  font-size: 13px;
+  line-height: 1.8;
+  font-family: var(--font-mono);
+}
+
+.media-category li {
+  margin-bottom: 0.75rem;
+  padding: 0.5rem;
+  border-left: 1px solid rgba(240, 244, 248, 0.15);
+  transition: all 0.15s ease;
+  color: rgba(240, 244, 248, 0.8);
+}
+
+.media-category li:hover {
+  color: var(--text-primary);
+  border-left-color: var(--accent-primary);
+  background-color: var(--bg-surface);
+  transform: translateX(5px);
+}

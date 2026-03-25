@@ -1,0 +1,198 @@
+/* HERO SECTION */
+.info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.giant-text h1 {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 10vw, 10rem);
+  line-height: 0.9;
+  color: var(--text-primary);
+}
+
+.outline-text {
+  color: transparent !important;
+  -webkit-text-stroke: 2px var(--text-primary);
+}
+
+.badge {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: var(--accent-primary);
+  border: 1px solid var(--accent-primary);
+  padding: 0.5rem 1rem;
+  max-width: fit-content;
+  text-transform: uppercase;
+}
+
+.description-card {
+  background-color: var(--bg-surface);
+  border-left: 2px solid var(--accent-primary);
+  padding: 2rem;
+  margin-top: 1rem;
+  max-width: 650px;
+}
+
+.description-card p {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  color: rgba(240, 244, 248, 0.8); /* #F0F4F8 at 80% opacity */
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary {
+  background-color: var(--accent-primary);
+  color: var(--bg-base);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  text-transform: uppercase;
+  border-radius: 0; /* brutalist/sharp */
+}
+
+.btn-primary:hover {
+  background-color: var(--text-primary);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--accent-primary);
+  border: 1px solid rgba(0, 229, 255, 0.6);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: bold;
+  padding: 0.75rem 1.5rem;
+  text-transform: uppercase;
+  border-radius: 0;
+}
+
+.btn-ghost:hover {
+  background-color: rgba(0, 229, 255, 0.1);
+  border-color: rgba(0, 229, 255, 1);
+}
+
+/* TENETS SECTION */
+.tenets-title {
+  color: var(--accent-secondary) !important;
+}
+
+.divider-line {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(0, 229, 255, 0.25);
+  margin-bottom: 3rem;
+}
+
+.tenets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.tenet-card {
+  background-color: var(--bg-surface);
+  border: 1px solid rgba(240, 244, 248, 0.15);
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.tenet-card:hover {
+  border-color: rgba(0, 229, 255, 0.6);
+}
+
+.tenet-number {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-family: var(--font-display);
+  font-size: 56px;
+  color: rgba(0, 229, 255, 0.2);
+  line-height: 1;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.tenet-card h3 {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
+  text-transform: uppercase;
+}
+
+.tenet-card h3::first-line {
+  /* Using pseudo element coloring requires complex CSS, applying natively to title works best */
+}
+
+.tenet-card p {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: rgba(240, 244, 248, 0.75);
+  line-height: 1.6;
+  position: relative;
+  z-index: 1;
+}
+
+/* CONNECT SECTION */
+.contact-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.email-box {
+  display: block;
+  background-color: var(--bg-surface);
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.email-text {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 6vw, 6rem);
+  color: var(--text-primary);
+}
+
+.email-box:hover {
+  border-color: rgba(0, 229, 255, 0.8);
+}
+
+.email-box:hover .email-text {
+  color: var(--accent-primary);
+}
+
+.social-links {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.social-pill {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  color: rgba(240, 244, 248, 0.6);
+  border: 1px solid rgba(240, 244, 248, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+}
+
+.social-pill:hover {
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
+}

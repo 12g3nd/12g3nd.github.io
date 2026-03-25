@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+  --bg-base: #080C10;
+  --bg-surface: #111820;
+  --text-primary: #F0F4F8;
+  --accent-primary: #00E5FF;
+  --accent-secondary: #7B61FF;
+  
+  --font-display: 'Anton', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+  
+  --border-divider: 1px solid rgba(240, 244, 248, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  cursor: crosshair;
+}
+
+body {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  margin: 0;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  border-left: var(--border-divider);
+  border-right: var(--border-divider);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.section {
+  border-bottom: var(--border-divider);
+  padding: 80px 2rem;
+}
+
+.section-header h2 {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  color: var(--accent-primary);
+  margin-bottom: 2rem;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+p, span, div {
+  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
