@@ -2,10 +2,12 @@ import PageTransition from '../components/PageTransition';
 import './Media.css';
 
 const mediaData = {
-  music: ['Daft Punk - Discovery', 'Kendrick Lamar - TPAB', 'PinkPantheress - heaven knows', 'Aphex Twin - Selected Ambient Works'],
-  films: ['The Matrix (1999)', 'Chungking Express (1994)', 'Spider-Man: Into the Spider-Verse', 'Fight Club (1999)'],
-  tv: ['The Sopranos', 'Succession', 'Severance', 'Neon Genesis Evangelion'],
-  games: ['Hades', 'Persona 5 Royal', 'Disco Elysium', 'Bloodborne']
+  books: ['East of Eden - John Steinbeck', 'Martin Dressler: The Tale of an American Dreamer - Steven Millhauser', 'Song of Solomon - Toni Morrison', 'Stoner - John Williams', 'The Crucible - Arthur Miller'],
+  music: ['beerbongs & bentleys - Post Malone', 'songs - Adrienne Lenker', 'Live on Red Barn Radio I & II - Tyler Childers', 'Around Fur - Deftones', 'Other Songs'],
+  films: ['Catch Me If You Can (2002)', '10 Thingss I Hate About You (1999)', 'Star Wars: Episode III - Revenge of the Sith (2005)', 'Fantastic Mr. Fox (2009)'],
+  tv: ['Suits', 'Henry Danger', 'Mindhunter', 'South Park'],
+  games: ['Minecraft', 'Fallout: New Vegas', 'Halo 3', 'Stardew Valley'],
+  other: ['Shareholder Letters - Warren Buffett', 'neal.fun', 'The Yellow Wallpaper - Charlotte Perkins Gilman']
 };
 
 export default function Media() {

@@ -11,11 +11,11 @@ export default function Home() {
           <h1>SRIHITH</h1>
           <h1 className="outline-text">JARABANA</h1>
         </div>
-        <div className="badge">Rotman Commerce // Class of '2x</div>
+        <div className="badge">Rotman Commerce // Class of '29</div>
         <div className="description-card">
           <p>
-            Bridging the gap between business strategy and digital execution. 
-            Welcome to my personal corner of the internet.
+            Continuing to bridge the gap between business strategy and digital execution.
+            Welcome to my personal (and humble) corner of the internet.
           </p>
           <div className="hero-actions">
             <Link to="/projects" className="btn-primary">[VIEW PROJECTS →]</Link>
@@ -54,12 +54,12 @@ export default function Home() {
         <div className="section-header">
           <h2>CONNECT_</h2>
         </div>
-        <a href="mailto:srihith@example.com" className="email-box">
-          <span className="email-text">HELLO@SRIHITH.SYS</span>
+        <a href="mailto:srihithjarabana@gmail.com" className="email-box">
+          <span className="email-text">srihithjarabana@gmail.com</span>
         </a>
         <div className="social-links">
-          <a href="#" className="social-pill">[LINKEDIN ↗]</a>
-          <a href="#" className="social-pill">[GITHUB ↗]</a>
+          <a href="https://www.linkedin.com/in/srihithjarabana/" target="_blank" rel="noopener noreferrer" className="social-pill">[LINKEDIN ↗]</a>
+          <a href="https://github.com/12g3nd" target="_blank" rel="noopener noreferrer" className="social-pill">[GITHUB ↗]</a>
         </div>
       </section>
     </PageTransition>

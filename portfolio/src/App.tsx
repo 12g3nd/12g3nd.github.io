@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Projects from './pages/Projects';
 import Media from './pages/Media';
 import Blog from './pages/Blog';
+import Poetry from './pages/Poetry';
 import Navigation from './components/Navigation';
 
 function AnimatedRoutes() {
@@ -14,6 +15,7 @@ function AnimatedRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/projects" element={<Projects />} />
         <Route path="/media" element={<Media />} />
+        <Route path="/poetry" element={<Poetry />} />
         <Route path="/blog" element={<Blog />} />
       </Routes>
     </AnimatePresence>
