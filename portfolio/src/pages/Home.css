@@ -1,8 +1,46 @@
 /* HERO SECTION */
 .info-section {
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.hero-content {
+  display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  max-width: 650px;
+  flex: 1;
+}
+
+.badge-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.crest-icon {
+  height: 48px;
+  width: auto;
+  /* This filter turns the dark blue logo roughly into the cyan accent color */
+  filter: brightness(0) saturate(100%) invert(75%) sepia(35%) saturate(7174%) hue-rotate(143deg) brightness(104%) contrast(101%);
+}
+
+.hero-figure {
+  flex: 0.8;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.hero-figure img {
+  max-width: 100%;
+  max-height: 600px;
+  object-fit: contain;
+  /* Optional soft cyan glow to mimic the reference image */
+  filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.4));
 }
 
 .giant-text h1 {
@@ -40,7 +78,7 @@
   font-size: 16px;
   line-height: 1.6;
   margin-bottom: 2rem;
-  color: rgba(240, 244, 248, 0.8); /* #F0F4F8 at 80% opacity */
+  color: rgba(253, 246, 227, 0.8); /* #FDF6E3 at 80% opacity */
 }
 
 .hero-actions {
@@ -101,7 +139,7 @@
 
 .tenet-card {
   background-color: var(--bg-surface);
-  border: 1px solid rgba(240, 244, 248, 0.15);
+  border: 1px solid rgba(253, 246, 227, 0.15);
   padding: 2rem;
   position: relative;
   overflow: hidden;
@@ -141,7 +179,7 @@
 .tenet-card p {
   font-family: var(--font-mono);
   font-size: 13px;
-  color: rgba(240, 244, 248, 0.75);
+  color: rgba(253, 246, 227, 0.75);
   line-height: 1.6;
   position: relative;
   z-index: 1;
@@ -186,8 +224,8 @@
   font-family: var(--font-mono);
   font-size: 13px;
   text-transform: uppercase;
-  color: rgba(240, 244, 248, 0.6);
-  border: 1px solid rgba(240, 244, 248, 0.2);
+  color: rgba(253, 246, 227, 0.6);
+  border: 1px solid rgba(253, 246, 227, 0.2);
   padding: 0.5rem 1rem;
   border-radius: 999px;
 }
@@ -195,4 +233,70 @@
 .social-pill:hover {
   color: var(--accent-primary);
   border-color: var(--accent-primary);
+}
+
+/* STATEMENTS & QUOTES */
+.quotes-section {
+  margin-top: 4rem;
+  border-top: 1px dashed rgba(253, 246, 227, 0.2);
+  padding-top: 4rem;
+}
+
+.statements-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+}
+
+@media (max-width: 768px) {
+  .statements-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.statement-block h4, .quotes-block h4 {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--accent-primary);
+  margin-bottom: 2rem;
+}
+
+.brutalist-list {
+  list-style: none;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.brutalist-list li {
+  border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+  padding-bottom: 0.5rem;
+  letter-spacing: 0.05em;
+}
+
+.quote-item {
+  margin-bottom: 1.5rem;
+  background-color: var(--bg-surface);
+  border-left: 2px solid var(--accent-secondary);
+  padding: 1.5rem;
+}
+
+.quote-item p {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: rgba(253, 246, 227, 0.9);
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+  font-style: italic;
+}
+
+.quote-item span {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent-primary);
+  text-transform: uppercase;
+  font-weight: bold;
 }

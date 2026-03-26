@@ -20,10 +20,10 @@ export default function Poetry() {
               ] 
             },
           ].map((poem, i) => (
-            <article key={i} style={{ borderBottom: '1px solid rgba(240,244,248,0.1)', paddingBottom: '2.5rem', marginBottom: '2.5rem', position: 'relative' }}>
+            <article key={i} style={{ borderBottom: '1px solid rgba(253, 246, 227,0.1)', paddingBottom: '2.5rem', marginBottom: '2.5rem', position: 'relative' }}>
               <span style={{ color: 'var(--accent-primary)', fontFamily: 'var(--font-mono)', fontSize: '13px', display: 'block', marginBottom: '1rem' }}>[{poem.date}]</span>
               <h3 style={{ fontSize: '2rem', margin: '0 0 1rem 0', fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>{poem.title}</h3>
-              <div style={{ fontSize: '14px', fontFamily: 'var(--font-mono)', color: 'rgba(240,244,248,0.8)', lineHeight: '1.8', whiteSpace: 'pre-wrap' }}>
+              <div style={{ fontSize: '14px', fontFamily: 'var(--font-mono)', color: 'rgba(253, 246, 227,0.8)', lineHeight: '1.8', whiteSpace: 'pre-wrap' }}>
                 {poem.lines.join('\n')}
               </div>
             </article>

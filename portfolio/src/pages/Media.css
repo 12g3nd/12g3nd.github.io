@@ -29,9 +29,9 @@
 .media-category li {
   margin-bottom: 0.75rem;
   padding: 0.5rem;
-  border-left: 1px solid rgba(240, 244, 248, 0.15);
+  border-left: 1px solid rgba(253, 246, 227, 0.15);
   transition: all 0.15s ease;
-  color: rgba(240, 244, 248, 0.8);
+  color: rgba(253, 246, 227, 0.8);
 }
 
 .media-category li:hover {
