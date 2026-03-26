@@ -67,7 +67,7 @@ export default function Home() {
           <div className="tenet-card">
             <div className="tenet-number">02</div>
             <h3><span className="accent-slash">//</span> ENTERTAIN THE MUNDANE</h3>
-            <p>It's better to create something polarizing than something entirely forgettable. The small things do matter, but so does the big picture.</p>
+            <p>Trying to never be bored is the first step to madness. Enjoy it. The small things do matter, but so does the big picture.</p>
           </div>
           <div className="tenet-card">
             <div className="tenet-number">03</div>

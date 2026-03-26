@@ -5,6 +5,7 @@ import Projects from './pages/Projects';
 import Media from './pages/Media';
 import Blog from './pages/Blog';
 import Poetry from './pages/Poetry';
+import BrutalistY2k from './pages/BrutalistY2k';
 import Navigation from './components/Navigation';
 
 function AnimatedRoutes() {
@@ -17,6 +18,7 @@ function AnimatedRoutes() {
         <Route path="/media" element={<Media />} />
         <Route path="/poetry" element={<Poetry />} />
         <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/brutalist-y2k" element={<BrutalistY2k />} />
       </Routes>
     </AnimatePresence>
   );
