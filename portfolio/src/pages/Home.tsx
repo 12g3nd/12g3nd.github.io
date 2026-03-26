@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import PageTransition from '../components/PageTransition';
 import './Home.css';
 
 export default function Home() {
+  const [showDetails, setShowDetails] = useState(false);
   return (
     <PageTransition>
       {/* HERO SECTION */}
@@ -16,6 +18,7 @@ export default function Home() {
             <div className="badge">Rotman Commerce // Class of '29</div>
             <img src="/crest.png" alt="University Crest" className="crest-icon" />
           </div>
+          <p className="sub-badge">Management Specialist, Focus in Finance, Minor in Statistics</p>
           <div className="description-card">
             <p>
               'SJ' also welcome. Businessman by craft. Also, heavy STEM and literature background.
@@ -24,8 +27,25 @@ export default function Home() {
             <div className="hero-actions">
               <Link to="/projects" className="btn-primary">[VIEW PROJECTS →]</Link>
               <Link to="/blog" className="btn-ghost">[READ BLOG →]</Link>
+              <button className="btn-ghost" onClick={() => setShowDetails(!showDetails)}>[ABOUT ME {showDetails ? '↑' : '↓'}]</button>
             </div>
           </div>
+          {showDetails && (
+            <div className="expanded-details">
+              <div className="detail-col">
+                <span className="accent-slash">//</span><strong>HOBBIES</strong>
+                <p>Writing poetry (obviously), rating root beers, studying in Robarts.</p>
+              </div>
+              <div className="detail-col">
+                <span className="accent-slash">//</span><strong>PET PEEVES</strong>
+                <p>Lack of turn signals, inconsiderateness, wet socks.</p>
+              </div>
+              <div className="detail-col">
+                <span className="accent-slash">//</span><strong>FUN FACTS</strong>
+                <p>Art advocate always. Collection of Japanese mechanical pencils. Born in Ohio (yeah, I know).</p>
+              </div>
+            </div>
+          )}
         </div>
         <div className="hero-figure">
           <img src="/figure.png" alt="Wireframe Figure" />
@@ -68,17 +88,9 @@ export default function Home() {
             </div>
 
             <div className="quotes-block">
-              <h4>[REFERENCE_QUOTES]</h4>
-              <div className="quote-item">
-                <p>"You only live once, but if you do it right, once is enough"</p>
-                <span>— Mae West</span>
-              </div>
-              <div className="quote-item">
-                <p>"In three words I can sum up everything I've learned about life: It goes on."</p>
-                <span>— Robert Frost</span>
-              </div>
-              <div className="quote-item">
-                <p>"It is the mark of an educated mind, to entertain a thought without accepting it"</p>
+              <h4>[REFERENCE_QUOTE]</h4>
+              <div className="quote-item large-quote">
+                <p>"It is the mark of an educated mind, to entertain a thought without accepting it."</p>
                 <span>— Aristotle</span>
               </div>
             </div>
@@ -97,6 +109,9 @@ export default function Home() {
         <div className="social-links">
           <a href="https://www.linkedin.com/in/srihithjarabana/" target="_blank" rel="noopener noreferrer" className="social-pill">[LINKEDIN ↗]</a>
           <a href="https://github.com/12g3nd" target="_blank" rel="noopener noreferrer" className="social-pill">[GITHUB ↗]</a>
+          <a href="https://letterboxd.com/Solder/" target="_blank" rel="noopener noreferrer" className="social-pill">[LETTERBOXD ↗]</a>
+          <a href="https://open.spotify.com/user/htofsfnpjzmpszwp8r6hz5osz" target="_blank" rel="noopener noreferrer" className="social-pill">[SPOTIFY ↗]</a>
+          <a href="https://www.instagram.com/sssrihith/" target="_blank" rel="noopener noreferrer" className="social-pill">[INSTAGRAM ↗]</a>
         </div>
       </section>
     </PageTransition>

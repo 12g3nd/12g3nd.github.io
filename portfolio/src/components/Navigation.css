@@ -22,23 +22,39 @@
 
 .nav-links {
   display: flex;
-  gap: 1rem;
+  gap: 2.5rem;
   font-weight: bold;
 }
 
 .nav-links a {
-  border: 1px solid rgba(0, 229, 255, 0.4);
-  padding: 0.5rem 1rem;
+  border: none;
+  padding: 0.5rem 0; /* Remove horizontal padding so underline matches text width perfectly */
   text-transform: uppercase;
   color: var(--text-primary);
   font-family: var(--font-mono);
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: bold;
   background-color: transparent;
-  transition: all 0.15s ease;
+  transition: color 0.2s ease;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--accent-primary);
+  transition: width 0.3s ease;
 }
 
 .nav-links a:hover {
-  background-color: rgba(0, 229, 255, 0.1);
-  border-color: rgba(0, 229, 255, 1);
-  color: var(--text-primary);
+  background-color: transparent;
+  color: var(--accent-primary);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
 }
