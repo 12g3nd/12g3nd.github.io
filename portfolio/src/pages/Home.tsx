@@ -1,13 +1,12 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+
 import PageTransition from '../components/PageTransition';
 import './Home.css';
 
 export default function Home() {
-  const [showDetails, setShowDetails] = useState(false);
   return (
     <PageTransition>
-      {/* HERO SECTION */}
+
       <section className="section info-section">
         <div className="ascii-art-bg">
           {`⠀⠀⠀⠀⠀⠀⠀⣀⡄⠀⠀⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -65,9 +64,13 @@ export default function Home() {
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀`}
         </div>
+
         <div className="hero-content">
           <div className="giant-text">
-            <h1>SRIHITH</h1>
+            <h1 className="title-srihith">
+              SRIHITH
+              <img src="/y2k1.png" alt="" className="y2k-accent" />
+            </h1>
             <h1 className="outline-text">JARABANA</h1>
             <p className="phonetic-text">/sriːhɪθ dʒʊəˌræˈbɑːnə/</p>
           </div>
@@ -78,47 +81,52 @@ export default function Home() {
           <p className="sub-badge">Management Specialist, Focus in Finance, Minor in Statistics and Economics</p>
           <div className="description-card">
             <p>
-              'SJ' also welcome. Businessman by craft. Also, heavy STEM and literature background.
+              'SJ' also welcome. 18. Businessman by craft. Chalant by nature. Also, strong STEM and literature background.
               Welcome to my personal (and humble) corner of the internet.
             </p>
             <div className="hero-actions">
               <Link to="/projects" className="btn-primary">[VIEW PROJECTS →]</Link>
               <Link to="/blog" className="btn-ghost">[READ BLOG →]</Link>
-              <button className="btn-ghost" onClick={() => setShowDetails(!showDetails)}>[ABOUT ME {showDetails ? '↑' : '↓'}]</button>
             </div>
           </div>
-          {showDetails && (
-            <div className="expanded-details">
-              <div className="detail-col">
-                <span className="accent-slash">//</span><strong>HOBBIES</strong>
-                <p>Writing poetry (obviously), rating root beers, studying in Robarts.</p>
-              </div>
-              <div className="detail-col">
-                <span className="accent-slash">//</span><strong>PET PEEVES</strong>
-                <p>Lack of turn signals, inconsiderateness, wet socks.</p>
-              </div>
-              <div className="detail-col">
-                <span className="accent-slash">//</span><strong>FUN FACTS</strong>
-                <p>Scared of elevators. Collection of Japanese mechanical pencils. Born in Ohio.</p>
-              </div>
+          <div className="expanded-details">
+            <div className="detail-col">
+              <span className="accent-slash">//</span><strong>HOBBIES</strong>
+              <p>Writing poetry (obviously), rating root beers, world history / politics.</p>
             </div>
-          )}
+            <div className="detail-col">
+              <span className="accent-slash">//</span><strong>PET PEEVES</strong>
+              <p>Lack of turn signals, inconsiderateness, "could of".</p>
+            </div>
+            <div className="detail-col">
+              <span className="accent-slash">//</span><strong>FUN FACTS</strong>
+              <p>Afraid of elevators. Japanese mechanical pencils collection.</p>
+            </div>
+          </div>
+
+          <img src="/CNtower.png" alt="CN Tower" className="cn-tower-decor" />
         </div>
-        <div className="hero-figure">
-          <img src="/figure.png" alt="Wireframe Figure" />
+        <div className="right-column">
+          <div className="hero-figure">
+            <img src="/figure.png" alt="Wireframe Figure" />
+          </div>
+          <div className="what-im-up-to-card">
+            <h3><span className="accent-slash">//</span> WHAT I'M UP TO</h3>
+            <p>Learning & building financial models. Career aspirations include quant researcher and similar roles in private equity. Looking into research and want to delve into academic side of business as well.</p>
+          </div>
         </div>
       </section>
 
-      {/* TENETS SECTION */}
+
       <section className="section tenets-section">
         <div className="section-header">
-          <h2 className="tenets-title">TENETS</h2>
+          <h2 className="tenets-title">TENETS_</h2>
         </div>
         <div className="divider-line"></div>
         <div className="tenets-grid">
           <div className="tenet-card">
             <div className="tenet-number">01</div>
-            <h3><span className="accent-slash">//</span> NATURE OF AMBITION</h3>
+            <h3><span className="accent-slash">//</span> NATURE OF SELF</h3>
             <p>Being content ≠ being happy. Don't settle just because you've given up. Chase passion instead of paper & prestige.</p>
           </div>
           <div className="tenet-card">
@@ -142,6 +150,11 @@ export default function Home() {
                 <li><span className="accent-slash">//</span> Business is personal.</li>
                 <li><span className="accent-slash">//</span> Technology is philosophy.</li>
               </ul>
+              <div className="beliefs-graphic">
+                <a href="https://en.wikipedia.org/wiki/Mysterium_Cosmographicum" target="_blank" rel="noopener noreferrer" className="kepler-link">
+                  <img src="/Kepler.png" alt="Kepler's Mysterium Cosmographicum diagram" />
+                </a>
+              </div>
             </div>
 
             <div className="quotes-block">
@@ -160,7 +173,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CONNECT SECTION */}
+
       <section className="section contact-section">
         <div className="section-header">
           <h2>CONNECT_</h2>

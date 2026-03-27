@@ -28,7 +28,7 @@
 
 .nav-links a {
   border: none;
-  padding: 0.5rem 0; /* Remove horizontal padding so underline matches text width perfectly */
+  padding: 0.5rem 0; 
   text-transform: uppercase;
   color: var(--text-primary);
   font-family: var(--font-mono);
@@ -57,4 +57,43 @@
 
 .nav-links a:hover::after {
   width: 100%;
+}
+
+.terminal-header-box {
+  flex: 1;
+  margin: 0 2rem;
+  background-color: var(--bg-surface);
+  border: 1px dotted rgba(0, 229, 255, 0.3);
+  padding: 0.5rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 800px;
+}
+
+.terminal-text {
+  color: rgba(253, 246, 227, 0.7);
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  background-color: var(--accent-primary);
+  margin-left: 6px;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@media (max-width: 950px) {
+  .terminal-header-box {
+    display: none;
+  }
 }

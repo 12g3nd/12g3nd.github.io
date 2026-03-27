@@ -1,4 +1,4 @@
-/* Media specific styles using our new variables */
+
 .media-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
