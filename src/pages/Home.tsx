@@ -81,7 +81,7 @@ export default function Home() {
           <p className="sub-badge">Management Specialist, Focus in Finance, Minor in Statistics and Economics</p>
           <div className="description-card">
             <p>
-              'SJ' also welcome. 18. Businessman by craft. Chalant by nature. Also, strong STEM and literature background.
+              'SJ' also welcome. 18. Businessman by craft. Also, strong STEM and literature background.
               Welcome to my personal (and humble) corner of the internet.
             </p>
             <div className="hero-actions">
@@ -92,15 +92,15 @@ export default function Home() {
           <div className="expanded-details">
             <div className="detail-col">
               <span className="accent-slash">//</span><strong>HOBBIES</strong>
-              <p>Writing poetry (obviously), rating root beers, world history / politics.</p>
+              <p>Writing (poetry, flash fiction, whatever), rating root beers, world history / politics.</p>
             </div>
             <div className="detail-col">
               <span className="accent-slash">//</span><strong>PET PEEVES</strong>
-              <p>Lack of turn signals, inconsiderateness, "could of".</p>
+              <p>Lack of turn signals, inconsiderateness, "could of."</p>
             </div>
             <div className="detail-col">
               <span className="accent-slash">//</span><strong>FUN FACTS</strong>
-              <p>Afraid of elevators. Japanese mechanical pencils collection.</p>
+              <p>Afraid of elevators. Japanese mechanical pencils collection. Double jointed in both thumbs.</p>
             </div>
           </div>
 
@@ -112,7 +112,7 @@ export default function Home() {
           </div>
           <div className="what-im-up-to-card">
             <h3><span className="accent-slash">//</span> WHAT I'M UP TO</h3>
-            <p>Learning & building financial models. Career aspirations include quant researcher and similar roles in private equity. Looking into research and want to delve into academic side of business as well.</p>
+            <p>Learning & building financial models. Career aspirations include quant researcher and similar roles in pe/ib. Looking into research and want to delve into the academic side of business as well.</p>
           </div>
         </div>
       </section>
@@ -162,7 +162,7 @@ export default function Home() {
               <div className="quote-item large-quote quote-with-image">
                 <div className="quote-text-content">
                   <p>"It is the mark of an educated mind, to entertain a thought without accepting it."</p>
-                  <span>— Aristotle</span>
+                  <span>— (Probably not) Aristotle</span>
                 </div>
                 <div className="quote-image-container">
                   <img src="/Aristotle.jpg" alt="Aristotle" className="aristotle-img" />
