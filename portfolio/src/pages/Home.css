@@ -1,11 +1,43 @@
-/* HERO SECTION */
 .info-section {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   gap: 2rem;
   padding-top: 2rem;
+  position: relative;
+}
+
+.ascii-art-bg {
+  position: absolute;
+  top: 15%;
+  left: 55%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono), monospace;
+  font-size: clamp(10px, 1.2vw, 18px);
+  line-height: 1.2;
+  color: rgba(253, 246, 227, 0.05);
+  pointer-events: none;
+  z-index: 0;
+  white-space: pre;
+  user-select: none;
+  /* subtle glow */
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.1);
+}
+
+.ascii-art-secondary {
+  position: absolute;
+  top: 0%;
+  right: 5%;
+  font-family: var(--font-mono), monospace;
+  font-size: clamp(8px, 1vw, 16px);
+  line-height: 1.2;
+  color: rgba(253, 246, 227, 0.05);
+  pointer-events: none;
+  z-index: 0;
+  white-space: pre;
+  user-select: none;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.1);
 }
 
 .hero-content {
@@ -14,6 +46,8 @@
   gap: 1.5rem;
   max-width: 650px;
   flex: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .badge-row {
@@ -42,6 +76,8 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
 .hero-figure img {
@@ -62,6 +98,14 @@
 .outline-text {
   color: transparent !important;
   -webkit-text-stroke: 2px var(--text-primary);
+}
+
+.phonetic-text {
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  color: rgba(253, 246, 227, 0.4); 
+  margin-top: 0.5rem;
+  letter-spacing: 0.05em;
 }
 
 .badge {
