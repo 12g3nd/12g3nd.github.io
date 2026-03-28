@@ -673,3 +673,229 @@
     align-self: flex-end;
   }
 }
+
+/* ── Tablet breakpoint ─────────────────────────────────── */
+@media (max-width: 768px) {
+  .section {
+    padding: 50px 1.25rem;
+  }
+
+  .info-section {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .ascii-art-bg,
+  .ascii-art-secondary {
+    display: none;
+  }
+
+  .hero-content {
+    max-width: 100%;
+  }
+
+  .giant-text h1 {
+    font-size: clamp(3rem, 12vw, 5rem);
+  }
+
+  .y2k-accent {
+    left: calc(100% + 10px);
+    height: 0.6em;
+  }
+
+  .phonetic-text {
+    font-size: clamp(0.85rem, 3vw, 1.1rem);
+  }
+
+  .description-card {
+    max-width: 100%;
+    padding: 1.5rem;
+  }
+
+  .right-column {
+    flex: none;
+    width: 100%;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .hero-figure {
+    flex: 0 0 auto;
+    width: auto;
+    justify-content: flex-start;
+  }
+
+  .hero-figure img {
+    max-height: 300px;
+  }
+
+  .what-im-up-to-card {
+    flex: 1;
+    max-width: none;
+    margin-top: 0;
+  }
+
+  .expanded-details {
+    max-width: 100%;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .tenets-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .statements-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .email-text {
+    font-size: clamp(1.2rem, 4vw, 2.5rem);
+    word-break: break-all;
+  }
+
+  .social-links {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .social-pill {
+    font-size: 12px;
+    padding: 0.5rem 1rem;
+  }
+
+  .large-quote {
+    padding: 2rem 1.5rem;
+  }
+
+  .large-quote p {
+    font-size: clamp(1rem, 4vw, 1.4rem);
+  }
+}
+
+/* ── Phone breakpoint ──────────────────────────────────── */
+@media (max-width: 480px) {
+  .section {
+    padding: 40px 1rem;
+  }
+
+  .info-section {
+    gap: 1.5rem;
+    padding-top: 1.5rem;
+  }
+
+  .giant-text h1 {
+    font-size: clamp(2.5rem, 14vw, 4rem);
+  }
+
+  .y2k-accent {
+    left: calc(100% + 6px);
+    height: 0.5em;
+  }
+
+  .phonetic-text {
+    font-size: 0.8rem;
+  }
+
+  .badge {
+    font-size: 12px;
+    padding: 0.4rem 0.75rem;
+  }
+
+  .crest-icon {
+    height: 36px;
+  }
+
+  .sub-badge {
+    font-size: 11px;
+  }
+
+  .description-card {
+    padding: 1.25rem;
+  }
+
+  .description-card p {
+    font-size: 14px;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .btn-primary,
+  .btn-ghost {
+    text-align: center;
+    width: 100%;
+    padding: 0.65rem 1rem;
+    font-size: 13px;
+  }
+
+  .right-column {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-figure img {
+    max-height: 250px;
+  }
+
+  .what-im-up-to-card {
+    width: 100%;
+  }
+
+  .expanded-details {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .detail-col p {
+    font-size: 11px;
+  }
+
+  .tenet-card {
+    padding: 1.5rem;
+  }
+
+  .section-header h2 {
+    font-size: 2.25rem;
+  }
+
+  .email-box {
+    padding: 2.5rem 1rem;
+  }
+
+  .email-text {
+    font-size: clamp(1rem, 5vw, 1.8rem);
+  }
+
+  .social-links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+
+  .social-pill {
+    font-size: 11px;
+    padding: 0.5rem 0.75rem;
+    justify-content: center;
+    width: 100%;
+    text-align: center;
+  }
+
+  .quotes-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+  }
+
+  .brutalist-list {
+    font-size: clamp(1.2rem, 5vw, 1.8rem);
+  }
+
+  .large-quote {
+    padding: 1.5rem 1rem;
+    height: auto;
+  }
+}

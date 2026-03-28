@@ -40,3 +40,17 @@
   background-color: var(--bg-surface);
   transform: translateX(5px);
 }
+
+@media (max-width: 768px) {
+  .media-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .media-grid {
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+}

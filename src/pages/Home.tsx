@@ -78,7 +78,7 @@ export default function Home() {
             <div className="badge">Rotman Commerce // Class of '29</div>
             <img src="/crest.png" alt="University Crest" className="crest-icon" />
           </div>
-          <p className="sub-badge">Management Specialist, Focus in Finance, Minor in Statistics and Economics</p>
+          <p className="sub-badge">Intended: Management Specialist, Focus in Finance, Minor in Statistics and Economics</p>
           <div className="description-card">
             <p>
               'SJ' also welcome. 18. Businessman by craft. Also, strong STEM and literature background.

@@ -66,3 +66,10 @@ a {
 p, span, div {
   transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
 }
+
+@media (max-width: 768px) {
+  .container {
+    border-left: none;
+    border-right: none;
+  }
+}
