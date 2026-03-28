@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+
+import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import './Navigation.css';
 
@@ -7,8 +8,8 @@ const PHRASES = [
   "> clout: max, aura: unmatched",
   "> running diagnostics... critical error: caffeine levels low.",
   "> current aesthetic: brutalism x y2k.",
-  "> location ping: robarts library, top floors. status: grinding.",
-  "> fit check... evaluating... result: old money success."
+  "> location ping: robarts library, 12th floor. status: on the grind.",
+  "> fit check... evaluating... result: old money."
 ];
 
 export default function Navigation() {
@@ -40,7 +41,7 @@ export default function Navigation() {
   return (
     <nav className="brutalist-nav">
       <Link to="/" className="nav-brand">SJ.SYS</Link>
-      
+
       <div className="terminal-header-box">
         <span className="terminal-text">{text}</span>
         <span className="terminal-cursor">_</span>

@@ -103,17 +103,19 @@ export default function Home() {
               <p>Afraid of elevators. Japanese mechanical pencils collection. Double jointed in both thumbs.</p>
             </div>
           </div>
-
-          <img src="/CNtower.png" alt="CN Tower" className="cn-tower-decor" />
         </div>
         <div className="right-column">
           <div className="hero-figure">
-            <img src="/figure.png" alt="Wireframe Figure" />
+            <img src="/figure.png" alt="Wireframe Figure" className="wireframe-glitch" />
           </div>
           <div className="what-im-up-to-card">
             <h3><span className="accent-slash">//</span> WHAT I'M UP TO</h3>
             <p>Learning & building financial models. Career aspirations include quant researcher and similar roles in pe/ib. Looking into research and want to delve into the academic side of business as well.</p>
           </div>
+        </div>
+        <div className="landmark-swap">
+          <img src="/CNtower.png" alt="CN Tower" className="cn-tower-decor landmark-default" />
+          <img src="/SoL.png" alt="Statue of Liberty" className="cn-tower-decor landmark-hover" />
         </div>
       </section>
 
@@ -165,7 +167,9 @@ export default function Home() {
                   <span>— (Probably not) Aristotle</span>
                 </div>
                 <div className="quote-image-container">
-                  <img src="/Aristotle.jpg" alt="Aristotle" className="aristotle-img" />
+                  <a href="https://sententiaeantiquae.com/2018/09/22/nope-aristotle-did-not-say-it-is-the-mark-of-an-educated-mind-to-entertain-a-thought-without/" target="_blank" rel="noopener noreferrer">
+                    <img src="/Aristotle.jpg" alt="Aristotle" className="aristotle-img" />
+                  </a>
                 </div>
               </div>
             </div>

@@ -21,7 +21,7 @@
   z-index: 0;
   white-space: pre;
   user-select: none;
-  
+
   text-shadow: 0 0 10px rgba(0, 229, 255, 0.1);
 }
 
@@ -67,7 +67,7 @@
 .crest-icon {
   height: 48px;
   width: auto;
-  
+
   filter: brightness(0) saturate(100%) invert(75%) sepia(35%) saturate(7174%) hue-rotate(143deg) brightness(104%) contrast(101%);
 }
 
@@ -92,9 +92,36 @@
   max-width: 100%;
   max-height: 600px;
   object-fit: contain;
-  
+
   filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.4));
 }
+
+/* Wireframe glitch — chromatic aberration */
+.wireframe-glitch {
+  animation: wireframe-glitch 8s infinite;
+}
+
+@keyframes wireframe-glitch {
+  0%, 94%, 100% {
+    filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.4));
+  }
+  95% {
+    filter: drop-shadow(3px 0 0 rgba(255, 0, 50, 0.5))
+            drop-shadow(-3px 0 0 rgba(0, 255, 255, 0.5));
+  }
+  96% {
+    filter: drop-shadow(-2px 1px 0 rgba(255, 0, 50, 0.3))
+            drop-shadow(2px -1px 0 rgba(0, 255, 255, 0.3));
+  }
+  97% {
+    filter: drop-shadow(4px 0 0 rgba(255, 0, 50, 0.4))
+            drop-shadow(-4px 0 0 rgba(0, 255, 255, 0.4));
+  }
+  98% {
+    filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.4));
+  }
+}
+
 
 .giant-text h1 {
   font-family: var(--font-display);
@@ -112,7 +139,7 @@
   position: absolute;
   left: calc(100% + 20px);
   bottom: 0.1em;
-  
+
   height: 0.8em;
   width: auto;
   pointer-events: none;
@@ -144,26 +171,53 @@
 
 
 .cn-tower-decor {
-  position: absolute;
-  bottom: 0;
-  right: -135px;
-  
   height: clamp(280px, 40vh, 400px);
-  
   width: auto;
   object-fit: contain;
-  pointer-events: none;
-  
-  filter: brightness(0) invert(96%) sepia(10%) saturate(150%) hue-rotate(5deg);
   opacity: 0.9;
-  z-index: 10;
+  transition: opacity 0.3s ease;
+  display: block;
+}
+
+.landmark-default {
+  filter: brightness(0) invert(96%) sepia(10%) saturate(150%) hue-rotate(5deg);
+}
+
+.landmark-hover {
+  filter: brightness(0) invert(96%) sepia(10%) saturate(150%) hue-rotate(5deg);
+  opacity: 0 !important;
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100%;
+  width: auto;
+}
+
+.landmark-swap {
+  position: absolute;
+  bottom: 7%;
+  left: 60%;
+  transform: translateX(-50%);
+  z-index: 20;
+  cursor: pointer;
+}
+
+.landmark-swap:hover .landmark-default {
+  opacity: 0;
+}
+
+.landmark-swap:hover .landmark-hover {
+  opacity: 0.9 !important;
 }
 
 @media (max-width: 1050px) {
-  .cn-tower-decor {
+  .landmark-swap {
     display: none;
   }
 }
+
+
 
 .description-card {
   background-color: var(--bg-surface);
@@ -179,7 +233,7 @@
   line-height: 1.6;
   margin-bottom: 2rem;
   color: rgba(253, 246, 227, 0.8);
-  
+
 }
 
 .hero-actions {
@@ -197,7 +251,7 @@
   padding: 0.75rem 1.5rem;
   text-transform: uppercase;
   border-radius: 0;
-  
+
 }
 
 .btn-primary:hover {
@@ -224,7 +278,7 @@
 .what-im-up-to-card {
   width: 100%;
   max-width: 400px;
-  
+
   background-color: var(--bg-surface);
   border: 1px dashed var(--accent-primary);
   padding: 1.5rem;
@@ -273,7 +327,7 @@
   padding: 1.5rem;
   max-width: 650px;
   margin-top: auto;
-  
+
 }
 
 .detail-col strong {
@@ -304,7 +358,7 @@
   width: 100%;
   z-index: -1;
   pointer-events: none;
-  
+
   background-image:
     linear-gradient(180deg,
       transparent 15%,
@@ -319,22 +373,22 @@
       transparent 3%,
       rgba(253, 246, 227, 0.08) 3%,
       rgba(253, 246, 227, 0.08) calc(3% + 1px),
-      
+
       transparent calc(3% + 1px),
       transparent 12%,
       rgba(253, 246, 227, 0.02) 12%,
       rgba(253, 246, 227, 0.02) calc(12% + 1px),
-      
+
       transparent calc(12% + 1px),
       transparent 21.33%,
       rgba(253, 246, 227, 0.02) 21.33%,
       rgba(253, 246, 227, 0.02) calc(21.33% + 1px),
-      
+
       transparent calc(21.33% + 1px),
       transparent 30.33%,
       rgba(253, 246, 227, 0.08) 30.33%,
       rgba(253, 246, 227, 0.08) calc(30.33% + 1px),
-      
+
       transparent calc(30.33% + 1px),
       transparent 33.333%);
 }
@@ -391,9 +445,7 @@
   text-transform: uppercase;
 }
 
-.tenet-card h3::first-line {
-  
-}
+.tenet-card h3::first-line {}
 
 .tenet-card p {
   font-family: var(--font-mono);
@@ -505,14 +557,14 @@
   margin-top: 2.5rem;
   width: 100%;
   display: flex;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
 }
 
 .kepler-link {
   display: block;
   width: 100%;
-  max-width: 150px; 
+  max-width: 150px;
   transition: transform 0.3s ease;
 }
 
@@ -524,10 +576,11 @@
   width: 100%;
   height: auto;
   object-fit: contain;
-  
+
   filter: invert(1) brightness(105%) sepia(10%) saturate(150%) hue-rotate(345deg);
   mix-blend-mode: screen;
 }
+
 .quote-item {
   margin-bottom: 1.5rem;
   background-color: var(--bg-surface);
@@ -557,7 +610,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  
+
   height: calc(100% - 3.5rem);
 }
 
@@ -595,7 +648,7 @@
 .aristotle-img {
   width: 100%;
   height: auto;
-  
+
   filter: invert(1) contrast(1.1) brightness(0.9);
   border: 1px solid rgba(0, 229, 255, 0.2);
   border-radius: 0;
