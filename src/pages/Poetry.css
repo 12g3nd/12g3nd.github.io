@@ -1,0 +1,47 @@
+/* Poetry page styles */
+
+/* Toggle button — hidden on desktop, shown on mobile */
+.poetry-compact-toggle {
+  display: none;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  background-color: var(--bg-surface);
+  border: 1px solid rgba(0, 229, 255, 0.4);
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.poetry-compact-toggle:hover {
+  background-color: rgba(0, 229, 255, 0.1);
+  border-color: rgba(0, 229, 255, 0.8);
+}
+
+/* Compact mode — scale text down so poem lines don't wrap */
+.poem-content--compact {
+  font-size: 10px !important;
+  line-height: 1.6 !important;
+  overflow-x: auto;
+}
+
+@media (max-width: 768px) {
+  .poetry-compact-toggle {
+    display: inline-block;
+  }
+
+  .poem-content--compact {
+    font-size: 9px !important;
+    line-height: 1.5 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .poem-content--compact {
+    font-size: 7.5px !important;
+    line-height: 1.4 !important;
+  }
+}

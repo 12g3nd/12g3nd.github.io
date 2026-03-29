@@ -1,6 +1,10 @@
+import { useState } from 'react';
 import PageTransition from '../components/PageTransition';
+import './Poetry.css';
 
 export default function Poetry() {
+  const [compactMode, setCompactMode] = useState(false);
+
   return (
     <PageTransition>
       <section className="section">
@@ -9,6 +13,12 @@ export default function Poetry() {
           <p style={{ marginTop: '0.5rem', fontFamily: 'var(--font-mono)', color: 'rgba(253,246,227,0.7)', fontSize: '14px' }}>
             some of my favourite poems I've ever written at various points in my life
           </p>
+          <button
+            className="poetry-compact-toggle"
+            onClick={() => setCompactMode(prev => !prev)}
+          >
+            {compactMode ? '[NORMAL TEXT ↩]' : '[FIT TEXT →]'}
+          </button>
         </div>
         <div style={{ marginTop: '3rem', maxWidth: '100%' }}>
           {[
@@ -18,44 +28,44 @@ export default function Poetry() {
               award: '2024 Scholastic Arts & Writing Awards - International Silver Medal',
               content: (
                 <>
-                  If you run, I’ll run too. If you run to the truck, know I’ll always follow. We have mere days.<br />
-                  So, khaalah₁, tell me, does this mean we are going to see our home’s devastating fall days?<br />
+                  If you run, I'll run too. If you run to the truck, know I'll always follow. We have mere days.<br />
+                  So, khaalah₁, tell me, does this mean we are going to see our home's devastating fall days?<br />
                   <br />
                   Why would they attack tonight? Why today? What about your family?<br />
-                  Your baby, your husband—don't you want to see your daughter’s funny crawl days.<br />
+                  Your baby, your husband—don't you want to see your daughter's funny crawl days.<br />
                   <br />
-                  I’m sorry, I’ll pray. For them. For us, too. That’ll help. That’ll save us from danger. <em>Right?</em><br />
+                  I'm sorry, I'll pray. For them. For us, too. That'll help. That'll save us from danger. <em>Right?</em><br />
                   I plead. Where even are they, khaalah? Without them, these are going to be some small days.<br />
                   <br />
-                  Blood. Persian red. Our elderly neighbor, he needs help, he’s on the floor. And he needs it fast.<br />
-                  <em>We can’t risk it, not now,</em> I think. No, we must, it’s time to briefly relive our golden shawl days.<br />
+                  Blood. Persian red. Our elderly neighbor, he needs help, he's on the floor. And he needs it fast.<br />
+                  <em>We can't risk it, not now,</em> I think. No, we must, it's time to briefly relive our golden shawl days.<br />
                   <br />
-                  It’s already hard enough for my khaalah to get the driver ready and get some water, I joke<br />
-                  That now I’m going to have tinnitus; I’m really not looking forward to my bald days.<br />
+                  It's already hard enough for my khaalah to get the driver ready and get some water, I joke<br />
+                  That now I'm going to have tinnitus; I'm really not looking forward to my bald days.<br />
                   <br />
                   Humour, it sustains me. But it fails me, too. And like chicken tenders, bodies color the dirt<br />
-                  Road and I already know, for the next few weeks, we’ll live a lot of short nights and tall days.<br />
+                  Road and I already know, for the next few weeks, we'll live a lot of short nights and tall days.<br />
                   <br />
-                  Oh khaalah, I’m sorry, I’ll test you like an annoying elementary school teacher<br />
+                  Oh khaalah, I'm sorry, I'll test you like an annoying elementary school teacher<br />
                   Who always has more to rant about, type of person to never end calls. Days.<br />
                   <br />
                   Teachers are older and far wiser than me—like you, they remember a Palestine of natural<br />
                   Thinkers and brave warriors who stood side by side before these deadly salt days.<br />
                   <br />
-                  The people who want to kill me are not my enemies, I’m told. As crazy as that sounds.<br />
-                  I shouldn’t hate them. In fact, I’m related to some of them. I just wish to relive the doll days.<br />
+                  The people who want to kill me are not my enemies, I'm told. As crazy as that sounds.<br />
+                  I shouldn't hate them. In fact, I'm related to some of them. I just wish to relive the doll days.<br />
                   <br />
-                  I want a doll house full of doll things where we all live in perfect—ideal conditions. But it’s a<br />
-                  A doll house burnt sickly like a flare past its expiry. Let’s get into this truck that hauls days.<br />
+                  I want a doll house full of doll things where we all live in perfect—ideal conditions. But it's a<br />
+                  A doll house burnt sickly like a flare past its expiry. Let's get into this truck that hauls days.<br />
                   <br />
                   Losers, lovers, and the lost, they all flock to shelter, which will be gone soon. Maybe<br />
-                  They replace Hamas, maybe we are in the history books’ “new government they installed” days.<br />
+                  They replace Hamas, maybe we are in the history books' "new government they installed" days.<br />
                   <br />
-                  They’ll retaliate heavily, they’ll test new weapons, I don’t want to begin to imagine. The<br />
+                  They'll retaliate heavily, they'll test new weapons, I don't want to begin to imagine. The<br />
                   Girl in the back with us, I can tell she likes the fire. She is still in her innocent enthralled days.<br />
                   <br />
-                  I hear gunshots. It blinds me. It was nearby, that’s all I could tell. <em>Lina</em> they scream. My khaalah.<br />
-                  She is sleeping. I shake her. She does not wake up. I cry; she knows I can’t forever stall days.<br />
+                  I hear gunshots. It blinds me. It was nearby, that's all I could tell. <em>Lina</em> they scream. My khaalah.<br />
+                  She is sleeping. I shake her. She does not wake up. I cry; she knows I can't forever stall days.<br />
                   <br />
                   <br />
                   ¹"Auntie" in Arabic
@@ -70,8 +80,8 @@ export default function Poetry() {
                 <>
                   You got God and I got you<br />
                   Achene gems, I could never choose<br />
-                  Hammer it down, words I might’ve misconstrued<br />
-                  How could I be a detective if I couldn’t find the clues?<br />
+                  Hammer it down, words I might've misconstrued<br />
+                  How could I be a detective if I couldn't find the clues?<br />
                   <br />
                   So please, plant seeds of doubt in the garden of my mind<br />
                   Break another promise, like a contract unsigned<br />
@@ -79,8 +89,8 @@ export default function Poetry() {
                   Bring a shovel and bury me alive<br />
                   <br />
                   Like a zombie, eat my brain<br />
-                  More or less, we’re still the same<br />
-                  Undefined, intertwined, I’m only here to remind<br />
+                  More or less, we're still the same<br />
+                  Undefined, intertwined, I'm only here to remind<br />
                   Rhyming incessantly, I will never be able to ever decide<br />
                   <br />
                   Chew, spit, suck my flesh, absorb me into your belly<br />
@@ -138,7 +148,7 @@ export default function Poetry() {
                   Dwell an eternity on the past<br />
                   <br />
                   Spent a life holding a grudge<br />
-                  But it doesn’t matter much now<br />
+                  But it doesn't matter much now<br />
                   Since who am I to judge
                 </>
               )
@@ -169,7 +179,7 @@ export default function Poetry() {
                   I'll let <strong>go</strong> of the ————————— strings controlling me<br />
                   when I <u>pray</u> <strong>to</strong> the clouds that love me even when I go<br />
                   <u>astray</u>. It truly is a blessing to be the topic of a<br />
-                  <strong>child’s</strong> <u>ballet</u>. Still, it is a curse to <em>always</em><br />
+                  <strong>child's</strong> <u>ballet</u>. Still, it is a curse to <em>always</em><br />
                   feel this <u>high</u> <strong>since</strong> I am restricted<br />
                   to the <strong>floor</strong> of the <u>sky</u>, and<br />
                   I can't touch the <strong>stars</strong>,<br />
@@ -198,7 +208,10 @@ export default function Poetry() {
                   {poem.award}
                 </div>
               )}
-              <div style={{ fontSize: '14px', fontFamily: 'var(--font-mono)', color: 'rgba(253, 246, 227,0.8)', lineHeight: '1.8' }}>
+              <div
+                className={compactMode ? 'poem-content poem-content--compact' : 'poem-content'}
+                style={{ fontSize: '14px', fontFamily: 'var(--font-mono)', color: 'rgba(253, 246, 227,0.8)', lineHeight: '1.8' }}
+              >
                 {poem.content}
               </div>
             </article>

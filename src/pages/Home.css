@@ -102,21 +102,25 @@
 }
 
 @keyframes wireframe-glitch {
-  0%, 94%, 100% {
+
+  0%,
+  94%,
+  100% {
     filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.4));
   }
+
   95% {
-    filter: drop-shadow(3px 0 0 rgba(255, 0, 50, 0.5))
-            drop-shadow(-3px 0 0 rgba(0, 255, 255, 0.5));
+    filter: drop-shadow(3px 0 0 rgba(255, 0, 50, 0.5)) drop-shadow(-3px 0 0 rgba(0, 255, 255, 0.5));
   }
+
   96% {
-    filter: drop-shadow(-2px 1px 0 rgba(255, 0, 50, 0.3))
-            drop-shadow(2px -1px 0 rgba(0, 255, 255, 0.3));
+    filter: drop-shadow(-2px 1px 0 rgba(255, 0, 50, 0.3)) drop-shadow(2px -1px 0 rgba(0, 255, 255, 0.3));
   }
+
   97% {
-    filter: drop-shadow(4px 0 0 rgba(255, 0, 50, 0.4))
-            drop-shadow(-4px 0 0 rgba(0, 255, 255, 0.4));
+    filter: drop-shadow(4px 0 0 rgba(255, 0, 50, 0.4)) drop-shadow(-4px 0 0 rgba(0, 255, 255, 0.4));
   }
+
   98% {
     filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.4));
   }
@@ -157,6 +161,11 @@
   color: rgba(253, 246, 227, 0.4);
   margin-top: 0.5rem;
   letter-spacing: 0.05em;
+}
+
+/* Hidden on desktop, shown in mobile media queries */
+.mobile-figure-inline {
+  display: none;
 }
 
 .badge {
@@ -469,12 +478,16 @@
   border: 1px solid rgba(0, 229, 255, 0.4);
   padding: 4rem 2rem;
   text-align: center;
+  overflow: hidden;
 }
 
 .email-text {
   font-family: var(--font-display);
-  font-size: clamp(2rem, 6vw, 6rem);
+  font-size: clamp(2rem, 4.5vw, 6rem);
   color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
 }
 
 .email-box:hover {
@@ -664,13 +677,13 @@
 @media (max-width: 600px) {
   .large-quote.quote-with-image {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
   }
 
   .quote-image-container {
     width: 120px;
     margin-top: 1.5rem;
-    align-self: flex-end;
+    align-self: center;
   }
 }
 
@@ -682,7 +695,7 @@
 
   .info-section {
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
   }
 
   .ascii-art-bg,
@@ -692,19 +705,37 @@
 
   .hero-content {
     max-width: 100%;
+    order: 1;
+  }
+
+  /* Put the figure inline with the name row on mobile */
+  .giant-text {
+    position: relative;
   }
 
   .giant-text h1 {
     font-size: clamp(3rem, 12vw, 5rem);
   }
 
+  .mobile-figure-inline {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    max-height: 140px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.4));
+  }
+
   .y2k-accent {
     left: calc(100% + 10px);
-    height: 0.6em;
+    height: 0.8em;
   }
 
   .phonetic-text {
     font-size: clamp(0.85rem, 3vw, 1.1rem);
+    width: 100%;
   }
 
   .description-card {
@@ -713,27 +744,7 @@
   }
 
   .right-column {
-    flex: none;
-    width: 100%;
-    flex-direction: row;
-    align-items: flex-start;
-    gap: 1.5rem;
-  }
-
-  .hero-figure {
-    flex: 0 0 auto;
-    width: auto;
-    justify-content: flex-start;
-  }
-
-  .hero-figure img {
-    max-height: 300px;
-  }
-
-  .what-im-up-to-card {
-    flex: 1;
-    max-width: none;
-    margin-top: 0;
+    display: none;
   }
 
   .expanded-details {
@@ -781,8 +792,12 @@
   }
 
   .info-section {
-    gap: 1.5rem;
+    gap: 1rem;
     padding-top: 1.5rem;
+  }
+
+  .mobile-figure-inline {
+    max-height: 110px;
   }
 
   .giant-text h1 {
@@ -791,7 +806,7 @@
 
   .y2k-accent {
     left: calc(100% + 6px);
-    height: 0.5em;
+    height: 0.7em;
   }
 
   .phonetic-text {
@@ -834,16 +849,7 @@
   }
 
   .right-column {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .hero-figure img {
-    max-height: 250px;
-  }
-
-  .what-im-up-to-card {
-    width: 100%;
+    display: none;
   }
 
   .expanded-details {
@@ -899,3 +905,42 @@
     height: auto;
   }
 }
+
+/* ── Large screens ─────────────────────────────────────── */
+@media (min-width: 1800px) {
+  .hero-content {
+    max-width: 900px;
+  }
+
+  .description-card {
+    max-width: 900px;
+  }
+
+  .expanded-details {
+    max-width: 900px;
+  }
+
+  .right-column {
+    flex: 1;
+  }
+
+  .hero-figure img {
+    max-height: 700px;
+  }
+
+  .what-im-up-to-card {
+    max-width: 550px;
+  }
+
+  .tenets-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .statements-grid {
+    gap: 6rem;
+  }
+
+  .section {
+    padding: 100px 3rem;
+  }
+}

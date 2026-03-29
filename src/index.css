@@ -45,6 +45,19 @@ h1, h2, h3, h4, h5, h6 {
   flex-direction: column;
 }
 
+/* ── Large / ultrawide screens ─────────────────────────── */
+@media (min-width: 1800px) {
+  .container {
+    max-width: 90vw;
+  }
+}
+
+@media (min-width: 2400px) {
+  .container {
+    max-width: 85vw;
+  }
+}
+
 .section {
   border-bottom: var(--border-divider);
   padding: 80px 2rem;

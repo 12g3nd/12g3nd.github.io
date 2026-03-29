@@ -72,6 +72,7 @@ export default function Home() {
               <img src="/y2k1.png" alt="" className="y2k-accent" />
             </h1>
             <h1 className="outline-text">JARABANA</h1>
+            <img src="/figure.png" alt="Wireframe Figure" className="mobile-figure-inline wireframe-glitch" />
             <p className="phonetic-text">/sriːhɪθ dʒʊəˌræˈbɑːnə/</p>
           </div>
           <div className="badge-row">

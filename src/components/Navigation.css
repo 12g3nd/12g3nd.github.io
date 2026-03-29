@@ -92,9 +92,28 @@
   50% { opacity: 0; }
 }
 
+/* Mobile terminal row — hidden on desktop, shown on mobile below the nav */
+.terminal-mobile-row {
+  display: none;
+}
+
 @media (max-width: 950px) {
   .terminal-header-box {
     display: none;
+  }
+
+  .terminal-mobile-row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: var(--bg-surface);
+    border: 1px dotted rgba(0, 229, 255, 0.3);
+    border-top: none;
+    padding: 0.4rem 1rem;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    overflow: hidden;
+    white-space: nowrap;
   }
 }
 
@@ -113,6 +132,11 @@
 
   .nav-links a {
     font-size: 13px;
+  }
+
+  .terminal-mobile-row {
+    font-size: 11px;
+    padding: 0.35rem 1rem;
   }
 }
 
@@ -135,5 +159,10 @@
 
   .nav-links a {
     font-size: 12px;
+  }
+
+  .terminal-mobile-row {
+    font-size: 10px;
+    padding: 0.3rem 0.75rem;
   }
 }

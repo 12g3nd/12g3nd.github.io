@@ -1,7 +1,7 @@
 import PageTransition from '../components/PageTransition';
 import './Media.css';
 
-const mediaData = {
+const mediaData: Record<string, string[]> = {
   books: ['East of Eden - John Steinbeck', 'Martin Dressler: The Tale of an American Dreamer - Steven Millhauser', 'Song of Solomon - Toni Morrison', 'Stoner - John Williams', 'The Crucible - Arthur Miller'],
   poetry: ['Ariel - Sylvia Plath', 'Night Sky With Exit Wounds - Ocean Vuong', 'Serious Concerns - Wendy Cope'],
   albums: ['beerbongs & bentleys - Post Malone', 'songs - Adrienne Lenker', 'Live on Red Barn Radio I & II - Tyler Childers', 'Around Fur - Deftones'],
@@ -10,6 +10,17 @@ const mediaData = {
   tv: ['Suits', 'Henry Danger', 'Mindhunter', 'South Park'],
   games: ['Minecraft', 'Fallout: New Vegas', 'Halo 3', 'Stardew Valley'],
   other: ['Shareholder Letters - Warren Buffett', 'neal.fun', 'The Yellow Wallpaper - Charlotte Perkins Gilman']
+};
+
+const categoryImages: Record<string, string> = {
+  books: '/Media/Books.png',
+  poetry: '/Media/Poetry.png',
+  albums: '/Media/Albums.png',
+  songs: '/Media/Songs.png',
+  films: '/Media/Films.png',
+  tv: '/Media/TV.png',
+  games: '/Media/Games.png',
+  other: '/Media/Other.png',
 };
 
 export default function Media() {
@@ -21,7 +32,17 @@ export default function Media() {
         </div>
         <div className="media-grid">
           {Object.entries(mediaData).map(([category, items]) => (
-            <div key={category} className="media-category">
+            <div
+              key={category}
+              className="media-category"
+              data-category={category}
+            >
+              <img
+                src={categoryImages[category]}
+                alt=""
+                className="media-category-backdrop"
+                aria-hidden="true"
+              />
               <h3><span className="accent-slash">//</span> {category.toUpperCase()}</h3>
               <ul>
                 {items.map((item, idx) => (

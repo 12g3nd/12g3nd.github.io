@@ -39,20 +39,27 @@ export default function Navigation() {
   }, [text, isDeleting, phraseIndex]);
 
   return (
-    <nav className="brutalist-nav">
-      <Link to="/" className="nav-brand">SJ.SYS</Link>
+    <>
+      <nav className="brutalist-nav">
+        <Link to="/" className="nav-brand">SJ.SYS</Link>
 
-      <div className="terminal-header-box">
+        <div className="terminal-header-box">
+          <span className="terminal-text">{text}</span>
+          <span className="terminal-cursor">_</span>
+        </div>
+
+        <div className="nav-links">
+          <Link to="/projects">PROJECTS</Link>
+          <Link to="/media">MEDIA</Link>
+          <Link to="/poetry">POETRY</Link>
+          <Link to="/blog">BLOG</Link>
+        </div>
+      </nav>
+
+      <div className="terminal-mobile-row">
         <span className="terminal-text">{text}</span>
         <span className="terminal-cursor">_</span>
       </div>
-
-      <div className="nav-links">
-        <Link to="/projects">PROJECTS</Link>
-        <Link to="/media">MEDIA</Link>
-        <Link to="/poetry">POETRY</Link>
-        <Link to="/blog">BLOG</Link>
-      </div>
-    </nav>
+    </>
   );
 }
