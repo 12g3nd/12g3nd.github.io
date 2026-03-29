@@ -168,6 +168,15 @@
   display: none;
 }
 
+/* Hidden on desktop, shown on mobile */
+.mobile-what-im-up-to {
+  display: none;
+}
+
+.mobile-landmark-swap {
+  display: none;
+}
+
 .badge {
   font-family: var(--font-mono);
   font-size: 14px;
@@ -721,11 +730,38 @@
     display: block;
     position: absolute;
     top: 0;
-    right: 0;
-    max-height: 140px;
+    right: 5%;
+    max-height: 180px;
     width: auto;
     object-fit: contain;
     filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.4));
+  }
+
+  .mobile-what-im-up-to {
+    display: block;
+    margin-top: 1.5rem;
+  }
+
+  .mobile-what-im-up-to .what-im-up-to-card {
+    max-width: 100%;
+    margin-top: 0;
+  }
+
+  .mobile-landmark-swap {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-top: 1.5rem;
+    position: relative;
+    min-height: 200px;
+  }
+
+  .mobile-landmark-swap img {
+    height: clamp(180px, 30vh, 280px);
+    width: auto;
+    object-fit: contain;
+    filter: brightness(0) invert(96%) sepia(10%) saturate(150%) hue-rotate(5deg);
+    opacity: 0.9;
   }
 
   .y2k-accent {
@@ -797,7 +833,8 @@
   }
 
   .mobile-figure-inline {
-    max-height: 110px;
+    max-height: 140px;
+    right: 3%;
   }
 
   .giant-text h1 {

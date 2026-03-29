@@ -112,8 +112,8 @@
     padding: 0.4rem 1rem;
     font-family: var(--font-mono);
     font-size: 11px;
-    overflow: hidden;
-    white-space: nowrap;
+    white-space: normal;
+    word-break: break-word;
   }
 }
 

@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import PageTransition from '../components/PageTransition';
 import './Home.css';
 
 export default function Home() {
+  const [showSoL, setShowSoL] = useState(false);
+
   return (
     <PageTransition>
 
@@ -102,6 +105,20 @@ export default function Home() {
             <div className="detail-col">
               <span className="accent-slash">//</span><strong>FUN FACTS</strong>
               <p>Afraid of elevators. Japanese mechanical pencils collection. Double jointed in both thumbs.</p>
+            </div>
+          </div>
+
+          {/* Mobile-only: What I'm Up To + Landmark */}
+          <div className="mobile-what-im-up-to">
+            <div className="what-im-up-to-card">
+              <h3><span className="accent-slash">//</span> WHAT I'M UP TO</h3>
+              <p>Learning & building financial models. Career aspirations include quant researcher and similar roles in pe/ib. Looking into research and want to delve into the academic side of business as well.</p>
+            </div>
+            <div className="mobile-landmark-swap" onClick={() => setShowSoL(prev => !prev)}>
+              <img
+                src={showSoL ? '/SoL.png' : '/CNtower.png'}
+                alt={showSoL ? 'Statue of Liberty' : 'CN Tower'}
+              />
             </div>
           </div>
         </div>
