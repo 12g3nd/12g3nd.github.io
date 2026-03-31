@@ -1,4 +1,3 @@
-
 .media-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -28,11 +27,10 @@
   z-index: 0;
 }
 
-/* Boost visibility for images that need more presence */
 .media-category[data-category="songs"] .media-category-backdrop,
 .media-category[data-category="tv"] .media-category-backdrop,
 .media-category[data-category="games"] .media-category-backdrop {
-  opacity: 0.2;
+  opacity: 0.1;
 }
 
 .media-category h3 {

@@ -9,7 +9,8 @@ const PHRASES = [
   "> running diagnostics... critical error: caffeine levels low.",
   "> current aesthetic: brutalism x y2k.",
   "> location ping: robarts library, 12th floor. status: on the grind.",
-  "> fit check... evaluating... result: old money."
+  "> fit check... evaluating... result: old money.",
+  "> easter egg check... found one: most images are clickable."
 ];
 
 export default function Navigation() {
