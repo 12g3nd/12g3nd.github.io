@@ -37,7 +37,7 @@ export default function Footer() {
           </a>
         </div>
 
-        <p className="footer-credits">COPYRIGHT © 2025 SRIHITH JARABANA. ALL RIGHTS RESERVED.</p>
+        <p className="footer-credits">COPYRIGHT © 2026 SRIHITH JARABANA. ALL RIGHTS RESERVED.</p>
       </div>
     </footer>
   );
