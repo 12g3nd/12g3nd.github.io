@@ -1,0 +1,84 @@
+.brutalist-footer {
+  border-top: var(--border-divider);
+  padding: 3rem 2rem;
+  background-color: var(--bg-base);
+  margin-top: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.webring-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.webring-widget {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  font-family: var(--font-mono);
+  background-color: rgba(253, 246, 227, 0.02);
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 229, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.webring-widget:hover {
+  border-color: rgba(0, 229, 255, 0.3);
+  background-color: rgba(0, 229, 255, 0.04);
+}
+
+.webring-nav {
+  font-size: 1.2rem;
+  color: var(--accent-primary);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  padding: 0 0.5rem;
+}
+
+.webring-nav:hover {
+  color: var(--text-primary);
+  text-shadow: 0 0 10px var(--accent-primary);
+}
+
+.webring-logo-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.webring-logo-img {
+  width: 28px;
+  height: auto;
+  filter: drop-shadow(0 0 5px rgba(0, 229, 255, 0.3));
+}
+
+.webring-logo-link:hover {
+  transform: scale(1.15) rotate(5deg);
+}
+
+.footer-credits {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: rgba(253, 246, 227, 0.3);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .brutalist-footer {
+    padding: 2.5rem 1rem;
+  }
+  
+  .webring-widget {
+    gap: 1rem;
+    padding: 0.5rem 1.25rem;
+  }
+}

@@ -7,6 +7,8 @@ import Blog from './pages/Blog';
 import Poetry from './pages/Poetry';
 import BrutalistY2k from './pages/BrutalistY2k';
 import Navigation from './components/Navigation';
+import Footer from './components/Footer';
+
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -30,6 +32,7 @@ function App() {
       <div className="container">
         <Navigation />
         <AnimatedRoutes />
+        <Footer />
       </div>
     </Router>
   );
