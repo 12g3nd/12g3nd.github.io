@@ -1,5 +1,5 @@
-My public website. 
+My public website. It explains who I am, what I do, and more.
 
-Used help from Google's Antigravity. Very front-end heavy and use a brutalist theme with a dash of the Y2K aesthetic.
+A lot of the images were modified by me. Used help from Google's Antigravity to create. Very front-end heavy and use a brutalist theme with a dash of the Y2K aesthetic (read my first blog post for more).
 
-Enjoy.
+Enjoy. I hope.
