@@ -9,7 +9,7 @@ const mediaData: Record<string, string[]> = {
   films: ['Catch Me If You Can (2002)', '10 Things I Hate About You (1999)', 'Star Wars: Episode III - Revenge of the Sith (2005)', 'Fantastic Mr. Fox (2009)'],
   tv: ['Suits', 'Henry Danger', 'Mindhunter', 'South Park'],
   games: ['Minecraft', 'Fallout: New Vegas', 'Halo 3', 'Stardew Valley'],
-  other: ['Shareholder Letters - Warren Buffett', 'neal.fun', 'The Yellow Wallpaper - Charlotte Perkins Gilman']
+  other: ['Shareholder Letters - Warren Buffett', 'neal.fun', 'The Yellow Wallpaper - Charlotte Perkins Gilman', 'The Ones Who Walk Away from Omelas - Ursula K. Le Guin']
 };
 
 const categoryImages: Record<string, string> = {
@@ -29,6 +29,9 @@ export default function Media() {
       <section className="section">
         <div className="section-header">
           <h2>FAV_MEDIA.DAT</h2>
+          <p style={{ marginTop: '0.5rem', fontFamily: 'var(--font-mono)', color: 'rgba(253,246,227,0.7)', fontSize: '14px' }}>
+            media that I enjoy to help you understand me
+          </p>
         </div>
         <div className="media-grid">
           {Object.entries(mediaData).map(([category, items]) => (

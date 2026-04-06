@@ -25,11 +25,20 @@ export default function Projects() {
               stack: ['Jupyter', 'Quarto', 'R'],
               link: 'https://github.com/12g3nd/CSB195',
               linkText: '[VIEW REPO ↗]'
+            },
+            {
+              id: '03',
+              name: 'VOTE SRIHITH SNAPCHAT FILTER',
+              description: "Something I did a few years ago for whenever I ran for a position and wanted an easy way for people to share my campaign on social media. Went viral somewhere else in the world and it has 201.5k shares, 198k lens plays, and 666 shares (numbers accurate as of 4.6.26). Thought it was funny and creative.\n\n(Note: The person in the image is not me.)",
+              stack: ['Snapchat Lens Studio', 'AR', 'Social Media'],
+              link: 'https://www.snapchat.com/lens/5f0f516178844f8a8980e5abb0d93ad0',
+              linkText: '[VIEW LENS ↗]',
+              logo: '/filter.png'
             }
           ].map((project, i) => (
-            <div key={i} style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid rgba(253, 246, 227,0.15)', padding: '2rem', transition: 'all 0.15s ease', display: 'flex', flexDirection: 'column' }} 
-                 onMouseOver={(e) => { e.currentTarget.style.borderColor = 'rgba(0,229,255,0.6)'; }}
-                 onMouseOut={(e) => { e.currentTarget.style.borderColor = 'rgba(253, 246, 227,0.15)'; }}>
+            <div key={i} style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid rgba(253, 246, 227,0.15)', padding: '2rem', transition: 'all 0.15s ease', display: 'flex', flexDirection: 'column' }}
+              onMouseOver={(e) => { e.currentTarget.style.borderColor = 'rgba(0,229,255,0.6)'; }}
+              onMouseOut={(e) => { e.currentTarget.style.borderColor = 'rgba(253, 246, 227,0.15)'; }}>
               {project.logo && (
                 <div style={{ marginBottom: '1.5rem', width: '100%', height: '140px', backgroundColor: '#fff', border: '2px solid rgba(0,229,255,0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                   <img src={project.logo} alt={`${project.name} logo`} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
@@ -47,9 +56,9 @@ export default function Projects() {
                 ))}
               </div>
               <a href={project.link} target="_blank" rel="noreferrer" style={{ display: 'inline-block', alignSelf: 'flex-start', marginTop: '2rem', padding: '0.75rem 1.5rem', border: '1px solid rgba(0,229,255,0.6)', color: 'var(--accent-primary)', fontFamily: 'var(--font-mono)', fontSize: '14px', textTransform: 'uppercase', fontWeight: 'bold', transition: 'all 0.15s ease' }}
-                 onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(0,229,255,0.1)'; e.currentTarget.style.borderColor = 'var(--accent-primary)'; }}
-                 onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(0,229,255,0.6)'; }}>
-                 {project.linkText}
+                onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(0,229,255,0.1)'; e.currentTarget.style.borderColor = 'var(--accent-primary)'; }}
+                onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(0,229,255,0.6)'; }}>
+                {project.linkText}
               </a>
             </div>
           ))}
