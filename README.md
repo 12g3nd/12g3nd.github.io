@@ -1,5 +1,6 @@
-My public website. It explains who I am, what I do, and more.
+# Srihith Jarabana
+My public portfolio and playground.
 
-A lot of the images were modified by me. Used help from Google's Antigravity to create. Very front-end heavy and use a brutalist theme with a dash of the Y2K aesthetic (read my first blog post for more).
+**Live at:** [jarabana.com](https://www.jarabana.com)
 
-Enjoy. I hope.
+Built using React, Vite, and absolute chaos (mostly custom CSS).
