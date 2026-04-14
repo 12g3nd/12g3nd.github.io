@@ -29,7 +29,7 @@ export default function Projects() {
             {
               id: '03',
               name: 'VOTE SRIHITH SNAPCHAT FILTER',
-              description: "Something I did a few years ago for whenever I ran for a position and wanted an easy way for people to share my campaign on social media. Went viral somewhere else in the world and it has 201.5k lens views, 198k lens plays, and 666 shares (numbers accurate as of 4.6.26). Thought it was funny and creative.\n\n(Note: The person in the image is not me.)",
+              description: "Something I did a few years ago for whenever I ran for a position and wanted an easy way for people to share my campaign on social media. Went viral somewhere else in the world and it has 198k lens plays (accurate as of 4.6.26). Thought it was funny and creative.\n\n(Note: The person in the image is not me.)",
               stack: ['Snapchat Lens Studio', 'AR', 'Social Media'],
               link: 'https://www.snapchat.com/lens/5f0f516178844f8a8980e5abb0d93ad0',
               linkText: '[VIEW LENS ↗]',

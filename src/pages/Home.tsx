@@ -147,16 +147,16 @@ export default function Home() {
           <div className="tenet-card">
             <div className="tenet-number">01</div>
             <h3><span className="accent-slash">//</span> NATURE OF SELF</h3>
-            <p>Being content ≠ being happy. Don't settle just because you've given up. Chase passion instead of paper & prestige.</p>
+            <p>Being content ≠ being happy. Stark difference between chasing passion instead of paper & prestige.</p>
           </div>
           <div className="tenet-card">
             <div className="tenet-number">02</div>
             <h3><span className="accent-slash">//</span> ENTERTAIN THE MUNDANE</h3>
-            <p>Trying to never be bored is the first step to madness. Enjoy it. The small things do matter, but so does the big picture.</p>
+            <p>Trying to never be bored is the biggest mistake of all time. The small things do matter, but so does the big picture.</p>
           </div>
           <div className="tenet-card">
             <div className="tenet-number">03</div>
-            <h3><span className="accent-slash">//</span> ARTIFICIAL INTELLIGENCE</h3>
+            <h3><span className="accent-slash">//</span> THE ALTERNATIVE HYPOTHESIS</h3>
             <p>The future will include AI. Learn to use it properly. Don't get dependant / complacent. "Life, uh, finds a way" or something like that.</p>
           </div>
         </div>
