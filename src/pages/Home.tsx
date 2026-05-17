@@ -85,7 +85,7 @@ export default function Home() {
           <p className="sub-badge">Intended: Management Specialist, Focus in Finance, Minor in Statistics and Economics</p>
           <div className="description-card">
             <p>
-              'SJ' also welcome. 18. Businessman by craft. Also, strong STEM and literature background.
+              'SJ' also welcome. 19. Businessman by craft. Also, strong STEM and literature background.
               Welcome to my personal (and humble) corner of the internet.
             </p>
             <div className="hero-actions">
@@ -151,7 +151,7 @@ export default function Home() {
           </div>
           <div className="tenet-card">
             <div className="tenet-number">02</div>
-            <h3><span className="accent-slash">//</span> ENTERTAIN THE MUNDANE</h3>
+            <h3><span className="accent-slash">//</span> THE MUNDANE ENTERTAINED</h3>
             <p>Trying to never be bored is the biggest mistake of all time. The small things do matter, but so does the big picture.</p>
           </div>
           <div className="tenet-card">
