@@ -11,7 +11,7 @@ export default function Poetry() {
         <div className="section-header">
           <h2>POETRY_</h2>
           <p style={{ marginTop: '0.5rem', fontFamily: 'var(--font-mono)', color: 'rgba(253,246,227,0.7)', fontSize: '14px' }}>
-            some of my favourite poems I've ever written at various points in my life
+            some of my favourite poems I've ever written at various points in my life (in a fake PDF format of course)
           </p>
           <button
             className="poetry-compact-toggle"
@@ -21,11 +21,13 @@ export default function Poetry() {
           </button>
         </div>
         <div style={{ marginTop: '3rem', maxWidth: '100%' }}>
-          {[
+          {(() => {
+            const poems = [
             {
               date: '2023-10-13',
               title: 'A Ghazal for Gaza',
               award: '2024 Scholastic Arts & Writing Awards - International Silver Medal',
+              wide: true,
               content: (
                 <>
                   If you run, I'll run too. If you run to the truck, know I'll always follow. We have mere days.<br />
@@ -199,23 +201,33 @@ export default function Poetry() {
                 </div>
               )
             },
-          ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((poem, i) => (
-            <article key={i} style={{ borderBottom: '1px solid rgba(253, 246, 227,0.1)', paddingBottom: '2.5rem', marginBottom: '2.5rem', position: 'relative' }}>
-              <span style={{ color: 'var(--accent-primary)', fontFamily: 'var(--font-mono)', fontSize: '13px', display: 'block', marginBottom: '1rem' }}>[{poem.date}]</span>
-              <h3 style={{ fontSize: '2rem', margin: '0 0 1rem 0', fontFamily: 'var(--font-display)', color: 'var(--text-primary)' }}>{poem.title}</h3>
-              {poem.award && (
-                <div style={{ color: 'rgba(253, 246, 227, 0.6)', fontFamily: 'var(--font-mono)', fontSize: '13px', marginBottom: '1rem', fontStyle: 'italic' }}>
-                  {poem.award}
+            ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+            return (
+              <div className="doc-viewer">
+                <div className="doc-viewer__chrome">
+                  <span className="doc-viewer__filename">POETRY.pdf</span>
+                  <span className="doc-viewer__meta">{poems.length} page{poems.length === 1 ? '' : 's'} · serif</span>
                 </div>
-              )}
-              <div
-                className={compactMode ? 'poem-content poem-content--compact' : 'poem-content'}
-                style={{ fontSize: '14px', fontFamily: 'var(--font-mono)', color: 'rgba(253, 246, 227,0.8)', lineHeight: '1.8' }}
-              >
-                {poem.content}
+                <div className="doc-viewer__pages">
+                  {poems.map((poem, i) => (
+                    <article key={i} className={`doc-page${('wide' in poem && poem.wide) ? ' doc-page--wide' : ''}`}>
+                      <span className="doc-page__date">{poem.date}</span>
+                      <h3 className="doc-page__title">{poem.title}</h3>
+                      {poem.award && (
+                        <div className="doc-page__award">{poem.award}</div>
+                      )}
+                      <hr className="doc-page__rule" />
+                      <div className={`doc-page__body${compactMode ? ' doc-page__body--compact' : ''}`}>
+                        {poem.content}
+                      </div>
+                      <div className="doc-page__footer">— {i + 1} / {poems.length} —</div>
+                    </article>
+                  ))}
+                </div>
               </div>
-            </article>
-          ))}
+            );
+          })()}
         </div>
       </section>
     </PageTransition>
