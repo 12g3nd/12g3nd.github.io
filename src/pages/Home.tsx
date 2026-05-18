@@ -6,6 +6,7 @@ import './Home.css';
 
 export default function Home() {
   const [showSoL, setShowSoL] = useState(false);
+  const [emailRevealed, setEmailRevealed] = useState(false);
 
   return (
     <PageTransition>
@@ -128,7 +129,7 @@ export default function Home() {
           </div>
           <div className="what-im-up-to-card">
             <h3><span className="accent-slash">//</span> WHAT I'M UP TO</h3>
-            <p>Learning & building financial models. Career aspirations include quant researcher and similar roles in pe/ib. Looking into research and want to delve into the academic side of business as well.</p>
+            <p>Learning & building financial models. Looking into research and want to delve into the academic side of business as well.</p>
           </div>
         </div>
         <div className="landmark-swap">
@@ -147,7 +148,7 @@ export default function Home() {
           <div className="tenet-card">
             <div className="tenet-number">01</div>
             <h3><span className="accent-slash">//</span> NATURE OF SELF</h3>
-            <p>Being content ≠ being happy. Stark difference between chasing passion instead of paper & prestige.</p>
+            <p>Being content ≠ being happy. Stark difference between chasing passion instead of paper.</p>
           </div>
           <div className="tenet-card">
             <div className="tenet-number">02</div>
@@ -157,7 +158,7 @@ export default function Home() {
           <div className="tenet-card">
             <div className="tenet-number">03</div>
             <h3><span className="accent-slash">//</span> THE ALTERNATIVE HYPOTHESIS</h3>
-            <p>The future will include AI. Learn to use it properly. Don't get dependant / complacent. "Life, uh, finds a way" or something like that.</p>
+            <p>The plan will change. What matters is whether you change with it or stand there mourning past potential. "Life, uh, finds a way" or something like that.</p>
           </div>
         </div>
 
@@ -200,9 +201,20 @@ export default function Home() {
         <div className="section-header">
           <h2>CONNECT_</h2>
         </div>
-        <a href="mailto:srihith.jarabana@mail.utoronto.ca" className="email-box">
-          <span className="email-text">srihith.jarabana@mail.utoronto.ca</span>
-        </a>
+        {emailRevealed ? (
+          <a href="mailto:srihith.jarabana@mail.utoronto.ca" className="email-box">
+            <span className="email-text">srihith.jarabana@mail.utoronto.ca</span>
+          </a>
+        ) : (
+          <button
+            type="button"
+            className="email-box email-box-hidden"
+            onClick={() => setEmailRevealed(true)}
+            aria-label="Click to reveal email address"
+          >
+            <span className="email-text">[ CLICK TO REVEAL ]</span>
+          </button>
+        )}
         <div className="social-links" style={{ justifyContent: 'center' }}>
           <a href="https://www.linkedin.com/in/srihithjarabana/" target="_blank" rel="noopener noreferrer" className="social-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
             <img src="/smlogos/LinkedIn.webp" alt="LinkedIn" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />

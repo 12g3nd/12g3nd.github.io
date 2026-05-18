@@ -507,6 +507,17 @@
   color: var(--accent-primary);
 }
 
+button.email-box {
+  width: 100%;
+  font: inherit;
+  cursor: pointer;
+}
+
+.email-box-hidden .email-text {
+  letter-spacing: 0.05em;
+  user-select: none;
+}
+
 .social-links {
   display: flex;
   gap: 1rem;
