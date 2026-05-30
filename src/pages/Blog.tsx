@@ -18,16 +18,22 @@ export default function Blog() {
     <PageTransition>
       <section className="section">
         <div className="section-header">
-          <h2>TRANSMISSIONS</h2>
+          <h2>TRANSMISSIONS_</h2>
         </div>
         
         <div className="blog-layout">
           {/* Main Content */}
           <div className="blog-feed">
             {[
-              { 
-                date: '2026-03-26', 
-                title: 'Embracing Brutalist X Y2K Aesthetics in Web Design', 
+              {
+                date: '2026-05-30',
+                title: 'On Wanting Things You Might Not Get',
+                abstract: 'On ambition said out loud, the quiet cost of shrinking your wants, and why failing in public beats never trying at all.',
+                link: '/blog/wanting-things'
+              },
+              {
+                date: '2026-03-26',
+                title: 'Embracing Brutalist X Y2K Aesthetics in Web Design',
                 abstract: 'Why I chose to abandon Tailwind for this iteration of my portfolio. The importance of structure over polish in a landscape of identical SaaS sites.',
                 link: '/blog/brutalist-y2k'
               },
@@ -58,6 +64,11 @@ export default function Blog() {
             <div className="sidebar-section">
               <h4>[QUICK_SEEK]</h4>
               <ul className="quick-seek-list">
+                <li>
+                  <Link to="/blog" onClick={() => window.scrollTo(0, 0)}>
+                    <span className="seek-bullet">■</span> 2026 / Q2
+                  </Link>
+                </li>
                 <li>
                   <Link to="/blog" onClick={() => window.scrollTo(0, 0)}>
                     <span className="seek-bullet">■</span> 2026 / Q1

@@ -188,13 +188,38 @@
 }
 
 
-.cn-tower-decor {
+.landmark-swap {
+  position: absolute;
+  bottom: 7%;
+  /* Center it in the gutter between the description card (max 650px, left)
+     and the "what I'm up to" card (max 400px, right):
+     page-center + (650 - 400) / 2 = page-center + 125px.
+     A fixed px offset stays put at any width; the old raw `60%` tracked the
+     widening section and drifted far right on wide/ultrawide screens. */
+  left: calc(50% + 125px);
+  transform: translateX(-50%);
+  z-index: 0;
+  cursor: pointer;
+  /* Narrow box that hugs the figures. The PNGs are cropped to their content,
+     and both landmarks are tall ~0.41-aspect silhouettes, so this box tracks
+     the visible figure instead of a big square of transparent dead space
+     (which is what was triggering the hover from empty areas beside it). */
   height: clamp(280px, 40vh, 400px);
-  width: auto;
+  aspect-ratio: 188 / 458;
+}
+
+/* Both landmark images fill the exact same box and share one hitbox. They are
+   `contain`-fit and bottom-aligned. Because the PNGs are cropped to their
+   content, the box hugs the visible figure and the hitbox matches what you see. */
+.cn-tower-decor {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
+  object-position: center bottom;
   opacity: 0.9;
   transition: opacity 0.3s ease;
-  display: block;
 }
 
 .landmark-default {
@@ -203,22 +228,7 @@
 
 .landmark-hover {
   filter: brightness(0) invert(96%) sepia(10%) saturate(150%) hue-rotate(5deg);
-  opacity: 0 !important;
-  position: absolute;
-  bottom: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  height: 100%;
-  width: auto;
-}
-
-.landmark-swap {
-  position: absolute;
-  bottom: 7%;
-  left: 60%;
-  transform: translateX(-50%);
-  z-index: 0;
-  cursor: pointer;
+  opacity: 0;
 }
 
 .landmark-swap:hover .landmark-default {
@@ -226,7 +236,7 @@
 }
 
 .landmark-swap:hover .landmark-hover {
-  opacity: 0.9 !important;
+  opacity: 0.9;
 }
 
 @media (max-width: 1050px) {
@@ -718,9 +728,18 @@ button.email-box {
     gap: 1rem;
   }
 
-  .ascii-art-bg,
+  /* Keep the faint y2k ASCII background on mobile too. body has overflow-x:
+     hidden, so any overflow past the right edge won't add a scrollbar. */
+  .ascii-art-bg {
+    top: 8%;
+    left: auto;
+    right: 0;
+    transform: none;
+  }
+
   .ascii-art-secondary {
-    display: none;
+    top: 40%;
+    right: 0;
   }
 
   .hero-content {
@@ -758,13 +777,15 @@ button.email-box {
     margin-top: 0;
   }
 
+  /* Shrink-wrap the tap target to the figure (centered), so tapping empty
+     space beside the landmark no longer toggles it. */
   .mobile-landmark-swap {
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    margin-top: 1.5rem;
+    width: fit-content;
+    margin: 1.5rem auto 0;
     position: relative;
-    min-height: 200px;
   }
 
   .mobile-landmark-swap img {
@@ -978,6 +999,12 @@ button.email-box {
 
   .what-im-up-to-card {
     max-width: 550px;
+  }
+
+  /* Cards grow here (hero 900px, card 550px), so recenter the landmark:
+     page-center + (900 - 550) / 2 = page-center + 175px. */
+  .landmark-swap {
+    left: calc(50% + 175px);
   }
 
   .tenets-grid {
