@@ -2,6 +2,7 @@ import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
 import ScrambleText from '../components/ScrambleText';
 import useDocumentMeta from '../hooks/useDocumentMeta';
+import './Projects.css';
 
 export default function Projects() {
   useDocumentMeta(
@@ -14,7 +15,7 @@ export default function Projects() {
         <div className="section-header">
           <h2><ScrambleText text="PROJECTS_" /></h2>
         </div>
-        <div style={{ marginTop: '2rem', display: 'grid', gap: '2rem', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', alignItems: 'start' }}>
+        <div className="projects-grid">
           {[
             {
               id: '01',
@@ -40,6 +41,31 @@ export default function Projects() {
             },
             {
               id: '03',
+              name: 'Lingua',
+              description: "Lingua is a language learning application that helps users practice real-world speaking skills through unscripted, immersive conversations with diverse AI personas.",
+              stack: ['React', 'TypeScript'],
+              repo: 'https://github.com/12g3nd/Lingua',
+              repoLinkText: '[VIEW REPO ↗]',
+              logo: '/LinguaPreview.png'
+            },
+            {
+              id: '04',
+              name: 'The Clearwater Forge',
+              description: "A portfolio backtesting application that allows users to evaluate custom stock portfolios against benchmarks while computing advanced statistics like CAGR, Sharpe ratios, and max drawdowns.",
+              stack: ['Streamlit', 'React'],
+              repo: 'https://github.com/12g3nd/TheClearwaterForge',
+              repoLinkText: '[VIEW REPO ↗]'
+            },
+            {
+              id: '05',
+              name: 'drift',
+              description: "Drift is a Chrome extension that replaces the standard new tab page with a living, procedurally generated landscape rendered from simple shapes.",
+              stack: ['JavaScript', 'HTML'],
+              link: 'https://github.com/12g3nd/drift',
+              linkText: '[VIEW REPO ↗]'
+            },
+            {
+              id: '06',
               name: 'CSB195',
               description: 'Code and data for CSB195 Computational Biology Foundations, University of Toronto',
               stack: ['Jupyter', 'Quarto', 'R'],
@@ -47,7 +73,7 @@ export default function Projects() {
               linkText: '[VIEW REPO ↗]'
             },
             {
-              id: '04',
+              id: '07',
               name: 'VOTE SRIHITH SNAPCHAT FILTER',
               description: "Something I did a few years ago for whenever I ran for a position and wanted an easy way for people to share my campaign on social media. Went viral somewhere else in the world and it has 198k lens plays (accurate as of 4.6.26). Thought it was funny and creative.\n\n(Note: The person in the image is not me.)",
               stack: ['Snapchat Lens Studio', 'AR', 'Social Media'],
@@ -56,38 +82,34 @@ export default function Projects() {
               logo: '/filter.png'
             }
           ].map((project, i) => (
-            <Reveal key={i} delay={i * 0.08}>
-            <div style={{ backgroundColor: 'var(--bg-raised)', border: '1px solid rgba(253, 246, 227,0.15)', padding: '2rem', transition: 'all 0.15s ease', display: 'flex', flexDirection: 'column', height: '100%' }}
-              onMouseOver={(e) => { e.currentTarget.style.borderColor = 'rgba(0,229,255,0.6)'; }}
-              onMouseOut={(e) => { e.currentTarget.style.borderColor = 'rgba(253, 246, 227,0.15)'; }}>
-              {project.logo && (
-                <div style={{ marginBottom: '1.5rem', width: '100%', height: '140px', backgroundColor: '#fff', border: '2px solid rgba(0,229,255,0.3)', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <img src={project.logo} alt={`${project.name} logo`} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+            <Reveal key={i} delay={i * 0.08} className="project-card-wrap">
+            <div className="project-card">
+              <span className="project-card__num">{project.id}</span>
+              {project.logo ? (
+                <div className="project-card__preview">
+                  <img src={project.logo} alt={`${project.name} preview`} />
+                </div>
+              ) : (
+                <div className="project-card__preview project-card__preview--placeholder">
+                  <span className="ph-name">{project.name}</span>
+                  <span className="ph-tag">{project.stack[0]}</span>
                 </div>
               )}
-              <h3 style={{ fontSize: '13px', fontFamily: 'var(--font-mono)', color: 'var(--text-primary)' }}><span style={{ color: 'var(--accent-primary)' }}>//</span> PROJECT {project.id}: {project.name}</h3>
-              <p style={{ marginTop: '1rem', fontFamily: 'var(--font-mono)', fontSize: '13px', color: 'rgba(253, 246, 227,0.8)', lineHeight: '1.6', flexGrow: 1 }}>
-                {project.description}
-              </p>
-              <div style={{ marginTop: '1.5rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              <h3 className="project-card__title">
+                <span className="slash">//</span> PROJECT {project.id}: {project.name}
+              </h3>
+              <p className="project-card__desc">{project.description}</p>
+              <div className="project-card__stack">
                 {project.stack.map((tech, j) => (
-                  <span key={j} style={{ border: '1px solid rgba(253, 246, 227,0.2)', color: 'rgba(253, 246, 227,0.8)', padding: '0.2rem 0.5rem', fontSize: '12px', fontFamily: 'var(--font-mono)', borderRadius: '999px' }}>
-                    {tech}
-                  </span>
+                  <span key={j}>{tech}</span>
                 ))}
               </div>
-              <div style={{ marginTop: '2rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                <a href={project.link} target="_blank" rel="noreferrer" style={{ display: 'inline-block', padding: '0.75rem 1.5rem', border: '1px solid rgba(0,229,255,0.6)', color: 'var(--accent-primary)', fontFamily: 'var(--font-mono)', fontSize: '14px', textTransform: 'uppercase', fontWeight: 'bold', transition: 'all 0.15s ease' }}
-                  onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(0,229,255,0.1)'; e.currentTarget.style.borderColor = 'var(--accent-primary)'; }}
-                  onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(0,229,255,0.6)'; }}>
-                  {project.linkText}
-                </a>
+              <div className="project-card__links">
+                {project.link && (
+                  <a href={project.link} target="_blank" rel="noreferrer">{project.linkText}</a>
+                )}
                 {project.repo && (
-                  <a href={project.repo} target="_blank" rel="noreferrer" style={{ display: 'inline-block', padding: '0.75rem 1.5rem', border: '1px solid rgba(0,229,255,0.6)', color: 'var(--accent-primary)', fontFamily: 'var(--font-mono)', fontSize: '14px', textTransform: 'uppercase', fontWeight: 'bold', transition: 'all 0.15s ease' }}
-                    onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(0,229,255,0.1)'; e.currentTarget.style.borderColor = 'var(--accent-primary)'; }}
-                    onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(0,229,255,0.6)'; }}>
-                  {project.repoLinkText}
-                  </a>
+                  <a href={project.repo} target="_blank" rel="noreferrer">{project.repoLinkText}</a>
                 )}
               </div>
             </div>

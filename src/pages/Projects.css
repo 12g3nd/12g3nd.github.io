@@ -1,0 +1,175 @@
+.projects-grid {
+  margin-top: 2.5rem;
+  display: grid;
+  gap: 1.75rem;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  align-items: stretch;
+}
+
+/* Reveal wrapper — let the card fill the (stretched) grid cell so every
+   card in a row is the same height. */
+.project-card-wrap {
+  height: 100%;
+}
+
+.project-card {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1.75rem;
+  background-color: var(--bg-surface);
+  border: 1px solid rgba(253, 246, 227, 0.15);
+  overflow: hidden;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 229, 255, 0.6);
+  box-shadow: 0 12px 30px -12px rgba(0, 229, 255, 0.3);
+}
+
+/* big faint watermark number, like the home-page tenet cards */
+.project-card__num {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.9rem;
+  font-family: var(--font-display);
+  font-size: 4.5rem;
+  line-height: 1;
+  color: rgba(0, 229, 255, 0.08);
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+/* ── preview frame ─────────────────────────────────────── */
+.project-card__preview {
+  position: relative;
+  width: 100%;
+  height: 170px;
+  margin-bottom: 1.5rem;
+  background-color: var(--bg-base);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-card__preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.4s ease;
+}
+
+.project-card:hover .project-card__preview img {
+  transform: scale(1.04);
+}
+
+/* faint cyan sheen so the frame reads as part of the theme */
+.project-card__preview::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(160deg, rgba(0, 229, 255, 0.07), transparent 55%);
+  pointer-events: none;
+}
+
+/* placeholder shown for projects that have no preview image, so every card
+   keeps the same silhouette instead of looking half-empty */
+.project-card__preview--placeholder {
+  flex-direction: column;
+  gap: 0.6rem;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(123, 97, 255, 0.06) 0 10px, transparent 10px 20px);
+}
+
+.project-card__preview--placeholder .ph-name {
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 4vw, 2.3rem);
+  letter-spacing: 0.04em;
+  color: rgba(253, 246, 227, 0.9);
+  text-align: center;
+  padding: 0 1rem;
+  line-height: 1;
+}
+
+.project-card__preview--placeholder .ph-tag {
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-primary);
+}
+
+/* ── text ──────────────────────────────────────────────── */
+.project-card__title {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.project-card__title .slash {
+  color: var(--accent-primary);
+}
+
+.project-card__desc {
+  position: relative;
+  z-index: 1;
+  flex-grow: 1;
+  margin-top: 1rem;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  color: rgba(253, 246, 227, 0.8);
+  white-space: pre-line; /* honor intentional line breaks in descriptions */
+}
+
+.project-card__stack {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.project-card__stack span {
+  padding: 0.2rem 0.6rem;
+  border: 1px solid rgba(253, 246, 227, 0.2);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(253, 246, 227, 0.75);
+}
+
+.project-card__links {
+  margin-top: 1.75rem;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.project-card__links a {
+  display: inline-block;
+  padding: 0.6rem 1.1rem;
+  border: 1px solid rgba(0, 229, 255, 0.5);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  transition: all 0.15s ease;
+}
+
+.project-card__links a:hover {
+  background: rgba(0, 229, 255, 0.12);
+  border-color: var(--accent-primary);
+}
