@@ -85,6 +85,23 @@
   margin-bottom: 0;
 }
 
+/* Each page is wrapped in a Reveal (motion) div for staggered scroll-in.
+   The page itself is then always :last-child of its wrapper, so move the
+   inter-page spacing onto the wrapper. */
+.doc-viewer__pages > div {
+  margin-bottom: 2.5rem;
+}
+
+.doc-viewer__pages > div:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .doc-viewer__pages > div {
+    margin-bottom: 1.5rem;
+  }
+}
+
 .doc-page--wide {
   max-width: 1100px;
 }

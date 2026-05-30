@@ -1,17 +1,25 @@
 import PageTransition from '../components/PageTransition';
+import PostLayout from '../components/PostLayout';
+import ScrambleText from '../components/ScrambleText';
+import useDocumentMeta from '../hooks/useDocumentMeta';
 
 export default function BrutalistY2k() {
+  useDocumentMeta(
+    'Embracing Brutalist X Y2K Aesthetics in Web Design // Srihith Jarabana',
+    'Why I chose to abandon Tailwind for this iteration of my portfolio — structure over polish in a landscape of identical SaaS sites.'
+  );
   return (
     <PageTransition>
       <section className="section" style={{ paddingBottom: '5rem' }}>
         <div className="section-header" style={{ marginBottom: '3rem' }}>
-          <h2>TRANSMISSION_01</h2>
-          <p style={{ marginTop: '0.5rem', fontFamily: 'var(--font-mono)', color: 'rgba(253,246,227,0.7)', fontSize: '14px' }}>
+          <h2><ScrambleText text="TRANSMISSION_01" /></h2>
+          <p style={{ marginTop: '0.5rem', fontFamily: 'var(--font-mono)', color: 'var(--accent-secondary)', fontSize: '14px' }}>
             2026-03-26 // LOG
           </p>
         </div>
 
-        <div style={{ maxWidth: '800px' }}>
+        <PostLayout slug="brutalist-y2k" date="2026-03-26">
+        <div>
           <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', margin: '0 0 2rem 0', fontFamily: 'var(--font-display)', color: 'var(--text-primary)', lineHeight: 1.1 }}>
             Embracing Brutalist X Y2K Aesthetic in Web Design
           </h1>
@@ -123,6 +131,7 @@ export default function BrutalistY2k() {
             </ul>
           </div>
         </div>
+        </PostLayout>
       </section>
     </PageTransition>
   );

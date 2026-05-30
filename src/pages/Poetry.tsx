@@ -1,15 +1,23 @@
 import { useState } from 'react';
 import PageTransition from '../components/PageTransition';
+import Reveal from '../components/Reveal';
+import ScrambleText from '../components/ScrambleText';
+import useDocumentMeta from '../hooks/useDocumentMeta';
 import './Poetry.css';
 
 export default function Poetry() {
   const [compactMode, setCompactMode] = useState(false);
 
+  useDocumentMeta(
+    'Poetry // Srihith Jarabana',
+    'A selection of poems Srihith Jarabana has written, including award-winning work.'
+  );
+
   return (
     <PageTransition>
       <section className="section">
         <div className="section-header">
-          <h2>POETRY_</h2>
+          <h2><ScrambleText text="POETRY_" /></h2>
           <p style={{ marginTop: '0.5rem', fontFamily: 'var(--font-mono)', color: 'rgba(253,246,227,0.7)', fontSize: '14px' }}>
             some of my favourite poems I've ever written at various points in my life (in a fake PDF format of course)
           </p>
@@ -211,7 +219,8 @@ export default function Poetry() {
                 </div>
                 <div className="doc-viewer__pages">
                   {poems.map((poem, i) => (
-                    <article key={i} className={`doc-page${('wide' in poem && poem.wide) ? ' doc-page--wide' : ''}`}>
+                    <Reveal key={i} delay={Math.min(i, 3) * 0.06}>
+                    <article className={`doc-page${('wide' in poem && poem.wide) ? ' doc-page--wide' : ''}`}>
                       <span className="doc-page__date">{poem.date}</span>
                       <h3 className="doc-page__title">{poem.title}</h3>
                       {poem.award && (
@@ -223,6 +232,7 @@ export default function Poetry() {
                       </div>
                       <div className="doc-page__footer">— {i + 1} / {poems.length} —</div>
                     </article>
+                    </Reveal>
                   ))}
                 </div>
               </div>

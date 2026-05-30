@@ -3,14 +3,25 @@
 :root {
   --bg-base: #0A1320;
   --bg-surface: #162032;
+  --bg-raised: #1A2A40;
   --text-primary: #FDF6E3;
   --accent-primary: #00E5FF;
   --accent-secondary: #7B61FF;
-  
+
   --font-display: 'Anton', sans-serif;
   --font-mono: 'Space Mono', monospace;
-  
+
   --border-divider: 1px solid rgba(253, 246, 227, 0.1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 * {
@@ -26,6 +37,28 @@ body {
   font-family: var(--font-mono);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+}
+
+/* Faint CRT scanlines over the whole viewport. Decorative only — never blocks
+   pointer events, so the crosshair cursor and clicks pass straight through. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0,
+    rgba(0, 0, 0, 0) 2px,
+    rgba(0, 0, 0, 0.04) 3px
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body::before {
+    display: none;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {

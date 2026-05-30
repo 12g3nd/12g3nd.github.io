@@ -1,11 +1,18 @@
 import PageTransition from '../components/PageTransition';
+import Reveal from '../components/Reveal';
+import ScrambleText from '../components/ScrambleText';
+import useDocumentMeta from '../hooks/useDocumentMeta';
 
 export default function Projects() {
+  useDocumentMeta(
+    'Projects // Srihith Jarabana',
+    'Things Srihith Jarabana has built — from KRINE to a viral Snapchat lens.'
+  );
   return (
     <PageTransition>
       <section className="section">
         <div className="section-header">
-          <h2>PROJECTS_</h2>
+          <h2><ScrambleText text="PROJECTS_" /></h2>
         </div>
         <div style={{ marginTop: '2rem', display: 'grid', gap: '2rem', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', alignItems: 'start' }}>
           {[
@@ -49,7 +56,8 @@ export default function Projects() {
               logo: '/filter.png'
             }
           ].map((project, i) => (
-            <div key={i} style={{ backgroundColor: 'var(--bg-surface)', border: '1px solid rgba(253, 246, 227,0.15)', padding: '2rem', transition: 'all 0.15s ease', display: 'flex', flexDirection: 'column' }}
+            <Reveal key={i} delay={i * 0.08}>
+            <div style={{ backgroundColor: 'var(--bg-raised)', border: '1px solid rgba(253, 246, 227,0.15)', padding: '2rem', transition: 'all 0.15s ease', display: 'flex', flexDirection: 'column', height: '100%' }}
               onMouseOver={(e) => { e.currentTarget.style.borderColor = 'rgba(0,229,255,0.6)'; }}
               onMouseOut={(e) => { e.currentTarget.style.borderColor = 'rgba(253, 246, 227,0.15)'; }}>
               {project.logo && (
@@ -83,10 +91,8 @@ export default function Projects() {
                 )}
               </div>
             </div>
+            </Reveal>
           ))}
-        </div>
-        <div style={{ marginTop: '4rem', textAlign: 'center', fontFamily: 'var(--font-mono)', color: 'rgba(253, 246, 227, 0.4)', fontSize: '14px', letterSpacing: '0.1em' }}>
-          MORE COMING SOON...
         </div>
       </section>
     </PageTransition>

@@ -1,4 +1,7 @@
 import PageTransition from '../components/PageTransition';
+import Reveal from '../components/Reveal';
+import ScrambleText from '../components/ScrambleText';
+import useDocumentMeta from '../hooks/useDocumentMeta';
 import './Media.css';
 
 const mediaData: Record<string, string[]> = {
@@ -24,19 +27,23 @@ const categoryImages: Record<string, string> = {
 };
 
 export default function Media() {
+  useDocumentMeta(
+    'Media // Srihith Jarabana',
+    'Books, poetry, albums, films, and games Srihith Jarabana enjoys.'
+  );
   return (
     <PageTransition>
       <section className="section">
         <div className="section-header">
-          <h2>FAV_MEDIA.DAT</h2>
+          <h2><ScrambleText text="FAV_MEDIA.DAT" /></h2>
           <p style={{ marginTop: '0.5rem', fontFamily: 'var(--font-mono)', color: 'rgba(253,246,227,0.7)', fontSize: '14px' }}>
             media that I enjoy to help you understand me
           </p>
         </div>
         <div className="media-grid">
-          {Object.entries(mediaData).map(([category, items]) => (
+          {Object.entries(mediaData).map(([category, items], i) => (
+            <Reveal key={category} delay={i * 0.06}>
             <div
-              key={category}
               className="media-category"
               data-category={category}
             >
@@ -53,6 +60,7 @@ export default function Media() {
                 ))}
               </ul>
             </div>
+            </Reveal>
           ))}
         </div>
       </section>

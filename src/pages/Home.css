@@ -425,6 +425,15 @@
   color: var(--accent-secondary) !important;
 }
 
+.tenets-subtitle {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: rgba(253, 246, 227, 0.4);
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
+}
+
 .divider-line {
   width: 100%;
   height: 1px;
@@ -438,12 +447,18 @@
   gap: 2rem;
 }
 
+/* Reveal wrappers become the grid items; let the card fill them. */
+.tenets-grid > div {
+  height: 100%;
+}
+
 .tenet-card {
-  background-color: var(--bg-surface);
+  background-color: var(--bg-raised);
   border: 1px solid rgba(253, 246, 227, 0.15);
   padding: 2rem;
   position: relative;
   overflow: hidden;
+  height: 100%;
 }
 
 .tenet-card:hover {
@@ -456,7 +471,7 @@
   right: 1rem;
   font-family: var(--font-display);
   font-size: 56px;
-  color: rgba(0, 229, 255, 0.2);
+  color: rgba(123, 97, 255, 0.3);
   line-height: 1;
   pointer-events: none;
   z-index: 0;
@@ -493,7 +508,7 @@
 
 .email-box {
   display: block;
-  background-color: var(--bg-surface);
+  background-color: var(--bg-raised);
   border: 1px solid rgba(0, 229, 255, 0.4);
   padding: 4rem 2rem;
   text-align: center;

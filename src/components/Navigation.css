@@ -59,6 +59,16 @@
   width: 100%;
 }
 
+/* Active route: persistent cyan underline + glow so the current page reads as current */
+.nav-links a.active {
+  color: var(--accent-primary);
+}
+
+.nav-links a.active::after {
+  width: 100%;
+  box-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+}
+
 .terminal-header-box {
   flex: 1;
   margin: 0 2rem;
@@ -74,8 +84,61 @@
   max-width: 800px;
 }
 
+.terminal-header-box {
+  cursor: pointer;
+}
+
+.terminal-header-box--active {
+  border-style: solid;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.25);
+}
+
 .terminal-text {
   color: rgba(253, 246, 227, 0.7);
+}
+
+/* ── Command-line mode ─────────────────────────────────── */
+.terminal-cmd {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: 100%;
+  overflow: hidden;
+}
+
+.terminal-prompt {
+  color: var(--accent-primary);
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.terminal-prompt-sep {
+  color: rgba(253, 246, 227, 0.5);
+  white-space: nowrap;
+}
+
+.terminal-input {
+  flex: 0 1 auto;
+  min-width: 80px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  caret-color: var(--accent-primary);
+}
+
+.terminal-output {
+  color: rgba(253, 246, 227, 0.6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-left: 1px solid rgba(253, 246, 227, 0.2);
+  padding-left: 0.6rem;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .terminal-cursor {

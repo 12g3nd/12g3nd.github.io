@@ -1,10 +1,22 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PageTransition from '../components/PageTransition';
+import Reveal from '../components/Reveal';
+import ScrambleText from '../components/ScrambleText';
+import useDocumentMeta from '../hooks/useDocumentMeta';
+import { postsSorted, quarters, quarterOf } from '../data/posts';
 import './Blog.css';
+
+const ALL = 'ARCHIVE_ROOT';
 
 export default function Blog() {
   const [timeStr, setTimeStr] = useState('');
+  const [filter, setFilter] = useState<string>(ALL);
+
+  useDocumentMeta(
+    'Transmissions // Srihith Jarabana',
+    'Essays and logs by Srihith Jarabana on ambition, design, and whatever else.'
+  );
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -14,41 +26,37 @@ export default function Blog() {
     return () => clearInterval(interval);
   }, []);
 
+  const visible = filter === ALL
+    ? postsSorted
+    : postsSorted.filter((p) => quarterOf(p.date) === filter);
+
   return (
     <PageTransition>
       <section className="section">
         <div className="section-header">
-          <h2>TRANSMISSIONS_</h2>
+          <h2><ScrambleText text="TRANSMISSIONS_" /></h2>
         </div>
-        
+
         <div className="blog-layout">
           {/* Main Content */}
           <div className="blog-feed">
-            {[
-              {
-                date: '2026-05-30',
-                title: 'On Wanting Things You Might Not Get',
-                abstract: 'On ambition said out loud, the quiet cost of shrinking your wants, and why failing in public beats never trying at all.',
-                link: '/blog/wanting-things'
-              },
-              {
-                date: '2026-03-26',
-                title: 'Embracing Brutalist X Y2K Aesthetics in Web Design',
-                abstract: 'Why I chose to abandon Tailwind for this iteration of my portfolio. The importance of structure over polish in a landscape of identical SaaS sites.',
-                link: '/blog/brutalist-y2k'
-              },
-            ].map((post, i) => (
-              <article key={i} className="blog-post">
-                <span className="post-date">[{post.date}]</span>
-                <h3 className="post-title">{post.title}</h3>
-                <p className="post-abstract">{post.abstract}</p>
-                <Link to={post.link} className="post-link">
-                  [READ_FULL_TRANSMISSION →]
-                </Link>
-              </article>
+            {visible.map((post, i) => (
+              <Reveal key={post.slug} delay={i * 0.08}>
+                <article className="blog-post">
+                  <span className="post-date">[{post.date}]</span>
+                  <h3 className="post-title">{post.title}</h3>
+                  <p className="post-abstract">{post.abstract}</p>
+                  <Link to={`/blog/${post.slug}`} className="post-link">
+                    [READ_FULL_TRANSMISSION →]
+                  </Link>
+                </article>
+              </Reveal>
             ))}
+            {visible.length === 0 && (
+              <p className="blog-empty">// no transmissions logged this quarter.</p>
+            )}
           </div>
-          
+
           {/* Sidebar */}
           <aside className="blog-sidebar">
             <div className="system-log-box">
@@ -64,20 +72,25 @@ export default function Blog() {
             <div className="sidebar-section">
               <h4>[QUICK_SEEK]</h4>
               <ul className="quick-seek-list">
+                {quarters.map((q) => (
+                  <li key={q}>
+                    <button
+                      type="button"
+                      className={`seek-btn${filter === q ? ' seek-btn--active' : ''}`}
+                      onClick={() => setFilter(q)}
+                    >
+                      <span className="seek-bullet">■</span> {q.replace(' / ', ' / ')}
+                    </button>
+                  </li>
+                ))}
                 <li>
-                  <Link to="/blog" onClick={() => window.scrollTo(0, 0)}>
-                    <span className="seek-bullet">■</span> 2026 / Q2
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/blog" onClick={() => window.scrollTo(0, 0)}>
-                    <span className="seek-bullet">■</span> 2026 / Q1
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/blog" onClick={() => window.scrollTo(0, 0)}>
-                    <span className="seek-bullet">■</span> ARCHIVE_ROOT
-                  </Link>
+                  <button
+                    type="button"
+                    className={`seek-btn${filter === ALL ? ' seek-btn--active' : ''}`}
+                    onClick={() => setFilter(ALL)}
+                  >
+                    <span className="seek-bullet">■</span> {ALL}
+                  </button>
                 </li>
               </ul>
             </div>

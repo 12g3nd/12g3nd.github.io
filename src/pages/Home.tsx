@@ -2,11 +2,19 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import PageTransition from '../components/PageTransition';
+import Reveal from '../components/Reveal';
+import ScrambleText from '../components/ScrambleText';
+import useDocumentMeta from '../hooks/useDocumentMeta';
 import './Home.css';
 
 export default function Home() {
   const [showSoL, setShowSoL] = useState(false);
   const [emailRevealed, setEmailRevealed] = useState(false);
+
+  useDocumentMeta(
+    'Srihith Jarabana',
+    "Srihith Jarabana's personal corner of the internet — projects, writing, poetry, and the things that make up a worldview."
+  );
 
   return (
     <PageTransition>
@@ -141,25 +149,32 @@ export default function Home() {
 
       <section className="section tenets-section">
         <div className="section-header">
-          <h2 className="tenets-title">TENETS_</h2>
+          <h2 className="tenets-title"><ScrambleText text="TENETS_" /></h2>
+          <p className="tenets-subtitle">// beliefs, v0.3 — subject to revision without notice</p>
         </div>
         <div className="divider-line"></div>
         <div className="tenets-grid">
+          <Reveal delay={0}>
           <div className="tenet-card">
             <div className="tenet-number">01</div>
             <h3><span className="accent-slash">//</span> NATURE OF SELF</h3>
             <p>Being content ≠ being happy. Stark difference between chasing passion instead of paper.</p>
           </div>
+          </Reveal>
+          <Reveal delay={0.1}>
           <div className="tenet-card">
             <div className="tenet-number">02</div>
             <h3><span className="accent-slash">//</span> THE MUNDANE ENTERTAINED</h3>
             <p>Trying to never be bored is the biggest mistake of all time. The small things do matter, but so does the big picture.</p>
           </div>
+          </Reveal>
+          <Reveal delay={0.2}>
           <div className="tenet-card">
             <div className="tenet-number">03</div>
             <h3><span className="accent-slash">//</span> THE ALTERNATIVE HYPOTHESIS</h3>
             <p>The plan will change. What matters is whether you change with it or stand there mourning past potential. "Life, uh, finds a way" or something like that.</p>
           </div>
+          </Reveal>
         </div>
 
         <div className="quotes-section">

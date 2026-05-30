@@ -1,17 +1,25 @@
 import PageTransition from '../components/PageTransition';
+import PostLayout from '../components/PostLayout';
+import ScrambleText from '../components/ScrambleText';
+import useDocumentMeta from '../hooks/useDocumentMeta';
 
 export default function WantingThings() {
+  useDocumentMeta(
+    'On Wanting Things You Might Not Get // Srihith Jarabana',
+    'On ambition said out loud, the quiet cost of shrinking your wants, and why failing in public beats never trying at all.'
+  );
   return (
     <PageTransition>
       <section className="section" style={{ paddingBottom: '5rem' }}>
         <div className="section-header" style={{ marginBottom: '3rem' }}>
-          <h2>TRANSMISSION_02</h2>
-          <p style={{ marginTop: '0.5rem', fontFamily: 'var(--font-mono)', color: 'rgba(253,246,227,0.7)', fontSize: '14px' }}>
+          <h2><ScrambleText text="TRANSMISSION_02" /></h2>
+          <p style={{ marginTop: '0.5rem', fontFamily: 'var(--font-mono)', color: 'var(--accent-secondary)', fontSize: '14px' }}>
             2026-05-30 // LOG
           </p>
         </div>
 
-        <div style={{ maxWidth: '800px' }}>
+        <PostLayout slug="wanting-things" date="2026-05-30">
+        <div>
           <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3rem)', margin: '0 0 2rem 0', fontFamily: 'var(--font-display)', color: 'var(--text-primary)', lineHeight: 1.1 }}>
             On Wanting Things You Might Not Get
           </h1>
@@ -56,6 +64,7 @@ export default function WantingThings() {
             <hr style={{ border: 'none', borderTop: '1px dashed rgba(253,246,227,0.3)', marginBottom: '2rem' }} />
           </div>
         </div>
+        </PostLayout>
       </section>
     </PageTransition>
   );
