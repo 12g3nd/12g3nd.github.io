@@ -16,10 +16,23 @@ export default function Projects() {
               stack: ['Python', 'Django', 'PostgreSQL', 'Redis', 'Hugging Face Transformers (AI)', 'Docker', 'Nginx', 'Gunicorn', 'AWS S3', 'Sentry', 'Cloudflare', 'Google Analytics', 'HTML5', 'CSS3', 'JavaScript'],
               link: 'https://krine.ca/',
               linkText: '[VISIT LIVE ↗]',
+              repo: 'https://github.com/12g3nd/Krine',
+              repoLinkText: '[VIEW REPO ↗]',
               logo: '/KrineLogo.jfif'
             },
             {
               id: '02',
+              name: 'PlotON',
+              description: "A project I've been thinking about since Grade 8. Explore cities across Ontario on an interactive map, weight what matters to you, and compare them side by side to find your next place to live. Still a work in progress, so the data is incomplete for now.",
+              stack: ['Next.js', 'leaflet', 'vercel'],
+              link: 'https://ploton-zeta.vercel.app/',
+              linkText: '[VISIT LIVE ↗]',
+              repo: 'https://github.com/12g3nd/PlotON',
+              repoLinkText: '[VIEW REPO ↗]',
+              logo: '/PlotONPreview.png'
+            },
+            {
+              id: '03',
               name: 'CSB195',
               description: 'Code and data for CSB195 Computational Biology Foundations, University of Toronto',
               stack: ['Jupyter', 'Quarto', 'R'],
@@ -27,7 +40,7 @@ export default function Projects() {
               linkText: '[VIEW REPO ↗]'
             },
             {
-              id: '03',
+              id: '04',
               name: 'VOTE SRIHITH SNAPCHAT FILTER',
               description: "Something I did a few years ago for whenever I ran for a position and wanted an easy way for people to share my campaign on social media. Went viral somewhere else in the world and it has 198k lens plays (accurate as of 4.6.26). Thought it was funny and creative.\n\n(Note: The person in the image is not me.)",
               stack: ['Snapchat Lens Studio', 'AR', 'Social Media'],
@@ -55,11 +68,20 @@ export default function Projects() {
                   </span>
                 ))}
               </div>
-              <a href={project.link} target="_blank" rel="noreferrer" style={{ display: 'inline-block', alignSelf: 'flex-start', marginTop: '2rem', padding: '0.75rem 1.5rem', border: '1px solid rgba(0,229,255,0.6)', color: 'var(--accent-primary)', fontFamily: 'var(--font-mono)', fontSize: '14px', textTransform: 'uppercase', fontWeight: 'bold', transition: 'all 0.15s ease' }}
-                onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(0,229,255,0.1)'; e.currentTarget.style.borderColor = 'var(--accent-primary)'; }}
-                onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(0,229,255,0.6)'; }}>
-                {project.linkText}
-              </a>
+              <div style={{ marginTop: '2rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <a href={project.link} target="_blank" rel="noreferrer" style={{ display: 'inline-block', padding: '0.75rem 1.5rem', border: '1px solid rgba(0,229,255,0.6)', color: 'var(--accent-primary)', fontFamily: 'var(--font-mono)', fontSize: '14px', textTransform: 'uppercase', fontWeight: 'bold', transition: 'all 0.15s ease' }}
+                  onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(0,229,255,0.1)'; e.currentTarget.style.borderColor = 'var(--accent-primary)'; }}
+                  onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(0,229,255,0.6)'; }}>
+                  {project.linkText}
+                </a>
+                {project.repo && (
+                  <a href={project.repo} target="_blank" rel="noreferrer" style={{ display: 'inline-block', padding: '0.75rem 1.5rem', border: '1px solid rgba(0,229,255,0.6)', color: 'var(--accent-primary)', fontFamily: 'var(--font-mono)', fontSize: '14px', textTransform: 'uppercase', fontWeight: 'bold', transition: 'all 0.15s ease' }}
+                    onMouseOver={(e) => { e.currentTarget.style.background = 'rgba(0,229,255,0.1)'; e.currentTarget.style.borderColor = 'var(--accent-primary)'; }}
+                    onMouseOut={(e) => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.borderColor = 'rgba(0,229,255,0.6)'; }}>
+                  {project.repoLinkText}
+                  </a>
+                )}
+              </div>
             </div>
           ))}
         </div>
