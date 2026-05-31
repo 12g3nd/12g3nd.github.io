@@ -189,19 +189,36 @@
 
 
 .landmark-swap {
-  /* Anchored to .right-column (its containing block) and nudged into the 2rem
-     gutter between the two columns. Because the gutter is a fixed gap, this sits
-     a constant ~8px off the hero text at ANY width — no more page-center magic
-     offset that drifted and overlapped content on different screens. */
+  /* Spans the ENTIRE gutter between the two boxes, then centers the tower inside
+     it — so the tower is dead-centre between them at any width (not pinned to one
+     side). The box edges are pinned to the gutter edges:
+       left:  -2rem  → the hero card's right edge (negates the 2rem flex gap)
+       right:  400px → the "what I'm up to" card's left edge (its max-width)
+     The card right-aligns in .right-column, so its left edge = column-right − 400. */
   position: absolute;
   bottom: 0;
-  left: -1.5rem;
+  left: -2rem;
+  right: 400px;
   z-index: 0;
-  cursor: pointer;
-  /* aspect-ratio matches CNtower.png's natural 188×458, so the box hugs the
-     visible silhouette and the hover hitbox = what you see. */
-  height: clamp(240px, 32vh, 340px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  pointer-events: none; /* only the tower itself is interactive — see __fig */
+}
+
+/* The tower itself: sized, centered by the parent, and the sole hover/hit target.
+   Width-based so its footprint tracks viewport width; aspect-ratio matches
+   CNtower.png's native 188×458 so the box hugs the art and the hitbox = what you
+   see. */
+.landmark-swap__fig {
+  position: relative;
+  /* Sized as a fraction of the gutter (its parent spans the whole gutter), so it
+     scales DOWN automatically as the gap narrows on smaller screens and can never
+     overflow into either card. Capped so it doesn't balloon on ultrawide. */
+  width: min(82%, 122px);
   aspect-ratio: 188 / 458;
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 /* Both landmark images fill the exact same box and share one hitbox. They are
@@ -227,19 +244,30 @@
   opacity: 0;
 }
 
-.landmark-swap:hover .landmark-default {
+.landmark-swap__fig:hover .landmark-default {
   opacity: 0;
 }
 
-.landmark-swap:hover .landmark-hover {
+.landmark-swap__fig:hover .landmark-hover {
   opacity: 0.9;
 }
 
-/* Below this the right column gets too tight to seat the landmark in the gutter
-   without crowding the card — hide it (mobile already shows the tap-to-swap one). */
-@media (max-width: 1280px) {
+/* The tower now scales with the gutter (see __fig), so it can ride much further
+   down before getting too small. Below ~1180 the gutter collapses to just the
+   2rem flex gap (the card hits its 400px max and the right column runs out of
+   room), leaving the tower a tiny sliver — so hide it there. Down from 1240.
+   Mobile already has its own tap-to-swap landmark in the hero column. */
+@media (max-width: 1179px) {
   .landmark-swap {
     display: none;
+  }
+}
+
+/* At ≥1800 the "what I'm up to" card's max-width grows to 550px, so the gutter's
+   right edge moves with it — keep the box pinned to the card's left edge. */
+@media (min-width: 1800px) {
+  .landmark-swap {
+    right: 550px;
   }
 }
 

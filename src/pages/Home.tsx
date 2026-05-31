@@ -173,12 +173,15 @@ export default function Home() {
             <h3><span className="accent-slash">//</span> WHAT I'M UP TO</h3>
             <p>Learning & building financial models. Looking into research and want to delve into the academic side of business as well.</p>
           </div>
-          {/* Decorative landmark, anchored to this column (not a magic page-center
-              offset) so it tracks the gutter at any width. Swaps CN Tower ↔ Statue
-              of Liberty on hover. */}
+          {/* Decorative landmark. The outer box spans the whole gutter between the
+              hero card and the "what I'm up to" card; the inner __fig is centered
+              inside it, so the tower sits dead-centre between the two boxes at any
+              width. Swaps CN Tower ↔ Statue of Liberty on hover. */}
           <div className="landmark-swap">
-            <img src="/CNtower.png" alt="CN Tower" className="cn-tower-decor landmark-default" />
-            <img src="/SoL.png" alt="Statue of Liberty" className="cn-tower-decor landmark-hover" />
+            <div className="landmark-swap__fig">
+              <img src="/CNtower.png" alt="CN Tower" className="cn-tower-decor landmark-default" />
+              <img src="/SoL.png" alt="Statue of Liberty" className="cn-tower-decor landmark-hover" />
+            </div>
           </div>
         </div>
       </section>
@@ -187,7 +190,7 @@ export default function Home() {
       <section className="section tenets-section">
         <div className="section-header">
           <h2 className="tenets-title"><ScrambleText text="TENETS_" /></h2>
-          <p className="tenets-subtitle">// beliefs, v0.3 — subject to revision without notice</p>
+          <p className="tenets-subtitle">// [ pretentious sounding ] beliefs, v0.3 (subject to revision without notice)</p>
         </div>
         <div className="divider-line"></div>
         <div className="tenets-grid">
@@ -223,7 +226,7 @@ export default function Home() {
                 <li><span className="accent-slash">//</span> Business is personal.</li>
                 <li><span className="accent-slash">//</span> Technology is philosophy.</li>
               </ul>
-              <p className="beliefs-footnote">/* three things I'll probably over-defend at a party, then quietly revise by morning */</p>
+              <p className="beliefs-footnote">/* three things I'll probably over-defend at a party, then quietly rethink by breakfast */</p>
               <div className="beliefs-graphic">
                 <a href="https://en.wikipedia.org/wiki/Mysterium_Cosmographicum" target="_blank" rel="noopener noreferrer" className="kepler-link">
                   <img src="/Kepler.png" alt="Kepler's Mysterium Cosmographicum diagram" />

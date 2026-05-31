@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useMemo, useRef } from 'react';
 import ScrambleText from './ScrambleText';
 import MatrixRain from './MatrixRain';
+import PartyOverlay from './PartyOverlay';
 import { isLateNight } from '../utils/time';
 import './Navigation.css';
 
@@ -48,6 +49,7 @@ export default function Navigation() {
 
   // easter-egg state
   const [matrix, setMatrix] = useState(false);
+  const [party, setParty] = useState(false);
   const [brand, setBrand] = useState('SJ.SYS');
   const [brandGlitch, setBrandGlitch] = useState(false);
   const brandTimers = useRef<number[]>([]);
@@ -110,6 +112,14 @@ export default function Navigation() {
   const openResume = () => {
     localStorage.setItem('sjsys_resume_unlocked', '1');
     window.open('/resume.pdf', '_blank', 'noopener');
+  };
+
+  // Returns the new on/off state so the command can report it.
+  const toggleParty = () => {
+    const on = !document.body.classList.contains('party-mode');
+    document.body.classList.toggle('party-mode', on);
+    setParty(on);
+    return on;
   };
 
   const openCommandMode = () => {
@@ -223,6 +233,16 @@ export default function Navigation() {
         fireMatrix();
         setOutput('follow the white rabbit…');
         break;
+      case 'party mode':
+      case 'party':
+      case 'partymode':
+      case 'party-mode':
+        setOutput(
+          toggleParty()
+            ? '🦄 PARTY MODE ENGAGED 🌈 — type `party mode` again to return to your regularly scheduled professionalism.'
+            : 'party mode disengaged. back to business. 💼'
+        );
+        break;
       case '42':
         setOutput('42 — the answer to life, the universe, and everything. still debugging the question.');
         break;
@@ -302,6 +322,7 @@ export default function Navigation() {
   return (
     <>
       {matrix && <MatrixRain />}
+      {party && <PartyOverlay />}
       <nav className="brutalist-nav">
         <NavLink
           to="/"

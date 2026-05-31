@@ -171,3 +171,68 @@ p, span, div {
     border-right: none;
   }
 }
+
+/* ── 🦄 PARTY MODE (terminal: `party mode`) ─────────────────────────────
+   Toggled by adding `party-mode` to <body>. An animated rainbow seeps through
+   behind the layout, the whole UI cycles through the spectrum via hue-rotate
+   (so contrast survives), headings shimmer, and the cursor becomes a unicorn.
+   The floating confetti is PartyOverlay. */
+@keyframes party-bg {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes party-hue {
+  from { filter: hue-rotate(0deg); }
+  to { filter: hue-rotate(360deg); }
+}
+
+@keyframes party-wobble {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+
+body.party-mode {
+  background: linear-gradient(
+    120deg,
+    #ff5e7e, #ffae42, #ffe24a, #5cff8f, #57c7ff, #b66bff, #ff5edb, #ff5e7e
+  );
+  background-size: 400% 400%;
+  animation: party-bg 9s ease infinite;
+}
+
+/* Unicorn cursor everywhere (overrides the global crosshair). */
+body.party-mode,
+body.party-mode * {
+  cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><text y="26" font-size="26">🦄</text></svg>') 6 6, auto;
+}
+
+/* Recolor the entire app through the rainbow. hue-rotate keeps cyan-on-navy's
+   contrast intact while sweeping every hue — readable chaos. */
+body.party-mode .container {
+  animation: party-hue 7s linear infinite;
+  background: rgba(10, 19, 32, 0.6);
+  backdrop-filter: blur(1px);
+}
+
+/* Let the rainbow show through the section surfaces a little. */
+body.party-mode .section {
+  background-color: rgba(22, 32, 50, 0.78);
+}
+
+body.party-mode .nav-brand {
+  display: inline-block;
+  animation: party-wobble 1.4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.party-mode {
+    animation: none;
+    background-position: 50% 50%;
+  }
+  body.party-mode .container,
+  body.party-mode .nav-brand {
+    animation: none;
+  }
+}

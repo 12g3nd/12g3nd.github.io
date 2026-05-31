@@ -280,6 +280,30 @@
   grid-column: 1 / -1;
 }
 
+/* Wide card — spans two grid columns so it reads with more weight than its
+   neighbours (PlotON). */
+.project-card-wrap--wide {
+  grid-column: span 2;
+}
+
+/* Force a card to start a fresh row regardless of how many columns are left
+   in the current one (Clearwater Forge sits at the top of a new line). */
+.project-card-wrap--newrow {
+  grid-column-start: 1;
+}
+
+/* Below the 3-column desktop layout these emphasis tricks just create gaps,
+   so let the cards flow normally on smaller screens. */
+@media (max-width: 1079px) {
+  .project-card-wrap--wide {
+    grid-column: auto;
+  }
+
+  .project-card-wrap--newrow {
+    grid-column-start: auto;
+  }
+}
+
 .project-card--featured {
   flex-direction: row;
   gap: 2rem;

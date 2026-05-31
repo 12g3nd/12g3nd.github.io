@@ -20,6 +20,10 @@ type Project = {
   metric?: { value: string; label: string };
   /* featured projects render full-width at the top of the grid */
   featured?: boolean;
+  /* spans two grid columns for extra emphasis */
+  wide?: boolean;
+  /* forces the card to begin a fresh grid row */
+  startRow?: boolean;
 };
 
 const projects: Project[] = [
@@ -48,6 +52,7 @@ const projects: Project[] = [
     repoLinkText: '[VIEW REPO ↗]',
     logo: '/PlotONPreview.png',
     status: 'WIP',
+    wide: true,
   },
   {
     id: '03',
@@ -67,6 +72,7 @@ const projects: Project[] = [
     repo: 'https://github.com/12g3nd/TheClearwaterForge',
     repoLinkText: '[VIEW REPO ↗]',
     status: 'REPO',
+    startRow: true,
   },
   {
     id: '05',
@@ -97,6 +103,7 @@ const projects: Project[] = [
     logo: '/filter.png',
     status: 'VIRAL',
     metric: { value: '198K', label: 'lens plays' },
+    featured: true,
   },
 ];
 
@@ -123,7 +130,14 @@ export default function Projects() {
             <Reveal
               key={project.id}
               delay={i * 0.08}
-              className={`project-card-wrap${project.featured ? ' project-card-wrap--featured' : ''}`}
+              className={[
+                'project-card-wrap',
+                project.featured && 'project-card-wrap--featured',
+                project.wide && 'project-card-wrap--wide',
+                project.startRow && 'project-card-wrap--newrow',
+              ]
+                .filter(Boolean)
+                .join(' ')}
             >
               <div className={`project-card${project.featured ? ' project-card--featured' : ''}`}>
                 <span className="project-card__num">{project.id}</span>
