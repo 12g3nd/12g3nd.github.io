@@ -191,7 +191,7 @@ export default function Navigation() {
           [
             'srihith jarabana // availability report',
             '----------------------------------------',
-            'status    : open to summer 2026 internships',
+            'status    : open to summer 2027 internships',
             'seeking   : finance · quant research · IB / PE',
             'strengths : modeling, writing, building (this site, e.g.)',
             'résumé    : type `resume` to open the pdf',
