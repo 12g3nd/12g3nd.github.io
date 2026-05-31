@@ -4,6 +4,7 @@ import { AnimatePresence } from 'framer-motion';
 import BootSequence from './components/BootSequence';
 import Home from './pages/Home';
 import Projects from './pages/Projects';
+import Business from './pages/Business';
 import Media from './pages/Media';
 import Blog from './pages/Blog';
 import Poetry from './pages/Poetry';
@@ -23,6 +24,7 @@ function AnimatedRoutes() {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Home />} />
         <Route path="/projects" element={<Projects />} />
+        <Route path="/business" element={<Business />} />
         <Route path="/media" element={<Media />} />
         <Route path="/poetry" element={<Poetry />} />
         <Route path="/blog" element={<Blog />} />

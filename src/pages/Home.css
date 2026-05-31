@@ -773,6 +773,14 @@ button.email-box {
      CRT scanlines (index.css) are a 3px pattern; a 3px paper grain on top beat
      against them and produced a moiré shimmer over this large block. */
   background-image: linear-gradient(160deg, #f7eedb 0%, #f1e6cc 100%);
+  /* A soft warm gradient paired with a subtle diagonal grid. 
+     We avoid high-frequency dot grain here because the global CRT scanlines 
+     would beat against them and produce a moiré shimmer. The diagonal lines 
+     prevent that while adding enough texture to bridge the contrast gap. */
+  background-image: 
+    repeating-linear-gradient(45deg, rgba(42, 36, 24, 0.035) 0, rgba(42, 36, 24, 0.035) 1px, transparent 1px, transparent 16px),
+    repeating-linear-gradient(-45deg, rgba(42, 36, 24, 0.035) 0, rgba(42, 36, 24, 0.035) 1px, transparent 1px, transparent 16px),
+    linear-gradient(160deg, #f7eedb 0%, #f1e6cc 100%);
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.4);
 }
 
@@ -1181,4 +1189,4 @@ button.email-box {
   .section {
     padding: 100px 3rem;
   }
-}
+}

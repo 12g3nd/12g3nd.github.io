@@ -28,6 +28,10 @@ const BRAND_STEP = 650; // ms per glitch frame
 
 const ROUTES: Record<string, string> = {
   projects: '/projects',
+  business: '/business',
+  'cd business': '/business',
+  'business.xlsx': '/business',
+  'open business.xlsx': '/business',
   media: '/media',
   poetry: '/poetry',
   blog: '/blog',
@@ -156,7 +160,7 @@ export default function Navigation() {
 
     switch (cmd) {
       case 'help':
-        setOutput('nav: projects · media · poetry · blog · home  |  try: whoami · cat beliefs.txt · uptime · resume · sudo hire-me · ls · clear · exit  |  (some commands are undocumented. poke around.)');
+        setOutput('nav: projects · business · media · poetry · blog · home  |  try: whoami · cat beliefs.txt · uptime · resume · sudo hire-me · ls · clear · exit  |  (some commands are undocumented. poke around.)');
         break;
       case 'whoami':
         setOutput('srihith jarabana — businessman by craft. 19. probably overthinking something.');
@@ -262,7 +266,7 @@ export default function Navigation() {
         setOutput('nice try. SJ.SYS is read-only to visitors. (and to me, on a good day.)');
         break;
       case 'ls':
-        setOutput('projects/   media/   poetry/   blog/   beliefs.txt   rootbeer.log   resume.pdf   .secret');
+        setOutput('projects/   media/   poetry/   blog/   business.xlsx   beliefs.txt   rootbeer.log   resume.pdf   .secret');
         break;
       case 'clear':
         setOutput('');

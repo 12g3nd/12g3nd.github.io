@@ -1,0 +1,231 @@
+/* ── business.xlsx ─────────────────────────────────────────
+   The business / finance pillar's "temperature": a read-only spreadsheet
+   workbook. Same sacred cyan-on-navy — the material is a financial readout,
+   not a card grid. Mirrors the .pkg-bar / .log-bar chrome of sibling pages. */
+.xls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding: 0.6rem 1rem;
+  background: var(--bg-surface);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  border-left: 2px solid var(--accent-primary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.xls-bar__cmd {
+  color: rgba(var(--text-rgb), 0.7);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.xls-bar__prompt {
+  color: var(--accent-primary);
+  font-weight: 700;
+  margin-right: 0.5rem;
+}
+
+.xls-bar__count {
+  color: rgba(var(--text-rgb), 0.45);
+  white-space: nowrap;
+}
+
+/* ── Workbook ──────────────────────────────────────────── */
+.xls-book {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.xls-sheet {
+  background: var(--bg-surface);
+  border: 1px solid rgba(var(--text-rgb), 0.15);
+}
+
+/* Folder-tab label, like a sheet name in a workbook. */
+.xls-sheet__tab {
+  display: inline-block;
+  padding: 0.4rem 1rem;
+  background: var(--bg-base);
+  border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+  border-right: 1px solid rgba(0, 229, 255, 0.3);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent-primary);
+}
+
+/* Each sheet scrolls horizontally on narrow screens — spreadsheets do. */
+.xls-table {
+  overflow-x: auto;
+}
+
+/* A row is its own grid so column templates can differ per sheet and a note
+   can span the full width beneath it. */
+.xls-row {
+  display: grid;
+  align-items: center;
+  gap: 1rem;
+  min-width: 540px;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid rgba(var(--text-rgb), 0.08);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: rgba(var(--text-rgb), 0.85);
+}
+
+/* Faint draftsman's column lines between cells — blueprint texture. */
+.xls-row--exp { grid-template-columns: 2.5rem minmax(0, 2.2fr) minmax(0, 1.4fr) minmax(0, 1.2fr); }
+.xls-row--rec { grid-template-columns: 2.5rem 4rem minmax(0, 1fr) 8rem; }
+.xls-row--cov { grid-template-columns: 2.5rem 5rem minmax(0, 1fr) 7rem; }
+
+.xls-row--head {
+  background: rgba(0, 229, 255, 0.05);
+  border-bottom: 1px solid rgba(0, 229, 255, 0.25);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(var(--text-rgb), 0.5);
+}
+
+.xls-row:last-child { border-bottom: none; }
+
+.xls-row:not(.xls-row--head):hover {
+  background: rgba(0, 229, 255, 0.04);
+}
+
+/* Excel-style row-number gutter. */
+.xls-gut {
+  text-align: right;
+  padding-right: 0.6rem;
+  border-right: 1px solid rgba(var(--text-rgb), 0.12);
+  color: rgba(var(--text-rgb), 0.35);
+  font-size: 11px;
+}
+
+.xls-cell {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.xls-cell--key {
+  color: var(--text-primary);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.xls-cell--dim { color: rgba(var(--text-rgb), 0.55); }
+
+/* Expanded note under a row (experience detail), spanning the full sheet. */
+.xls-note {
+  padding: 0 1rem 1rem 3.5rem;
+  min-width: 540px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgba(var(--text-rgb), 0.7);
+}
+
+/* ── Chips ─────────────────────────────────────────────── */
+.xls-chip {
+  padding: 0.12rem 0.5rem;
+  border: 1px solid rgba(var(--text-rgb), 0.25);
+  border-radius: 999px;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: rgba(var(--text-rgb), 0.6);
+  white-space: nowrap;
+}
+
+.xls-chip--current {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.xls-chip--pending {
+  border-color: var(--accent-secondary);
+  color: var(--accent-secondary);
+}
+
+/* Pending coverage rows read as scaffolding, not finished work. */
+.xls-row--pending .xls-cell { color: rgba(var(--text-rgb), 0.45); }
+
+.xls-caption {
+  padding: 0.9rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(var(--text-rgb), 0.4);
+  border-top: 1px dashed rgba(var(--text-rgb), 0.12);
+}
+
+/* ── Footer strips ─────────────────────────────────────── */
+.xls-strips {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.xls-strip {
+  background: var(--bg-surface);
+  border: 1px solid rgba(var(--text-rgb), 0.15);
+  border-left: 2px solid rgba(0, 229, 255, 0.4);
+  padding: 1.25rem 1.5rem;
+}
+
+.xls-strip__label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent-primary);
+  margin-bottom: 0.9rem;
+}
+
+.xls-desk {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.xls-desk li {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(var(--text-rgb), 0.8);
+}
+
+.xls-desk__bullet {
+  color: var(--accent-primary);
+  margin-right: 0.5rem;
+}
+
+.xls-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.xls-toolbar span {
+  padding: 0.2rem 0.6rem;
+  border: 1px solid rgba(var(--text-rgb), 0.2);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(var(--text-rgb), 0.75);
+}
+
+@media (max-width: 768px) {
+  .xls-bar { font-size: 11px; }
+}
