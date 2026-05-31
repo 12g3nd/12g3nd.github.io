@@ -190,6 +190,31 @@
   min-width: 0;
 }
 
+/* ── Multi-line output (cat rootbeer.log, hire-me --serious, …) ──────────
+   Long, formatted responses drop below the prompt row instead of clipping to
+   one ellipsised line. The box grows to fit and the prompt+input stay on line 1. */
+.terminal-header-box--multiline {
+  align-items: flex-start;
+  white-space: normal;
+  overflow: visible;
+}
+
+.terminal-cmd--multiline {
+  flex-wrap: wrap;
+}
+
+.terminal-output--block {
+  flex: 0 0 100%;
+  white-space: pre-wrap;
+  overflow: visible;
+  text-overflow: clip;
+  border-left: none;
+  padding-left: 0;
+  margin-top: 0.5rem;
+  line-height: 1.55;
+  color: rgba(var(--text-rgb), 0.75);
+}
+
 .terminal-cursor {
   display: inline-block;
   width: 8px;

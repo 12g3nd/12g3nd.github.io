@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import BootSequence from './components/BootSequence';
@@ -9,8 +9,11 @@ import Blog from './pages/Blog';
 import Poetry from './pages/Poetry';
 import BrutalistY2k from './pages/BrutalistY2k';
 import WantingThings from './pages/WantingThings';
+import NotFound from './pages/NotFound';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
+import CrtBurst from './components/CrtBurst';
+import useKonami from './hooks/useKonami';
 
 
 function AnimatedRoutes() {
@@ -25,6 +28,7 @@ function AnimatedRoutes() {
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/brutalist-y2k" element={<BrutalistY2k />} />
         <Route path="/blog/wanting-things" element={<WantingThings />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>
   );
@@ -44,14 +48,24 @@ function App() {
     setBooting(false);
   };
 
+  // Konami code → 15s CRT meltdown. Reduced-motion users get nothing.
+  const [crt, setCrt] = useState(false);
+  const triggerCrt = useCallback(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    setCrt(true);
+    window.setTimeout(() => setCrt(false), 15000);
+  }, []);
+  useKonami(triggerCrt);
+
   return (
     <Router>
       {booting && <BootSequence onDone={finishBoot} />}
-      <div className="container">
+      <div className={`container${crt ? ' crt-burst-active' : ''}`}>
         <Navigation />
         <AnimatedRoutes />
         <Footer />
       </div>
+      {crt && <CrtBurst />}
     </Router>
   );
 }

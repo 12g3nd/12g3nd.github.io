@@ -37,6 +37,19 @@
   --border-divider: 1px solid rgba(var(--text-rgb), 0.1);
 }
 
+/* Easter-egg "heresy" theme (terminal: `theme light`). Cyan-on-navy is the real
+   identity; this flips the core surface + ink + accent vars to the warm paper
+   palette. Because the whole site reads from these variables, most components
+   invert automatically. Persisted in localStorage and re-applied in main.tsx. */
+.theme-light {
+  --bg-base: #ece3cf;
+  --bg-surface: #f3ead4;
+  --bg-raised: #f7eedb;
+  --text-rgb: 42, 36, 24;
+  --accent-primary: #0a7d8c;
+  --accent-rgb: 10, 125, 140;
+}
+
 /* Canonical blink. (Two identical-purpose @keyframes blink used to live in
    Blog.css and Navigation.css; since keyframes are global, one silently
    overrode the other — consolidated here.) */

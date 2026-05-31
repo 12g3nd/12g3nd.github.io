@@ -7,6 +7,9 @@ import './Poetry.css';
 
 export default function Poetry() {
   const [compactMode, setCompactMode] = useState(false);
+  // Hidden "director's commentary": clicking the open-file command in the
+  // poetry bar toggles `--director`, surfacing a note under each poem.
+  const [director, setDirector] = useState(false);
 
   useDocumentMeta(
     'Poetry // Srihith Jarabana',
@@ -33,6 +36,8 @@ export default function Poetry() {
               date: '2023-10-13',
               title: 'A Ghazal for Gaza',
               award: '2024 Scholastic Arts & Writing Awards - International Silver Medal',
+              // TODO(srihith): swap these for your real director's notes anytime.
+              note: "A ghazal — every couplet (sher) lands on the same radif, '…days,' and the form asks the poet to name themselves in the final lines. Persona piece; the 'I' isn't me.",
               wide: true,
               content: (
                 <>
@@ -84,6 +89,7 @@ export default function Poetry() {
               date: '2024-12-20',
               title: 'Strawberry',
               award: undefined,
+              note: 'One extended conceit: the body as the fruit — achene "gems," the calyx, being chewed and absorbed. Sound leads the meaning here more than the other way around.',
               content: (
                 <>
                   You got God and I got you<br />
@@ -112,6 +118,7 @@ export default function Poetry() {
               date: '2025-07-29',
               title: 'Perpetual State of Wanting to Sneeze',
               award: undefined,
+              note: "The refrain mutates each time it returns ('by accident' → 'again') — the title's unscratchable itch built into the structure.",
               content: (
                 <>
                   I left the window open by accident<br />
@@ -137,6 +144,7 @@ export default function Poetry() {
               date: '2026-01-02',
               title: 'Who Am I To Judge Another Sinner?',
               award: undefined,
+              note: 'Title borrowed from Sufjan Stevens. Three-line stanzas, each closing on the rhyme; a voice looking back at a life it half-recognizes.',
               content: (
                 <>
                   Hunger, danger<br />
@@ -165,6 +173,7 @@ export default function Poetry() {
               date: '2023-05-11',
               title: 'A Spade of Leaves for Your Tears',
               award: 'LLCC 2nd Annual / 2023 Abbey Park Poetry Contest Winner',
+              note: 'A concrete/shape poem — the lines are set to draw a silhouette, so the outline is part of the reading. My earliest piece here (2023).',
               content: (
                 <div style={{ textAlign: 'center' }}>
                   A<br />
@@ -212,7 +221,14 @@ export default function Poetry() {
             return (
               <>
               <div className="poetry-bar">
-                <span className="poetry-bar__cmd"><span className="poetry-bar__prompt">srihith@sj.sys:~$</span> open poetry.pdf</span>
+                <button
+                  type="button"
+                  className="poetry-bar__cmd"
+                  onClick={() => setDirector((d) => !d)}
+                  title="run command"
+                >
+                  <span className="poetry-bar__prompt">srihith@sj.sys:~$</span> open poetry.pdf{director ? ' --director' : ''}
+                </button>
                 <span className="poetry-bar__count">{poems.length} poems</span>
               </div>
               <div className="doc-viewer">
@@ -230,6 +246,12 @@ export default function Poetry() {
                         <div className="doc-page__award">{poem.award}</div>
                       )}
                       <hr className="doc-page__rule" />
+                      {director && 'note' in poem && poem.note && (
+                        <div className="doc-page__note">
+                          <span className="doc-page__note-label">▸ director's note</span>
+                          {poem.note}
+                        </div>
+                      )}
                       <div className={`doc-page__body${compactMode ? ' doc-page__body--compact' : ''}`}>
                         {poem.content}
                       </div>

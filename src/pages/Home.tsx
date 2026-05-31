@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import PageTransition from '../components/PageTransition';
@@ -10,6 +10,27 @@ import './Home.css';
 export default function Home() {
   const [showSoL, setShowSoL] = useState(false);
   const [emailRevealed, setEmailRevealed] = useState(false);
+
+  // Clicking "elevators" in the fun facts drops a tiny elevator + shakes the card.
+  const [elevatorDropping, setElevatorDropping] = useState(false);
+  const elevatorTimer = useRef(0);
+  const dropElevator = () => {
+    window.clearTimeout(elevatorTimer.current);
+    setElevatorDropping(false);
+    requestAnimationFrame(() => setElevatorDropping(true));
+    elevatorTimer.current = window.setTimeout(() => setElevatorDropping(false), 1300);
+  };
+
+  // Hidden résumé chip: unlocks once a visitor pokes past the email reveal
+  // (here) or runs `resume` in the terminal (sets the same flag).
+  const [resumeUnlocked, setResumeUnlocked] = useState(
+    () => typeof localStorage !== 'undefined' && localStorage.getItem('sjsys_resume_unlocked') === '1'
+  );
+  const emailPokes = useRef(0);
+  const unlockResume = () => {
+    localStorage.setItem('sjsys_resume_unlocked', '1');
+    setResumeUnlocked(true);
+  };
 
   useDocumentMeta(
     'Srihith Jarabana',
@@ -111,9 +132,22 @@ export default function Home() {
               <span className="accent-slash">//</span><strong>PET PEEVES</strong>
               <p>Lack of turn signals, inconsiderateness, "could of."</p>
             </div>
-            <div className="detail-col">
+            <div className={`detail-col fun-facts${elevatorDropping ? ' elevator-dropping' : ''}`}>
               <span className="accent-slash">//</span><strong>FUN FACTS</strong>
-              <p>Afraid of elevators. Japanese mechanical pencils collection. Double jointed in both thumbs.</p>
+              <p>
+                Afraid of{' '}
+                <span
+                  className="elevator-trigger"
+                  role="button"
+                  tabIndex={0}
+                  onClick={dropElevator}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); dropElevator(); } }}
+                >
+                  elevators
+                </span>
+                . Japanese mechanical pencils collection. Double jointed in both thumbs.
+              </p>
+              {elevatorDropping && <span className="falling-elevator" aria-hidden="true">▯</span>}
             </div>
           </div>
 
@@ -221,7 +255,18 @@ export default function Home() {
           <h2>CONNECT_</h2>
         </div>
         {emailRevealed ? (
-          <a href="mailto:srihith.jarabana@mail.utoronto.ca" className="email-box">
+          <a
+            href="mailto:srihith.jarabana@mail.utoronto.ca"
+            className="email-box"
+            onClick={(e) => {
+              // Keep poking and the hidden résumé chip unlocks (3rd poke).
+              emailPokes.current += 1;
+              if (emailPokes.current >= 3 && !resumeUnlocked) {
+                e.preventDefault();
+                unlockResume();
+              }
+            }}
+          >
             <span className="email-text">srihith.jarabana@mail.utoronto.ca</span>
           </a>
         ) : (
@@ -233,6 +278,15 @@ export default function Home() {
           >
             <span className="email-text">[ CLICK TO REVEAL ]</span>
           </button>
+        )}
+        {resumeUnlocked && (
+          <a
+            href="/resume.pdf"
+            download="Srihith Jarabana - Resume.pdf"
+            className="resume-chip"
+          >
+            [ DOWNLOAD RÉSUMÉ ↓ ]
+          </a>
         )}
         <div className="social-links" style={{ justifyContent: 'center' }}>
           <a href="https://www.linkedin.com/in/srihithjarabana/" target="_blank" rel="noopener noreferrer" className="social-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>

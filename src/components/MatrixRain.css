@@ -1,0 +1,15 @@
+.matrix-rain {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9997;
+  pointer-events: none;
+  opacity: 0.85;
+  animation: matrix-fade 0.4s ease-out;
+}
+
+@keyframes matrix-fade {
+  from { opacity: 0; }
+  to { opacity: 0.85; }
+}

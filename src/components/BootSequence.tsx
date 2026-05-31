@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { isLateNight } from '../utils/time';
 import './BootSequence.css';
 
 /* SJ.SYS power-on self test. Shows once per browser session (sessionStorage),
@@ -15,27 +16,38 @@ type Line = {
   dim?: boolean;
 };
 
-const LINES: Line[] = [
-  { text: 'SJ.SYS // POWER-ON SELF TEST', strong: true },
-  { text: 'BIOS v0.3.0 — Rotman Commerce build', dim: true },
-  { spacer: true },
-  { text: '> initializing kernel ............', tag: 'OK', tone: 'ok' },
-  { text: '> mounting /projects .............', tag: 'OK', tone: 'ok' },
-  { text: '> mounting /poetry ...............', tag: 'OK', tone: 'ok' },
-  { text: '> mounting /media ................', tag: 'OK', tone: 'ok' },
-  { text: '> loading personality.dll ........', tag: 'OK', tone: 'ok' },
-  { text: '> calibrating ambition ...........', tag: 'OK', tone: 'ok' },
-  { text: '> caffeine .......................', tag: 'LOW', tone: 'warn' },
-  { text: '> businessman detected in STEM partition', tag: '?!', tone: 'warn' },
-  { spacer: true },
-  { text: '> boot complete. welcome.', strong: true },
-];
+// The caffeine readout is live: between 1–5am visitor-local it drops from LOW
+// to CRITICAL, and an extra diegetic line appears. Built per-mount so it
+// reflects the actual hour the page booted.
+function buildLines(lateNight: boolean): Line[] {
+  return [
+    { text: 'SJ.SYS // POWER-ON SELF TEST', strong: true },
+    { text: 'BIOS v0.3.0 — Rotman Commerce build', dim: true },
+    { spacer: true },
+    { text: '> initializing kernel ............', tag: 'OK', tone: 'ok' },
+    { text: '> mounting /projects .............', tag: 'OK', tone: 'ok' },
+    { text: '> mounting /poetry ...............', tag: 'OK', tone: 'ok' },
+    { text: '> mounting /media ................', tag: 'OK', tone: 'ok' },
+    { text: '> loading personality.dll ........', tag: 'OK', tone: 'ok' },
+    { text: '> calibrating ambition ...........', tag: 'OK', tone: 'ok' },
+    lateNight
+      ? { text: '> caffeine .......................', tag: 'CRITICAL', tone: 'warn' }
+      : { text: '> caffeine .......................', tag: 'LOW', tone: 'warn' },
+    ...(lateNight
+      ? [{ text: '> local time check ...... it is past 1am', tag: '!!', tone: 'warn' as const }]
+      : []),
+    { text: '> businessman detected in STEM partition', tag: '?!', tone: 'warn' },
+    { spacer: true },
+    { text: '> boot complete. welcome.', strong: true },
+  ];
+}
 
 const LINE_INTERVAL = 130; // ms between revealed lines
 const HOLD_AFTER = 750; // ms to linger on the finished screen
 const FADE_MS = 450; // keep in sync with .boot--leaving transition
 
 export default function BootSequence({ onDone }: { onDone: () => void }) {
+  const LINES = useMemo(() => buildLines(isLateNight()), []);
   const [count, setCount] = useState(0);
   const [leaving, setLeaving] = useState(false);
   const finished = useRef(false);

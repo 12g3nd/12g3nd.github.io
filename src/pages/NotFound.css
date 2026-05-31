@@ -1,0 +1,98 @@
+.panic-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.panic-box {
+  width: min(640px, 100%);
+  background-color: var(--bg-surface);
+  border: 1px solid rgba(255, 176, 0, 0.4);
+  border-left: 3px solid var(--accent-warm);
+  padding: 2.5rem;
+  box-shadow: 0 0 40px rgba(255, 176, 0, 0.08);
+}
+
+.panic-title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  color: var(--accent-warm);
+  text-shadow: 0 0 14px rgba(255, 176, 0, 0.3);
+}
+
+.panic-code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: rgba(var(--text-rgb), 0.6);
+  margin-top: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+.panic-log {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.8;
+  color: rgba(var(--text-rgb), 0.8);
+  white-space: pre-wrap;
+  margin-top: 1.5rem;
+  padding: 1rem 1.25rem;
+  background-color: var(--bg-base);
+  border: var(--border-faint);
+}
+
+.panic-mounts {
+  margin-top: 1.75rem;
+}
+
+.panic-mounts__label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent-primary);
+  letter-spacing: 0.05em;
+}
+
+.panic-mounts__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  margin-top: 0.75rem;
+}
+
+.panic-mounts__list a {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: bold;
+  color: var(--text-primary);
+  border-bottom: 1px dotted transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.panic-mounts__list a:hover {
+  color: var(--accent-primary);
+  border-bottom-color: var(--accent-primary);
+}
+
+.panic-return {
+  display: inline-block;
+  margin-top: 2rem;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: var(--accent-warm);
+  border: 1px solid rgba(255, 176, 0, 0.5);
+  padding: 0.7rem 1.4rem;
+  transition: all 0.15s ease;
+}
+
+.panic-return:hover {
+  background-color: rgba(255, 176, 0, 0.12);
+  border-color: var(--accent-warm);
+}
+
+@media (max-width: 480px) {
+  .panic-box {
+    padding: 1.5rem;
+  }
+}
