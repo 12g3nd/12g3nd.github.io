@@ -89,22 +89,39 @@
   cursor: pointer;
 }
 
-/* Persistent "you can type in here" affordance. Pinned right with a gradient
-   mask so the scrolling typewriter text slides under it cleanly. The whole
-   point: the command line is the spine of the site, not a hidden easter egg. */
-.terminal-hint {
-  position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  display: flex;
+/* Idle prompt (typewriter + cursor). Flex child that shrinks first and clips
+   its text with an ellipsis, so a long phrase truncates BEFORE the hint instead
+   of sliding under it. Keeps the bar to a single line. */
+.terminal-idle {
+  display: inline-flex;
   align-items: center;
-  padding: 0 1rem 0 2rem;
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.terminal-idle .terminal-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.terminal-idle .terminal-cursor {
+  flex: 0 0 auto;
+}
+
+/* Persistent "you can type in here" affordance. A non-shrinking flex sibling
+   pinned right via margin-left:auto — physically separated from the prompt, so
+   they can never intersect. The command line is the spine, not a hidden egg. */
+.terminal-hint {
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding-left: 1.25rem;
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(var(--text-rgb), 0.35);
-  background: linear-gradient(90deg, transparent, var(--bg-surface) 30%);
   pointer-events: none;
   white-space: nowrap;
   transition: color 0.15s ease;
@@ -204,6 +221,19 @@
     font-size: 11px;
     white-space: normal;
     word-break: break-word;
+  }
+
+  /* The desktop fix clips the idle prompt to one line (so it can't collide with
+     the hint). The mobile row has no hint and is meant to wrap, so let it. */
+  .terminal-mobile-row .terminal-idle {
+    overflow: visible;
+    flex: 1 1 auto;
+  }
+
+  .terminal-mobile-row .terminal-text {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
   }
 }
 

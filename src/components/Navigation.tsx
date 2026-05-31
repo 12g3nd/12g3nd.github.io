@@ -154,9 +154,11 @@ export default function Navigation() {
     </div>
   ) : (
     <>
-      <span className="terminal-text">{text}</span>
-      <span className="terminal-cursor">_</span>
-      <span className="terminal-hint" aria-hidden="true">▸ dbl-click to type</span>
+      <span className="terminal-idle">
+        <span className="terminal-text">{text}</span>
+        <span className="terminal-cursor">_</span>
+      </span>
+      <span className="terminal-hint" aria-hidden="true">▸ dbl-click</span>
     </>
   );
 

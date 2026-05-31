@@ -1,5 +1,39 @@
 /* Poetry page styles */
 
+/* ── Command chrome ────────────────────────────────────────
+   Matches pkg-bar (Projects), gallery-bar (Media), log-bar (Blog) so Poetry
+   reads as an SJ.SYS app too — `$ open poetry.pdf`, then the PDF viewer. */
+.poetry-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  background: var(--bg-surface);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  border-left: 2px solid var(--accent-primary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.poetry-bar__cmd {
+  color: rgba(var(--text-rgb), 0.7);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.poetry-bar__prompt {
+  color: var(--accent-primary);
+  font-weight: 700;
+  margin-right: 0.5rem;
+}
+
+.poetry-bar__count {
+  color: rgba(var(--text-rgb), 0.45);
+  white-space: nowrap;
+}
+
 /* ---------- Document viewer ---------- */
 .doc-viewer {
   margin-top: 2.5rem;
@@ -135,12 +169,29 @@
   letter-spacing: -0.01em;
 }
 
+/* Award lines are the page's emotional peak — give them the reserved warm
+   voice as a small gold medal, paper-toned so it reads on cream. */
 .doc-page__award {
   font-family: Georgia, serif;
   font-style: italic;
   font-size: 13px;
-  color: #6b5e3f;
+  color: var(--accent-warm-ink);
   margin-bottom: 1.75rem;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.doc-page__award::before {
+  content: '✦';
+  font-style: normal;
+  color: var(--accent-warm-ink);
+}
+
+/* Award poems get a warm top accent instead of the default grey torn edge. */
+.doc-page--award::before {
+  height: 5px;
+  background: linear-gradient(90deg, var(--accent-warm), rgba(255, 176, 0, 0) 70%);
 }
 
 .doc-page__rule {

@@ -139,10 +139,13 @@ export default function Home() {
             <h3><span className="accent-slash">//</span> WHAT I'M UP TO</h3>
             <p>Learning & building financial models. Looking into research and want to delve into the academic side of business as well.</p>
           </div>
-        </div>
-        <div className="landmark-swap">
-          <img src="/CNtower.png" alt="CN Tower" className="cn-tower-decor landmark-default" />
-          <img src="/SoL.png" alt="Statue of Liberty" className="cn-tower-decor landmark-hover" />
+          {/* Decorative landmark, anchored to this column (not a magic page-center
+              offset) so it tracks the gutter at any width. Swaps CN Tower ↔ Statue
+              of Liberty on hover. */}
+          <div className="landmark-swap">
+            <img src="/CNtower.png" alt="CN Tower" className="cn-tower-decor landmark-default" />
+            <img src="/SoL.png" alt="Statue of Liberty" className="cn-tower-decor landmark-hover" />
+          </div>
         </div>
       </section>
 

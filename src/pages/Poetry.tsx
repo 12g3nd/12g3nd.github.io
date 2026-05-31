@@ -26,7 +26,7 @@ export default function Poetry() {
             {compactMode ? '[NORMAL TEXT ↩]' : '[FIT TEXT →]'}
           </button>
         </div>
-        <div style={{ marginTop: '3rem', maxWidth: '100%' }}>
+        <div style={{ marginTop: '1.5rem', maxWidth: '100%' }}>
           {(() => {
             const poems = [
             {
@@ -210,6 +210,11 @@ export default function Poetry() {
             ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
             return (
+              <>
+              <div className="poetry-bar">
+                <span className="poetry-bar__cmd"><span className="poetry-bar__prompt">srihith@sj.sys:~$</span> open poetry.pdf</span>
+                <span className="poetry-bar__count">{poems.length} poems</span>
+              </div>
               <div className="doc-viewer">
                 <div className="doc-viewer__chrome">
                   <span className="doc-viewer__filename">POETRY.pdf</span>
@@ -218,7 +223,7 @@ export default function Poetry() {
                 <div className="doc-viewer__pages">
                   {poems.map((poem, i) => (
                     <Reveal key={i} delay={Math.min(i, 3) * 0.06}>
-                    <article className={`doc-page${('wide' in poem && poem.wide) ? ' doc-page--wide' : ''}`}>
+                    <article className={`doc-page${('wide' in poem && poem.wide) ? ' doc-page--wide' : ''}${poem.award ? ' doc-page--award' : ''}`}>
                       <span className="doc-page__date">{poem.date}</span>
                       <h3 className="doc-page__title">{poem.title}</h3>
                       {poem.award && (
@@ -234,6 +239,7 @@ export default function Poetry() {
                   ))}
                 </div>
               </div>
+              </>
             );
           })()}
         </div>

@@ -24,6 +24,12 @@
   --accent-secondary: #7B61FF;      /* purple — temporal / meta */
   --accent-rgb: 0, 229, 255;
 
+  /* Reserved "warmer voice" — used sparingly for emotional / significant beats
+     (boot warnings, gallery light, poetry awards). On dark surfaces use the
+     bright amber; on the cream paper surfaces use the deeper ink so it reads. */
+  --accent-warm: #ffb000;
+  --accent-warm-ink: #a8651a;
+
   --font-display: 'Anton', sans-serif;
   --font-mono: 'Space Mono', monospace;
 

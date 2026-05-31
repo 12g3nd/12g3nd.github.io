@@ -189,22 +189,18 @@
 
 
 .landmark-swap {
+  /* Anchored to .right-column (its containing block) and nudged into the 2rem
+     gutter between the two columns. Because the gutter is a fixed gap, this sits
+     a constant ~8px off the hero text at ANY width — no more page-center magic
+     offset that drifted and overlapped content on different screens. */
   position: absolute;
-  bottom: 7%;
-  /* Center it in the gutter between the description card (max 650px, left)
-     and the "what I'm up to" card (max 400px, right):
-     page-center + (650 - 400) / 2 = page-center + 125px.
-     A fixed px offset stays put at any width; the old raw `60%` tracked the
-     widening section and drifted far right on wide/ultrawide screens. */
-  left: calc(50% + 125px);
-  transform: translateX(-50%);
+  bottom: 0;
+  left: -1.5rem;
   z-index: 0;
   cursor: pointer;
-  /* Narrow box that hugs the figures. The PNGs are cropped to their content,
-     and both landmarks are tall ~0.41-aspect silhouettes, so this box tracks
-     the visible figure instead of a big square of transparent dead space
-     (which is what was triggering the hover from empty areas beside it). */
-  height: clamp(280px, 40vh, 400px);
+  /* aspect-ratio matches CNtower.png's natural 188×458, so the box hugs the
+     visible silhouette and the hover hitbox = what you see. */
+  height: clamp(240px, 32vh, 340px);
   aspect-ratio: 188 / 458;
 }
 
@@ -239,7 +235,9 @@
   opacity: 0.9;
 }
 
-@media (max-width: 1050px) {
+/* Below this the right column gets too tight to seat the landmark in the gutter
+   without crowding the card — hide it (mobile already shows the tap-to-swap one). */
+@media (max-width: 1280px) {
   .landmark-swap {
     display: none;
   }
@@ -1061,12 +1059,6 @@ button.email-box {
 
   .what-im-up-to-card {
     max-width: 550px;
-  }
-
-  /* Cards grow here (hero 900px, card 550px), so recenter the landmark:
-     page-center + (900 - 550) / 2 = page-center + 175px. */
-  .landmark-swap {
-    left: calc(50% + 175px);
   }
 
   .tenets-grid {
