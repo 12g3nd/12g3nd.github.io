@@ -1,46 +1,121 @@
+/* ── Gallery chrome ────────────────────────────────────────
+   Per-section temperature for Media: a wall of framed prints. The ink
+   illustrations (previously hidden at 15% as watermarks) become the art. */
+.gallery-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 2.5rem;
+  padding: 0.6rem 1rem;
+  background: var(--bg-surface);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  border-left: 2px solid var(--accent-primary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.gallery-bar__cmd {
+  color: rgba(var(--text-rgb), 0.7);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gallery-bar__prompt {
+  color: var(--accent-primary);
+  font-weight: 700;
+  margin-right: 0.5rem;
+}
+
+.gallery-bar__count {
+  color: rgba(var(--text-rgb), 0.45);
+  white-space: nowrap;
+}
+
 .media-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 4rem;
-  margin-top: 3rem;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.75rem;
 }
 
-.media-category {
-  position: relative;
-  overflow: hidden;
-  padding: 1.5rem;
-  border-radius: 4px;
-  background-color: var(--bg-surface, rgba(8, 12, 16, 0.6));
-}
-
-/* Cream-coloured, faded backdrop image */
-.media-category-backdrop {
-  position: absolute;
-  inset: 0;
-  width: 100%;
+/* Let the Reveal wrapper stretch so every plate in a row matches height. */
+.media-grid > div {
   height: 100%;
+}
+
+/* ── Framed plate ──────────────────────────────────────────── */
+.media-plate {
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  background: linear-gradient(180deg, var(--bg-raised), var(--bg-surface));
+  border: 1px solid rgba(var(--text-rgb), 0.14);
+  box-shadow:
+    0 18px 40px -24px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(var(--text-rgb), 0.04);
+  overflow: hidden;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.media-plate:hover {
+  transform: translateY(-5px);
+  border-color: rgba(0, 229, 255, 0.5);
+  /* Warm gallery light on hover — the reserved amber used as literal lighting. */
+  box-shadow:
+    0 26px 50px -22px rgba(0, 0, 0, 0.85),
+    0 0 26px -6px rgba(255, 176, 0, 0.18);
+}
+
+/* ── The artwork (etching) ─────────────────────────────────── */
+.media-plate__art {
+  position: relative;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid rgba(var(--text-rgb), 0.1);
+  /* warm spotlight from above + a darker mat so the print reads as framed */
+  background:
+    radial-gradient(120% 90% at 50% 25%, rgba(255, 176, 0, 0.08), transparent 60%),
+    rgba(0, 0, 0, 0.22);
+  overflow: hidden;
+}
+
+/* invert turns the white plate→black & the ink→light; `screen` then drops the
+   black so only the cream linework floats on the dark mat (no white box). */
+.media-plate__art img {
+  max-width: 68%;
+  max-height: 78%;
   object-fit: contain;
-  object-position: center;
-  opacity: 0.15;
-  filter: invert(1) sepia(1) saturate(0.3) brightness(1.2);
-  pointer-events: none;
-  z-index: 0;
+  filter: invert(1) sepia(0.3) saturate(1.25) brightness(1.05);
+  mix-blend-mode: screen;
+  opacity: 0.92;
+  transition: transform 0.4s ease;
 }
 
-.media-category[data-category="songs"] .media-category-backdrop,
-.media-category[data-category="tv"] .media-category-backdrop,
-.media-category[data-category="games"] .media-category-backdrop {
-  opacity: 0.1;
+.media-plate:hover .media-plate__art img {
+  transform: scale(1.05);
 }
 
-.media-category h3 {
+/* ── Museum placard ────────────────────────────────────────── */
+.media-plate__placard {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem 0.75rem;
+}
+
+.media-plate__placard h3 {
   font-family: var(--font-mono);
   font-size: 14px;
-  color: var(--text-primary);
-  margin-bottom: 1.5rem;
   text-transform: uppercase;
-  position: relative;
-  z-index: 1;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
 }
 
 .accent-slash {
@@ -48,40 +123,67 @@
   margin-right: 0.25rem;
 }
 
-.media-category ul {
-  list-style-type: none;
-  font-size: 13px;
-  line-height: 1.8;
+.media-plate__count {
   font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(var(--text-rgb), 0.4);
+  white-space: nowrap;
+}
+
+/* ── Collection list ───────────────────────────────────────── */
+.media-plate ul {
+  list-style: none;
+  margin: 0;
+  padding: 0 1.25rem 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  flex: 1;
+}
+
+.media-plate li {
   position: relative;
-  z-index: 1;
-}
-
-.media-category li {
-  margin-bottom: 0.75rem;
-  padding: 0.5rem;
-  border-left: 1px solid rgba(var(--text-rgb), 0.15);
-  transition: all 0.15s ease;
+  padding: 0.45rem 0 0.45rem 1.1rem;
   color: rgba(var(--text-rgb), 0.8);
+  border-bottom: 1px dashed rgba(var(--text-rgb), 0.08);
+  transition: color 0.15s ease, padding 0.15s ease;
 }
 
-.media-category li:hover {
+.media-plate li:last-child {
+  border-bottom: none;
+}
+
+/* little diamond bullet — a framed-print tack */
+.media-plate li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.95em;
+  width: 4px;
+  height: 4px;
+  background: rgba(var(--text-rgb), 0.25);
+  transform: rotate(45deg);
+  transition: background 0.15s ease;
+}
+
+.media-plate li:hover {
   color: var(--text-primary);
-  border-left-color: var(--accent-primary);
-  background-color: var(--bg-surface);
-  transform: translateX(5px);
+  padding-left: 1.45rem;
+}
+
+.media-plate li:hover::before {
+  background: var(--accent-primary);
 }
 
 @media (max-width: 768px) {
   .media-grid {
     grid-template-columns: 1fr;
-    gap: 2.5rem;
+    gap: 1.5rem;
   }
-}
 
-@media (max-width: 480px) {
-  .media-grid {
-    gap: 2rem;
-    margin-top: 2rem;
+  .gallery-bar {
+    font-size: 11px;
   }
 }

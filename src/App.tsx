@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
+import BootSequence from './components/BootSequence';
 import Home from './pages/Home';
 import Projects from './pages/Projects';
 import Media from './pages/Media';
@@ -29,8 +31,22 @@ function AnimatedRoutes() {
 }
 
 function App() {
+  // Boot runs once per browser session, and never for reduced-motion users.
+  const [booting, setBooting] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const seen = sessionStorage.getItem('sjsys_booted') === '1';
+    return !reduced && !seen;
+  });
+
+  const finishBoot = () => {
+    sessionStorage.setItem('sjsys_booted', '1');
+    setBooting(false);
+  };
+
   return (
     <Router>
+      {booting && <BootSequence onDone={finishBoot} />}
       <div className="container">
         <Navigation />
         <AnimatedRoutes />

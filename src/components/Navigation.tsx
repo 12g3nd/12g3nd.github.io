@@ -94,13 +94,24 @@ export default function Navigation() {
 
     switch (cmd) {
       case 'help':
-        setOutput('commands: projects · media · poetry · blog · home · whoami · ls · clear · exit');
+        setOutput('nav: projects · media · poetry · blog · home  |  try: whoami · cat beliefs.txt · uptime · sudo hire-me · ls · clear · exit');
         break;
       case 'whoami':
         setOutput('srihith jarabana — businessman by craft. 19. probably overthinking something.');
         break;
+      case 'cat beliefs.txt':
+      case 'cat beliefs':
+        setOutput('art is political. business is personal. technology is philosophy.');
+        break;
+      case 'uptime':
+        setOutput('online since 2006 · 19 yrs · 0 full crashes (a few close calls)');
+        break;
+      case 'sudo hire-me':
+      case 'sudo hire me':
+        setOutput('access granted → srihith.jarabana@mail.utoronto.ca');
+        break;
       case 'ls':
-        setOutput('projects/   media/   poetry/   blog/');
+        setOutput('projects/   media/   poetry/   blog/   beliefs.txt');
         break;
       case 'clear':
         setOutput('');
@@ -145,6 +156,7 @@ export default function Navigation() {
     <>
       <span className="terminal-text">{text}</span>
       <span className="terminal-cursor">_</span>
+      <span className="terminal-hint" aria-hidden="true">▸ dbl-click to type</span>
     </>
   );
 

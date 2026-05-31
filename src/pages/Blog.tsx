@@ -37,6 +37,12 @@ export default function Blog() {
           <h2><ScrambleText text="TRANSMISSIONS_" /></h2>
         </div>
 
+        {/* Log chrome: frames the feed as a live log stream inside SJ.SYS */}
+        <div className="log-bar">
+          <span className="log-bar__cmd"><span className="log-bar__prompt">srihith@sj.sys:~$</span> tail -f transmissions.log</span>
+          <span className="log-bar__count">{postsSorted.length} entries</span>
+        </div>
+
         <div className="blog-layout">
           {/* Main Content */}
           <div className="blog-feed">

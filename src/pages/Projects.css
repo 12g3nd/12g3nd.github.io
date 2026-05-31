@@ -1,9 +1,50 @@
+/* ── Package-manager chrome ────────────────────────────────
+   Frames the page as `pkg list` running inside SJ.SYS — the per-section
+   "temperature" for Projects: a lit workshop / spec sheet, not just cards. */
+.pkg-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding: 0.6rem 1rem;
+  background: var(--bg-surface);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  border-left: 2px solid var(--accent-primary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+.pkg-bar__cmd {
+  color: rgba(var(--text-rgb), 0.7);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pkg-bar__prompt {
+  color: var(--accent-primary);
+  font-weight: 700;
+  margin-right: 0.5rem;
+}
+
+.pkg-bar__count {
+  color: rgba(var(--text-rgb), 0.45);
+  white-space: nowrap;
+}
+
 .projects-grid {
-  margin-top: 2.5rem;
+  margin-top: 1.25rem;
   display: grid;
   gap: 1.75rem;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   align-items: stretch;
+  /* Faint draftsman's grid showing through the gutters — blueprint texture. */
+  background-image:
+    linear-gradient(rgba(0, 229, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 229, 255, 0.035) 1px, transparent 1px);
+  background-size: 44px 44px;
+  background-position: -1px -1px;
 }
 
 /* Reveal wrapper — let the card fill the (stretched) grid cell so every
@@ -172,4 +213,109 @@
 .project-card__links a:hover {
   background: rgba(0, 229, 255, 0.12);
   border-color: var(--accent-primary);
+}
+
+/* ── Body wrapper ──────────────────────────────────────────
+   Everything under the preview lives here so featured cards can sit the
+   preview and the text side-by-side without disturbing the normal column. */
+.project-card__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Status chip ───────────────────────────────────────────── */
+.project-card__status {
+  position: absolute;
+  top: 0.9rem;
+  left: 0.9rem;
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  background: rgba(10, 19, 32, 0.85);
+  color: rgba(var(--text-rgb), 0.5);
+}
+
+.project-card__status--live { color: var(--accent-primary); }
+.project-card__status--viral { color: #ffb000; }
+.project-card__status--wip { color: var(--accent-secondary); }
+.project-card__status--repo { color: rgba(var(--text-rgb), 0.5); }
+.project-card__status--archive { color: rgba(var(--text-rgb), 0.35); }
+
+/* ── Headline metric ───────────────────────────────────────── */
+.project-card__metric {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-top: 0.9rem;
+}
+
+.project-card__metric-value {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4.5vw, 3rem);
+  line-height: 1;
+  color: var(--accent-primary);
+  text-shadow: 0 0 18px rgba(0, 229, 255, 0.25);
+}
+
+.project-card__metric-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: rgba(var(--text-rgb), 0.55);
+}
+
+/* ── Featured (full-width hero) cards ──────────────────────── */
+.project-card-wrap--featured {
+  grid-column: 1 / -1;
+}
+
+.project-card--featured {
+  flex-direction: row;
+  gap: 2rem;
+  align-items: center;
+}
+
+/* Explicit height (not auto) so a portrait preview letterboxes via object-fit
+   instead of stretching the whole hero to the image's natural height. */
+.project-card--featured .project-card__preview {
+  width: 42%;
+  flex-shrink: 0;
+  height: clamp(300px, 30vw, 420px);
+  margin-bottom: 0;
+}
+
+.project-card--featured .project-card__body {
+  justify-content: center;
+}
+
+.project-card--featured .project-card__metric-value {
+  font-size: clamp(3rem, 6vw, 4.5rem);
+}
+
+@media (max-width: 768px) {
+  .project-card--featured {
+    flex-direction: column;
+  }
+
+  .project-card--featured .project-card__preview {
+    width: 100%;
+    min-height: 0;
+    height: 180px;
+    margin-bottom: 1.5rem;
+  }
+
+  .pkg-bar {
+    font-size: 11px;
+  }
 }

@@ -31,6 +31,7 @@ export default function Media() {
     'Media // Srihith Jarabana',
     'Books, poetry, albums, films, and games Srihith Jarabana enjoys.'
   );
+  const categories = Object.entries(mediaData);
   return (
     <PageTransition>
       <section className="section">
@@ -38,26 +39,35 @@ export default function Media() {
           <h2><ScrambleText text="FAV_MEDIA.DAT" /></h2>
           <p className="section-desc">media that I enjoy to help you understand me</p>
         </div>
+
+        {/* Gallery chrome: the per-section "temperature" — this room is a wall of
+            framed prints, not a database dump. */}
+        <div className="gallery-bar">
+          <span className="gallery-bar__cmd"><span className="gallery-bar__prompt">srihith@sj.sys:~$</span> open gallery.app</span>
+          <span className="gallery-bar__count">{categories.length} plates · est. one human</span>
+        </div>
+
         <div className="media-grid">
-          {Object.entries(mediaData).map(([category, items], i) => (
+          {categories.map(([category, items], i) => (
             <Reveal key={category} delay={i * 0.06}>
-            <div
-              className="media-category"
-              data-category={category}
-            >
-              <img
-                src={categoryImages[category]}
-                alt=""
-                className="media-category-backdrop"
-                aria-hidden="true"
-              />
-              <h3><span className="accent-slash">//</span> {category.toUpperCase()}</h3>
-              <ul>
-                {items.map((item, idx) => (
-                  <li key={idx}>[ {item} ]</li>
-                ))}
-              </ul>
-            </div>
+              <figure className="media-plate" data-category={category}>
+                <div className="media-plate__art">
+                  <img
+                    src={categoryImages[category]}
+                    alt=""
+                    aria-hidden="true"
+                  />
+                </div>
+                <figcaption className="media-plate__placard">
+                  <h3><span className="accent-slash">//</span> {category.toUpperCase()}</h3>
+                  <span className="media-plate__count">{items.length} {items.length === 1 ? 'entry' : 'entries'}</span>
+                </figcaption>
+                <ul>
+                  {items.map((item, idx) => (
+                    <li key={idx}>{item}</li>
+                  ))}
+                </ul>
+              </figure>
             </Reveal>
           ))}
         </div>
