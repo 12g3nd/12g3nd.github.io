@@ -66,11 +66,12 @@ export default function Projects() {
             },
             {
               id: '06',
-              name: 'CSB195',
-              description: 'Code and data for CSB195 Computational Biology Foundations, University of Toronto',
-              stack: ['Jupyter', 'Quarto', 'R'],
-              link: 'https://github.com/12g3nd/CSB195',
-              linkText: '[VIEW REPO ↗]'
+              name: 'Spring Break Project',
+              description: 'A younger me during when I first became a teenager made a website where every Spring Break, I would write some articles. Kind of full circle to this website if you think about. Also, please do not flame me for my corniness back then.',
+              stack: ['Google Sites'],
+              link: 'https://sites.google.com/view/springbreakproject/Contact',
+              linkText: '[VIEW LIVE ↗]',
+              logo: '/SBPPreview.png'
             },
             {
               id: '07',
