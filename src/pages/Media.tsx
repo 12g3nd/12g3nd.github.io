@@ -36,9 +36,7 @@ export default function Media() {
       <section className="section">
         <div className="section-header">
           <h2><ScrambleText text="FAV_MEDIA.DAT" /></h2>
-          <p style={{ marginTop: '0.5rem', fontFamily: 'var(--font-mono)', color: 'rgba(253,246,227,0.7)', fontSize: '14px' }}>
-            media that I enjoy to help you understand me
-          </p>
+          <p className="section-desc">media that I enjoy to help you understand me</p>
         </div>
         <div className="media-grid">
           {Object.entries(mediaData).map(([category, items], i) => (

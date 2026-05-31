@@ -19,7 +19,7 @@
   flex-direction: column;
   padding: 1.75rem;
   background-color: var(--bg-surface);
-  border: 1px solid rgba(253, 246, 227, 0.15);
+  border: 1px solid rgba(var(--text-rgb), 0.15);
   overflow: hidden;
   transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
@@ -92,7 +92,7 @@
   font-family: var(--font-display);
   font-size: clamp(1.6rem, 4vw, 2.3rem);
   letter-spacing: 0.04em;
-  color: rgba(253, 246, 227, 0.9);
+  color: rgba(var(--text-rgb), 0.9);
   text-align: center;
   padding: 0 1rem;
   line-height: 1;
@@ -130,7 +130,7 @@
   font-family: var(--font-mono);
   font-size: 13px;
   line-height: 1.6;
-  color: rgba(253, 246, 227, 0.8);
+  color: rgba(var(--text-rgb), 0.8);
   white-space: pre-line; /* honor intentional line breaks in descriptions */
 }
 
@@ -143,11 +143,11 @@
 
 .project-card__stack span {
   padding: 0.2rem 0.6rem;
-  border: 1px solid rgba(253, 246, 227, 0.2);
+  border: 1px solid rgba(var(--text-rgb), 0.2);
   border-radius: 999px;
   font-family: var(--font-mono);
   font-size: 11px;
-  color: rgba(253, 246, 227, 0.75);
+  color: rgba(var(--text-rgb), 0.75);
 }
 
 .project-card__links {

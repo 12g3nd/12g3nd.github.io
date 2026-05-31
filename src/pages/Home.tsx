@@ -186,6 +186,7 @@ export default function Home() {
                 <li><span className="accent-slash">//</span> Business is personal.</li>
                 <li><span className="accent-slash">//</span> Technology is philosophy.</li>
               </ul>
+              <p className="beliefs-footnote">/* three things I'll probably over-defend at a party, then quietly revise by morning */</p>
               <div className="beliefs-graphic">
                 <a href="https://en.wikipedia.org/wiki/Mysterium_Cosmographicum" target="_blank" rel="noopener noreferrer" className="kepler-link">
                   <img src="/Kepler.png" alt="Kepler's Mysterium Cosmographicum diagram" />
@@ -195,7 +196,7 @@ export default function Home() {
 
             <div className="quotes-block">
               <h4>[REFERENCE_QUOTE]</h4>
-              <div className="quote-item large-quote quote-with-image">
+              <div className="quote-item large-quote quote-with-image quote-paper">
                 <div className="quote-text-content">
                   <p>"It is the mark of an educated mind, to entertain a thought without accepting it."</p>
                   <span>— (Probably not) Aristotle</span>

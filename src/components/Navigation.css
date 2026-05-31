@@ -95,7 +95,7 @@
 }
 
 .terminal-text {
-  color: rgba(253, 246, 227, 0.7);
+  color: rgba(var(--text-rgb), 0.7);
 }
 
 /* ── Command-line mode ─────────────────────────────────── */
@@ -114,7 +114,7 @@
 }
 
 .terminal-prompt-sep {
-  color: rgba(253, 246, 227, 0.5);
+  color: rgba(var(--text-rgb), 0.5);
   white-space: nowrap;
 }
 
@@ -131,11 +131,11 @@
 }
 
 .terminal-output {
-  color: rgba(253, 246, 227, 0.6);
+  color: rgba(var(--text-rgb), 0.6);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-left: 1px solid rgba(253, 246, 227, 0.2);
+  border-left: 1px solid rgba(var(--text-rgb), 0.2);
   padding-left: 0.6rem;
   flex: 1 1 auto;
   min-width: 0;
@@ -147,12 +147,7 @@
   height: 14px;
   background-color: var(--accent-primary);
   margin-left: 6px;
-  animation: blink 1s step-end infinite;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+  animation: blink 1s step-end infinite; /* @keyframes blink lives in index.css */
 }
 
 /* Mobile terminal row — hidden on desktop, shown on mobile below the nav */

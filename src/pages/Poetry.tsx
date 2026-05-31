@@ -18,9 +18,7 @@ export default function Poetry() {
       <section className="section">
         <div className="section-header">
           <h2><ScrambleText text="POETRY_" /></h2>
-          <p style={{ marginTop: '0.5rem', fontFamily: 'var(--font-mono)', color: 'rgba(253,246,227,0.7)', fontSize: '14px' }}>
-            some of my favourite poems I've ever written at various points in my life (in a fake PDF format of course)
-          </p>
+          <p className="section-desc">some of my favourite poems I've ever written at various points in my life (in a fake PDF format of course)</p>
           <button
             className="poetry-compact-toggle"
             onClick={() => setCompactMode(prev => !prev)}

@@ -1,0 +1,101 @@
+/* Shared prose styling for individual blog-post pages (BrutalistY2k,
+   WantingThings, …). Replaces the per-paragraph inline styles the posts used
+   to carry, so the JSX is clean semantic HTML and every post stays consistent. */
+
+.post-log-date {
+  margin-top: 0.5rem;
+  font-family: var(--font-mono);
+  color: var(--accent-secondary);
+  font-size: 14px;
+}
+
+.post-title-main {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin: 0 0 2rem 0;
+  font-family: var(--font-display);
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.post-prose {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  line-height: 1.8;
+  color: rgba(var(--text-rgb), 0.9);
+}
+
+.post-prose p {
+  margin-bottom: 1.5rem;
+}
+
+/* Author asides / thesis lines — the purple "second temperature". */
+.post-prose .lede {
+  font-weight: bold;
+  color: var(--accent-secondary);
+}
+
+.post-prose a {
+  color: var(--accent-primary);
+  text-decoration: underline;
+}
+
+.post-prose em {
+  font-style: italic;
+}
+
+.post-prose strong {
+  color: var(--text-primary);
+}
+
+.post-prose figure {
+  margin: 2rem 0;
+}
+
+.post-prose figure img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.post-prose .figure-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.post-prose .figure-row > div {
+  flex: 1;
+}
+
+.post-prose figcaption {
+  color: rgba(var(--text-rgb), 0.9);
+  font-size: 14px;
+  margin-top: 0.5rem;
+}
+
+.post-prose hr {
+  border: none;
+  border-top: 1px dashed rgba(var(--text-rgb), 0.3);
+  margin-bottom: 2rem;
+}
+
+.post-prose .post-sources-title {
+  font-size: 18px;
+  color: var(--accent-primary);
+  margin-bottom: 1.5rem;
+  font-family: var(--font-display);
+}
+
+.post-prose .post-sources {
+  list-style-type: square;
+  padding-left: 1.5rem;
+  color: rgba(var(--text-rgb), 0.7);
+  font-size: 14px;
+}
+
+.post-prose .post-sources li {
+  margin-bottom: 0.5rem;
+}
+
+.post-prose .post-sources a {
+  color: var(--text-primary);
+}
