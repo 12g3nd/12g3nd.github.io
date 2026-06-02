@@ -26,20 +26,21 @@ const trackRecord = [
   { year: '2024', item: 'BASEF — Inspiration Award + Silver Merit', tag: 'RESEARCH' },
 ];
 
-const coverage = [
-  { ref: 'EQ-001', title: 'Equity pitch / investment memo', tag: 'DRAFTING' },
-  { ref: 'CS-001', title: 'Case retrospective', tag: 'DRAFTING' },
-];
+// COVERAGE sheet is commented out until there are write-ups to show.
+// const coverage = [
+//   { ref: 'EQ-001', title: 'Equity pitch / investment memo', tag: 'DRAFTING' },
+//   { ref: 'CS-001', title: 'Case retrospective', tag: 'DRAFTING' },
+// ];
 
 const desk = [
-  'Toronto Student Investment Counsel',
+  'Toronto Student Investment Counsel (Foundations Program)',
   'BMO Finance Research & Trading Lab — Bloomberg Terminal · FactSet',
   'Rotman Commerce, BCom at the University of Toronto',
 ];
 
 const toolbar = ['Financial Modelling', 'Data Analysis', 'Python', 'R', 'SQL', 'Bloomberg', 'FactSet', 'Excel'];
 
-const SHEETS = 3;
+const SHEETS = 2;
 
 export default function Business() {
   useDocumentMeta(
@@ -113,7 +114,9 @@ export default function Business() {
             </div>
           </section>
 
-          {/* ── Sheet 03: COVERAGE (artifact slots — Phase 2) ──── */}
+          {/* ── Sheet 03: COVERAGE (artifact slots — Phase 2) ────
+              Commented out until there are write-ups to show. */}
+          {/*
           <section className="xls-sheet">
             <div className="xls-sheet__tab">COVERAGE</div>
             <div className="xls-table">
@@ -134,6 +137,7 @@ export default function Business() {
             </div>
             <p className="xls-caption">// investment write-ups &amp; case studies land here. building.</p>
           </section>
+          */}
 
           {/* ── Footer strips: affiliations + skill toolbar ────── */}
           <div className="xls-strips">

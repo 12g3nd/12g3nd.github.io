@@ -414,8 +414,9 @@ export default function Navigation() {
 
         <div className="nav-links">
           <NavLink to="/projects">PROJECTS</NavLink>
-          <NavLink to="/media">MEDIA</NavLink>
+          <NavLink to="/business">BUSINESS</NavLink>
           <NavLink to="/poetry">POETRY</NavLink>
+          <NavLink to="/media">MEDIA</NavLink>
           <NavLink to="/blog">BLOG</NavLink>
         </div>
       </nav>

@@ -151,6 +151,50 @@
   max-width: 1100px;
 }
 
+/* The ghazal's long radif lines can't wrap without breaking the form, so this
+   page is deliberately wider than the portrait stack. Frame it as a landscape
+   fold-out so the width reads as intentional: a corner stamp + faint fold ticks
+   at top/bottom centre (margins only — never a crease through the verses). */
+.doc-page__foldout {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #8a7a52;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+.doc-page--wide::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 0.5px);
+  width: 1px;
+  /* opaque ticks in the top/bottom margins, transparent through the body */
+  background: linear-gradient(
+    to bottom,
+    rgba(42, 36, 24, 0.22) 0,
+    rgba(42, 36, 24, 0.22) 16px,
+    transparent 16px,
+    transparent calc(100% - 16px),
+    rgba(42, 36, 24, 0.22) calc(100% - 16px),
+    rgba(42, 36, 24, 0.22) 100%
+  );
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .doc-page__foldout {
+    top: 1rem;
+    right: 1rem;
+  }
+}
+
 /* torn-edge accent at top of each page */
 .doc-page::before {
   content: "";

@@ -239,6 +239,9 @@ export default function Poetry() {
                   {poems.map((poem, i) => (
                     <Reveal key={i} delay={Math.min(i, 3) * 0.06}>
                     <article className={`doc-page${('wide' in poem && poem.wide) ? ' doc-page--wide' : ''}${poem.award ? ' doc-page--award' : ''}`}>
+                      {('wide' in poem && poem.wide) && (
+                        <span className="doc-page__foldout" aria-hidden="true">↔ FOLD-OUT</span>
+                      )}
                       <span className="doc-page__date">{poem.date}</span>
                       <h3 className="doc-page__title">{poem.title}</h3>
                       {poem.award && (

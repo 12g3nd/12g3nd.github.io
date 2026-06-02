@@ -1248,13 +1248,15 @@ button.email-box {
   height: 100vh;
   width: auto;
   object-fit: contain;
-  z-index: 9997;
+  z-index: 9999;
   mix-blend-mode: screen;
   pointer-events: none;
-  animation: smiley-enter 0.6s ease-out forwards;
+  animation: smiley-lifecycle 6s ease-in-out forwards;
 }
 
-@keyframes smiley-enter {
-  from { opacity: 0; transform: translateX(60px); }
-  to   { opacity: 1; transform: translateX(0); }
+@keyframes smiley-lifecycle {
+  0%   { opacity: 0; transform: translateX(60px); }
+  5%   { opacity: 1; transform: translateX(0); }
+  80%  { opacity: 1; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(0); }
 }

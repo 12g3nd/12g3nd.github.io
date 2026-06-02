@@ -8,8 +8,7 @@ import Business from './pages/Business';
 import Media from './pages/Media';
 import Blog from './pages/Blog';
 import Poetry from './pages/Poetry';
-import BrutalistY2k from './pages/BrutalistY2k';
-import WantingThings from './pages/WantingThings';
+import BlogPostPage from './pages/BlogPostPage';
 import NotFound from './pages/NotFound';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
@@ -28,8 +27,7 @@ function AnimatedRoutes() {
         <Route path="/media" element={<Media />} />
         <Route path="/poetry" element={<Poetry />} />
         <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/brutalist-y2k" element={<BrutalistY2k />} />
-        <Route path="/blog/wanting-things" element={<WantingThings />} />
+        <Route path="/blog/:slug" element={<BlogPostPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>

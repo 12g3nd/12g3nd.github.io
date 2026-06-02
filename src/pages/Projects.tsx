@@ -17,7 +17,7 @@ type Project = {
   /* status chip — LIVE / VIRAL / WIP / REPO / ARCHIVE */
   status?: string;
   /* headline number, pulled out big so the work reads at a glance */
-  metric?: { value: string; label: string };
+  metric?: { value: string; label: string; note?: string };
   /* featured projects render full-width at the top of the grid */
   featured?: boolean;
   /* spans two grid columns for extra emphasis */
@@ -38,7 +38,7 @@ const projects: Project[] = [
     repoLinkText: '[VIEW REPO ↗]',
     logo: '/KrineLogo.jfif',
     status: 'LIVE',
-    metric: { value: '15', label: 'technologies in prod' },
+    metric: { value: '~1.4K', label: 'visitors / month', note: 'as of 6.2.26' },
     featured: true,
   },
   {
@@ -81,6 +81,7 @@ const projects: Project[] = [
     stack: ['JavaScript', 'HTML'],
     link: 'https://github.com/12g3nd/drift',
     linkText: '[VIEW REPO ↗]',
+    logo: '/DriftPreview.png',
     status: 'REPO',
   },
   {
@@ -163,7 +164,12 @@ export default function Projects() {
                   {project.metric && (
                     <div className="project-card__metric">
                       <span className="project-card__metric-value">{project.metric.value}</span>
-                      <span className="project-card__metric-label">{project.metric.label}</span>
+                      <span className="project-card__metric-label">
+                        {project.metric.label}
+                        {project.metric.note && (
+                          <span className="project-card__metric-note">{project.metric.note}</span>
+                        )}
+                      </span>
                     </div>
                   )}
                   <p className="project-card__desc">{project.description}</p>

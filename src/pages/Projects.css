@@ -268,11 +268,21 @@
 }
 
 .project-card__metric-label {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
   font-family: var(--font-mono);
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: rgba(var(--text-rgb), 0.55);
+}
+
+.project-card__metric-note {
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  color: rgba(var(--text-rgb), 0.38);
 }
 
 /* ── Featured (full-width hero) cards ──────────────────────── */

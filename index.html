@@ -4,6 +4,16 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Fonts: linked here (not @imported from CSS) so the browser discovers and
+         fetches them immediately, in parallel, instead of waiting to download and
+         parse the stylesheet first. preconnect warms the connection; display=swap
+         paints fallback text right away, then swaps — no invisible-text delay. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&display=swap"
+    />
     <!-- SPA redirect restore: decodes the path that 404.html encoded into the
          query string, rewriting the URL back before the app boots so deep links
          survive a hard refresh on GitHub Pages. -->

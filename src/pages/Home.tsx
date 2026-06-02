@@ -68,7 +68,7 @@ export default function Home() {
         setPartyActive(false);
         document.body.classList.remove('party-mode');
       }, sequenceLife),
-      window.setTimeout(() => setSmileyActive(true), 1500),
+      window.setTimeout(() => setSmileyActive(true), 0),
       window.setTimeout(() => setSmileyActive(false), splashLife),
     );
   };

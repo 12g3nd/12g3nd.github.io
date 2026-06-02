@@ -1,5 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Anton&family=Space+Mono:wght@400;700&display=swap');
-
+/* Fonts (Anton + Space Mono) are loaded via <link> in index.html, not @import
+   here — an @import would force the browser to download and parse this file
+   before it even discovers the fonts, serializing the request and delaying the
+   hero's first paint. */
 :root {
   /* ── Surfaces (dark → raised) ─────────────────────────── */
   --bg-base: #0A1320;
