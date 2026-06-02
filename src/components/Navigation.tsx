@@ -301,6 +301,11 @@ export default function Navigation() {
       case 'q':
         closeCommandMode();
         return;
+      case '404':
+        navigate('/404');
+        window.scrollTo(0, 0);
+        closeCommandMode();
+        return;
       default:
         setOutput(`command not found: ${cmd} — type 'help'`);
     }
