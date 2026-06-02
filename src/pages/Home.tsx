@@ -29,6 +29,15 @@ export default function Home() {
     elevatorTimer.current = window.setTimeout(() => setElevatorDropping(false), 1300);
   };
 
+  // SJ Glow: triggered by clicking the S and J letters. Adds a glow effect.
+  const [sjGlow, setSjGlow] = useState(false);
+  const sjGlowTimer = useRef<number>(0);
+  const triggerSjGlow = () => {
+    window.clearTimeout(sjGlowTimer.current);
+    setSjGlow(true);
+    sjGlowTimer.current = window.setTimeout(() => setSjGlow(false), 1800);
+  };
+
   // Clicking the Y2K star fires "whimsy mode": the star spins, the existing
   // party recolor + confetti kick in, and a full-bleed splash takes over for a
   // few seconds. The whole thing tears itself down after ~20s. Reduced-motion
@@ -67,6 +76,7 @@ export default function Home() {
   useEffect(
     () => () => {
       whimsyTimers.current.forEach((t) => window.clearTimeout(t));
+      window.clearTimeout(sjGlowTimer.current);
       document.body.classList.remove('party-mode');
     },
     []
@@ -243,7 +253,7 @@ export default function Home() {
                 <li><span className="accent-slash">//</span> Business is personal.</li>
                 <li><span className="accent-slash">//</span> Technology is philosophy.</li>
               </ul>
-              <p className="beliefs-footnote">/* three things I'll probably over-defend at a party, then quietly rethink by breakfast */</p>
+              <p className="beliefs-footnote">/* three things I'll probably over-defend at a party, but I feel an imperative need to for some reason */</p>
               <div className="beliefs-graphic">
                 <a href="https://en.wikipedia.org/wiki/Mysterium_Cosmographicum" target="_blank" rel="noopener noreferrer" className="kepler-link">
                   <img src="/Kepler.png" alt="Kepler's Mysterium Cosmographicum diagram" />
