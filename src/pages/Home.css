@@ -146,8 +146,31 @@
 
   height: 0.8em;
   width: auto;
-  pointer-events: none;
+  cursor: pointer;
   filter: drop-shadow(0 0 10px rgba(0, 229, 255, 0.3));
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.y2k-accent:hover,
+.y2k-accent:focus-visible {
+  transform: scale(1.18) rotate(8deg);
+  filter: drop-shadow(0 0 16px rgba(0, 229, 255, 0.7));
+  outline: none;
+}
+
+/* Spins for the duration of whimsy mode (toggled from Home.tsx). */
+.y2k-accent.y2k-spinning {
+  animation: y2k-spin 1.1s linear infinite;
+}
+
+@keyframes y2k-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .y2k-accent.y2k-spinning {
+    animation: none;
+  }
 }
 
 .outline-text {

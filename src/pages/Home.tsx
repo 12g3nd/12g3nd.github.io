@@ -1,12 +1,19 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
 
 import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
 import ScrambleText from '../components/ScrambleText';
 import AsciiRipple from '../components/AsciiRipple';
+import PartyOverlay from '../components/PartyOverlay';
+import WhimsyOverlay from '../components/WhimsyOverlay';
 import useDocumentMeta from '../hooks/useDocumentMeta';
 import './Home.css';
+
+const prefersReducedMotion = () =>
+  typeof window !== 'undefined' &&
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 export default function Home() {
   const [showSoL, setShowSoL] = useState(false);
@@ -21,6 +28,49 @@ export default function Home() {
     requestAnimationFrame(() => setElevatorDropping(true));
     elevatorTimer.current = window.setTimeout(() => setElevatorDropping(false), 1300);
   };
+
+  // Clicking the Y2K star fires "whimsy mode": the star spins, the existing
+  // party recolor + confetti kick in, and a full-bleed splash takes over for a
+  // few seconds. The whole thing tears itself down after ~20s. Reduced-motion
+  // visitors get a calmer, shorter version (no spin/confetti/strobe).
+  const [partyActive, setPartyActive] = useState(false);
+  const [splashActive, setSplashActive] = useState(false);
+  const [calmMode, setCalmMode] = useState(false);
+  const whimsyTimers = useRef<number[]>([]);
+
+  const triggerWhimsy = () => {
+    if (partyActive || splashActive) return; // ignore re-clicks mid-sequence
+    const calm = prefersReducedMotion();
+    setCalmMode(calm);
+    setSplashActive(true); // text appears first — no party yet
+
+    // Full-motion: text holds for 3s, then party erupts behind it, text fades at 6s.
+    // Calm path: no party/confetti/spin, just the fade.
+    const partyDelay   = calm ? 99999 : 3000;
+    const splashLife   = calm ? 5000  : 6000;
+    const sequenceLife = calm ? 5000  : 20000;
+
+    whimsyTimers.current.push(
+      window.setTimeout(() => {
+        setPartyActive(true);
+        document.body.classList.add('party-mode');
+      }, partyDelay),
+      window.setTimeout(() => setSplashActive(false), splashLife),
+      window.setTimeout(() => {
+        setPartyActive(false);
+        document.body.classList.remove('party-mode');
+      }, sequenceLife)
+    );
+  };
+
+  // Don't strand the body class or leave timers running if we unmount mid-party.
+  useEffect(
+    () => () => {
+      whimsyTimers.current.forEach((t) => window.clearTimeout(t));
+      document.body.classList.remove('party-mode');
+    },
+    []
+  );
 
   // Hidden résumé chip: unlocks once a visitor pokes past the email reveal
   // (here) or runs `resume` in the terminal (sets the same flag).
@@ -40,6 +90,11 @@ export default function Home() {
 
   return (
     <PageTransition>
+      {/* Portal to <body>: PageTransition is a framer-motion transform, which
+          would otherwise become the containing block for these position:fixed
+          overlays and strand them below the fold. */}
+      {partyActive && !calmMode && createPortal(<PartyOverlay />, document.body)}
+      {splashActive && createPortal(<WhimsyOverlay calm={calmMode} />, document.body)}
 
       <section className="section info-section">
         <AsciiRipple />
@@ -48,7 +103,15 @@ export default function Home() {
           <div className="giant-text">
             <h1 className="title-srihith">
               SRIHITH
-              <img src="/y2k1.png" alt="" className="y2k-accent" />
+              <img
+                src="/y2k1.png"
+                alt="Activate whimsy mode"
+                className={`y2k-accent${partyActive && !calmMode ? ' y2k-spinning' : ''}`}
+                role="button"
+                tabIndex={0}
+                onClick={triggerWhimsy}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); triggerWhimsy(); } }}
+              />
             </h1>
             <h1 className="outline-text">JARABANA</h1>
             <img src="/figure.png" alt="Wireframe Figure" className="mobile-figure-inline wireframe-glitch" />
