@@ -299,6 +299,16 @@
   color: #8a7a52;
 }
 
+/* Casual helper line under a label (e.g. the signature aside) — lowercase, muted,
+   tucked close to its label. */
+.gb-field__hint {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.5;
+  color: rgba(42, 36, 24, 0.5);
+  margin-top: -0.25rem;
+}
+
 .gb-field__input {
   font-family: var(--font-mono);
   font-size: 14px;

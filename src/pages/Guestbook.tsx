@@ -12,7 +12,7 @@ export default function Guestbook() {
 
   useDocumentMeta(
     'Guestbook // Srihith Jarabana',
-    "Visitors who've signed Srihith Jarabana's guestbook — drawn signatures and three words each."
+    "Visitors who've signed Srihith Jarabana's guestbook (drawn signatures and three words each)."
   );
 
   const count = entries.length;
@@ -25,7 +25,7 @@ export default function Guestbook() {
             <ScrambleText text="GUESTBOOK_" />
           </h2>
           <p className="section-desc">
-            visitors who've left their mark — drawn signatures &amp; three words
+            visitors who've left their mark (drawn signatures &amp; three words)
           </p>
         </div>
 
@@ -48,7 +48,7 @@ export default function Guestbook() {
           )}
 
           {!loading && !error && count === 0 && (
-            <div className="gb-notice">[ NO ENTRIES YET — be the first. ]</div>
+            <div className="gb-notice">[ NO ENTRIES YET, be the first. ]</div>
           )}
 
           {!loading &&
