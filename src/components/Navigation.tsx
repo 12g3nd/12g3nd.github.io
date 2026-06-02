@@ -1,6 +1,6 @@
 
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useEffect, useMemo, useRef, type ReactNode } from 'react';
 import ScrambleText from './ScrambleText';
 import MatrixRain from './MatrixRain';
 import PartyOverlay from './PartyOverlay';
@@ -44,6 +44,30 @@ const ROUTES: Record<string, string> = {
   cd: '/',
 };
 
+// Clickable `ls` output: each entry runs its command on click (navigate, or
+// print like `cat`), so the directory listing behaves like a real shell.
+const LS_ENTRIES: { label: string; cmd: string }[] = [
+  { label: 'projects/', cmd: 'projects' },
+  { label: 'media/', cmd: 'media' },
+  { label: 'poetry/', cmd: 'poetry' },
+  { label: 'blog/', cmd: 'blog' },
+  { label: 'business.xlsx', cmd: 'business' },
+  { label: 'beliefs.txt', cmd: 'cat beliefs.txt' },
+  { label: 'rootbeer.log', cmd: 'cat rootbeer.log' },
+  { label: 'resume.pdf', cmd: 'resume' },
+  { label: 'guestbook.log', cmd: 'guestbook' },
+  { label: '.secret', cmd: 'cat .secret' },
+];
+
+// Commands offered by tab-autocomplete. Deliberately omits the deepest easter
+// eggs (cat .secret, 42, whoami --real, …) so poking around still rewards.
+const COMPLETIONS: string[] = [
+  'projects', 'business', 'media', 'poetry', 'blog', 'guestbook', 'home',
+  'help', 'whoami', 'uptime', 'resume', 'ls', 'clear', 'exit',
+  'cat beliefs.txt', 'cat rootbeer.log', 'cat guestbook.log',
+  'sudo hire-me', 'theme dark', 'theme light', 'matrix', 'party mode',
+];
+
 export default function Navigation() {
   const [text, setText] = useState('');
   const [phraseIndex, setPhraseIndex] = useState(0);
@@ -60,7 +84,14 @@ export default function Navigation() {
   const [brand, setBrand] = useState('SJ.SYS');
   const [brandGlitch, setBrandGlitch] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  // Clickable ls renders React nodes instead of a plain string; null = text output.
+  const [outputNode, setOutputNode] = useState<ReactNode>(null);
   const brandTimers = useRef<number[]>([]);
+
+  // Real-shell command history (↑/↓). Kept in a ref — survives closing and
+  // reopening the prompt within the session, and doesn't trigger re-renders.
+  const historyRef = useRef<string[]>([]);
+  const histPos = useRef(0);
 
   // First-visit affordance. The command line is the heart of the site, but most
   // people read the bar as decoration and never find it. For new visitors we let
@@ -156,7 +187,9 @@ export default function Navigation() {
     dismissNudge(); // they found the door — stop nudging, for good
     window.getSelection()?.removeAllRanges();
     setOutput('');
+    setOutputNode(null);
     setInput('');
+    histPos.current = historyRef.current.length;
     setCommandMode(true);
     // Both the desktop and mobile rows render an input, but only one is visible
     // at a time. Focus whichever is currently displayed (offsetParent !== null).
@@ -172,13 +205,21 @@ export default function Navigation() {
     setCommandMode(false);
     setInput('');
     setOutput('');
+    setOutputNode(null);
     setExpanded(false);
   };
 
   const runCommand = (raw: string) => {
     const cmd = raw.trim().toLowerCase();
     setExpanded(false);
+    setOutputNode(null);
     if (!cmd) return;
+
+    // Record history (skip consecutive dupes), reset the cursor to the live line.
+    if (historyRef.current[historyRef.current.length - 1] !== cmd) {
+      historyRef.current.push(cmd);
+    }
+    histPos.current = historyRef.current.length;
 
     if (cmd in ROUTES) {
       navigate(ROUTES[cmd]);
@@ -189,7 +230,7 @@ export default function Navigation() {
 
     switch (cmd) {
       case 'help':
-        setOutput('nav: projects · business · media · poetry · blog · home  |  try: whoami · cat beliefs.txt · uptime · resume · sudo hire-me · ls · clear · exit  |  (some commands are undocumented. poke around.)');
+        setOutput('nav: projects · business · media · poetry · blog · home  |  try: whoami · cat beliefs.txt · uptime · resume · sudo hire-me · ls · clear · exit  |  ↑/↓ = history · tab = autocomplete  |  (some commands are undocumented. poke around.)');
         break;
       case 'whoami':
         setOutput('srihith jarabana — businessman by craft. 19. probably overthinking something.');
@@ -295,7 +336,22 @@ export default function Navigation() {
         setOutput('nice try. SJ.SYS is read-only to visitors. (and to me, on a good day.)');
         break;
       case 'ls':
-        setOutput('projects/   media/   poetry/   blog/   business.xlsx   beliefs.txt   rootbeer.log   resume.pdf   guestbook.log   .secret');
+        setOutputNode(
+          <span className="terminal-ls">
+            {LS_ENTRIES.map((entry) => (
+              <button
+                key={entry.label}
+                type="button"
+                className="terminal-ls-item"
+                onMouseDown={(e) => e.preventDefault()} // keep the input focused
+                onClick={() => runCommand(entry.cmd)}
+              >
+                {entry.label}
+              </button>
+            ))}
+          </span>
+        );
+        setOutput('');
         break;
       case 'clear':
         setOutput('');
@@ -315,6 +371,36 @@ export default function Navigation() {
     setInput('');
   };
 
+  // ↑/↓ walk the history; past the newest entry returns to the live (empty) line.
+  const recallHistory = (dir: number) => {
+    const hist = historyRef.current;
+    if (hist.length === 0) return;
+    const pos = Math.max(0, Math.min(hist.length, histPos.current + dir));
+    histPos.current = pos;
+    setInput(pos < hist.length ? hist[pos] : '');
+  };
+
+  // Tab-complete against known commands. One match completes it; several complete
+  // the shared prefix and list the options, like a real shell.
+  const autocomplete = () => {
+    const cur = input.trim().toLowerCase();
+    if (!cur) return;
+    const matches = COMPLETIONS.filter((c) => c.startsWith(cur));
+    if (matches.length === 0) return;
+    setOutputNode(null);
+    if (matches.length === 1) {
+      setInput(matches[0]);
+      setOutput('');
+      return;
+    }
+    let prefix = matches[0];
+    for (const m of matches) {
+      while (!m.startsWith(prefix)) prefix = prefix.slice(0, -1);
+    }
+    if (prefix.length > cur.length) setInput(prefix);
+    setOutput(matches.join('   '));
+  };
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -322,13 +408,24 @@ export default function Navigation() {
     } else if (e.key === 'Escape') {
       e.preventDefault();
       closeCommandMode();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      recallHistory(-1);
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      recallHistory(1);
+    } else if (e.key === 'Tab') {
+      e.preventDefault();
+      autocomplete();
     }
   };
 
   const multiline = output.includes('\n');
+  // ls renders a clickable block — treat it like multiline output for layout.
+  const block = multiline || expanded || outputNode != null;
 
   const terminalBody = commandMode ? (
-    <div className={`terminal-cmd${multiline || expanded ? ' terminal-cmd--multiline' : ''}`}>
+    <div className={`terminal-cmd${block ? ' terminal-cmd--multiline' : ''}`}>
       <span className="terminal-prompt">srihith@sj.sys</span>
       <span className="terminal-prompt-sep">:~$</span>
       <input
@@ -341,8 +438,13 @@ export default function Navigation() {
         autoComplete="off"
         aria-label="Terminal command input"
       />
+      {/* Clickable `ls` listing — React nodes, not a string, so each entry
+          navigates or runs its command on click. Always block, no expand. */}
+      {outputNode && (
+        <span className="terminal-output terminal-output--block">{outputNode}</span>
+      )}
       {/* Collapsed: output first, then expand button */}
-      {output && !expanded && !multiline && (
+      {!outputNode && output && !expanded && !multiline && (
         <>
           <span className="terminal-output">{output}</span>
           <button
@@ -357,7 +459,7 @@ export default function Navigation() {
         </>
       )}
       {/* Expanded: collapse button first (stays on row 1 with prompt+input), then output block */}
-      {output && expanded && !multiline && (
+      {!outputNode && output && expanded && !multiline && (
         <>
           <button
             type="button"
@@ -372,7 +474,7 @@ export default function Navigation() {
         </>
       )}
       {/* Multiline output: always block, no expand button */}
-      {output && multiline && (
+      {!outputNode && output && multiline && (
         <span className="terminal-output terminal-output--block">{output}</span>
       )}
     </div>
@@ -408,7 +510,7 @@ export default function Navigation() {
         </NavLink>
 
         <div
-          className={`terminal-header-box${commandMode ? ' terminal-header-box--active' : ''}${multiline || expanded ? ' terminal-header-box--multiline' : ''}${nudge ? ' terminal-nudge' : ''}`}
+          className={`terminal-header-box${commandMode ? ' terminal-header-box--active' : ''}${block ? ' terminal-header-box--multiline' : ''}${nudge ? ' terminal-nudge' : ''}`}
           onDoubleClick={openCommandMode}
           title="Double-click to enter a command"
         >
@@ -425,7 +527,7 @@ export default function Navigation() {
       </nav>
 
       <div
-        className={`terminal-mobile-row${commandMode ? ' terminal-header-box--active' : ''}${multiline || expanded ? ' terminal-header-box--multiline' : ''}${nudge ? ' terminal-nudge' : ''}`}
+        className={`terminal-mobile-row${commandMode ? ' terminal-header-box--active' : ''}${block ? ' terminal-header-box--multiline' : ''}${nudge ? ' terminal-nudge' : ''}`}
         onClick={() => { if (!commandMode) openCommandMode(); }}
       >
         {terminalBody}

@@ -215,6 +215,34 @@
   color: rgba(var(--text-rgb), 0.75);
 }
 
+/* Clickable `ls` listing — each filename is a button that runs its command.
+   Underlined cyan to read as interactive; wraps to fit the bar. */
+.terminal-ls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1.4rem;
+}
+
+.terminal-ls-item {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: inherit;
+  line-height: inherit;
+  color: var(--accent-primary);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: rgba(var(--accent-rgb), 0.4);
+  transition: color 0.12s ease, text-decoration-color 0.12s ease;
+}
+
+.terminal-ls-item:hover {
+  color: var(--text-primary);
+  text-decoration-color: var(--accent-primary);
+}
+
 .terminal-cursor {
   display: inline-block;
   width: 8px;
