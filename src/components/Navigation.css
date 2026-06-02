@@ -22,7 +22,7 @@
 
 .nav-links {
   display: flex;
-  gap: 1.75rem;
+  gap: 2.5rem;
   font-weight: bold;
 }
 
@@ -131,60 +131,10 @@
   color: var(--accent-primary);
 }
 
-/* The mobile row is a single-tap target and space is tight — hide the desktop
-   "dbl-click" hint there (it reads wrong on touch); the mobile row gets its own
-   "tap to type" cue below instead. */
+/* The mobile row is a single-tap target and space is tight — hide the hint
+   there; the typewriter copy already advertises the command line. */
 .terminal-mobile-row .terminal-hint {
   display: none;
-}
-
-/* Mobile-only tap affordance, pinned to the right of the idle prompt. */
-.terminal-mobile-hint {
-  flex: 0 0 auto;
-  margin-left: auto;
-  padding-left: 0.75rem;
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(var(--text-rgb), 0.45);
-  white-space: nowrap;
-  pointer-events: none;
-}
-
-/* ── First-visit nudge ─────────────────────────────────────────────────────
-   A slow cyan "breathing" pulse so new visitors notice the command bar is
-   interactive. Applied once (see Navigation.tsx), removed on first use or after
-   a timeout. The glow echoes the --active state, so engaging reads as "the
-   thing I was looking at just turned on." */
-@keyframes terminal-nudge-pulse {
-  0%, 100% {
-    border-color: rgba(0, 229, 255, 0.3);
-    box-shadow: 0 0 0 rgba(0, 229, 255, 0);
-  }
-  50% {
-    border-color: var(--accent-primary);
-    box-shadow: 0 0 14px rgba(0, 229, 255, 0.35);
-  }
-}
-
-.terminal-nudge {
-  border-style: solid;
-  animation: terminal-nudge-pulse 1.8s ease-in-out infinite;
-}
-
-/* Brighten the hint copy while the bar is pulsing. */
-.terminal-nudge .terminal-hint,
-.terminal-nudge .terminal-mobile-hint {
-  color: var(--accent-primary);
-}
-
-/* Reduced motion: no pulse — just a steady cyan highlight so the affordance
-   still reads, without movement. */
-@media (prefers-reduced-motion: reduce) {
-  .terminal-nudge {
-    animation: none;
-    border-color: var(--accent-primary);
-  }
 }
 
 .terminal-header-box--active {
