@@ -200,7 +200,7 @@ export default function Navigation() {
         setOutput('art is political. business is personal. technology is philosophy.');
         break;
       case 'uptime':
-        setOutput('online since 2006 · 19 yrs · 0 full crashes (a few close calls)');
+        setOutput('online since 2007 · 19 yrs · 0 full crashes (a few close calls maybe)');
         break;
       case 'resume':
       case 'cat resume':
