@@ -45,16 +45,15 @@ export default function Home() {
   const [partyActive, setPartyActive] = useState(false);
   const [splashActive, setSplashActive] = useState(false);
   const [calmMode, setCalmMode] = useState(false);
+  const [smileyActive, setSmileyActive] = useState(false);
   const whimsyTimers = useRef<number[]>([]);
 
   const triggerWhimsy = () => {
-    if (partyActive || splashActive) return; // ignore re-clicks mid-sequence
+    if (partyActive || splashActive) return;
     const calm = prefersReducedMotion();
     setCalmMode(calm);
-    setSplashActive(true); // text appears first — no party yet
+    setSplashActive(true);
 
-    // Full-motion: text holds for 3s, then party erupts behind it, text fades at 6s.
-    // Calm path: no party/confetti/spin, just the fade.
     const partyDelay   = calm ? 99999 : 3000;
     const splashLife   = calm ? 5000  : 6000;
     const sequenceLife = calm ? 5000  : 20000;
@@ -68,7 +67,9 @@ export default function Home() {
       window.setTimeout(() => {
         setPartyActive(false);
         document.body.classList.remove('party-mode');
-      }, sequenceLife)
+      }, sequenceLife),
+      window.setTimeout(() => setSmileyActive(true), 1500),
+      window.setTimeout(() => setSmileyActive(false), splashLife),
     );
   };
 
@@ -105,6 +106,10 @@ export default function Home() {
           overlays and strand them below the fold. */}
       {partyActive && !calmMode && createPortal(<PartyOverlay />, document.body)}
       {splashActive && createPortal(<WhimsyOverlay calm={calmMode} />, document.body)}
+      {smileyActive && createPortal(
+        <img src="/smileyface.png" className="whimsy-smiley" alt="" aria-hidden="true" />,
+        document.body
+      )}
 
       <section className="section info-section">
         <AsciiRipple />
