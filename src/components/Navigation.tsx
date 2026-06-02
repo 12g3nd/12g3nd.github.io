@@ -373,7 +373,7 @@ export default function Navigation() {
       </nav>
 
       <div
-        className={`terminal-mobile-row${commandMode ? ' terminal-header-box--active' : ''}${multiline ? ' terminal-header-box--multiline' : ''}`}
+        className={`terminal-mobile-row${commandMode ? ' terminal-header-box--active' : ''}${multiline || expanded ? ' terminal-header-box--multiline' : ''}`}
         onClick={() => { if (!commandMode) openCommandMode(); }}
       >
         {terminalBody}
