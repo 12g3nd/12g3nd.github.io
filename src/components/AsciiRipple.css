@@ -1,0 +1,12 @@
+/* Canvas overlay for the hero ASCII ripple. Covers .info-section, sits behind the
+   hero content (z-index 0), and never intercepts pointer events so clicks/links in
+   the hero keep working. The static-fallback path reuses .ascii-art-bg /
+   .ascii-art-secondary from Home.css. */
+.ascii-ripple {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
