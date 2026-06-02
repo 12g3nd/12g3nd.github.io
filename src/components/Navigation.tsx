@@ -59,6 +59,28 @@ export default function Navigation() {
   const [expanded, setExpanded] = useState(false);
   const brandTimers = useRef<number[]>([]);
 
+  // First-visit affordance. The command line is the heart of the site, but most
+  // people read the bar as decoration and never find it. For new visitors we let
+  // it breathe in cyan until they engage (or ~12s pass), then never again.
+  // Returning visitors and reduced-motion users get no pulse (CSS handles both).
+  const [nudge, setNudge] = useState(() => {
+    if (typeof localStorage === 'undefined') return false;
+    return localStorage.getItem('sjsys_terminal_seen') !== '1';
+  });
+  const dismissNudge = () => {
+    setNudge(false);
+    try { localStorage.setItem('sjsys_terminal_seen', '1'); } catch { /* storage may be blocked */ }
+  };
+  // Auto-settle so the pulse can never become a permanent distraction.
+  useEffect(() => {
+    if (!nudge) return;
+    const t = window.setTimeout(() => {
+      setNudge(false);
+      try { localStorage.setItem('sjsys_terminal_seen', '1'); } catch { /* storage may be blocked */ }
+    }, 12000);
+    return () => window.clearTimeout(t);
+  }, [nudge]);
+
   // Late-night phrase is prepended only inside the small-hours window.
   const phrases = useMemo(
     () => (isLateNight() ? [LATE_NIGHT_PHRASE, ...PHRASES] : PHRASES),
@@ -128,6 +150,7 @@ export default function Navigation() {
   };
 
   const openCommandMode = () => {
+    dismissNudge(); // they found the door — stop nudging, for good
     window.getSelection()?.removeAllRanges();
     setOutput('');
     setInput('');
@@ -310,21 +333,39 @@ export default function Navigation() {
         autoComplete="off"
         aria-label="Terminal command input"
       />
-      {output && (
-        <span className={`terminal-output${multiline || expanded ? ' terminal-output--block' : ''}`}>
-          {output}
-        </span>
+      {/* Collapsed: output first, then expand button */}
+      {output && !expanded && !multiline && (
+        <>
+          <span className="terminal-output">{output}</span>
+          <button
+            type="button"
+            className="terminal-expand-btn"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => setExpanded(true)}
+            aria-label="Expand output"
+          >
+            ▸ Expand
+          </button>
+        </>
       )}
-      {output && !multiline && (
-        <button
-          type="button"
-          className="terminal-expand-btn"
-          onMouseDown={(e) => e.preventDefault()}
-          onClick={() => setExpanded((e) => !e)}
-          aria-label={expanded ? 'Collapse output' : 'Expand output'}
-        >
-          ▸ {expanded ? 'Collapse' : 'Expand'}
-        </button>
+      {/* Expanded: collapse button first (stays on row 1 with prompt+input), then output block */}
+      {output && expanded && !multiline && (
+        <>
+          <button
+            type="button"
+            className="terminal-expand-btn"
+            onMouseDown={(e) => e.preventDefault()}
+            onClick={() => setExpanded(false)}
+            aria-label="Collapse output"
+          >
+            ▸ Collapse
+          </button>
+          <span className="terminal-output terminal-output--block">{output}</span>
+        </>
+      )}
+      {/* Multiline output: always block, no expand button */}
+      {output && multiline && (
+        <span className="terminal-output terminal-output--block">{output}</span>
       )}
     </div>
   ) : (
@@ -333,7 +374,9 @@ export default function Navigation() {
         <span className="terminal-text">{text}</span>
         <span className="terminal-cursor">_</span>
       </span>
-      <span className="terminal-hint" aria-hidden="true">▸ dbl-click</span>
+      <span className="terminal-hint" aria-hidden="true">
+        {nudge ? '▸ dbl-click & type `help`' : '▸ dbl-click'}
+      </span>
     </>
   );
 
@@ -357,7 +400,7 @@ export default function Navigation() {
         </NavLink>
 
         <div
-          className={`terminal-header-box${commandMode ? ' terminal-header-box--active' : ''}${multiline || expanded ? ' terminal-header-box--multiline' : ''}`}
+          className={`terminal-header-box${commandMode ? ' terminal-header-box--active' : ''}${multiline || expanded ? ' terminal-header-box--multiline' : ''}${nudge ? ' terminal-nudge' : ''}`}
           onDoubleClick={openCommandMode}
           title="Double-click to enter a command"
         >
@@ -373,10 +416,15 @@ export default function Navigation() {
       </nav>
 
       <div
-        className={`terminal-mobile-row${commandMode ? ' terminal-header-box--active' : ''}${multiline || expanded ? ' terminal-header-box--multiline' : ''}`}
+        className={`terminal-mobile-row${commandMode ? ' terminal-header-box--active' : ''}${multiline || expanded ? ' terminal-header-box--multiline' : ''}${nudge ? ' terminal-nudge' : ''}`}
         onClick={() => { if (!commandMode) openCommandMode(); }}
       >
         {terminalBody}
+        {!commandMode && (
+          <span className="terminal-mobile-hint" aria-hidden="true">
+            {nudge ? '▸ tap & type `help`' : '▸ tap to type'}
+          </span>
+        )}
       </div>
     </>
   );
