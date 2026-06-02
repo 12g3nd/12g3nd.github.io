@@ -1,0 +1,33 @@
+name = "sjsys-guestbook"
+main = "index.ts"
+compatibility_date = "2024-01-01"
+
+# ── Custom domain route ──────────────────────────────────────────────────────
+# Serves the Worker at https://guestbook.jarabana.com. On `wrangler deploy`,
+# Cloudflare auto-provisions the proxied DNS record + TLS cert for this hostname.
+# Requires the jarabana.com zone to be active on this Cloudflare account (it is).
+routes = [
+  { pattern = "guestbook.jarabana.com", custom_domain = true }
+]
+
+# ── D1 database binding ──────────────────────────────────────────────────────
+# `database_id` is printed by `wrangler d1 create sjsys-guestbook` — paste it in
+# here before the first `wrangler deploy`. See DEPLOY.md for the full sequence.
+[[d1_databases]]
+binding = "DB"
+database_name = "sjsys-guestbook"
+database_id = "a91ed003-a893-4e3e-b0ce-c2992367732b"
+
+# ── Endpoints (routed inside index.ts) ───────────────────────────────────────
+#   POST /sign     — submit a pending entry (approved = 0)
+#   GET  /entries  — list approved entries (approved = 1)
+#
+# CORS is allow-listed in index.ts to:
+#   https://12g3nd.github.io   (production GitHub Pages origin)
+#   http://localhost:5173      (local Vite dev server)
+#
+# ── Spam protection ──────────────────────────────────────────────────────────
+# There is no Turnstile here — the manual approval queue (approved defaults to 0)
+# is the real filter. As a first line of defence, add a Cloudflare rate-limiting
+# rule in the dashboard (Security → WAF → Rate limiting rules) targeting the
+# POST /sign path at a maximum of 3 requests/hour per client IP.

@@ -1,0 +1,7 @@
+# Worker dependencies + Wrangler local state — never committed.
+node_modules/
+.wrangler/
+*.log
+
+# The database_id in wrangler.toml is intentionally committed (it's an
+# identifier, not a secret) — do not ignore wrangler.toml.

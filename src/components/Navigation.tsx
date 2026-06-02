@@ -34,6 +34,9 @@ const ROUTES: Record<string, string> = {
   'open business.xlsx': '/business',
   media: '/media',
   poetry: '/poetry',
+  guestbook: '/guestbook',
+  'cat guestbook.log': '/guestbook',
+  'open guestbook.log': '/guestbook',
   blog: '/blog',
   home: '/',
   '~': '/',
@@ -292,7 +295,7 @@ export default function Navigation() {
         setOutput('nice try. SJ.SYS is read-only to visitors. (and to me, on a good day.)');
         break;
       case 'ls':
-        setOutput('projects/   media/   poetry/   blog/   business.xlsx   beliefs.txt   rootbeer.log   resume.pdf   .secret');
+        setOutput('projects/   media/   poetry/   blog/   business.xlsx   beliefs.txt   rootbeer.log   resume.pdf   guestbook.log   .secret');
         break;
       case 'clear':
         setOutput('');

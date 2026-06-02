@@ -8,7 +8,9 @@ import ScrambleText from '../components/ScrambleText';
 import AsciiRipple from '../components/AsciiRipple';
 import PartyOverlay from '../components/PartyOverlay';
 import WhimsyOverlay from '../components/WhimsyOverlay';
+import GuestbookCard from '../components/GuestbookCard';
 import useDocumentMeta from '../hooks/useDocumentMeta';
+import useGuestbook from '../hooks/useGuestbook';
 import './Home.css';
 
 const prefersReducedMotion = () =>
@@ -93,6 +95,11 @@ export default function Home() {
     localStorage.setItem('sjsys_resume_unlocked', '1');
     setResumeUnlocked(true);
   };
+
+  // Guestbook preview — 3 most-recent approved entries. useGuestbook caches in
+  // module memory, so the full /guestbook page reuses this fetch (no second hit).
+  const { entries: guestbookEntries, loading: guestbookLoading } = useGuestbook();
+  const previewEntries = guestbookEntries.slice(0, 3);
 
   useDocumentMeta(
     'Srihith Jarabana',
@@ -289,6 +296,35 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+
+      <section className="section guestbook-preview-section">
+        <div className="section-header">
+          <h2><ScrambleText text="GUESTBOOK_" /></h2>
+          <p className="section-desc">visitors who've left their mark</p>
+        </div>
+
+        {/* 3 most recent approved entries, side by side */}
+        <div className="guestbook-preview-grid">
+          {guestbookLoading &&
+            [0, 1, 2].map((i) => <div key={i} className="gb-skeleton" aria-hidden="true" />)}
+
+          {!guestbookLoading && previewEntries.length === 0 && (
+            <div className="gb-notice">[ NO ENTRIES YET — be the first. ]</div>
+          )}
+
+          {!guestbookLoading &&
+            previewEntries.map((entry, index) => (
+              <Reveal key={entry.id} delay={index * 0.07}>
+                <GuestbookCard entry={entry} compact />
+              </Reveal>
+            ))}
+        </div>
+
+        <div className="guestbook-preview-footer">
+          <Link to="/guestbook" className="btn-ghost">[ VIEW ALL + SIGN → ]</Link>
         </div>
       </section>
 
