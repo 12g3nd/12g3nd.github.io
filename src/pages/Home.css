@@ -1183,6 +1183,24 @@ button.email-box {
   }
 }
 
+/* ── SJ glow interaction ───────────────────────────────── */
+.sj-trigger {
+  cursor: pointer;
+  text-decoration: underline dotted rgba(var(--accent-rgb), 0.4);
+  text-underline-offset: 3px;
+}
+
+@keyframes letter-glow-pulse {
+  0%   { filter: drop-shadow(0 0 6px var(--accent-primary)) drop-shadow(0 0 14px var(--accent-primary)); }
+  50%  { filter: drop-shadow(0 0 10px var(--accent-primary)) drop-shadow(0 0 28px var(--accent-primary)); }
+  100% { filter: none; }
+}
+
+.letter-glow {
+  display: inline-block;
+  animation: letter-glow-pulse 1.8s ease-out forwards;
+}
+
 /* ── Large screens ─────────────────────────────────────── */
 @media (min-width: 1800px) {
   .hero-content {

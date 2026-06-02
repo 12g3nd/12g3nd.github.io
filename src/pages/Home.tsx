@@ -112,7 +112,7 @@ export default function Home() {
         <div className="hero-content">
           <div className="giant-text">
             <h1 className="title-srihith">
-              SRIHITH
+              <span className={sjGlow ? 'letter-glow' : ''}>S</span>RIHITH
               <img
                 src="/y2k1.png"
                 alt="Activate whimsy mode"
@@ -123,7 +123,9 @@ export default function Home() {
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); triggerWhimsy(); } }}
               />
             </h1>
-            <h1 className="outline-text">JARABANA</h1>
+            <h1 className="outline-text">
+              <span className={sjGlow ? 'letter-glow' : ''}>J</span>ARABANA
+            </h1>
             <img src="/figure.png" alt="Wireframe Figure" className="mobile-figure-inline wireframe-glitch" />
             <p className="phonetic-text">/sriːhɪθ dʒʊəˌræˈbɑːnə/</p>
           </div>
@@ -142,7 +144,13 @@ export default function Home() {
           <p className="sub-badge">Intended: Management Specialist, Focus in Finance, Minor in Statistics and Economics</p>
           <div className="description-card">
             <p>
-              'SJ' also welcome. 19. Businessman by craft. Also, strong STEM and literature background.
+              '<span
+                role="button"
+                tabIndex={0}
+                className="sj-trigger"
+                onClick={triggerSjGlow}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); triggerSjGlow(); } }}
+              >SJ</span>' also welcome. 19. Businessman by craft. Also, strong STEM and literature background.
               Welcome to my personal (and humble) corner of the internet.
             </p>
             <div className="hero-actions">
