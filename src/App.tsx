@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import BootSequence from './components/BootSequence';
@@ -58,6 +58,11 @@ function App() {
     window.setTimeout(() => setCrt(false), 15000);
   }, []);
   useKonami(triggerCrt);
+  // Clicking the UofT crest on the Home page fires the same CRT burst.
+  useEffect(() => {
+    window.addEventListener('sjsys:crt', triggerCrt);
+    return () => window.removeEventListener('sjsys:crt', triggerCrt);
+  }, [triggerCrt]);
 
   return (
     <Router>

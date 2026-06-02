@@ -67,8 +67,16 @@
 .crest-icon {
   height: 48px;
   width: auto;
-
+  cursor: pointer;
   filter: brightness(0) saturate(100%) invert(75%) sepia(35%) saturate(7174%) hue-rotate(143deg) brightness(104%) contrast(101%);
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.crest-icon:hover,
+.crest-icon:focus-visible {
+  transform: scale(1.15);
+  filter: brightness(0) saturate(100%) invert(75%) sepia(35%) saturate(7174%) hue-rotate(143deg) brightness(140%) contrast(101%);
+  outline: none;
 }
 
 .right-column {

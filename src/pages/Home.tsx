@@ -119,7 +119,15 @@ export default function Home() {
           </div>
           <div className="badge-row">
             <div className="badge">Rotman Commerce // Class of '29</div>
-            <img src="/crest.png" alt="University Crest" className="crest-icon" />
+            <img
+                src="/crest.png"
+                alt="University Crest"
+                className="crest-icon"
+                role="button"
+                tabIndex={0}
+                onClick={() => window.dispatchEvent(new CustomEvent('sjsys:crt'))}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.dispatchEvent(new CustomEvent('sjsys:crt')); } }}
+              />
           </div>
           <p className="sub-badge">Intended: Management Specialist, Focus in Finance, Minor in Statistics and Economics</p>
           <div className="description-card">
