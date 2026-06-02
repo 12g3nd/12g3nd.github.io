@@ -56,6 +56,7 @@ export default function Navigation() {
   const [party, setParty] = useState(false);
   const [brand, setBrand] = useState('SJ.SYS');
   const [brandGlitch, setBrandGlitch] = useState(false);
+  const [expanded, setExpanded] = useState(false);
   const brandTimers = useRef<number[]>([]);
 
   // Late-night phrase is prepended only inside the small-hours window.
@@ -145,10 +146,12 @@ export default function Navigation() {
     setCommandMode(false);
     setInput('');
     setOutput('');
+    setExpanded(false);
   };
 
   const runCommand = (raw: string) => {
     const cmd = raw.trim().toLowerCase();
+    setExpanded(false);
     if (!cmd) return;
 
     if (cmd in ROUTES) {
