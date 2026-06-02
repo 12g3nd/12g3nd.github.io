@@ -311,3 +311,23 @@
     padding: 0.3rem 0.75rem;
   }
 }
+
+.terminal-expand-btn {
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding-left: 1.25rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(var(--text-rgb), 0.35);
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+
+.terminal-expand-btn:hover {
+  color: var(--accent-primary);
+}

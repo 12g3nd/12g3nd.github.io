@@ -297,7 +297,7 @@ export default function Navigation() {
   const multiline = output.includes('\n');
 
   const terminalBody = commandMode ? (
-    <div className={`terminal-cmd${multiline ? ' terminal-cmd--multiline' : ''}`}>
+    <div className={`terminal-cmd${multiline || expanded ? ' terminal-cmd--multiline' : ''}`}>
       <span className="terminal-prompt">srihith@sj.sys</span>
       <span className="terminal-prompt-sep">:~$</span>
       <input
@@ -311,9 +311,20 @@ export default function Navigation() {
         aria-label="Terminal command input"
       />
       {output && (
-        <span className={`terminal-output${multiline ? ' terminal-output--block' : ''}`}>
+        <span className={`terminal-output${multiline || expanded ? ' terminal-output--block' : ''}`}>
           {output}
         </span>
+      )}
+      {output && !multiline && (
+        <button
+          type="button"
+          className="terminal-expand-btn"
+          onMouseDown={(e) => e.preventDefault()}
+          onClick={() => setExpanded((e) => !e)}
+          aria-label={expanded ? 'Collapse output' : 'Expand output'}
+        >
+          ▸ {expanded ? 'Collapse' : 'Expand'}
+        </button>
       )}
     </div>
   ) : (
@@ -346,7 +357,7 @@ export default function Navigation() {
         </NavLink>
 
         <div
-          className={`terminal-header-box${commandMode ? ' terminal-header-box--active' : ''}${multiline ? ' terminal-header-box--multiline' : ''}`}
+          className={`terminal-header-box${commandMode ? ' terminal-header-box--active' : ''}${multiline || expanded ? ' terminal-header-box--multiline' : ''}`}
           onDoubleClick={openCommandMode}
           title="Double-click to enter a command"
         >
