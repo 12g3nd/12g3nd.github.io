@@ -85,7 +85,7 @@ export default function Blog() {
                       className={`seek-btn${filter === q ? ' seek-btn--active' : ''}`}
                       onClick={() => setFilter(q)}
                     >
-                      <span className="seek-bullet">■</span> {q.replace(' / ', ' / ')}
+                      <span className="seek-bullet">■</span> {q}
                     </button>
                   </li>
                 ))}

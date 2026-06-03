@@ -29,6 +29,9 @@ export default function Guestbook() {
           </p>
         </div>
 
+        {/* Sign first: the form leads, the existing entries follow below it. */}
+        <GuestbookForm />
+
         {/* Command chrome — `cat guestbook.log`, matching pkg-bar / poetry-bar. */}
         <div className="guestbook-bar">
           <span className="guestbook-bar__cmd">
@@ -59,8 +62,6 @@ export default function Guestbook() {
               </Reveal>
             ))}
         </div>
-
-        <GuestbookForm />
       </section>
     </PageTransition>
   );
