@@ -1276,7 +1276,11 @@ button.email-box {
   position: fixed;
   right: 0;
   top: 0;
-  height: 100vh;
+  /* The face is a square PNG. On a wide screen 100vh keeps it full-height on the
+     right; on a portrait phone that same square would be ~100vh *wide* and spill
+     most of itself off the left edge — so cap it to 70vw and it stays a whole
+     smiley tucked in the top-right corner. (Landscape: 100vh always wins.) */
+  height: min(100vh, 70vw);
   width: auto;
   object-fit: contain;
   z-index: 9999;
