@@ -229,3 +229,44 @@
 @media (max-width: 768px) {
   .xls-bar { font-size: 11px; }
 }
+
+/* Phones are most of the traffic, and a 540px-wide row inside a ~330px column
+   meant the org/award names and the entire note column sat behind an in-table
+   horizontal scroll. Below 600px each row stops being a spreadsheet row and
+   stacks into a readable card: a row-number gutter on the left, every cell
+   wrapping in a single content column on the right. */
+@media (max-width: 600px) {
+  .xls-table { overflow-x: visible; }
+
+  .xls-row,
+  .xls-note { min-width: 0; }
+
+  /* Column headers only make sense for a real grid — drop them when stacked. */
+  .xls-row--head { display: none; }
+
+  .xls-row--exp,
+  .xls-row--rec,
+  .xls-row--cov {
+    grid-template-columns: 2rem 1fr;
+    gap: 0.25rem 0.75rem;
+    align-items: start;
+    padding: 0.85rem 0.9rem;
+  }
+
+  /* Each cell drops into the content column and wraps fully (no ellipsis). */
+  .xls-row--exp .xls-cell,
+  .xls-row--rec .xls-cell,
+  .xls-row--cov .xls-cell {
+    grid-column: 2;
+    overflow: visible;
+    white-space: normal;
+    text-overflow: clip;
+  }
+
+  /* The gutter number labels the card from the top-left; a one-line stub border
+     reads as a glitch once cells stack, so drop it here. */
+  .xls-gut { border-right: none; }
+
+  /* Align the experience note under the stacked cells, not way out at 3.5rem. */
+  .xls-note { padding: 0 0.9rem 1rem 2.75rem; }
+}

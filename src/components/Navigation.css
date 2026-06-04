@@ -14,6 +14,12 @@
   font-family: var(--font-display);
   font-size: 2.5rem;
   color: var(--accent-primary);
+  /* The wordmark takes a long-press (the touch glitch trigger), so suppress the
+     iOS link callout / text selection that would otherwise hijack the gesture. */
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
 }
 
 .nav-brand:hover {
@@ -266,14 +272,23 @@
     display: flex;
     align-items: center;
     width: 100%;
+    /* The command line is the heart of the site; on mobile this strip is its
+       only entry point, so give it a proper ≥44px tap target. */
+    min-height: 44px;
+    box-sizing: border-box;
     background-color: var(--bg-surface);
     border: 1px dotted rgba(0, 229, 255, 0.3);
     border-top: none;
-    padding: 0.4rem 1rem;
+    padding: 0.5rem 1rem;
     font-family: var(--font-mono);
     font-size: 11px;
     white-space: normal;
     word-break: break-word;
+  }
+
+  /* 16px keeps iOS from force-zooming the page when the command input is focused. */
+  .terminal-mobile-row .terminal-input {
+    font-size: 16px;
   }
 
   /* The desktop fix clips the idle prompt to one line (so it can't collide with
@@ -300,11 +315,16 @@
   }
 
   .nav-links {
-    gap: 1.25rem;
+    gap: 1rem;
+    /* Pull the row back so the first link's padded edge still lines up. */
+    margin-left: -0.5rem;
   }
 
   .nav-links a {
     font-size: 13px;
+    /* Roomier touch target — taller, and wide enough that short labels
+       (BLOG, MEDIA) aren't sub-30px tap zones. */
+    padding: 0.6rem 0.5rem;
   }
 
   .terminal-mobile-row {
@@ -325,13 +345,15 @@
   }
 
   .nav-links {
-    gap: 1rem;
+    gap: 0.5rem;
     width: 100%;
     justify-content: flex-start;
+    margin-left: -0.45rem;
   }
 
   .nav-links a {
     font-size: 12px;
+    padding: 0.55rem 0.45rem;
   }
 
   .terminal-mobile-row {

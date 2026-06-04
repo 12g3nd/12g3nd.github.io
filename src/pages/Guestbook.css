@@ -332,6 +332,12 @@
   background: rgba(255, 255, 255, 0.55);
 }
 
+/* iOS Safari force-zooms the page when a focused input's text is < 16px. Bump to
+   16px on touch-width screens so tapping a field never triggers that zoom. */
+@media (max-width: 600px) {
+  .gb-field__input { font-size: 16px; }
+}
+
 .gb-disclosure {
   font-family: var(--font-mono);
   font-size: 11px;
