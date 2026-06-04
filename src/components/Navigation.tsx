@@ -1,6 +1,6 @@
 
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useState, useEffect, useMemo, useRef, type ReactNode } from 'react';
+import { useState, useEffect, useMemo, useRef, type ReactNode, type PointerEvent as ReactPointerEvent } from 'react';
 import ScrambleText from './ScrambleText';
 import MatrixRain from './MatrixRain';
 import PartyOverlay from './PartyOverlay';
@@ -88,6 +88,12 @@ export default function Navigation() {
   const [outputNode, setOutputNode] = useState<ReactNode>(null);
   const brandTimers = useRef<number[]>([]);
 
+  // Long-press is the touch equivalent of the desktop triple-click: phones can't
+  // produce e.detail === 3, so the wordmark glitch would otherwise be unreachable.
+  const longPressTimer = useRef(0);
+  const longPressFired = useRef(false);
+  const pressOrigin = useRef<{ x: number; y: number } | null>(null);
+
   // Real-shell command history (↑/↓). Kept in a ref — survives closing and
   // reopening the prompt within the session, and doesn't trigger re-renders.
   const historyRef = useRef<string[]>([]);
@@ -162,7 +168,31 @@ export default function Navigation() {
     );
   };
 
-  useEffect(() => () => brandTimers.current.forEach((t) => clearTimeout(t)), []);
+  // ── Long-press the wordmark (touch) → same glitch as the desktop triple-click.
+  const LONG_PRESS_MS = 450;
+  const startBrandPress = (e: ReactPointerEvent<HTMLAnchorElement>) => {
+    pressOrigin.current = { x: e.clientX, y: e.clientY };
+    longPressFired.current = false;
+    window.clearTimeout(longPressTimer.current);
+    longPressTimer.current = window.setTimeout(() => {
+      longPressFired.current = true;
+      glitchBrand();
+    }, LONG_PRESS_MS);
+  };
+  const cancelBrandPress = () => window.clearTimeout(longPressTimer.current);
+  // Any real movement means a scroll/drag started here, not a press — bail.
+  const moveBrandPress = (e: ReactPointerEvent<HTMLAnchorElement>) => {
+    const o = pressOrigin.current;
+    if (o && Math.hypot(e.clientX - o.x, e.clientY - o.y) > 10) cancelBrandPress();
+  };
+
+  useEffect(
+    () => () => {
+      brandTimers.current.forEach((t) => clearTimeout(t));
+      window.clearTimeout(longPressTimer.current);
+    },
+    []
+  );
 
   const fireMatrix = () => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -498,8 +528,20 @@ export default function Navigation() {
         <NavLink
           to="/"
           className="nav-brand"
+          onPointerDown={startBrandPress}
+          onPointerMove={moveBrandPress}
+          onPointerUp={cancelBrandPress}
+          onPointerLeave={cancelBrandPress}
+          onPointerCancel={cancelBrandPress}
+          onContextMenu={(e) => e.preventDefault()}
           onClick={(e) => {
-            // Triple-click glitches the wordmark instead of navigating.
+            // Long-press (touch) or triple-click (mouse) glitches the wordmark
+            // instead of navigating home.
+            if (longPressFired.current) {
+              e.preventDefault();
+              longPressFired.current = false;
+              return;
+            }
             if (e.detail === 3) {
               e.preventDefault();
               glitchBrand();
