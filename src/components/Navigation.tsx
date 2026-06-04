@@ -5,6 +5,7 @@ import ScrambleText from './ScrambleText';
 import MatrixRain from './MatrixRain';
 import PartyOverlay from './PartyOverlay';
 import { isLateNight } from '../utils/time';
+import { applyTheme } from '../utils/theme';
 import './Navigation.css';
 
 const PHRASES = [
@@ -321,13 +322,11 @@ export default function Navigation() {
         );
         break;
       case 'theme light':
-        document.documentElement.classList.add('theme-light');
-        localStorage.setItem('sjsys_theme', 'light');
+        applyTheme('light');
         setOutput('theme → light. cyan-on-navy is sacred; this is heresy. enjoy.');
         break;
       case 'theme dark':
-        document.documentElement.classList.remove('theme-light');
-        localStorage.setItem('sjsys_theme', 'dark');
+        applyTheme('dark');
         setOutput('theme → dark. order restored.');
         break;
       case 'theme':

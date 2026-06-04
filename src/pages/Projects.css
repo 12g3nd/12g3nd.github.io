@@ -9,7 +9,7 @@
   margin-top: 1.5rem;
   padding: 0.6rem 1rem;
   background: var(--bg-surface);
-  border: 1px solid rgba(0, 229, 255, 0.2);
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
   border-left: 2px solid var(--accent-primary);
   font-family: var(--font-mono);
   font-size: 12px;
@@ -41,8 +41,8 @@
   align-items: stretch;
   /* Faint draftsman's grid showing through the gutters — blueprint texture. */
   background-image:
-    linear-gradient(rgba(0, 229, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 229, 255, 0.035) 1px, transparent 1px);
+    linear-gradient(rgba(var(--accent-rgb), 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--accent-rgb), 0.035) 1px, transparent 1px);
   background-size: 44px 44px;
   background-position: -1px -1px;
 }
@@ -67,8 +67,8 @@
 
 .project-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(0, 229, 255, 0.6);
-  box-shadow: 0 12px 30px -12px rgba(0, 229, 255, 0.3);
+  border-color: rgba(var(--accent-rgb), 0.6);
+  box-shadow: 0 12px 30px -12px rgba(var(--accent-rgb), 0.3);
 }
 
 /* big faint watermark number, like the home-page tenet cards */
@@ -79,7 +79,7 @@
   font-family: var(--font-display);
   font-size: 4.5rem;
   line-height: 1;
-  color: rgba(0, 229, 255, 0.08);
+  color: rgba(var(--accent-rgb), 0.08);
   pointer-events: none;
   user-select: none;
   z-index: 0;
@@ -92,7 +92,7 @@
   height: 170px;
   margin-bottom: 1.5rem;
   background-color: var(--bg-base);
-  border: 1px solid rgba(0, 229, 255, 0.25);
+  border: 1px solid rgba(var(--accent-rgb), 0.25);
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -115,7 +115,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(160deg, rgba(0, 229, 255, 0.07), transparent 55%);
+  background: linear-gradient(160deg, rgba(var(--accent-rgb), 0.07), transparent 55%);
   pointer-events: none;
 }
 
@@ -201,7 +201,7 @@
 .project-card__links a {
   display: inline-block;
   padding: 0.6rem 1.1rem;
-  border: 1px solid rgba(0, 229, 255, 0.5);
+  border: 1px solid rgba(var(--accent-rgb), 0.5);
   font-family: var(--font-mono);
   font-size: 12px;
   font-weight: bold;
@@ -211,7 +211,7 @@
 }
 
 .project-card__links a:hover {
-  background: rgba(0, 229, 255, 0.12);
+  background: rgba(var(--accent-rgb), 0.12);
   border-color: var(--accent-primary);
 }
 
@@ -264,7 +264,7 @@
   font-size: clamp(2.2rem, 4.5vw, 3rem);
   line-height: 1;
   color: var(--accent-primary);
-  text-shadow: 0 0 18px rgba(0, 229, 255, 0.25);
+  text-shadow: 0 0 18px rgba(var(--accent-rgb), 0.25);
 }
 
 .project-card__metric-label {

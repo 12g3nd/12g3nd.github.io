@@ -10,7 +10,7 @@
   margin-bottom: 2.5rem;
   padding: 0.6rem 1rem;
   background: var(--bg-surface);
-  border: 1px solid rgba(0, 229, 255, 0.2);
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
   border-left: 2px solid var(--accent-primary);
   font-family: var(--font-mono);
   font-size: 12px;
@@ -63,7 +63,7 @@
 
 .media-plate:hover {
   transform: translateY(-5px);
-  border-color: rgba(0, 229, 255, 0.5);
+  border-color: rgba(var(--accent-rgb), 0.5);
   /* Warm gallery light on hover — the reserved amber used as literal lighting. */
   box-shadow:
     0 26px 50px -22px rgba(0, 0, 0, 0.85),

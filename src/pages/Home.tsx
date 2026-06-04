@@ -1,6 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
+
+import { toggleTheme } from '../utils/theme';
 
 import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
@@ -38,6 +40,23 @@ export default function Home() {
     window.clearTimeout(sjGlowTimer.current);
     setSjGlow(true);
     sjGlowTimer.current = window.setTimeout(() => setSjGlow(false), 1800);
+  };
+
+  // Clicking the wireframe figure flips the site between light and dark — a
+  // diegetic power switch for the OS. Shared props so the desktop and mobile
+  // figures behave identically and stay keyboard-accessible.
+  const wireframeThemeProps = {
+    onClick: () => { toggleTheme(); },
+    onKeyDown: (e: KeyboardEvent<HTMLImageElement>) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleTheme();
+      }
+    },
+    role: 'button' as const,
+    tabIndex: 0,
+    title: 'Toggle theme (light / dark)',
+    'aria-label': 'Toggle color theme between light and dark',
   };
 
   // Clicking the Y2K star fires "whimsy mode": the star spins, the existing
@@ -138,7 +157,7 @@ export default function Home() {
             <h1 className="outline-text">
               <span className={sjGlow ? 'letter-glow' : ''}>J</span>ARABANA
             </h1>
-            <img src="/figure.png" alt="Wireframe Figure" className="mobile-figure-inline wireframe-glitch" />
+            <img src="/figure.png" alt="Wireframe Figure" className="mobile-figure-inline wireframe-glitch" {...wireframeThemeProps} />
             <p className="phonetic-text">/sriːhɪθ dʒʊəˌræˈbɑːnə/</p>
           </div>
           <div className="badge-row">
@@ -214,7 +233,7 @@ export default function Home() {
         </div>
         <div className="right-column">
           <div className="hero-figure">
-            <img src="/figure.png" alt="Wireframe Figure" className="wireframe-glitch" />
+            <img src="/figure.png" alt="Wireframe Figure" className="wireframe-glitch" {...wireframeThemeProps} />
           </div>
           <div className="what-im-up-to-card">
             <h3><span className="accent-slash">//</span> WHAT I'M UP TO</h3>

@@ -9,7 +9,7 @@
   margin-top: 1.5rem;
   padding: 0.6rem 1rem;
   background: var(--bg-surface);
-  border: 1px solid rgba(0, 229, 255, 0.2);
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
   border-left: 2px solid var(--accent-primary);
   font-family: var(--font-mono);
   font-size: 12px;
@@ -87,7 +87,7 @@
   font-family: var(--font-mono);
   font-size: 13px;
   font-weight: bold;
-  border-bottom: 1px solid rgba(0, 229, 255, 0.4);
+  border-bottom: 1px solid rgba(var(--accent-rgb), 0.4);
   padding-bottom: 4px;
   transition: all 0.15s ease;
   text-decoration: none;
@@ -147,7 +147,7 @@
 }
 
 .status-online {
-  color: #0f0;
+  color: var(--term-green);
 }
 
 .blink-text {

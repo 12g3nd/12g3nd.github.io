@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+  border-bottom: 1px solid rgba(var(--accent-rgb), 0.2);
   padding: 1rem 2rem;
   background-color: var(--bg-base);
   position: sticky;
@@ -72,14 +72,14 @@
 
 .nav-links a.active::after {
   width: 100%;
-  box-shadow: 0 0 8px rgba(0, 229, 255, 0.6);
+  box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.6);
 }
 
 .terminal-header-box {
   flex: 1;
   margin: 0 2rem;
   background-color: var(--bg-surface);
-  border: 1px dotted rgba(0, 229, 255, 0.3);
+  border: 1px dotted rgba(var(--accent-rgb), 0.3);
   padding: 0.5rem 1rem;
   font-family: var(--font-mono);
   font-size: 13px;
@@ -146,7 +146,7 @@
 .terminal-header-box--active {
   border-style: solid;
   border-color: var(--accent-primary);
-  box-shadow: 0 0 12px rgba(0, 229, 255, 0.25);
+  box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.25);
 }
 
 .terminal-text {
@@ -277,7 +277,7 @@
     min-height: 44px;
     box-sizing: border-box;
     background-color: var(--bg-surface);
-    border: 1px dotted rgba(0, 229, 255, 0.3);
+    border: 1px dotted rgba(var(--accent-rgb), 0.3);
     border-top: none;
     padding: 0.5rem 1rem;
     font-family: var(--font-mono);

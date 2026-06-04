@@ -23,7 +23,7 @@
 
 /* ── Reading progress ─────────────────────────────────── */
 .post-progress-box {
-  border: 1px solid rgba(0, 229, 255, 0.3);
+  border: 1px solid rgba(var(--accent-rgb), 0.3);
   padding: 1rem 1.25rem;
   background-color: var(--bg-raised);
 }
@@ -98,7 +98,7 @@
 }
 
 .post-meta-status {
-  color: #0f0;
+  color: var(--term-green);
 }
 
 .post-other-box li a {
