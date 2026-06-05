@@ -128,38 +128,26 @@
   mix-blend-mode: multiply;
 }
 
-/* Hero wireframe figure: figure.png is a low-res (218×559) sparse mesh designed
-   to bloom against navy — that cyan glow hid its upscaled aliasing. On flat
-   parchment the bare, dense vertices read as gritty speckle with nothing to sit
-   on, and the dark-mode chromatic glitch only adds harshness. So light mode gets
-   a calm, static treatment instead: a gentle blur melts the speckle, a layered
-   teal bloom (tight → wide) wraps the silhouette in a soft halo, and a blurred
-   radial field sits behind to ground it. (Dark mode's glow + glitch untouched.) */
-.theme-light .hero-figure { position: relative; }
-.theme-light .hero-figure::before {
-  content: '';
-  position: absolute;
-  top: 3%;
-  bottom: 2%;
-  right: 0;
-  width: min(100%, 260px);
-  z-index: 0;
-  background: radial-gradient(50% 46% at 50% 45%, rgba(var(--accent-rgb), 0.18), transparent 72%);
-  filter: blur(22px);
-  pointer-events: none;
-}
-.theme-light .hero-figure img { position: relative; z-index: 1; }
-
+/* Hero wireframe: light mode swaps in a dedicated high-res render
+   (lightmodefigure.jpg, chosen in Home.tsx) that's already drawn on a light
+   ground. It ships with a white background, so `multiply` drops that onto the
+   parchment — the teal mesh + perspective grid read as if printed on the page.
+   No blur/bloom needed here; dark mode keeps figure.png with its cyan glow +
+   glitch animation, so we just stop that animation for the still light render. */
+/* Light mode swaps in a transparent cutout of the supplied high-res surfer
+   render (lightmodefigure.png — the supplied JPG with its white studio
+   background keyed to transparent). It drops onto the parchment cleanly in any
+   layout, so no frame or blend tricks are needed — just stop the dark-mode
+   glitch animation and add a soft shadow to ground it. (Dark mode keeps the
+   low-poly figure.png with its cyan glow + glitch.) */
 .theme-light .wireframe-glitch {
   animation: none;
-  opacity: 0.92;
-  filter:
-    blur(0.7px)
-    saturate(1.08)
-    drop-shadow(0 0 1px rgba(var(--accent-rgb), 0.5))
-    drop-shadow(0 0 6px rgba(var(--accent-rgb), 0.42))
-    drop-shadow(0 0 16px rgba(var(--accent-rgb), 0.26))
-    drop-shadow(0 0 30px rgba(var(--accent-rgb), 0.15));
+  filter: drop-shadow(0 12px 18px rgba(42, 36, 24, 0.18));
+}
+/* The landscape surfer is wider than the old portrait figure, so on phones (where
+   it overlays the name) trim it a little so the wordmark stays readable. */
+@media (max-width: 768px) {
+  .theme-light .mobile-figure-inline { max-height: 150px; }
 }
 
 /* CN-tower landmark + crest seal are tinted near-white to glow on navy, so they
@@ -178,6 +166,19 @@
 .theme-light .crest-icon:focus-visible {
   filter: brightness(0) saturate(100%);
   opacity: 1;
+}
+
+/* The y2k sparkle ships cream (to glow on navy); on parchment recolor it to the
+   wordmark's ink so it reads as part of the name. The filter chain lands on
+   ~rgb(42,36,24) = --text-primary; hover keeps the ink and adds a faint accent
+   glow for the interactive cue. */
+.theme-light .y2k-accent {
+  filter: brightness(0) invert(13%) sepia(1) brightness(0.92);
+}
+.theme-light .y2k-accent:hover,
+.theme-light .y2k-accent:focus-visible {
+  filter: brightness(0) invert(13%) sepia(1) brightness(0.92)
+    drop-shadow(0 0 10px rgba(var(--accent-rgb), 0.35));
 }
 
 /* Watermark numerals were near-invisible cyan-on-navy values; on parchment bump
