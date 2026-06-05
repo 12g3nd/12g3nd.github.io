@@ -128,46 +128,38 @@
   mix-blend-mode: multiply;
 }
 
-/* Hero wireframe figure: figure.png is a low-res (218×559) sparse mesh that was
-   designed to bloom against navy — its cyan glow hid the upscaled aliasing. On
-   flat parchment the bare vertices read as harsh pixels with nothing to sit on.
-   Remedy: (1) a soft blurred teal field BEHIND the figure to ground it, and
-   (2) a richer silhouette-hugging bloom so each line bleeds into a halo instead
-   of a jagged edge. The bloom lives in the figure's glitch animation, so light
-   mode gets its own keyframe (the dark cyan glow is untouched). */
+/* Hero wireframe figure: figure.png is a low-res (218×559) sparse mesh designed
+   to bloom against navy — that cyan glow hid its upscaled aliasing. On flat
+   parchment the bare, dense vertices read as gritty speckle with nothing to sit
+   on, and the dark-mode chromatic glitch only adds harshness. So light mode gets
+   a calm, static treatment instead: a gentle blur melts the speckle, a layered
+   teal bloom (tight → wide) wraps the silhouette in a soft halo, and a blurred
+   radial field sits behind to ground it. (Dark mode's glow + glitch untouched.) */
 .theme-light .hero-figure { position: relative; }
 .theme-light .hero-figure::before {
   content: '';
   position: absolute;
-  top: 4%;
-  bottom: 3%;
+  top: 3%;
+  bottom: 2%;
   right: 0;
-  width: min(100%, 340px);
+  width: min(100%, 260px);
   z-index: 0;
-  background: radial-gradient(52% 48% at 56% 44%, rgba(var(--accent-rgb), 0.17), transparent 72%);
-  filter: blur(24px);
+  background: radial-gradient(50% 46% at 50% 45%, rgba(var(--accent-rgb), 0.18), transparent 72%);
+  filter: blur(22px);
   pointer-events: none;
 }
 .theme-light .hero-figure img { position: relative; z-index: 1; }
 
-.theme-light .wireframe-glitch { animation-name: wireframe-glitch-light; }
-
-@keyframes wireframe-glitch-light {
-  0%, 94%, 100% {
-    filter:
-      drop-shadow(0 0 1px rgba(var(--accent-rgb), 0.55))
-      drop-shadow(0 0 7px rgba(var(--accent-rgb), 0.42))
-      drop-shadow(0 0 20px rgba(var(--accent-rgb), 0.28));
-  }
-  95% { filter: drop-shadow(3px 0 0 rgba(193, 18, 70, 0.45)) drop-shadow(-3px 0 0 rgba(0, 150, 168, 0.5)); }
-  96% { filter: drop-shadow(-2px 1px 0 rgba(193, 18, 70, 0.3)) drop-shadow(2px -1px 0 rgba(0, 150, 168, 0.35)); }
-  97% { filter: drop-shadow(4px 0 0 rgba(193, 18, 70, 0.4)) drop-shadow(-4px 0 0 rgba(0, 150, 168, 0.4)); }
-  98% {
-    filter:
-      drop-shadow(0 0 1px rgba(var(--accent-rgb), 0.55))
-      drop-shadow(0 0 7px rgba(var(--accent-rgb), 0.42))
-      drop-shadow(0 0 20px rgba(var(--accent-rgb), 0.28));
-  }
+.theme-light .wireframe-glitch {
+  animation: none;
+  opacity: 0.92;
+  filter:
+    blur(0.7px)
+    saturate(1.08)
+    drop-shadow(0 0 1px rgba(var(--accent-rgb), 0.5))
+    drop-shadow(0 0 6px rgba(var(--accent-rgb), 0.42))
+    drop-shadow(0 0 16px rgba(var(--accent-rgb), 0.26))
+    drop-shadow(0 0 30px rgba(var(--accent-rgb), 0.15));
 }
 
 /* CN-tower landmark + crest seal are tinted near-white to glow on navy, so they
