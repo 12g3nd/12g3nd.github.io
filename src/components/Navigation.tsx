@@ -559,8 +559,8 @@ export default function Navigation() {
         </div>
 
         <div className="nav-links">
-          <NavLink to="/projects">PROJECTS</NavLink>
           <NavLink to="/business">BUSINESS</NavLink>
+          <NavLink to="/projects">PROJECTS</NavLink>
           <NavLink to="/poetry">POETRY</NavLink>
           <NavLink to="/media">MEDIA</NavLink>
           <NavLink to="/blog">BLOG</NavLink>

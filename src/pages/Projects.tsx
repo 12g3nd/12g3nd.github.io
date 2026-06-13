@@ -56,13 +56,15 @@ const projects: Project[] = [
   },
   {
     id: '03',
-    name: 'Lingua',
-    description: "Lingua is a language learning application that helps users practice real-world speaking skills through unscripted, immersive conversations with diverse AI personas.",
+    name: 'LinguaScape',
+    description: "LinguaScape is a language learning application that helps users practice real-world speaking skills through unscripted, immersive conversations with diverse AI personas.",
     stack: ['React', 'TypeScript'],
-    repo: 'https://github.com/12g3nd/Lingua',
+    link: 'https://www.jarabana.com/LinguaScape/',
+    linkText: '[VISIT LIVE ↗]',
+    repo: 'https://github.com/12g3nd/LinguaScape',
     repoLinkText: '[VIEW REPO ↗]',
     logo: '/LinguaPreview.png',
-    status: 'REPO',
+    status: 'LIVE',
   },
   {
     id: '04',
@@ -118,6 +120,7 @@ export default function Projects() {
       <section className="section">
         <div className="section-header">
           <h2><ScrambleText text="PROJECTS_" /></h2>
+          <p className="section-desc">the second pillar: things I've built — platforms, tools, and experiments</p>
         </div>
 
         {/* Package-manager chrome: frames the page as `pkg list` inside SJ.SYS */}
