@@ -9,6 +9,13 @@ export interface Post {
 
 export const posts: Post[] = [
   {
+    slug: 'doesnt-have-to-be-from-anywhere',
+    date: '2026-06-22',
+    title: "Doesn't Have to Be From Anywhere",
+    abstract:
+      "A near-midnight GO train between an old hometown and a new one, and what it means to notice a constant while it's still happening, before you find out it was sacred.",
+  },
+  {
     slug: 'wanting-things',
     date: '2026-05-30',
     title: 'On Wanting Things You Might Not Get',
