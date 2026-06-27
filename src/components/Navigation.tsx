@@ -195,6 +195,29 @@ export default function Navigation() {
     []
   );
 
+  // The ⌘K command palette can't reach into this component's local state, so it
+  // asks for the matrix/party effects via CustomEvents (same idiom as the Home
+  // crest's `sjsys:crt`). Logic is inlined rather than calling fireMatrix/
+  // toggleParty so the effect needs no non-stable deps.
+  useEffect(() => {
+    const onMatrix = () => {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      setMatrix(true);
+      window.setTimeout(() => setMatrix(false), 4500);
+    };
+    const onParty = () => {
+      const on = !document.body.classList.contains('party-mode');
+      document.body.classList.toggle('party-mode', on);
+      setParty(on);
+    };
+    window.addEventListener('sjsys:matrix', onMatrix);
+    window.addEventListener('sjsys:party', onParty);
+    return () => {
+      window.removeEventListener('sjsys:matrix', onMatrix);
+      window.removeEventListener('sjsys:party', onParty);
+    };
+  }, []);
+
   const fireMatrix = () => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     setMatrix(true);

@@ -14,6 +14,7 @@ import NotFound from './pages/NotFound';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import CrtBurst from './components/CrtBurst';
+import CommandPalette from './components/CommandPalette';
 import useKonami from './hooks/useKonami';
 
 
@@ -73,6 +74,7 @@ function App() {
         <Footer />
       </div>
       {crt && <CrtBurst />}
+      <CommandPalette />
     </Router>
   );
 }

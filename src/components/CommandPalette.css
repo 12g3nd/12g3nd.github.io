@@ -1,0 +1,118 @@
+/* ⌘K command palette. Styled to match the nav terminal: Space Mono, cyan-on-navy,
+   a chrome strip like the doc-viewer. Portaled to <body>, above the app and clear
+   of the PageTransition transform. Sits below the boot screen / Konami burst. */
+.cmdk {
+  position: fixed;
+  inset: 0;
+  z-index: 9995;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 16vh;
+  background: rgba(5, 10, 18, 0.62);
+  backdrop-filter: blur(3px);
+  animation: cmdk-fade 0.14s ease-out;
+}
+
+.cmdk__panel {
+  width: min(560px, 92vw);
+  background: var(--bg-surface);
+  border: 1px solid rgba(var(--accent-rgb), 0.35);
+  box-shadow: var(--shadow-paper), 0 0 0 1px rgba(0, 0, 0, 0.4);
+  font-family: var(--font-mono);
+  overflow: hidden;
+  animation: cmdk-pop 0.16s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.cmdk__chrome {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.45rem 0.7rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  background: var(--bg-base);
+  border-bottom: 1px solid rgba(var(--text-rgb), 0.1);
+}
+.cmdk__chrome-label { color: var(--accent-primary); }
+.cmdk__chrome-esc {
+  border: 1px solid rgba(var(--text-rgb), 0.25);
+  padding: 0.05rem 0.35rem;
+  border-radius: 3px;
+}
+
+.cmdk__inputrow {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 0.8rem;
+  border-bottom: 1px solid rgba(var(--text-rgb), 0.08);
+}
+.cmdk__prompt { color: var(--accent-primary); font-weight: 700; }
+.cmdk__input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  caret-color: var(--accent-primary);
+}
+.cmdk__input::placeholder { color: var(--text-faint); }
+
+.cmdk__list {
+  list-style: none;
+  margin: 0;
+  padding: 0.3rem;
+  max-height: 46vh;
+  overflow-y: auto;
+}
+.cmdk__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0.6rem;
+  cursor: pointer;
+  color: var(--text-dim);
+  border-left: 2px solid transparent;
+}
+.cmdk__item--active {
+  background: rgba(var(--accent-rgb), 0.12);
+  border-left-color: var(--accent-primary);
+  color: var(--text-primary);
+}
+.cmdk__item-label { font-size: 0.9rem; }
+.cmdk__item-hint {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-faint);
+}
+.cmdk__item--active .cmdk__item-hint { color: var(--accent-primary); }
+
+.cmdk__empty {
+  padding: 0.8rem 0.6rem;
+  color: var(--text-faint);
+  font-size: 0.85rem;
+}
+
+.cmdk__footer {
+  padding: 0.45rem 0.7rem;
+  font-size: 0.65rem;
+  color: var(--text-faint);
+  border-top: 1px solid rgba(var(--text-rgb), 0.08);
+  text-align: right;
+}
+
+@keyframes cmdk-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes cmdk-pop {
+  from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cmdk,
+  .cmdk__panel { animation: none; }
+}
