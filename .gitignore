@@ -15,6 +15,9 @@ dist-ssr
 # Brainstorm visual-companion artifacts
 .superpowers/
 
+# Private blog planning (not for publishing)
+BLOG_ROADMAP.md
+
 # Playwright MCP output
 .playwright-mcp/
 
