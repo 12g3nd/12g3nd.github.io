@@ -251,6 +251,14 @@
 .project-card__status--repo { color: rgba(var(--text-rgb), 0.5); }
 .project-card__status--archive { color: rgba(var(--text-rgb), 0.35); }
 
+/* Award chip — gold, with a faint glow so a podium finish reads at a glance. */
+.project-card__status--award {
+  color: #ffd76b;
+  border-color: #ffb000;
+  background: rgba(38, 28, 0, 0.85);
+  box-shadow: 0 0 14px rgba(255, 176, 0, 0.4);
+}
+
 /* ── Headline metric ───────────────────────────────────────── */
 .project-card__metric {
   display: flex;
@@ -291,9 +299,15 @@
 }
 
 /* Wide card — spans two grid columns so it reads with more weight than its
-   neighbours (PlotON). */
+   neighbours (Waive). */
 .project-card-wrap--wide {
   grid-column: span 2;
+}
+
+/* Tall card — spans two grid rows so it reads with extra length down the
+   page (PlotON). */
+.project-card-wrap--tall {
+  grid-row: span 2;
 }
 
 /* Force a card to start a fresh row regardless of how many columns are left
@@ -307,6 +321,10 @@
 @media (max-width: 1079px) {
   .project-card-wrap--wide {
     grid-column: auto;
+  }
+
+  .project-card-wrap--tall {
+    grid-row: auto;
   }
 
   .project-card-wrap--newrow {

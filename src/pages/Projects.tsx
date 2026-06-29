@@ -13,15 +13,21 @@ type Project = {
   linkText?: string;
   repo?: string;
   repoLinkText?: string;
+  /* optional third link (e.g. a Devpost / awards page) */
+  devpost?: string;
   logo?: string;
-  /* status chip — LIVE / VIRAL / WIP / REPO / ARCHIVE */
+  /* status chip — LIVE / VIRAL / WIP / REPO / ARCHIVE / AWARD */
   status?: string;
+  /* richer chip label (emoji / multi-word); falls back to `● {status}` */
+  statusLabel?: string;
   /* headline number, pulled out big so the work reads at a glance */
   metric?: { value: string; label: string; note?: string };
   /* featured projects render full-width at the top of the grid */
   featured?: boolean;
   /* spans two grid columns for extra emphasis */
   wide?: boolean;
+  /* spans two grid rows for vertical emphasis */
+  tall?: boolean;
   /* forces the card to begin a fresh grid row */
   startRow?: boolean;
 };
@@ -43,19 +49,35 @@ const projects: Project[] = [
   },
   {
     id: '02',
+    name: 'Waive',
+    description: "Built with Skyler Xiao, Aryan Thakur, and Adam Zaidan. Waive turns an intimidating government notice into a clear path forward before your deadline: upload the letter, get your real deadline and the remedy the law already wrote for you. The hard line: AI only reads and translates, while tested code computes every date, routes the remedy, and cites a real statute, so the model can never invent anything that costs you. Placed 2nd of 52 teams at STEMINATE Hacks 2026.",
+    stack: ['Next.js', 'TypeScript', 'Vitest', 'Ollama', 'Tailwind CSS', 'Vercel'],
+    link: 'https://waivelegal.vercel.app/',
+    linkText: '[VISIT LIVE ↗]',
+    repo: 'https://github.com/12g3nd/Waive',
+    repoLinkText: '[VIEW REPO ↗]',
+    devpost: 'https://devpost.com/software/waive',
+    logo: '/Waive.jpg',
+    status: 'AWARD',
+    statusLabel: '🏆 WINNER',
+    metric: { value: '2nd', label: 'of 52 teams', note: 'STEMINATE Hacks 2026 · 281 participants' },
+    wide: true,
+  },
+  {
+    id: '03',
     name: 'PlotON',
     description: "A project I've been thinking about since Grade 8. Explore cities across Ontario on an interactive map, weight what matters to you, and compare them side by side to find your next place to live. Still a work in progress, so the data is incomplete for now.",
-    stack: ['Next.js', 'leaflet', 'vercel'],
+    stack: ['Next.js', 'Leaflet', 'Vercel'],
     link: 'https://ploton-zeta.vercel.app/',
     linkText: '[VISIT LIVE ↗]',
     repo: 'https://github.com/12g3nd/PlotON',
     repoLinkText: '[VIEW REPO ↗]',
     logo: '/PlotONPreview.png',
     status: 'WIP',
-    wide: true,
+    tall: true,
   },
   {
-    id: '03',
+    id: '04',
     name: 'LinguaScape',
     description: "LinguaScape is a language learning application that helps users practice real-world speaking skills through unscripted, immersive conversations with diverse AI personas.",
     stack: ['React', 'TypeScript'],
@@ -67,17 +89,16 @@ const projects: Project[] = [
     status: 'LIVE',
   },
   {
-    id: '04',
+    id: '05',
     name: 'The Clearwater Forge',
     description: "A portfolio backtesting application that allows users to evaluate custom stock portfolios against benchmarks while computing advanced statistics like CAGR, Sharpe ratios, and max drawdowns.",
     stack: ['Streamlit', 'React'],
     repo: 'https://github.com/12g3nd/TheClearwaterForge',
     repoLinkText: '[VIEW REPO ↗]',
     status: 'REPO',
-    startRow: true,
   },
   {
-    id: '05',
+    id: '06',
     name: 'drift',
     description: "Drift is a Chrome extension that replaces the standard new tab page with a living, procedurally generated landscape rendered from simple shapes.",
     stack: ['JavaScript', 'HTML'],
@@ -87,7 +108,7 @@ const projects: Project[] = [
     status: 'REPO',
   },
   {
-    id: '06',
+    id: '07',
     name: 'Spring Break Project',
     description: 'A younger me during when I first became a teenager made a website where every Spring Break, I would write some articles. Kind of full circle to this website if you think about. Also, please do not flame me for my corniness back then.',
     stack: ['Google Sites'],
@@ -95,9 +116,10 @@ const projects: Project[] = [
     linkText: '[VIEW LIVE ↗]',
     logo: '/SBPPreview.png',
     status: 'ARCHIVE',
+    startRow: true,
   },
   {
-    id: '07',
+    id: '08',
     name: 'VOTE SRIHITH SNAPCHAT FILTER',
     description: "Something I did a few years ago for whenever I ran for a position and wanted an easy way for people to share my campaign on social media. Went viral somewhere else in the world and it has 198k lens plays (accurate as of 4.6.26). Thought it was funny and creative.\n\n(Note: The person in the image is not me.)",
     stack: ['Snapchat Lens Studio', 'AR', 'Social Media'],
@@ -106,7 +128,7 @@ const projects: Project[] = [
     logo: '/filter.png',
     status: 'VIRAL',
     metric: { value: '198K', label: 'lens plays' },
-    featured: true,
+    wide: true,
   },
 ];
 
@@ -120,7 +142,7 @@ export default function Projects() {
       <section className="section">
         <div className="section-header">
           <h2><ScrambleText text="PROJECTS_" /></h2>
-          <p className="section-desc">the second pillar: things I've built — platforms, tools, and experiments</p>
+          <p className="section-desc">the second pillar: things I've built (platforms, tools, and experiments)</p>
         </div>
 
         {/* Package-manager chrome: frames the page as `pkg list` inside SJ.SYS */}
@@ -147,7 +169,7 @@ export default function Projects() {
                 <span className="project-card__num">{project.id}</span>
                 {project.status && (
                   <span className={`project-card__status project-card__status--${project.status.toLowerCase()}`}>
-                    ● {project.status}
+                    {project.statusLabel ?? `● ${project.status}`}
                   </span>
                 )}
                 {project.logo ? (
@@ -187,6 +209,9 @@ export default function Projects() {
                     )}
                     {project.repo && (
                       <a href={project.repo} target="_blank" rel="noreferrer">{project.repoLinkText}</a>
+                    )}
+                    {project.devpost && (
+                      <a href={project.devpost} target="_blank" rel="noreferrer">[DEVPOST ↗]</a>
                     )}
                   </div>
                 </div>
