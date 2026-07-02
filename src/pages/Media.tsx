@@ -37,7 +37,7 @@ export default function Media() {
       <section className="section">
         <div className="section-header">
           <h2><ScrambleText text="FAV_MEDIA.DAT" /></h2>
-          <p className="section-desc">media that I enjoy to help you understand me</p>
+          <p className="section-desc">the media I enjoy — a shortcut to understanding me</p>
         </div>
 
         {/* Gallery chrome: the per-section "temperature" — this room is a wall of

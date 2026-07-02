@@ -35,6 +35,7 @@ export default function Blog() {
       <section className="section">
         <div className="section-header">
           <h2><ScrambleText text="TRANSMISSIONS_" /></h2>
+          <p className="section-desc">essays and logs, append-only — once a transmission goes out, I don't edit it</p>
         </div>
 
         {/* Log chrome: frames the feed as a live log stream inside SJ.SYS */}
@@ -72,6 +73,7 @@ export default function Blog() {
                 <li><span>&gt;</span> LOCAL_TIME: <br/><span className="time-display">{timeStr || 'LOADING...'}</span></li>
                 <li><span>&gt;</span> LATENCY: 24ms</li>
                 <li><span>&gt;</span> REGION: ON_CA</li>
+                <li><span>&gt;</span> WRITE_MODE: APPEND_ONLY</li>
               </ul>
             </div>
 

@@ -106,7 +106,7 @@ export default function GuestbookForm() {
         </label>
 
         <label className="gb-field">
-          <span className="gb-field__label">How you'd describe yourself in 3 words</span>
+          <span className="gb-field__label">How you'd describe yourself in 3 words (or any 3 words I suppose)</span>
           <input
             type="text"
             className="gb-field__input"
@@ -126,8 +126,8 @@ export default function GuestbookForm() {
         </div>
 
         <p className="gb-disclosure">
-          Entries are public once approved. Don't include personal information. To request removal,
-          email srihithjarabana@gmail.com with your entry details.
+          Entries are public once approved. Don't include personal information. To request removal,{' '}
+          <a href="mailto:srihithjarabana@gmail.com">email me</a> with your entry details.
         </p>
 
         {formState === 'error' && errorMsg && <p className="gb-form-error">▸ {errorMsg}</p>}

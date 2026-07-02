@@ -40,7 +40,7 @@ const desk = [
 
 const toolbar = ['Financial Modelling', 'Data Analysis', 'Python', 'R', 'SQL', 'Bloomberg', 'FactSet', 'Excel'];
 
-const SHEETS = 2;
+const SHEETS = 3;
 
 export default function Business() {
   useDocumentMeta(
@@ -114,7 +114,32 @@ export default function Business() {
             </div>
           </section>
 
-          {/* ── Sheet 03: COVERAGE (artifact slots — Phase 2) ────
+          {/* ── Sheet 03: RESUME.PDF ───────────────────────────
+              The raw file, attached to the workbook like any other sheet. */}
+          <section className="xls-sheet">
+            <div className="xls-sheet__tab">RESUME.PDF</div>
+            <div className="xls-table">
+              <div className="xls-row xls-row--head xls-row--file">
+                <span className="xls-gut">#</span>
+                <span>FILE</span>
+                <span>NOTE</span>
+                <span>LINK</span>
+              </div>
+              <Reveal>
+                <div className="xls-row xls-row--file">
+                  <span className="xls-gut">1</span>
+                  <span className="xls-cell xls-cell--key">resume.pdf</span>
+                  <span className="xls-cell xls-cell--dim">the workbook above, exported to one page</span>
+                  <span className="xls-cell xls-cell--links">
+                    <a href="/resume.pdf" target="_blank" rel="noreferrer">[OPEN ↗]</a>
+                    <a href="/resume.pdf" download="Srihith-Jarabana-Resume.pdf">[DOWNLOAD ↓]</a>
+                  </span>
+                </div>
+              </Reveal>
+            </div>
+          </section>
+
+          {/* ── Sheet 04: COVERAGE (artifact slots — Phase 2) ────
               Commented out until there are write-ups to show. */}
           {/*
           <section className="xls-sheet">

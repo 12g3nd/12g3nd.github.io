@@ -193,7 +193,7 @@ export default function Home() {
                 className="sj-trigger"
                 onClick={triggerSjGlow}
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); triggerSjGlow(); } }}
-              >SJ</span>' also welcome. 19. Businessman by craft. Also, strong STEM and literature background.
+              >SJ</span>' also welcome. 19. Businessman by craft.
               Welcome to my personal (and humble) corner of the internet.
             </p>
             <div className="hero-actions">
@@ -233,7 +233,8 @@ export default function Home() {
           <div className="mobile-what-im-up-to">
             <div className="what-im-up-to-card">
               <h3><span className="accent-slash">//</span> WHAT I'M UP TO</h3>
-              <p>Learning & building financial models. Career aspirations include quant researcher and similar roles in pe/ib. Looking into research and want to delve into the academic side of business as well.</p>
+              <p>Learning & building financial models, working on some research-related work, and exploring career options.</p>
+              <span className="wiu-stamp">as of 7.2.26</span>
             </div>
             <div className="mobile-landmark-swap" onClick={() => setShowSoL(prev => !prev)}>
               <img
@@ -249,7 +250,8 @@ export default function Home() {
           </div>
           <div className="what-im-up-to-card">
             <h3><span className="accent-slash">//</span> WHAT I'M UP TO</h3>
-            <p>Learning & building financial models. Looking into research and want to delve into the academic side of business as well.</p>
+            <p>Learning & building financial models, working on some research-related work, and exploring career options.</p>
+            <span className="wiu-stamp">as of 7.2.26</span>
           </div>
           {/* Decorative landmark. The outer box spans the whole gutter between the
               hero card and the "what I'm up to" card; the inner __fig is centered

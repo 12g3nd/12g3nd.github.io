@@ -338,6 +338,11 @@
   margin: 0;
 }
 
+.gb-disclosure a {
+  color: inherit;
+  text-decoration: underline;
+}
+
 .gb-form-error {
   font-family: var(--font-mono);
   font-size: 12px;

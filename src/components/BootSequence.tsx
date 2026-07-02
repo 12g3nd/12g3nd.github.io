@@ -25,6 +25,7 @@ function buildLines(lateNight: boolean): Line[] {
     { text: 'BIOS v0.3.0 — Rotman Commerce build', dim: true },
     { spacer: true },
     { text: '> initializing kernel ............', tag: 'OK', tone: 'ok' },
+    { text: '> mounting /business .............', tag: 'OK', tone: 'ok' },
     { text: '> mounting /projects .............', tag: 'OK', tone: 'ok' },
     { text: '> mounting /poetry ...............', tag: 'OK', tone: 'ok' },
     { text: '> mounting /media ................', tag: 'OK', tone: 'ok' },

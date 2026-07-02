@@ -411,6 +411,17 @@
   z-index: 1;
 }
 
+/* Timestamp under the card copy — the readout says when it was last true. */
+.what-im-up-to-card .wiu-stamp {
+  margin-top: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: rgba(var(--text-rgb), 0.45);
+  position: relative;
+  z-index: 1;
+}
+
 .what-im-up-to-card::before {
   content: '';
   position: absolute;
