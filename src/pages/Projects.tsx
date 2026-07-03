@@ -36,7 +36,7 @@ const projects: Project[] = [
   {
     id: '01',
     name: 'KRINE',
-    description: 'Founded and solely developed a digital platform for anonymous messages. Managed end-to-end technical stack and community guidelines. Highly focused on allowing open, high-fidelity conversations within a moderated environment.',
+    description: 'Founded / solely developed a digital platform for anonymous messages. Managed end-to-end technical stack and committed community guidelines. Highly focused on allowing open, high-fidelity conversations within a moderated environment. Otherwise known as a safe place to talk and have fun without the risk of losing anonymity.',
     stack: ['Python', 'Django', 'PostgreSQL', 'Redis', 'Hugging Face Transformers (AI)', 'Docker', 'AWS S3'],
     link: 'https://krine.ca/',
     linkText: '[VISIT LIVE ↗]',

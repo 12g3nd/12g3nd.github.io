@@ -388,3 +388,81 @@
     line-height: 1.4 !important;
   }
 }
+
+/* ── Bookends: title page + acknowledgements ─────────────
+   Same paper stock as the poems; only the typography changes. Both pages
+   centre their contents like real front/back matter, and neither carries
+   a page number (the poems keep their own 1..n count). */
+.doc-page--cover,
+.doc-page--ack {
+  min-height: 540px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.doc-cover__title {
+  font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+  font-weight: 700;
+  font-size: clamp(2.2rem, 4vw, 3rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: #1a1611;
+  margin: 0 0 0.75rem;
+}
+
+.doc-cover__subtitle {
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-size: 15px;
+  color: #5b4a2f;
+  margin: 0;
+}
+
+.doc-cover__ornament {
+  display: block;
+  margin: 2.5rem 0;
+  font-size: 13px;
+  color: #8a7a52;
+}
+
+.doc-cover__author {
+  font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+  font-size: 14px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #2a2418;
+  margin: 0;
+}
+
+.doc-ack__title {
+  font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: 0.02em;
+  color: #1a1611;
+  margin: 0 0 1.5rem;
+}
+
+.doc-ack__body {
+  font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.8;
+  color: #2a2418;
+  max-width: 36ch;
+  margin: 0;
+}
+
+.doc-page--ack .doc-page__footer {
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .doc-page--cover,
+  .doc-page--ack {
+    min-height: 400px;
+  }
+}

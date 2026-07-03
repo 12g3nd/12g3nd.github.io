@@ -20,8 +20,8 @@ export default function Poetry() {
     <PageTransition>
       <section className="section">
         <div className="section-header">
-          <h2><ScrambleText text="POETRY_" /></h2>
-          <p className="section-desc">some of my favourite poems I've ever written at various points in my life (in a fake PDF format of course). the third pillar.</p>
+          <h2><ScrambleText text="POETRY.PDF" /></h2>
+          <p className="section-desc">some of my favourite poems I've ever written at various points in my life. the third pillar.</p>
           <button
             className="poetry-compact-toggle"
             onClick={() => setCompactMode(prev => !prev)}
@@ -233,9 +233,18 @@ export default function Poetry() {
               <div className="doc-viewer">
                 <div className="doc-viewer__chrome">
                   <span className="doc-viewer__filename">POETRY.pdf</span>
-                  <span className="doc-viewer__meta">{poems.length} page{poems.length === 1 ? '' : 's'} · serif</span>
+                  <span className="doc-viewer__meta">{poems.length + 2} pages · serif</span>
                 </div>
                 <div className="doc-viewer__pages">
+                  {/* Title page — same paper stock, unnumbered like real front matter. */}
+                  <Reveal>
+                    <article className="doc-page doc-page--cover">
+                      <h3 className="doc-cover__title">Selected Poems</h3>
+                      <p className="doc-cover__subtitle">written since 2023 onwards</p>
+                      <span className="doc-cover__ornament" aria-hidden="true">✦</span>
+                      <p className="doc-cover__author">Srihith Jarabana</p>
+                    </article>
+                  </Reveal>
                   {poems.map((poem, i) => (
                     <Reveal key={i} delay={Math.min(i, 3) * 0.06}>
                     <article className={`doc-page${('wide' in poem && poem.wide) ? ' doc-page--wide' : ''}${poem.award ? ' doc-page--award' : ''}`}>
@@ -261,6 +270,16 @@ export default function Poetry() {
                     </article>
                     </Reveal>
                   ))}
+                  {/* Acknowledgements — the back-matter bookend to the title page. */}
+                  <Reveal>
+                    <article className="doc-page doc-page--ack">
+                      <h3 className="doc-ack__title">Acknowledgements</h3>
+                      <p className="doc-ack__body">
+                        To family, friends, and everybody who has ever genuinely believed in me.
+                      </p>
+                      <div className="doc-page__footer">— end —</div>
+                    </article>
+                  </Reveal>
                 </div>
               </div>
               </>
