@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo, useRef, type ReactNode, type PointerEvent
 import ScrambleText from './ScrambleText';
 import MatrixRain from './MatrixRain';
 import PartyOverlay from './PartyOverlay';
-import { isLateNight } from '../utils/time';
+import { isLateNight, age } from '../utils/time';
 import { applyTheme } from '../utils/theme';
 import './Navigation.css';
 
@@ -287,18 +287,18 @@ export default function Navigation() {
         setOutput('nav: projects · business · media · poetry · blog · home  |  try: whoami · cat beliefs.txt · uptime · resume · sudo hire-me · ls · clear · exit  |  ↑/↓ = history · tab = autocomplete  |  (some commands are undocumented. poke around.)');
         break;
       case 'whoami':
-        setOutput('srihith jarabana — businessman by craft. 19. probably overthinking something.');
+        setOutput(`srihith jarabana — businessman by craft. ${age()}. probably overthinking something.`);
         break;
       case 'whoami --real':
       case 'whoami -r':
-        setOutput("srihith jarabana — 19, runs on iced coffee and spite. tells people he's 'busy building' (he is, mostly, sometimes). afraid of elevators, unafraid of bad ideas. will argue art is political until you leave the party.");
+        setOutput(`srihith jarabana — ${age()}, runs on iced coffee and spite. tells people he's 'busy building' (he is, mostly, sometimes). afraid of elevators, unafraid of bad ideas. will argue art is political until you leave the party.`);
         break;
       case 'cat beliefs.txt':
       case 'cat beliefs':
         setOutput('art is political. business is personal. technology is philosophy.');
         break;
       case 'uptime':
-        setOutput('online since 2007 · 19 yrs · 0 full crashes (a few close calls maybe)');
+        setOutput(`online since 2007 · ${age()} yrs · 0 full crashes (a few close calls maybe)`);
         break;
       case 'resume':
       case 'cat resume':

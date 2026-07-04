@@ -13,6 +13,7 @@ import WhimsyOverlay from '../components/WhimsyOverlay';
 import GuestbookCard from '../components/GuestbookCard';
 import useDocumentMeta from '../hooks/useDocumentMeta';
 import useGuestbook from '../hooks/useGuestbook';
+import { age } from '../utils/time';
 import './Home.css';
 
 const prefersReducedMotion = () =>
@@ -176,7 +177,7 @@ export default function Home() {
             <div className="badge">Rotman Commerce // Class of '29</div>
             <img
                 src="/crest.png"
-                alt="University Crest"
+                alt="Fire a CRT burst"
                 className="crest-icon"
                 role="button"
                 tabIndex={0}
@@ -193,8 +194,8 @@ export default function Home() {
                 className="sj-trigger"
                 onClick={triggerSjGlow}
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); triggerSjGlow(); } }}
-              >SJ</span>' also welcome. 19. Businessman by craft.
-              Welcome to my personal (and humble) corner of the internet.
+              >SJ</span>' also welcome. {age()}. Businessman by craft.
+              Welcome to my personal corner of the internet.
             </p>
             <div className="hero-actions">
               <Link to="/projects" className="btn-primary">[VIEW PROJECTS →]</Link>
@@ -364,7 +365,7 @@ export default function Home() {
 
       <section className="section contact-section">
         <div className="section-header">
-          <h2>CONNECT_</h2>
+          <h2><ScrambleText text="CONNECT_" /></h2>
         </div>
         {emailRevealed ? (
           <a
