@@ -9,6 +9,13 @@ export interface Post {
 
 export const posts: Post[] = [
   {
+    slug: 'performative',
+    date: '2026-07-28',
+    title: 'Performative',
+    abstract:
+      "On the word I can't stand being called, the LinkedIn charade I can't stand playing, and not knowing whether refusing to play it is conviction or just losing.",
+  },
+  {
     slug: 'doesnt-have-to-be-from-anywhere',
     date: '2026-06-22',
     title: "Doesn't Have to Be From Anywhere",

@@ -72,6 +72,33 @@
   margin-top: 0.5rem;
 }
 
+/* Captured artifact — the fake LinkedIn post, set apart from the author's voice.
+   Reads as a quoted specimen rather than prose: dashed frame on the raised
+   surface, mono, dimmed, with the accent bar on the left. */
+.post-prose .fake-post {
+  border: 1px dashed rgba(var(--text-rgb), 0.3);
+  border-left: 2px solid var(--accent-primary);
+  background-color: var(--bg-raised);
+  padding: 1.5rem 1.75rem;
+  margin: 2rem 0;
+  color: rgba(var(--text-rgb), 0.65);
+  font-size: 15px;
+}
+
+.post-prose .fake-post p {
+  margin-bottom: 1rem;
+}
+
+.post-prose .fake-post p:last-child {
+  margin-bottom: 0;
+}
+
+.post-prose .fake-post-tags {
+  color: var(--accent-primary);
+  font-size: 13px;
+  margin-top: 0.25rem;
+}
+
 .post-prose hr {
   border: none;
   border-top: 1px dashed rgba(var(--text-rgb), 0.3);
