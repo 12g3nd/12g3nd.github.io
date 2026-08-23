@@ -6,7 +6,7 @@
   inset: 0;
   z-index: 10000;
   background:
-    radial-gradient(120% 90% at 50% 38%, #11233a 0%, var(--bg-base) 60%, #060c15 100%);
+    radial-gradient(120% 90% at 50% 38%, var(--bg-raised) 0%, var(--bg-base) 60%, #000000 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -98,8 +98,8 @@
 /* Amber — the site's reserved "warmer voice." Only the machine's warnings use
    it here; later it can carry the heavier emotional beats elsewhere. */
 .boot__tag--warn {
-  color: #ffb000;
-  text-shadow: 0 0 10px rgba(255, 176, 0, 0.3);
+  color: var(--accent-warm);
+  text-shadow: 0 0 10px rgba(var(--accent-warm-rgb), 0.3);
 }
 
 .boot__cursor {

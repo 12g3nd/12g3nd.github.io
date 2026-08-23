@@ -29,6 +29,7 @@
   /* Reserved "warmer voice" — used sparingly for emotional / significant beats
      (boot warnings, gallery light, poetry awards). On dark surfaces use the
      bright amber; on the cream paper surfaces use the deeper ink so it reads. */
+  --accent-warm-rgb: 255, 176, 0;
   --accent-warm: #ffb000;
   --accent-warm-ink: #a8651a;
 
@@ -61,6 +62,7 @@
   /* Deepen the secondary/warm voices: #7B61FF and #ffb000 are tuned for navy and
      wash out on cream, so meta text and warnings need more ink to hold contrast. */
   --accent-secondary: #5a3fc0;
+  --accent-warm-rgb: 181, 101, 29;
   --accent-warm: #b5651d;
   /* Warm, soft shadow instead of the heavy black one (which muddies on parchment)
      and a forest green the eye can actually read on cream. */
@@ -339,7 +341,7 @@ p, span, div {
   to { filter: hue-rotate(360deg); }
 }
 
-@keyframes party-wobble {
+@keyframes party-wave {
   0%, 100% { transform: rotate(-2deg); }
   50% { transform: rotate(2deg); }
 }
@@ -374,7 +376,7 @@ body.party-mode .section {
 
 body.party-mode .nav-brand {
   display: inline-block;
-  animation: party-wobble 1.4s ease-in-out infinite;
+  animation: party-wave 1.4s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {

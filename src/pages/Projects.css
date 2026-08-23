@@ -40,11 +40,8 @@
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   align-items: stretch;
   /* Faint draftsman's grid showing through the gutters — blueprint texture. */
-  background-image:
-    linear-gradient(rgba(var(--accent-rgb), 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(var(--accent-rgb), 0.035) 1px, transparent 1px);
-  background-size: 44px 44px;
-  background-position: -1px -1px;
+  
+  
 }
 
 /* Reveal wrapper — let the card fill the (stretched) grid cell so every

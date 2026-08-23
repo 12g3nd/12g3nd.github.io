@@ -55,7 +55,7 @@ export default function PostLayout({ slug, date, children }: PostLayoutProps) {
             <span className="post-progress-pct">{progress}%</span>
           </div>
           <div className="post-progress-track">
-            <div className="post-progress-fill" style={{ width: `${progress}%` }} />
+            <div className="post-progress-fill" style={{ '--progress': progress / 100 } as React.CSSProperties} />
           </div>
         </div>
 

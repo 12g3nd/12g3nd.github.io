@@ -11,7 +11,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #000000;
+  background: var(--bg-base);
   animation: whimsy-envelope 6s ease-in-out forwards;
 }
 
@@ -34,11 +34,11 @@
   /* Five lines × ~17vh ≈ 85vh — fits any screen orientation. */
   font-size: clamp(2rem, min(16vw, 17vh), 13rem);
   text-transform: uppercase;
-  color: #ffffff;
+  color: var(--text-primary);
   -webkit-text-stroke: 0;
   text-shadow: none;
   opacity: 0;
-  animation: whimsy-slam 0.45s cubic-bezier(0.16, 1.4, 0.4, 1) both;
+  animation: whimsy-slam 0.45s ease-out both;
 }
 
 /* Alternate slam direction per line. */

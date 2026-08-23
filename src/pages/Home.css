@@ -860,11 +860,12 @@ button.email-box {
    image so nothing leaks to the dark theme. */
 .quote-paper {
   background-color: var(--paper-bg);
-  border-left: 4px solid var(--accent-secondary);
+  border: 1px solid rgba(var(--text-rgb), 0.15);
+  box-shadow: 4px 4px 0 rgba(var(--text-rgb), 0.1);
   /* Just a soft warm gradient — no high-frequency dot grain here. The global
      CRT scanlines (index.css) are a 3px pattern; a 3px paper grain on top beat
      against them and produced a moiré shimmer over this large block. */
-  background-image: linear-gradient(160deg, #f7eedb 0%, #f1e6cc 100%);
+  background-image: linear-gradient(160deg, var(--paper-bg) 0%, var(--paper-bg) 100%);
   /* A soft warm gradient paired with a subtle diagonal grid. 
      We avoid high-frequency dot grain here because the global CRT scanlines 
      would beat against them and produce a moiré shimmer. The diagonal lines 
@@ -872,7 +873,7 @@ button.email-box {
   background-image: 
     repeating-linear-gradient(45deg, rgba(42, 36, 24, 0.035) 0, rgba(42, 36, 24, 0.035) 1px, transparent 1px, transparent 16px),
     repeating-linear-gradient(-45deg, rgba(42, 36, 24, 0.035) 0, rgba(42, 36, 24, 0.035) 1px, transparent 1px, transparent 16px),
-    linear-gradient(160deg, #f7eedb 0%, #f1e6cc 100%);
+    linear-gradient(160deg, var(--paper-bg) 0%, var(--paper-bg) 100%);
   box-shadow: var(--shadow-paper);
 }
 

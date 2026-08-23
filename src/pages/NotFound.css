@@ -8,10 +8,9 @@
 .panic-box {
   width: min(640px, 100%);
   background-color: var(--bg-surface);
-  border: 1px solid rgba(255, 176, 0, 0.4);
-  border-left: 3px solid var(--accent-warm);
+  border: 1px solid var(--accent-warm);
   padding: 2.5rem;
-  box-shadow: 0 0 40px rgba(255, 176, 0, 0.08);
+  box-shadow: 4px 4px 0 var(--accent-warm);
 }
 
 .panic-title {

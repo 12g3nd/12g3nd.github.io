@@ -148,11 +148,17 @@
   padding: 0.45rem 0 0.45rem 1.1rem;
   color: rgba(var(--text-rgb), 0.8);
   border-bottom: 1px dashed rgba(var(--text-rgb), 0.08);
-  transition: color 0.15s ease, padding 0.15s ease;
+  transform: translateX(0);
+  transition: color 0.15s ease, transform 0.15s ease;
 }
 
 .media-plate li:last-child {
   border-bottom: none;
+}
+
+.media-plate li:hover {
+  color: var(--text-primary);
+  transform: translateX(0.35rem);
 }
 
 /* little diamond bullet — a framed-print tack */
@@ -166,11 +172,6 @@
   background: rgba(var(--text-rgb), 0.25);
   transform: rotate(45deg);
   transition: background 0.15s ease;
-}
-
-.media-plate li:hover {
-  color: var(--text-primary);
-  padding-left: 1.45rem;
 }
 
 .media-plate li:hover::before {
