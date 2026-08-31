@@ -9,6 +9,13 @@ export interface Post {
 
 export const posts: Post[] = [
   {
+    slug: 'whats-a-god-to-a-non-believer',
+    date: '2026-08-31',
+    title: "What's a God to a Non-Believer",
+    abstract:
+      'On still putting my hands together for a god I stopped believing in at fourteen, the difference between refusing to believe and failing to, and what you do with an inheritance you never signed for.',
+  },
+  {
     slug: 'performative',
     date: '2026-07-28',
     title: 'Performative',

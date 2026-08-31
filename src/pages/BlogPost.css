@@ -99,6 +99,29 @@
   margin-top: 0.25rem;
 }
 
+/* Author's own words quoted back from an older poem — indented off the accent
+   rail so it reads as a citation of the archive rather than a new thought. */
+.post-prose .post-quote {
+  border-left: 2px solid var(--accent-secondary);
+  margin: 2rem 0;
+  padding-left: 1.5rem;
+  color: rgba(var(--text-rgb), 0.75);
+}
+
+.post-prose .post-quote p:last-child {
+  margin-bottom: 0;
+}
+
+/* Dinkus between the long post's movements — the author's asterisk, kept. */
+.post-prose .post-break {
+  margin: 3rem 0;
+  text-align: center;
+  color: var(--accent-secondary);
+  font-size: 20px;
+  line-height: 1;
+  user-select: none;
+}
+
 .post-prose hr {
   border: none;
   border-top: 1px dashed rgba(var(--text-rgb), 0.3);
