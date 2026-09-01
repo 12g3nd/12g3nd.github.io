@@ -3,7 +3,7 @@ import Reveal from '../components/Reveal';
 import ScrambleText from '../components/ScrambleText';
 import useDocumentMeta from '../hooks/useDocumentMeta';
 import { routeMeta } from '../data/routeMeta';
-import './Projects.css';
+import './projects/index.css';
 
 /* A link is a {href, text} pair rather than the old parallel
    link/linkText/repo/repoLinkText/devpost fields: several cards now carry three

@@ -1,0 +1,14 @@
+/* Projects page styles, one file per part of the page.
+ *
+ * Split out of a 677-line Projects.css. The order below is the cascade: it
+ * reproduces the order these rules appeared in originally. Nothing here shares
+ * an element across files — the command bar, the cards, the child projects and
+ * the shelf headings are separate elements — so the order is not load-bearing
+ * the way home/index.css is. Keep it anyway; it costs nothing and the next
+ * person should not have to re-derive that.
+ */
+
+@import './bar.css';
+@import './card.css';
+@import './children.css';
+@import './shelf.css';

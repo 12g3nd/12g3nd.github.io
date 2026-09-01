@@ -1,0 +1,198 @@
+/* ── Entry grid ──────────────────────────────────────────────────────────── */
+
+.guestbook-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+/* Cards/skeletons can't push the grid wider than their column. */
+
+.guestbook-grid > * {
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .guestbook-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .guestbook-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Cream paper entry card (matches Poetry .doc-page) ────────────────────── */
+
+.gb-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 2.25rem 2rem 1.75rem;
+  background: var(--paper-bg);
+  color: var(--paper-ink);
+  font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+  line-height: 1.6;
+  box-shadow: var(--shadow-paper);
+  /* subtle paper grain — identical to .doc-page */
+  background-image: linear-gradient(180deg, var(--paper-bg) 0%, var(--paper-bg) 100%);
+  background-size: 100% 100%;
+}
+
+/* torn-edge accent at the top of each card */
+
+.gb-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 4px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0));
+}
+
+.gb-card__date {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #8a7a52;
+  margin-bottom: 0.75rem;
+}
+
+.gb-card__name {
+  /* Names read as signed names, not brutalist headers — undo the global
+     uppercase/letter-spacing on h3. */
+  text-transform: none;
+  letter-spacing: -0.01em;
+  font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+  font-weight: 700;
+  font-size: 1.45rem;
+  line-height: 1.2;
+  color: #1a1611;
+  margin: 0 0 0.4rem;
+}
+
+.gb-card__desc {
+  font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #5b3a1f;
+  margin: 0;
+}
+
+.gb-card__sig {
+  margin-top: auto;
+  padding-top: 1.5rem;
+}
+
+/* Compact variant — Home preview. */
+
+.gb-card--compact {
+  padding: 1.6rem 1.4rem 1.3rem;
+}
+
+.gb-card--compact .gb-card__name {
+  font-size: 1.15rem;
+}
+
+.gb-card--compact .gb-card__desc {
+  font-size: 0.9rem;
+}
+
+.gb-card--compact .gb-card__sig {
+  padding-top: 1.1rem;
+}
+
+/* ── Signature canvas (draw + replay) ────────────────────────────────────── */
+
+.sig-canvas-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.sig-canvas {
+  display: block;
+  max-width: 100%;
+  border: 1px solid rgba(42, 36, 24, 0.25);
+  /* Don't let touch-drawing scroll the page. */
+  touch-action: none;
+}
+
+.sig-canvas--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper-bg);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: rgba(42, 36, 24, 0.35);
+}
+
+.sig-canvas__clear {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #8a7a52;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.sig-canvas__clear:hover {
+  color: #5b3a1f;
+}
+
+/* ── Loading skeletons ───────────────────────────────────────────────────── */
+
+.gb-skeleton {
+  min-height: 240px;
+  background: var(--paper-bg);
+  background-image: linear-gradient(180deg, var(--paper-bg) 0%, var(--paper-bg) 100%);
+  box-shadow: var(--shadow-paper);
+  animation: gb-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes gb-pulse {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 0.85; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gb-skeleton {
+    animation: none;
+    opacity: 0.7;
+  }
+}
+
+/* ── Empty / error notice (single paper card spanning the grid) ──────────── */
+
+.gb-notice {
+  grid-column: 1 / -1;
+  padding: 3rem 2rem;
+  text-align: center;
+  background: var(--paper-bg);
+  background-image: linear-gradient(180deg, var(--paper-bg) 0%, var(--paper-bg) 100%);
+  background-size: 100% 100%;
+  box-shadow: var(--shadow-paper);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: #5b3a1f;
+}
+
+@media (max-width: 600px) {
+  .gb-card {
+    padding: 1.8rem 1.5rem 1.4rem;
+  }
+}

@@ -1,38 +1,3 @@
-/* ── Package-manager chrome ────────────────────────────────
-   Frames the page as `pkg list` running inside SJ.SYS — the per-section
-   "temperature" for Projects: a lit workshop / spec sheet, not just cards. */
-.pkg-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 1.5rem;
-  padding: 0.6rem 1rem;
-  background: var(--bg-surface);
-  border: 1px solid rgba(var(--accent-rgb), 0.2);
-  border-left: 2px solid var(--accent-primary);
-  font-family: var(--font-mono);
-  font-size: 12px;
-}
-
-.pkg-bar__cmd {
-  color: rgba(var(--text-rgb), 0.7);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.pkg-bar__prompt {
-  color: var(--accent-primary);
-  font-weight: 700;
-  margin-right: 0.5rem;
-}
-
-.pkg-bar__count {
-  color: rgba(var(--text-rgb), 0.45);
-  white-space: nowrap;
-}
-
 .projects-grid {
   margin-top: 1.25rem;
   display: grid;
@@ -46,6 +11,7 @@
 
 /* Reveal wrapper — let the card fill the (stretched) grid cell so every
    card in a row is the same height. */
+
 .project-card-wrap {
   height: 100%;
 }
@@ -69,6 +35,7 @@
 }
 
 /* big faint watermark number, like the home-page tenet cards */
+
 .project-card__num {
   position: absolute;
   top: 0.4rem;
@@ -83,6 +50,7 @@
 }
 
 /* ── preview frame ─────────────────────────────────────── */
+
 .project-card__preview {
   position: relative;
   width: 100%;
@@ -108,6 +76,7 @@
 }
 
 /* faint cyan sheen so the frame reads as part of the theme */
+
 .project-card__preview::after {
   content: '';
   position: absolute;
@@ -118,6 +87,7 @@
 
 /* placeholder shown for projects that have no preview image, so every card
    keeps the same silhouette instead of looking half-empty */
+
 .project-card__preview--placeholder {
   flex-direction: column;
   gap: 0.6rem;
@@ -146,6 +116,7 @@
 }
 
 /* ── text ──────────────────────────────────────────────── */
+
 .project-card__title {
   position: relative;
   z-index: 1;
@@ -215,6 +186,7 @@
 /* ── Body wrapper ──────────────────────────────────────────
    Everything under the preview lives here so featured cards can sit the
    preview and the text side-by-side without disturbing the normal column. */
+
 .project-card__body {
   display: flex;
   flex-direction: column;
@@ -225,6 +197,7 @@
 }
 
 /* ── Status chip ───────────────────────────────────────────── */
+
 .project-card__status {
   position: absolute;
   top: 0.9rem;
@@ -243,19 +216,25 @@
 }
 
 .project-card__status--live { color: var(--accent-primary); }
+
 .project-card__status--viral { color: #ffb000; }
+
 .project-card__status--wip { color: var(--accent-secondary); }
+
 .project-card__status--repo { color: rgba(var(--text-rgb), 0.5); }
+
 .project-card__status--archive { color: rgba(var(--text-rgb), 0.35); }
 
 /* The studio isn't a project state — it's the thing the states hang off — so
    it gets amber, matching the FOUNDER chip on the business ledger. */
+
 .project-card__status--studio {
   color: var(--accent-warm);
   border-color: var(--accent-warm);
 }
 
 /* Award chip — gold, with a faint glow so a podium finish reads at a glance. */
+
 .project-card__status--award {
   color: #ffd76b;
   border-color: #ffb000;
@@ -264,6 +243,7 @@
 }
 
 /* ── Headline metric ───────────────────────────────────────── */
+
 .project-card__metric {
   display: flex;
   align-items: baseline;
@@ -298,30 +278,35 @@
 }
 
 /* ── Featured (full-width hero) cards ──────────────────────── */
+
 .project-card-wrap--featured {
   grid-column: 1 / -1;
 }
 
 /* Wide card — spans two grid columns so it reads with more weight than its
    neighbours (Waive). */
+
 .project-card-wrap--wide {
   grid-column: span 2;
 }
 
 /* Tall card — spans two grid rows so it reads with extra length down the
    page (PlotON). */
+
 .project-card-wrap--tall {
   grid-row: span 2;
 }
 
 /* Force a card to start a fresh row regardless of how many columns are left
    in the current one (Clearwater Forge sits at the top of a new line). */
+
 .project-card-wrap--newrow {
   grid-column-start: 1;
 }
 
 /* Below the 3-column desktop layout these emphasis tricks just create gaps,
    so let the cards flow normally on smaller screens. */
+
 @media (max-width: 1079px) {
   .project-card-wrap--wide {
     grid-column: auto;
@@ -342,6 +327,7 @@
    box on featured cards, where it holds the side-by-side hero — which is what
    lets the studio tier below span the full card width instead of being trapped
    in the hero's text column. Safe for a11y: it carries no semantics. */
+
 .project-card__lede {
   display: contents;
 }
@@ -360,6 +346,7 @@
 
 /* Explicit height (not auto) so a portrait preview letterboxes via object-fit
    instead of stretching the whole hero to the image's natural height. */
+
 .project-card--featured .project-card__preview {
   width: 42%;
   flex-shrink: 0;
@@ -386,286 +373,18 @@
     height: 180px;
     margin-bottom: 1.5rem;
   }
-
-  .pkg-bar {
-    font-size: 11px;
-  }
-}
-
-/* ── Studio tier (FI99 children) ────────────────────────────
-   Projects shipped under FI99 sit inside the FI99 card rather than as siblings
-   in the main grid. They keep screenshots and metrics — a compact text row
-   could not carry Krine's traffic number or VERDANT's screen count — but at a
-   smaller size, so the studio's work reads as belonging to the card above it
-   rather than competing with the top-level projects for the same weight. */
-.project-children {
-  position: relative;
-  z-index: 1;
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(var(--accent-rgb), 0.2);
-}
-
-/* Echoes the page's own pkg-bar one level down: the studio is its own index. */
-.project-children__bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.45rem 0.8rem;
-  background: var(--bg-base);
-  border: 1px solid rgba(var(--accent-rgb), 0.15);
-  border-left: 2px solid var(--accent-warm);
-  font-family: var(--font-mono);
-  font-size: 11px;
-}
-
-.project-children__cmd {
-  color: rgba(var(--text-rgb), 0.65);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.project-children__count {
-  color: rgba(var(--text-rgb), 0.4);
-  white-space: nowrap;
-}
-
-/* Three across on desktop, so five children land 3 + 2 rather than 4 + 1 and
-   leaving one card marooned beside three empty columns. The tier still reads
-   as subordinate at this width — that comes from the recessed background,
-   the smaller type and preview, and the unboxed links, not from being narrow. */
-.project-children__grid {
-  margin-top: 1rem;
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  align-items: stretch;
-}
-
-/* Recessed against the parent card's bg-surface, so the tier reads as sitting
-   inside the card rather than floating on top of it. */
-.project-child {
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  background: var(--bg-base);
-  border: 1px solid rgba(var(--text-rgb), 0.12);
-  transition: border-color 0.2s ease, transform 0.2s ease;
-}
-
-.project-child:hover {
-  transform: translateY(-2px);
-  border-color: rgba(var(--accent-rgb), 0.45);
-}
-
-.project-child__head {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.project-child__num {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: rgba(var(--text-rgb), 0.35);
-}
-
-.project-child__title {
-  flex: 1;
-  min-width: 0;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--text-primary);
-}
-
-/* fi99.ca's vocabulary, not this site's — see the Child type in Projects.tsx. */
-.project-child__status {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  padding: 0.15rem 0.45rem;
-  border: 1px solid currentColor;
-  border-radius: 999px;
-  white-space: nowrap;
-  color: rgba(var(--text-rgb), 0.45);
-}
-
-.project-child__status--shipped { color: var(--accent-primary); }
-.project-child__status--in-the-lab { color: var(--accent-secondary); }
-.project-child__status--paused { color: var(--accent-warm); }
-
-.project-child__preview {
-  position: relative;
-  height: 110px;
-  margin-top: 0.8rem;
-  background-color: var(--bg-surface);
-  border: 1px solid rgba(var(--accent-rgb), 0.2);
-  overflow: hidden;
-}
-
-/* `contain`, matching the parent cards: this tier mixes wide site captures with
-   square-ish logos (Krine), and `cover` crops a logo to an unreadable slice. */
-.project-child__preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-}
-
-/* Half the parent card's metric — still the loudest thing in a child card, but
-   it can't shout over the featured metric directly above it. */
-.project-child__metric {
-  display: flex;
-  align-items: baseline;
-  gap: 0.45rem;
-  margin-top: 0.8rem;
-}
-
-.project-child__metric-value {
-  font-family: var(--font-display);
-  font-size: 1.6rem;
-  line-height: 1;
-  color: var(--accent-primary);
-  /* "5 / 11" is one value, not two lines. */
-  white-space: nowrap;
-}
-
-.project-child__metric-label {
-  display: inline-flex;
-  flex-direction: column;
-  gap: 1px;
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: rgba(var(--text-rgb), 0.5);
-}
-
-.project-child__metric-note {
-  font-size: 8.5px;
-  letter-spacing: 0.05em;
-  text-transform: none;
-  color: rgba(var(--text-rgb), 0.35);
-}
-
-.project-child__credit {
-  margin-top: 0.6rem;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.05em;
-  color: var(--accent-secondary);
-}
-
-.project-child__desc {
-  flex-grow: 1;
-  margin-top: 0.6rem;
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  line-height: 1.55;
-  color: rgba(var(--text-rgb), 0.72);
-}
-
-.project-child__stack {
-  margin-top: 0.9rem;
-  display: flex;
-  gap: 0.35rem;
-  flex-wrap: wrap;
-}
-
-.project-child__stack span {
-  padding: 0.12rem 0.45rem;
-  border: 1px solid rgba(var(--text-rgb), 0.18);
-  border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  color: rgba(var(--text-rgb), 0.65);
-}
-
-/* Bare links, not the parent's boxed buttons: five child cards' worth of
-   bordered CTAs inside one card would read as a toolbar. */
-.project-child__links {
-  margin-top: 1rem;
-  display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
-}
-
-.project-child__links a {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: var(--accent-primary);
-  text-decoration: none;
-}
-
-.project-child__links a:hover {
-  text-decoration: underline;
-}
-
-/* The featured card drops to a single column here, so the tier inside it has
-   room for one child at a time rather than two cramped ones. */
-@media (max-width: 520px) {
-  .project-children__grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* ── Shelves ────────────────────────────────────────────────
-   The page is four labelled shelves rather than one long grid, so a visitor
-   can stop reading at any boundary and still have seen a coherent set. The
-   page-level pkg-bar keeps the total; these are the dividers under it. */
-.projects-shelf {
-  margin-top: 3rem;
-}
-
-.projects-shelf:first-of-type {
-  margin-top: 1.5rem;
-}
-
-.projects-shelf__head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-  padding-bottom: 0.6rem;
-  border-bottom: 1px solid rgba(var(--accent-rgb), 0.25);
-}
-
-.projects-shelf__label {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-primary);
-}
-
-.projects-shelf__label .slash {
-  color: var(--accent-primary);
-}
-
-.projects-shelf__blurb {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  color: rgba(var(--text-rgb), 0.42);
 }
 
 /* Studio statuses on a top-level card. Promoting a studio project out of the
    FI99 tier (PlotON, VERDANT) brings its vocabulary with it, so the two words
    that only existed on child chips need full-size equivalents. */
+
 .project-card__status--in-the-lab { color: var(--accent-secondary); }
+
 .project-card__status--paused { color: var(--accent-warm); }
 
 /* Byline under a card title — co-authors, or the studio a project ships under. */
+
 .project-card__credit {
   position: relative;
   z-index: 1;

@@ -1,0 +1,42 @@
+/* ── Shelves ────────────────────────────────────────────────
+   The page is four labelled shelves rather than one long grid, so a visitor
+   can stop reading at any boundary and still have seen a coherent set. The
+   page-level pkg-bar keeps the total; these are the dividers under it. */
+
+.projects-shelf {
+  margin-top: 3rem;
+}
+
+.projects-shelf:first-of-type {
+  margin-top: 1.5rem;
+}
+
+.projects-shelf__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.6rem;
+  border-bottom: 1px solid rgba(var(--accent-rgb), 0.25);
+}
+
+.projects-shelf__label {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.projects-shelf__label .slash {
+  color: var(--accent-primary);
+}
+
+.projects-shelf__blurb {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: rgba(var(--text-rgb), 0.42);
+}

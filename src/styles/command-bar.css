@@ -1,0 +1,49 @@
+/* The command bar that sits under the heading on six pages.
+ *
+ * Projects calls it .pkg-bar, Blog .log-bar, Business .xls-bar, Media
+ * .gallery-bar, Poetry .poetry-bar, Guestbook .guestbook-bar — each dressed as
+ * the tool that page pretends to be, npm or a log or a spreadsheet. The names
+ * differ because the fiction differs. The box never did: all six declared the
+ * same ten properties, and every change to the pattern had to be made six
+ * times or it drifted.
+ *
+ * Grouped selectors rather than one shared class, because that keeps the markup
+ * exactly as it was — each page still carries only its own name, and nothing
+ * needed a second class added to it.
+ *
+ * Imported from main.tsx immediately after index.css, so it lands ahead of
+ * every page stylesheet in the bundle. Each page then adds only what makes its
+ * bar different, which is margins and, for Poetry, a button reset.
+ */
+
+.pkg-bar,
+.log-bar,
+.xls-bar,
+.gallery-bar,
+.poetry-bar,
+.guestbook-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  background: var(--bg-surface);
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
+  border-left: 2px solid var(--accent-primary);
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+/* The command itself — the `npm run …` or `cat …` text. Truncates rather than
+   wrapping, so a long command cannot make the bar two lines tall. */
+.pkg-bar__cmd,
+.log-bar__cmd,
+.xls-bar__cmd,
+.gallery-bar__cmd,
+.poetry-bar__cmd,
+.guestbook-bar__cmd {
+  color: rgba(var(--text-rgb), 0.7);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

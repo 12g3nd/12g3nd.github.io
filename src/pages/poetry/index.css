@@ -1,0 +1,17 @@
+/* Poetry page styles, one file per part of the page.
+ *
+ * Split out of a 466-line Poetry.css.
+ *
+ * The order below is the cascade, and one pair of it is load-bearing:
+ * compact.css MUST stay after page.css. `.doc-page__body--compact` and
+ * `.doc-page__body` are both single-class selectors, so they have equal
+ * specificity and the compact override wins on source order alone. Move
+ * compact above page and compact mode stops applying, silently — nothing
+ * errors, the text just stops shrinking.
+ */
+
+@import './bar.css';
+@import './viewer.css';
+@import './page.css';
+@import './compact.css';
+@import './ack.css';

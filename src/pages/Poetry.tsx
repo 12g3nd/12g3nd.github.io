@@ -4,7 +4,7 @@ import Reveal from '../components/Reveal';
 import ScrambleText from '../components/ScrambleText';
 import useDocumentMeta from '../hooks/useDocumentMeta';
 import { routeMeta } from '../data/routeMeta';
-import './Poetry.css';
+import './poetry/index.css';
 
 export default function Poetry() {
   const [compactMode, setCompactMode] = useState(false);

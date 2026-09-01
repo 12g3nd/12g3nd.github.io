@@ -1,0 +1,12 @@
+/* Guestbook page styles, one file per part of the page.
+ *
+ * Split out of a 476-line Guestbook.css: the command bar, the wall of entries
+ * (grid, cards, signature canvas, loading and empty states), and the form that
+ * adds one (fields, submit, success).
+ *
+ * The order below is the cascade and reproduces the original.
+ */
+
+@import './bar.css';
+@import './entries.css';
+@import './form.css';

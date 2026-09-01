@@ -44,27 +44,28 @@ change. `scripts/visual/diff/` gets a diff image per same-size mismatch;
 first — a drift there names the element that moved, where a screenshot only
 says that something did.
 
-## The known flake
+## If a check drifts
 
-A drift is **not** automatically your change. There is a residual artifact with
-a precise signature:
+A drift is not automatically your change. Work out whether it *can* be, before
+touching anything:
 
-- exactly **+35px**, never any pixel-level difference
-- **dark theme only**, at **390 and 820 only**
-- a **contiguous prefix** of the run, never a scattered set
+**Scope.** If the drift hits routes your change cannot affect — a `Home.css`
+edit moving `/blog/performative` — it is not your change. Everything shared
+lives in the nav and the footer, both of which are on every page.
 
-It comes from a late reflow — a font face reports as loaded before the layout
-using its metrics has settled, which moves where the nav wraps by one line.
-`settle()` now waits for `body.scrollHeight` to stop changing, which should have
-closed it.
+**Metrics.** `scripts/visual/{baseline,current}/metrics.json` records `body`,
+`nav`, `navLinks`, `mobileRow`, `headerBox` and `brand` per shot. Diff those
+first. A `body` that moved while every measured element held means the cause is
+something not in that list — which is how the footer's webring logo was finally
+identified after several wrong guesses at the nav.
 
-**If a drift matches that signature, re-run the check.** If it clears, it was
-the harness. Anything else — a different delta, a light-theme shot, 1440, a
-scattered set, or any nonzero pixel count — is real, and the batch stops.
+**Shape.** A uniform delta repeated across many routes is environmental. A
+handful of shots differing by scattered pixel counts is usually real.
 
-The strongest tell is scope: if the drift hits routes your change cannot
-possibly affect (a `Home.css` edit moving `/blog/performative`), it is not your
-change.
+The one long-running artefact — a 35px shift appearing in a contiguous prefix
+of a run — was the webring logo loading from the network, and is fixed. If
+something with that shape returns, suspect a newly added external asset before
+suspecting your own CSS.
 
 ## What is deliberately not covered
 

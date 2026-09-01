@@ -26,10 +26,12 @@ src/
   main.tsx            entry; applies the stored theme before first paint
   App.tsx             routes
   index.css           the design tokens — :root palette, fonts, borders
+  styles/             CSS shared across pages, imported from main.tsx
   components/         shared UI; a component's CSS sits beside it
     terminal/         the nav bar's command line: data, hook, markup
-  pages/              one component and one stylesheet per route
-    home/             the homepage's CSS, one file per section of the page
+  pages/              one component per route; its CSS beside it, or in a
+                      same-named folder when one file got too big to search
+    home/ projects/ guestbook/ poetry/    one file per part of the page
   content/            transmissions, as .mdx — prose only, no frontmatter
   data/               posts.ts and routeMeta.ts; each has two consumers
   hooks/ utils/ types/
@@ -39,11 +41,12 @@ worker/               Cloudflare Worker: guestbook entries and the visit count
 public/               static assets; og/ cards are generated and committed
 ```
 
-Two directories are the exception to "one stylesheet per route", and both for
-the same reason — the single file had grown past the point where you could find
-anything in it. `pages/home/` is split by section, and its `index.css` fixes the
-import order, which is the cascade. `components/terminal/` is split by kind:
-tables, state, markup.
+Four pages keep their CSS in a folder rather than one file, for the same reason
+in each case: the single file had grown past the point where you could search
+it. Every one has an `index.css` whose `@import` order *is* the cascade — read
+the comment at the top before reordering, because `poetry/` has a pair where the
+order is load-bearing. `components/terminal/` is split by kind instead: tables,
+state, markup.
 
 ## Invariants
 
@@ -80,6 +83,16 @@ not "clean it up".
 design-lint rule is suppressed. Deleting it loses the reasoning, not just the
 suppression.
 
+**Most design tokens change value between themes, so a raw hex is not always
+safe to "tidy up" into a `var()`.** Eleven of the fifteen colour tokens —
+including `--accent-primary`, `--bg-surface` and every `--text-rgb` derivative —
+are redefined under `.theme-light`. Replacing a hardcoded `#00E5FF` with
+`var(--accent-primary)` therefore keeps dark mode identical and silently changes
+light mode. Only `--paper-bg`, `--paper-ink`, `--paper-ink-soft` and
+`--accent-warm-ink` hold one value in both themes, and no literal outside
+`index.css` currently matches any of those. The remaining raw literals are
+deliberate: they are colours that are meant *not* to follow the theme.
+
 **The visit counter only writes from the live site.** `COUNTING_HOSTS` in
 `src/components/VisitorCounter.tsx` gates the POST on hostname, so local
 development reads the number without inflating it. Anything that captures pages
@@ -107,10 +120,18 @@ Run it against a **built** site, never `npm run dev` — the dev server transfor
 modules on demand and the first loads of a run render differently from the later
 ones. Rebuild before every check, or you are photographing the previous build.
 
+A full run is about three minutes.
+
 Read the header of that file before trusting it. Getting it repeatable took
 pinning the clock, `Math.random`, five storage keys, every CSS animation, the
-Worker responses and the webfonts, and two things are deliberately **not**
-covered: the first-visit nudge state, and the boot sequence.
+Worker responses, the webfonts, and the footer's webring logo — that last one
+is fetched from another site and sized `height: auto`, so until it was cached
+locally the footer was one height when it had arrived and another when it had
+not, on every page.
+
+Two things are deliberately **not** covered: the first-visit nudge state, and
+the boot sequence. Both are pinned to the returning-visitor state so they hold
+still, which means a change to either will not be caught.
 
 ## Procedures worth following exactly
 
@@ -121,9 +142,9 @@ they are plain Markdown, so read them directly otherwise.
 - **`new-transmission`** — a post is an `.mdx` file *plus* a registration in
   `posts.ts` that four separate surfaces read, plus a social card generated
   locally and committed. A post missing from `posts.ts` is invisible everywhere.
-- **`verify-visual`** — how to prove a change looks identical, including the
-  baseline-before-you-edit ordering, the rebuild step, and how to tell the
-  harness's known flake from a real regression.
+- **`verify-visual`** — how to prove a change looks identical: the
+  baseline-before-you-edit ordering, the rebuild step, and how to work out
+  whether a drift can be your change at all.
 
 ## Style
 
