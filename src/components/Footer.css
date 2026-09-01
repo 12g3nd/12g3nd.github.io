@@ -89,10 +89,8 @@
    system is reporting from the corner of the screen. `left` matches the
    footer's own 2rem padding so it lines up with the page edge. */
 .visitor-counter {
-  position: absolute;
-  left: 2rem;
-  bottom: 1.25rem;
   display: flex;
+  justify-self: start;
   align-items: baseline;
   gap: 0.5rem;
   flex-wrap: wrap;
@@ -142,12 +140,81 @@
   text-shadow: none;
 }
 
-/* Absolute positioning would sit on top of the webring on a narrow screen, so
-   below the desktop layout the counter rejoins the flow underneath it. */
-@media (max-width: 900px) {
-  .visitor-counter {
-    position: static;
-    justify-content: center;
-    margin-top: 1.75rem;
+
+
+/* ── Baseline row ───────────────────────────────────────────
+   Visit count, copyright, family motto. Equal fractions either side of an
+   `auto` centre column, so the copyright sits optically centred on the page
+   rather than being pushed off-centre by whichever neighbour is wider. */
+.footer-baseline {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem 1.5rem;
+}
+
+/* ── Family motto ───────────────────────────────────────────
+   Crescere est resurgere — "to grow is to rise again".
+
+   The two readings are stacked in the same grid cell and cross-faded, rather
+   than one replacing the other in the flow: swapping text of different widths
+   would shove the copyright sideways on every hover. Stacking means the cell is
+   always as wide as the longer of the two and nothing moves. */
+.footer-motto {
+  justify-self: end;
+  display: grid;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-align: right;
+  cursor: help;
+}
+
+.footer-motto__latin,
+.footer-motto__english {
+  grid-area: 1 / 1;
+  transition: opacity 0.28s ease;
+}
+
+.footer-motto__latin {
+  color: rgba(var(--text-rgb), 0.3);
+  font-style: italic;
+}
+
+.footer-motto__english {
+  color: var(--accent-primary);
+  opacity: 0;
+}
+
+/* :active is carrying the touch case — there is no hover on a phone, so a tap
+   and hold is the only way to reach the translation without turning a line of
+   text into a button. */
+.footer-motto:hover .footer-motto__english,
+.footer-motto:focus-visible .footer-motto__english,
+.footer-motto:active .footer-motto__english {
+  opacity: 1;
+}
+
+.footer-motto:hover .footer-motto__latin,
+.footer-motto:focus-visible .footer-motto__latin,
+.footer-motto:active .footer-motto__latin {
+  opacity: 0;
+}
+
+/* Below the three-column layout the row stacks and everything centres. The
+   motto keeps its cross-fade; it just no longer has a side to sit on. */
+@media (max-width: 820px) {
+  .footer-baseline {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    row-gap: 1.1rem;
+  }
+
+  .visitor-counter,
+  .footer-motto {
+    justify-self: center;
+    text-align: center;
   }
 }

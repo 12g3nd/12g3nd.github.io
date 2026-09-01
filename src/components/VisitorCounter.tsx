@@ -9,10 +9,11 @@ import { WORKER_URL } from '../hooks/useGuestbook';
  *
  * There is no cookie, no fingerprint, no stored IP, no identifier of any kind.
  * The only state about a visitor lives in that visitor's own sessionStorage and
- * says nothing except "this tab already counted itself". That is also why the
- * label says SESSIONS: the number is not a claim about unique humans, and
- * pretending otherwise would be the same dishonesty as the third-party widget
- * this replaces.
+ * says nothing except "this tab already counted itself".
+ *
+ * The label reads VISITS rather than VISITORS for that reason: one session is
+ * one visit, and the same person returning tomorrow is counted again. Claiming
+ * unique humans would need exactly the tracking this deliberately does not do.
  */
 
 /** Per-tab flag: present once this session has been counted. */
@@ -105,7 +106,7 @@ export default function VisitorCounter() {
 
   return (
     <p className="visitor-counter">
-      <span className="visitor-counter__label">INBOUND_SESSIONS:</span>{' '}
+      <span className="visitor-counter__label">VISITS:</span>{' '}
       <a
         className="visitor-counter__value"
         href={XKCD}
@@ -114,8 +115,8 @@ export default function VisitorCounter() {
         aria-busy={count === null}
         aria-label={
           count === null
-            ? 'Session count unavailable. Link to xkcd 901.'
-            : `${count} sessions since ${SINCE.replace('.', '-')}. Link to xkcd 901.`
+            ? 'Visit count unavailable. Link to xkcd 901.'
+            : `${count} visits since ${SINCE.replace('.', '-')}. Link to xkcd 901.`
         }
       >
         {readout}
