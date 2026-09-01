@@ -19,6 +19,32 @@ npm run preview         # serve the built site from dist/
 CI runs `npm ci`, `npm run lint`, `npm run build`, and publishes `dist/` to
 GitHub Pages. A push to `main` deploys. There is no staging.
 
+## The map
+
+```text
+src/
+  main.tsx            entry; applies the stored theme before first paint
+  App.tsx             routes
+  index.css           the design tokens — :root palette, fonts, borders
+  components/         shared UI; a component's CSS sits beside it
+    terminal/         the nav bar's command line: data, hook, markup
+  pages/              one component and one stylesheet per route
+    home/             the homepage's CSS, one file per section of the page
+  content/            transmissions, as .mdx — prose only, no frontmatter
+  data/               posts.ts and routeMeta.ts; each has two consumers
+  hooks/ utils/ types/
+scripts/              vite plugins (feed, letterboxd, prerender) and local
+                      tooling (capture-*, visual.mjs) — see the header of each
+worker/               Cloudflare Worker: guestbook entries and the visit count
+public/               static assets; og/ cards are generated and committed
+```
+
+Two directories are the exception to "one stylesheet per route", and both for
+the same reason — the single file had grown past the point where you could find
+anything in it. `pages/home/` is split by section, and its `index.css` fixes the
+import order, which is the cascade. `components/terminal/` is split by kind:
+tables, state, markup.
+
 ## Invariants
 
 These are the things that are load-bearing and not obvious from the file you
