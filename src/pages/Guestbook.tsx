@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
 import ScrambleText from '../components/ScrambleText';
@@ -10,6 +11,11 @@ import './Guestbook.css';
 
 export default function Guestbook() {
   const { entries, loading, error } = useGuestbook();
+
+  /* Not persisted on purpose. Hidden is the state this page should open in
+     every time — remembering one curious click would quietly make the reveal
+     the default forever. */
+  const [showDates, setShowDates] = useState(false);
 
   useDocumentMeta(routeMeta.guestbook.title, routeMeta.guestbook.description);
 
@@ -34,9 +40,23 @@ export default function Guestbook() {
         <div className="guestbook-bar">
           <span className="guestbook-bar__cmd">
             <span className="guestbook-bar__prompt">srihith@sj.sys:~$</span> cat guestbook.log
+            {/* The flag appears in the command itself, so the state of the page
+                is legible in the metaphor rather than only in the button. */}
+            {showDates && <span className="guestbook-bar__flag"> --dates</span>}
           </span>
-          <span className="guestbook-bar__count">
-            {loading ? '· · ·' : `${count} ${count === 1 ? 'entry' : 'entries'}`}
+          <span className="guestbook-bar__actions">
+            <button
+              type="button"
+              className="guestbook-bar__toggle"
+              onClick={() => setShowDates((v) => !v)}
+              aria-pressed={showDates}
+              aria-label="Show the date each entry was signed"
+            >
+              [ {showDates ? '-' : '+'}DATES ]
+            </button>
+            <span className="guestbook-bar__count">
+              {loading ? '· · ·' : `${count} ${count === 1 ? 'entry' : 'entries'}`}
+            </span>
           </span>
         </div>
 
@@ -56,7 +76,7 @@ export default function Guestbook() {
             !error &&
             entries.map((entry, i) => (
               <Reveal key={entry.id} delay={Math.min(i, 6) * 0.07}>
-                <GuestbookCard entry={entry} />
+                <GuestbookCard entry={entry} showDate={showDates} />
               </Reveal>
             ))}
         </div>

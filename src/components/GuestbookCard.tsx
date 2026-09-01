@@ -4,6 +4,14 @@ import SignatureCanvas from './SignatureCanvas';
 interface GuestbookCardProps {
   entry: GuestbookEntry;
   compact?: boolean;
+  /**
+   * Off by default, everywhere. A signature and three words are the point of
+   * an entry; a date only tells a reader how long ago someone else visited,
+   * which is the one thing about a guestbook that ages badly. The guestbook
+   * page offers a toggle for anyone who does want them; the Home preview
+   * simply never asks for them.
+   */
+  showDate?: boolean;
 }
 
 // created_at is a SQLite datetime ("2026-06-02 14:30:00", UTC) or an ISO string;
@@ -12,10 +20,14 @@ function formatDate(value: string): string {
   return value ? value.slice(0, 10) : '';
 }
 
-export default function GuestbookCard({ entry, compact = false }: GuestbookCardProps) {
+export default function GuestbookCard({
+  entry,
+  compact = false,
+  showDate = false,
+}: GuestbookCardProps) {
   return (
     <article className={`gb-card${compact ? ' gb-card--compact' : ''}`}>
-      <span className="gb-card__date">{formatDate(entry.created_at)}</span>
+      {showDate && <span className="gb-card__date">{formatDate(entry.created_at)}</span>}
       <h3 className="gb-card__name">
         {entry.first_name} {entry.last_name}
       </h3>

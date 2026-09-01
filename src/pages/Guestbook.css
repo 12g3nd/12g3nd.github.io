@@ -38,6 +38,58 @@
   white-space: nowrap;
 }
 
+/* The --dates flag written into the command line when the toggle is on. */
+.guestbook-bar__flag {
+  color: var(--accent-secondary);
+}
+
+/* Right-hand group: the toggle sits beside the count rather than opposite it,
+   so the bar keeps its two-ended command/status shape. */
+.guestbook-bar__actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+/* Deliberately quiet: it reads as one more dim status field until you hover it,
+   which is the right weight for a control most visitors never need. */
+.guestbook-bar__toggle {
+  padding: 0;
+  border: none;
+  background: none;
+  font-family: inherit;
+  font-size: inherit;
+  letter-spacing: 0.06em;
+  color: rgba(var(--text-rgb), 0.35);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+
+.guestbook-bar__toggle:hover,
+.guestbook-bar__toggle:focus-visible {
+  color: var(--accent-primary);
+}
+
+/* Pressed state carries its own colour so the button still says which way it
+   is set once the pointer leaves. */
+.guestbook-bar__toggle[aria-pressed='true'] {
+  color: var(--accent-secondary);
+}
+
+/* At narrow widths the command, toggle and count stop fitting on one line. */
+@media (max-width: 560px) {
+  .guestbook-bar {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+  }
+
+  .guestbook-bar__cmd {
+    white-space: normal;
+  }
+}
+
 /* ── Entry grid ──────────────────────────────────────────────────────────── */
 .guestbook-grid {
   display: grid;
