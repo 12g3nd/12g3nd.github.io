@@ -29,6 +29,8 @@ BLOG_ROADMAP.md
 /*.png
 /*.jpg
 /*.jpeg
+# The one root image that is not a working file: the README's wordmark.
+!/ascii-art-text.png
 
 # Playwright MCP output
 .playwright-mcp/
