@@ -126,6 +126,20 @@
   padding: 0 1.5rem;
 }
 
+.feed-note {
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgba(var(--text-rgb), 0.7);
+  font-family: var(--font-mono);
+  margin: 0;
+}
+
+/* .post-link's 1.5rem top margin is tuned for the end of an article body; in
+   the sidebar it only needs to clear the note above it. */
+.feed-link {
+  margin-top: 1rem;
+}
+
 .system-log-box ul {
   list-style: none;
   padding: 0;

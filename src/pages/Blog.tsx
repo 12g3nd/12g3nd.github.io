@@ -102,6 +102,19 @@ export default function Blog() {
                 </li>
               </ul>
             </div>
+
+            <div className="sidebar-section">
+              <h4>[SUBSCRIBE]</h4>
+              <p className="feed-note">
+                no email, no account. point a reader at the feed and new
+                transmissions arrive on their own.
+              </p>
+              {/* Plain anchor, not react-router Link: feed.xml is a real file
+                  emitted next to index.html, so this has to leave the SPA. */}
+              <a className="post-link feed-link" href="/feed.xml">
+                [RSS_FEED →]
+              </a>
+            </div>
           </aside>
         </div>
       </section>
