@@ -18,6 +18,16 @@ dist-ssr
 # Private blog planning (not for publishing)
 BLOG_ROADMAP.md
 
+# Transmission drafts and full-res source photos, kept locally only. The
+# published copies are the ones that ship: src/content/*.mdx and public/blogN/,
+# where the photos are resized to web weight. Root .md/images are always
+# working files here — README is the one exception.
+/*.md
+!/README.md
+/*.png
+/*.jpg
+/*.jpeg
+
 # Playwright MCP output
 .playwright-mcp/
 
