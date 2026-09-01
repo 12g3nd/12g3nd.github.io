@@ -80,6 +80,16 @@ not "clean it up".
 design-lint rule is suppressed. Deleting it loses the reasoning, not just the
 suppression.
 
+**Most design tokens change value between themes, so a raw hex is not always
+safe to "tidy up" into a `var()`.** Eleven of the fifteen colour tokens —
+including `--accent-primary`, `--bg-surface` and every `--text-rgb` derivative —
+are redefined under `.theme-light`. Replacing a hardcoded `#00E5FF` with
+`var(--accent-primary)` therefore keeps dark mode identical and silently changes
+light mode. Only `--paper-bg`, `--paper-ink`, `--paper-ink-soft` and
+`--accent-warm-ink` hold one value in both themes, and no literal outside
+`index.css` currently matches any of those. The remaining raw literals are
+deliberate: they are colours that are meant *not* to follow the theme.
+
 **The visit counter only writes from the live site.** `COUNTING_HOSTS` in
 `src/components/VisitorCounter.tsx` gates the POST on hostname, so local
 development reads the number without inflating it. Anything that captures pages
@@ -107,10 +117,18 @@ Run it against a **built** site, never `npm run dev` — the dev server transfor
 modules on demand and the first loads of a run render differently from the later
 ones. Rebuild before every check, or you are photographing the previous build.
 
+A full run is about three minutes.
+
 Read the header of that file before trusting it. Getting it repeatable took
 pinning the clock, `Math.random`, five storage keys, every CSS animation, the
-Worker responses and the webfonts, and two things are deliberately **not**
-covered: the first-visit nudge state, and the boot sequence.
+Worker responses, the webfonts, and the footer's webring logo — that last one
+is fetched from another site and sized `height: auto`, so until it was cached
+locally the footer was one height when it had arrived and another when it had
+not, on every page.
+
+Two things are deliberately **not** covered: the first-visit nudge state, and
+the boot sequence. Both are pinned to the returning-visitor state so they hold
+still, which means a change to either will not be caught.
 
 ## Procedures worth following exactly
 
