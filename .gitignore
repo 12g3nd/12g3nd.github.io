@@ -47,3 +47,7 @@ BLOG_ROADMAP.md
 # local working state that must not vary with the repo. See scripts/visual.mjs.
 scripts/visual/
 scripts/fixtures/
+
+# Per-machine Claude Code settings. Ignored by this repo rather than only by a
+# global gitignore, so a fresh clone on another machine does not commit them.
+**/.claude/settings.local.json
