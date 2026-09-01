@@ -61,7 +61,10 @@ function rfc822(date: string): string {
 }
 
 function itemXml(post: Post): string {
-  const url = `${SITE}/blog/${post.slug}`;
+  // Trailing slash: the site serves <path>/index.html and 301s the slashless
+  // form, so an unslashed <link> sends every reader through a redirect and an
+  // unslashed permalink guid names a URL that never returns 200.
+  const url = `${SITE}/blog/${post.slug}/`;
   return `    <item>
       <title>${esc(post.title)}</title>
       <link>${esc(url)}</link>
@@ -84,7 +87,7 @@ function buildFeed(): string {
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>${esc(CHANNEL_TITLE)}</title>
-    <link>${SITE}/blog</link>
+    <link>${SITE}/blog/</link>
     <description>${esc(CHANNEL_DESCRIPTION)}</description>
     <language>en</language>
     <lastBuildDate>${lastBuild}</lastBuildDate>

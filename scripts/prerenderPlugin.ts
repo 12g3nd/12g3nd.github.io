@@ -75,7 +75,11 @@ function sub(html: string, pattern: RegExp, replacement: string, label: string):
 }
 
 function renderHead(html: string, route: Route): string {
-  const url = route.path === '/' ? SITE : `${SITE}${route.path}`;
+  // Every prerendered route is served as <path>/index.html, and the host 301s
+  // the slashless form to the trailing slash. A canonical that names the
+  // redirecting URL points search engines at a hop rather than at the page, so
+  // the trailing slash is part of the canonical URL for everything but root.
+  const url = route.path === '/' ? SITE : `${SITE}${route.path}/`;
 
   let out = html;
   out = sub(out, /<title>[\s\S]*?<\/title>/, `<title>${text(route.title)}</title>`, 'title');
@@ -203,7 +207,7 @@ export default function prerenderPlugin(): Plugin {
       }));
 
       for (const post of posts) {
-        const url = `${SITE}/blog/${post.slug}`;
+        const url = `${SITE}/blog/${post.slug}/`;
         const image = await cardFor(post.slug);
         routes.push({
           path: `/blog/${post.slug}`,
