@@ -252,6 +252,7 @@ async function capture(outDir, fixture) {
   const browser = await chromium.launch();
   await warmUp(browser);
   let shots = 0;
+  const metrics = {};
 
   for (const theme of THEMES) {
     for (const width of WIDTHS) {
@@ -307,9 +308,30 @@ async function capture(outDir, fixture) {
       await page.addStyleTag({ content: FREEZE_CSS });
       await ensureFonts(page);
       await settle(page);
+      const shotName = `${name}--${theme}--${width}`;
       await page.screenshot({
         fullPage: true,
-        path: path.join(outDir, `${name}--${theme}--${width}.png`),
+        path: path.join(outDir, `${shotName}.png`),
+      });
+
+      // Recorded alongside the image so a drift can be read as "this element
+      // changed height" instead of being reverse-engineered from pixels. A
+      // screenshot says something moved; this says what.
+      metrics[shotName] = await page.evaluate(() => {
+        const h = (sel) => {
+          const el = document.querySelector(sel);
+          return el ? Math.round(el.getBoundingClientRect().height) : null;
+        };
+        const row = document.querySelector('.terminal-mobile-row');
+        return {
+          body: document.body.scrollHeight,
+          nav: h('.brutalist-nav'),
+          navLinks: h('.nav-links'),
+          mobileRow: h('.terminal-mobile-row'),
+          headerBox: h('.terminal-header-box'),
+          brand: h('.nav-brand'),
+          rowText: row ? row.textContent.trim().slice(0, 48) : null,
+        };
       });
       shots += 1;
       process.stdout.write(`\r  ${shots} shots`);
@@ -320,6 +342,7 @@ async function capture(outDir, fixture) {
   }
 
   await browser.close();
+  await writeFile(path.join(outDir, 'metrics.json'), JSON.stringify(metrics, null, 1));
   process.stdout.write(`\r  ${shots} shots captured\n`);
 }
 
