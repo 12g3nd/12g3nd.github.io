@@ -61,6 +61,41 @@ line of defence, add a rate-limiting rule in the Cloudflare dashboard
 (**Security → WAF → Rate limiting rules**) that caps `POST /sign` at **3
 requests/hour per IP**.
 
+## Session counter
+
+The footer readout (`INBOUND_SESSIONS`) is one integer in the same D1 database.
+It ships **after** the site does, so until these two commands run the footer
+shows `------` rather than a number — that is the intended failure mode, not a
+bug.
+
+```bash
+# 1. Create the counters table and seed it. Safe to re-run: the table creation
+#    is guarded and the seed is INSERT OR IGNORE, so this will not reset a live
+#    count.
+npx wrangler d1 execute sjsys-guestbook --remote --file=./counters.sql
+
+# 2. Ship the new /visit and /visits routes.
+npx wrangler deploy
+```
+
+Verify:
+
+```bash
+curl https://guestbook.jarabana.com/visits          # -> {"ok":true,"count":2110}
+curl -X POST https://guestbook.jarabana.com/visit   # -> {"ok":true,"count":2111}
+```
+
+The seed of 2110 is Cloudflare's unique-visitor count for 2 Aug - 1 Sep 2026.
+Everything added after it is this Worker's own count of browser sessions, which
+is a different measurement — hence `SESSIONS` and `SINCE 2026.08` in the label
+rather than any claim about people.
+
+`POST /visit` is unauthenticated and trivially inflatable by anyone willing to
+run it in a loop. That is an accepted property, not an oversight: the honest
+alternative to a fake-precise analytics widget is a number that is obviously a
+mood ring. If it ever gets abused, the same WAF rate-limiting rule used for
+`POST /sign` applies here.
+
 ## Local development
 
 ```bash

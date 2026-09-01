@@ -11,7 +11,15 @@ const SEQUENCE = [
 export default function useKonami(onTrigger: () => void) {
   const index = useRef(0);
   const handler = useRef(onTrigger);
-  handler.current = onTrigger;
+
+  // Kept in a ref so the keydown listener below can stay mounted for the life
+  // of the component while still calling the newest onTrigger. The assignment
+  // belongs in an effect, not in the render body: writing to a ref during
+  // render is a side effect, and under concurrent rendering a render that is
+  // thrown away would still have mutated it.
+  useEffect(() => {
+    handler.current = onTrigger;
+  }, [onTrigger]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {

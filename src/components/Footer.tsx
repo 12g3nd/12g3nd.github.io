@@ -1,8 +1,10 @@
+import VisitorCounter from './VisitorCounter';
 import './Footer.css';
 
 export default function Footer() {
   return (
     <footer className="brutalist-footer">
+      <VisitorCounter />
       <div className="webring-container">
         <div className="webring-widget">
           <a href="https://uoftwebring.com/redirect?nav=prev&id=40" className="webring-nav">

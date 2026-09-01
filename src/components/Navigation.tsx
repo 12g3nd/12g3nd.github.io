@@ -141,9 +141,15 @@ export default function Navigation() {
       const timer = setTimeout(() => setIsDeleting(true), typingSpeed);
       return () => clearTimeout(timer);
     } else if (isDeleting && text === '') {
-      setIsDeleting(false);
-      setPhraseIndex((prev) => (prev + 1) % phrases.length);
-      return;
+      // Scheduled rather than set synchronously: a straight setState here runs
+      // during the effect and forces an immediate second render pass. A short
+      // timer both avoids that and gives the caret a beat of empty line before
+      // the next phrase starts typing, which reads better than an instant jump.
+      const timer = setTimeout(() => {
+        setIsDeleting(false);
+        setPhraseIndex((prev) => (prev + 1) % phrases.length);
+      }, 400);
+      return () => clearTimeout(timer);
     }
 
     const timeout = setTimeout(() => {

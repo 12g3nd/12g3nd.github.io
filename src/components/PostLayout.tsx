@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { ReactNode } from 'react';
 import { postsSorted } from '../data/posts';
@@ -18,16 +18,26 @@ interface PostLayoutProps {
  * the other posts). Collapses to a single column under 900px.
  */
 export default function PostLayout({ slug, date, children }: PostLayoutProps) {
-  const contentRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
   const [stats, setStats] = useState({ words: 0, minutes: 1 });
 
-  // Word count + read time, measured from the rendered article text.
-  useEffect(() => {
-    const text = contentRef.current?.textContent ?? '';
-    const words = text.trim().split(/\s+/).filter(Boolean).length;
+  /* Word count + read time, measured from the rendered article text.
+   *
+   * A ref callback rather than an effect: measuring in an effect and calling
+   * setState from its body runs a second render pass synchronously, every
+   * time. React invokes this once the node is attached, which is exactly when
+   * there is text to count.
+   *
+   * Empty deps are safe because AnimatedRoutes keys <Routes> on
+   * location.pathname (see App.tsx), so moving between transmissions unmounts
+   * this component rather than handing it new children — the callback runs
+   * again on the new instance. If that key ever goes, this needs to re-run on
+   * the article changing instead. */
+  const measureContent = useCallback((node: HTMLDivElement | null) => {
+    if (!node) return;
+    const words = (node.textContent ?? '').trim().split(/\s+/).filter(Boolean).length;
     setStats({ words, minutes: Math.max(1, Math.round(words / 200)) });
-  }, [children]);
+  }, []);
 
   // Reading progress tied to scroll position.
   useEffect(() => {
@@ -44,7 +54,7 @@ export default function PostLayout({ slug, date, children }: PostLayoutProps) {
 
   return (
     <div className="post-layout">
-      <div className="post-content" ref={contentRef}>
+      <div className="post-content" ref={measureContent}>
         {children}
       </div>
 

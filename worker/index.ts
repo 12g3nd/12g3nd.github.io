@@ -5,6 +5,8 @@
  *
  *   GET  /entries?approved=1  → { entries: Entry[] }  (public; approved rows only)
  *   POST /sign                → 201 { ok, message }   (inserts a pending row)
+ *   GET  /visits              → { ok, count }         (read the session counter)
+ *   POST /visit               → { ok, count }         (increment, then read)
  *
  * Approval is manual: rows land with approved = 0 and are flipped to 1 from the
  * D1 dashboard or via `wrangler d1 execute` (see DEPLOY.md). That queue — not a
@@ -167,6 +169,41 @@ async function handleSign(request: Request, env: Env, origin: string | null): Pr
   return json({ ok: true, message: 'Entry submitted for review.' }, 201, origin);
 }
 
+/* ── Session counter ────────────────────────────────────────────────────────
+ *
+ * One row, one integer. The site increments it once per browser session and
+ * renders the number in the footer.
+ *
+ * What this deliberately does not do: no cookie, no fingerprint, no IP stored,
+ * no identifier of any kind. The only state is a flag in the visitor's own
+ * sessionStorage deciding whether this tab has already counted itself, which
+ * means the number is honest about being a count of sessions rather than a
+ * claim about unique humans. It is trivially inflatable by anyone who wants to
+ * POST in a loop; it is a mood ring, not a metric.
+ */
+const COUNTER_NAME = 'sessions';
+
+async function handleVisits(env: Env, origin: string | null): Promise<Response> {
+  const row = await env.DB.prepare('SELECT value FROM counters WHERE name = ?1')
+    .bind(COUNTER_NAME)
+    .first<{ value: number }>();
+  return json({ ok: true, count: row?.value ?? 0 }, 200, origin);
+}
+
+async function handleVisit(env: Env, origin: string | null): Promise<Response> {
+  // One statement, so the read-modify-write can't interleave: two sessions
+  // arriving together cannot both read N and both write N + 1. RETURNING hands
+  // back the post-increment value without a second round trip.
+  const row = await env.DB.prepare(
+    `INSERT INTO counters (name, value) VALUES (?1, 1)
+       ON CONFLICT(name) DO UPDATE SET value = value + 1
+       RETURNING value`
+  )
+    .bind(COUNTER_NAME)
+    .first<{ value: number }>();
+  return json({ ok: true, count: row?.value ?? 0 }, 200, origin);
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const origin = request.headers.get('Origin');
@@ -182,6 +219,14 @@ export default {
 
     if (request.method === 'POST' && url.pathname === '/sign') {
       return handleSign(request, env, origin);
+    }
+
+    if (request.method === 'GET' && url.pathname === '/visits') {
+      return handleVisits(env, origin);
+    }
+
+    if (request.method === 'POST' && url.pathname === '/visit') {
+      return handleVisit(env, origin);
     }
 
     return json({ ok: false, error: 'Not found.' }, 404, origin);

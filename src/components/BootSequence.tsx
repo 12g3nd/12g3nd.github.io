@@ -54,13 +54,17 @@ export default function BootSequence({ onDone }: { onDone: () => void }) {
   const finished = useRef(false);
 
   // Single source of truth for ending the boot: fade out, then unmount.
+  // Assigned in an effect rather than during render — a ref write is a side
+  // effect, and the reveal interval below only ever reads it after commit.
   const finish = useRef(() => {});
-  finish.current = () => {
-    if (finished.current) return;
-    finished.current = true;
-    setLeaving(true);
-    window.setTimeout(onDone, FADE_MS);
-  };
+  useEffect(() => {
+    finish.current = () => {
+      if (finished.current) return;
+      finished.current = true;
+      setLeaving(true);
+      window.setTimeout(onDone, FADE_MS);
+    };
+  }, [onDone]);
 
   // Reveal lines one at a time, then hold, then finish.
   useEffect(() => {
@@ -75,7 +79,10 @@ export default function BootSequence({ onDone }: { onDone: () => void }) {
       });
     }, LINE_INTERVAL);
     return () => window.clearInterval(reveal);
-  }, []);
+    // LINES comes from a useMemo with no deps, so its length is fixed for the
+    // life of the component; listing it satisfies the exhaustive-deps check
+    // without ever restarting the interval.
+  }, [LINES.length]);
 
   // Lock scroll while booting.
   useEffect(() => {
