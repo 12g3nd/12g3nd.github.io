@@ -1,0 +1,26 @@
+/* Home page styles, one file per section of the page.
+ *
+ * This was a single 1328-line Home.css whose responsive rules lived in three
+ * global breakpoint blocks near the bottom — so changing how the hero behaved
+ * on a phone meant editing a rule 900 lines away from the hero's own styles,
+ * with nothing to tell you it was there. Each section now carries its own
+ * breakpoints.
+ *
+ * The import order below is the cascade, and it matters. It reproduces the
+ * order the sections' base rules appeared in originally, and layout.css is
+ * first because it holds the generic selectors — .section, .info-section,
+ * .section-header — which are the only ones that can match the same element as
+ * another section's rules. Reordering these imports can change which rule wins.
+ * Adding a section is safe; moving one is not.
+ */
+
+@import './layout.css';
+@import './hero.css';
+@import './landmark.css';
+@import './cards.css';
+@import './tenets.css';
+@import './guestbook-preview.css';
+@import './contact.css';
+@import './quotes.css';
+@import './sj-glow.css';
+@import './whimsy.css';

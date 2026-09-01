@@ -24,6 +24,8 @@ BLOG_ROADMAP.md
 # working files here — README is the one exception.
 /*.md
 !/README.md
+!/AGENTS.md
+!/CLAUDE.md
 /*.png
 /*.jpg
 /*.jpeg
@@ -41,3 +43,13 @@ BLOG_ROADMAP.md
 *.njsproj
 *.sln
 *.sw?
+
+# Visual-regression harness: screenshot baselines, and the cached guestbook
+# fixture (44 real signatures, fetched from the Worker on first run). Both are
+# local working state that must not vary with the repo. See scripts/visual.mjs.
+scripts/visual/
+scripts/fixtures/
+
+# Per-machine Claude Code settings. Ignored by this repo rather than only by a
+# global gitignore, so a fresh clone on another machine does not commit them.
+**/.claude/settings.local.json

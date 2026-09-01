@@ -39,6 +39,11 @@ jobs:
       # exactly what it pins rather than re-resolving semver ranges on every run.
       - name: Install dependencies
         run: npm ci
+      # `npm run build` is `tsc -b && vite build`, so typechecking has always
+      # gated a deploy. Linting never did — it only ever ran when someone
+      # remembered to run it locally. Same one-command check, now enforced.
+      - name: Lint
+        run: npm run lint
       - name: Build
         run: npm run build
       - name: Upload artifact
