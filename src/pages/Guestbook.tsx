@@ -7,7 +7,7 @@ import { routeMeta } from '../data/routeMeta';
 import useGuestbook from '../hooks/useGuestbook';
 import GuestbookCard from '../components/GuestbookCard';
 import GuestbookForm from '../components/GuestbookForm';
-import './Guestbook.css';
+import './guestbook/index.css';
 
 export default function Guestbook() {
   const { entries, loading, error } = useGuestbook();

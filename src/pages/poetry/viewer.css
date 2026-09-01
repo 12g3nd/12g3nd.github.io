@@ -1,0 +1,88 @@
+/* ---------- Document viewer ---------- */
+
+.doc-viewer {
+  margin-top: 2.5rem;
+  background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
+  border: 1px solid rgba(var(--text-rgb), 0.12);
+  padding: 0;
+  position: relative;
+  box-shadow: inset 0 1px 0 rgba(var(--text-rgb), 0.04);
+}
+
+.doc-viewer__chrome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  background: #111;
+  border-bottom: 1px solid rgba(var(--text-rgb), 0.1);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: rgba(var(--text-rgb), 0.7);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+
+.doc-viewer__filename {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  letter-spacing: 0.04em;
+}
+
+.doc-viewer__filename::before {
+  content: "";
+  width: 10px;
+  height: 12px;
+  border: 1px solid rgba(var(--text-rgb), 0.55);
+  display: inline-block;
+  position: relative;
+}
+
+.doc-viewer__meta {
+  color: rgba(var(--text-rgb), 0.45);
+}
+
+.doc-viewer__pages {
+  padding: 2rem 1.25rem 3rem;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(var(--text-rgb), 0.012) 0px,
+      rgba(var(--text-rgb), 0.012) 2px,
+      transparent 2px,
+      transparent 6px
+    ),
+    #161616;
+}
+
+/* Each page is wrapped in a Reveal (motion) div for staggered scroll-in.
+   The page itself is then always :last-child of its wrapper, so move the
+   inter-page spacing onto the wrapper. */
+
+.doc-viewer__pages > div {
+  margin-bottom: 2.5rem;
+}
+
+.doc-viewer__pages > div:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .doc-viewer__pages > div {
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .doc-viewer__pages {
+    padding: 1.25rem 0.5rem 2rem;
+  }
+
+  .doc-viewer__chrome {
+    font-size: 11px;
+    padding: 0.5rem 0.75rem;
+  }
+}
