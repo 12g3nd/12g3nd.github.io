@@ -3,24 +3,7 @@
    "temperature" for Projects: a lit workshop / spec sheet, not just cards. */
 
 .pkg-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
   margin-top: 1.5rem;
-  padding: 0.6rem 1rem;
-  background: var(--bg-surface);
-  border: 1px solid rgba(var(--accent-rgb), 0.2);
-  border-left: 2px solid var(--accent-primary);
-  font-family: var(--font-mono);
-  font-size: 12px;
-}
-
-.pkg-bar__cmd {
-  color: rgba(var(--text-rgb), 0.7);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .pkg-bar__prompt {

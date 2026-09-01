@@ -4,24 +4,7 @@
    Matches pkg-bar (Projects), gallery-bar (Media), log-bar (Blog) so Poetry
    reads as an SJ.SYS app too — `$ open poetry.pdf`, then the PDF viewer. */
 
-.poetry-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.6rem 1rem;
-  background: var(--bg-surface);
-  border: 1px solid rgba(var(--accent-rgb), 0.2);
-  border-left: 2px solid var(--accent-primary);
-  font-family: var(--font-mono);
-  font-size: 12px;
-}
-
 .poetry-bar__cmd {
-  color: rgba(var(--text-rgb), 0.7);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
   /* It's a real button (toggles director's-note mode) — strip native chrome. */
   background: none;
   border: none;
