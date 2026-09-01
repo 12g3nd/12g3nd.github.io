@@ -19,6 +19,9 @@
 //   - spotify     A third-party iframe on /media. Nothing can make it stable, so
 //                 it is replaced by a blank frame of identical dimensions —
 //                 the surrounding layout is what this script is here to check.
+//   - webring     The footer's webring logo is fetched from another site and
+//                 sized `height: auto`, so the footer was one height when it had
+//                 arrived and another when it had not. Cached and served local.
 //   - motion      reducedMotion: 'reduce' skips the boot sequence, forces every
 //                 Reveal block visible and keeps the easter eggs from firing.
 //                 See capture-pdf.mjs, which relies on the same lever.
@@ -31,6 +34,11 @@
 // 35px row, and it survived both pinned storage and a browser context per shot,
 // because the varying thing was the server rather than the page. A built site is
 // static, and it is also what actually deploys.
+//
+// Each shot used to load its route twice and photograph the second, to pay off
+// whatever was cold. Against a build there is nothing cold to pay off, and
+// settle() waits for the layout to stop moving anyway, so the second load was
+// doing nothing but doubling the runtime.
 //
 // Usage:
 //   npm run build && npx vite preview --port 4173
@@ -57,6 +65,21 @@ const DIFF_DIR = path.join(ROOT, 'diff');
 const FIXTURE = path.resolve('scripts', 'fixtures', 'guestbook.json');
 
 const WORKER = 'https://guestbook.jarabana.com';
+
+/**
+ * The webring logo in the footer, which is loaded from another site.
+ *
+ * Footer.css gives it `width: 28px; height: auto`, so its rendered height comes
+ * from the file's own aspect ratio — which means the footer is one height when
+ * the image has arrived and another when it has not. Over the real network that
+ * varied within a run and between runs, and since the footer is on every page it
+ * moved `body` on every route by the same 35px. It was the last thing still
+ * reaching outside the machine during a capture.
+ *
+ * Cached once and served locally, so the ratio is real and the timing is not.
+ */
+const WEBRING = 'https://uoftwebring.com';
+const WEBRING_LOGO = path.resolve('scripts', 'fixtures', 'ring_logo.svg');
 
 // Frozen wall clock. A fixed instant in the afternoon, deliberately outside the
 // 1-5am window isLateNight() checks, so the nav shows its ordinary phrase set.
@@ -107,6 +130,19 @@ const FREEZE_CSS = `*, *::before, *::after {
   transition: none !important;
   caret-color: transparent !important;
 }`;
+
+/** Fetch the webring logo once and cache it, so its aspect ratio is the real one. */
+async function loadWebringLogo() {
+  if (existsSync(WEBRING_LOGO)) return readFile(WEBRING_LOGO, 'utf8');
+  process.stdout.write('fetching webring logo ... ');
+  const res = await fetch(`${WEBRING}/ring_logo.svg`);
+  if (!res.ok) throw new Error(`webring logo fetch failed (${res.status})`);
+  const body = await res.text();
+  await mkdir(path.dirname(WEBRING_LOGO), { recursive: true });
+  await writeFile(WEBRING_LOGO, body);
+  process.stdout.write('ok\n');
+  return body;
+}
 
 /** Fetch the guestbook once and cache it. Gitignored: it is 44 real signatures. */
 async function loadFixture() {
@@ -246,8 +282,11 @@ async function settle(page) {
  * to change what has finished rendering when the shutter opens, which showed up
  * as drift between two captures of identical code.
  */
-async function warmUp(browser) {
+async function warmUp(browser, logo) {
   const context = await browser.newContext({ reducedMotion: 'reduce' });
+  await context.route(`${WEBRING}/**`, (route) =>
+    route.fulfill({ contentType: 'image/svg+xml', body: logo }),
+  );
   // Stubbed here too, so the claim at the top of this file holds without
   // exception: no part of a capture run reaches the real Worker.
   await context.route(`${WORKER}/**`, (route) =>
@@ -260,12 +299,12 @@ async function warmUp(browser) {
   await context.close();
 }
 
-async function capture(outDir, fixture) {
+async function capture(outDir, fixture, logo) {
   await rm(outDir, { recursive: true, force: true });
   await mkdir(outDir, { recursive: true });
 
   const browser = await chromium.launch();
-  await warmUp(browser);
+  await warmUp(browser, logo);
   let shots = 0;
   const metrics = {};
 
@@ -304,6 +343,11 @@ async function capture(outDir, fixture) {
         route.fulfill({ contentType: 'text/html', body: '<!doctype html><body></body>' }),
       );
 
+      // Real file, local timing — see WEBRING above.
+      await context.route(`${WEBRING}/**`, (route) =>
+        route.fulfill({ contentType: 'image/svg+xml', body: logo }),
+      );
+
       const page = await context.newPage();
       // install() alone leaves the clock ticking, which lets the nav typewriter
       // advance by a timing-dependent number of characters. At 390 and 820 a
@@ -313,13 +357,7 @@ async function capture(outDir, fixture) {
       await page.clock.install({ time: FIXED_TIME });
       await page.clock.pauseAt(FIXED_TIME);
 
-      // Loaded twice, photographed on the second. The first load pays for
-      // whatever is cold — module transforms, font files, images — so the shot
-      // is always taken from the same warm state.
       await page.goto(BASE + route, { waitUntil: 'networkidle', timeout: 30000 });
-      await ensureFonts(page);
-      await page.reload({ waitUntil: 'networkidle', timeout: 30000 });
-
       await page.addStyleTag({ content: FREEZE_CSS });
       await ensureFonts(page);
       await settle(page);
@@ -356,8 +394,22 @@ async function capture(outDir, fixture) {
     }
   }
 
-  await browser.close();
+  // Metrics first, then the browser.
+  //
+  // The other order lost a completed run: browser.close() can hang — a page
+  // with a frozen clock and pending timers does not always tear down promptly —
+  // and metrics.json was written after it, so a run that had captured all 78
+  // shots ended with no metrics at all. Nothing that is already computed should
+  // depend on a teardown succeeding.
   await writeFile(path.join(outDir, 'metrics.json'), JSON.stringify(metrics, null, 1));
+
+  // Bounded, because a hang here costs a run that is otherwise complete. Every
+  // shot is on disk by now; a browser that will not close is the OS's problem.
+  await Promise.race([
+    browser.close(),
+    new Promise((resolve) => setTimeout(resolve, 15000)),
+  ]);
+
   process.stdout.write(`\r  ${shots} shots captured\n`);
 }
 
@@ -417,10 +469,11 @@ async function diffPair(name) {
 
 async function main() {
   const fixture = await loadFixture();
+  const logo = await loadWebringLogo();
 
   if (MODE === 'baseline') {
     console.log(`baseline -> ${BASELINE_DIR}`);
-    await capture(BASELINE_DIR, fixture);
+    await capture(BASELINE_DIR, fixture, logo);
     console.log('baseline stored.');
     return;
   }
@@ -431,7 +484,7 @@ async function main() {
 
   console.log(`check -> ${CURRENT_DIR}`);
   await rm(DIFF_DIR, { recursive: true, force: true });
-  await capture(CURRENT_DIR, fixture);
+  await capture(CURRENT_DIR, fixture, logo);
 
   const names = (await readdir(BASELINE_DIR)).filter((f) => f.endsWith('.png'));
 
