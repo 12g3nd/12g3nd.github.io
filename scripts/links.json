@@ -1,0 +1,217 @@
+{
+  "_comment": [
+    "Archive manifest for every external link in src/content/*.mdx.",
+    "Why this exists: transmissions are never edited after publishing, but that rule governs prose, not infrastructure. When one of these URLs dies, repointing it at its snapshot is maintenance, not revision - and this file makes that fix mechanical instead of archaeological.",
+    "Live URLs stay in the prose. A live link beats an archived one while it is alive; the snapshot is insurance. Only repoint on death.",
+    "Regenerate coverage with: https://web.archive.org/cdx/search/cdx?url=<url>&output=json"
+  ],
+  "generated": "2026-09-01",
+  "totals": {
+    "links": 28,
+    "archived": 26,
+    "unarchived": 2,
+    "by_post": {
+      "brutalist-y2k": 16,
+      "performative": 1,
+      "wanting-things": 2,
+      "whats-a-god-to-a-non-believer": 9
+    }
+  },
+  "links": [
+    {
+      "post": "brutalist-y2k",
+      "url": "http://brutalistwebsites.com",
+      "snapshot": "https://web.archive.org/web/20260901204628/http://brutalistwebsites.com",
+      "captured": "2026-09-01",
+      "status": "archived"
+    },
+    {
+      "post": "brutalist-y2k",
+      "url": "https://99designs.com/blog/design-history-movements/brutalism/",
+      "snapshot": "https://web.archive.org/web/20260901204708/https://99designs.com/blog/design-history-movements/brutalism/",
+      "captured": "2026-09-01",
+      "status": "archived"
+    },
+    {
+      "post": "brutalist-y2k",
+      "url": "https://americanhistory.si.edu/collections/object-groups/y2k",
+      "snapshot": "https://web.archive.org/web/20260303074854/https://americanhistory.si.edu/collections/object-groups/y2k",
+      "captured": "2026-03-03",
+      "status": "archived"
+    },
+    {
+      "post": "brutalist-y2k",
+      "url": "https://fonts.google.com/specimen/Inter",
+      "snapshot": "https://web.archive.org/web/20260901205239/https://fonts.google.com/specimen/Inter",
+      "captured": "2026-09-01",
+      "status": "archived"
+    },
+    {
+      "post": "brutalist-y2k",
+      "url": "https://nautil.us/mathematics-suggest-that-fashion-is-on-a-20-year-cycle-1279018",
+      "snapshot": "https://web.archive.org/web/20260901205636/https://nautil.us/mathematics-suggest-that-fashion-is-on-a-20-year-cycle-1279018",
+      "captured": "2026-09-01",
+      "status": "archived"
+    },
+    {
+      "post": "brutalist-y2k",
+      "url": "https://saaspo.com/pages/anchor-ai-landing-page",
+      "status": "unarchived",
+      "note": "Capture returned 204 (empty) - JS-rendered gallery page. The screenshot this link attributes is preserved locally at public/blog1/image3.png, so the evidence survives even if the source does not."
+    },
+    {
+      "post": "brutalist-y2k",
+      "url": "https://studio2am.co/blogs/news/the-rise-of-y2k-aesthetic-in-graphic-design",
+      "snapshot": "https://web.archive.org/web/20260901205826/https://studio2am.co/blogs/news/the-rise-of-y2k-aesthetic-in-graphic-design",
+      "captured": "2026-09-01",
+      "status": "archived"
+    },
+    {
+      "post": "brutalist-y2k",
+      "url": "https://thedisconnect.co/three/scrapbook-of-ugly-websites/",
+      "snapshot": "https://web.archive.org/web/20260901205909/https://thedisconnect.co/three/scrapbook-of-ugly-websites/",
+      "captured": "2026-09-01",
+      "status": "archived"
+    },
+    {
+      "post": "brutalist-y2k",
+      "url": "https://www.behance.net/gallery/177739439/Milo-Portfolio",
+      "snapshot": "https://web.archive.org/web/20260901210035/https://www.behance.net/gallery/177739439/Milo-Portfolio",
+      "captured": "2026-09-01",
+      "status": "archived"
+    },
+    {
+      "post": "brutalist-y2k",
+      "url": "https://www.britannica.com/topic/1960s-counterculture",
+      "snapshot": "https://web.archive.org/web/20260723021232/https://www.britannica.com/topic/1960s-counterculture",
+      "captured": "2026-07-23",
+      "status": "archived"
+    },
+    {
+      "post": "brutalist-y2k",
+      "url": "https://www.designmantic.com/blog/brutalism-in-web-design/",
+      "snapshot": "https://web.archive.org/web/20260901210153/https://www.designmantic.com/blog/brutalism-in-web-design/",
+      "captured": "2026-09-01",
+      "status": "archived"
+    },
+    {
+      "post": "brutalist-y2k",
+      "url": "https://www.gaussalgo.com/knowledge-base/a-brief-history-of-ai-and-the-rise-of-chatgpt",
+      "snapshot": "https://web.archive.org/web/20260901210235/https://www.gaussalgo.com/knowledge-base/a-brief-history-of-ai-and-the-rise-of-chatgpt",
+      "captured": "2026-09-01",
+      "status": "archived"
+    },
+    {
+      "post": "brutalist-y2k",
+      "url": "https://www.vogue.com/article/y2k-fashion",
+      "snapshot": "https://web.archive.org/web/20260901210538/https://www.vogue.com/article/y2k-fashion",
+      "captured": "2026-09-01",
+      "status": "archived"
+    },
+    {
+      "post": "brutalist-y2k",
+      "url": "https://www.webdesignmuseum.org/exhibitions/y2k-aesthetic-in-web-design",
+      "snapshot": "https://web.archive.org/web/20260807024217/https://www.webdesignmuseum.org/exhibitions/y2k-aesthetic-in-web-design",
+      "captured": "2026-08-07",
+      "status": "archived"
+    },
+    {
+      "post": "brutalist-y2k",
+      "url": "https://www.webdesignmuseum.org/gallery/microsoft-games-2001",
+      "snapshot": "https://web.archive.org/web/20260716134557/https://www.webdesignmuseum.org/gallery/microsoft-games-2001",
+      "captured": "2026-07-16",
+      "status": "archived"
+    },
+    {
+      "post": "brutalist-y2k",
+      "url": "https://www.youtube.com/watch?v=x-8MSHuG-3s",
+      "snapshot": "https://web.archive.org/web/20260901210753/https://www.youtube.com/watch?v=x-8MSHuG-3s",
+      "captured": "2026-09-01",
+      "status": "archived"
+    },
+    {
+      "post": "wanting-things",
+      "url": "https://www.merriam-webster.com/dictionary/nonchalant",
+      "snapshot": "https://web.archive.org/web/20260810143038/https://www.merriam-webster.com/dictionary/nonchalant",
+      "captured": "2026-08-10",
+      "status": "archived"
+    },
+    {
+      "post": "wanting-things",
+      "url": "https://www.youtube.com/watch?v=UJzvwWzO1YI",
+      "snapshot": "https://web.archive.org/web/20260901210724/https://www.youtube.com/watch?v=UJzvwWzO1YI",
+      "captured": "2026-09-01",
+      "status": "archived"
+    },
+    {
+      "post": "performative",
+      "url": "https://www.masshist.org/digitaladams/archive/doc?id=L17800512jasecond",
+      "snapshot": "https://web.archive.org/web/20260901210315/https://www.masshist.org/digitaladams/archive/doc?id=L17800512jasecond",
+      "captured": "2026-09-01",
+      "status": "archived"
+    },
+    {
+      "post": "whats-a-god-to-a-non-believer",
+      "url": "https://en.wikipedia.org/wiki/Bambi",
+      "snapshot": "https://web.archive.org/web/20260901204830/https://en.wikipedia.org/wiki/Bambi",
+      "captured": "2026-09-01",
+      "status": "archived"
+    },
+    {
+      "post": "whats-a-god-to-a-non-believer",
+      "url": "https://en.wikipedia.org/wiki/Futurama",
+      "snapshot": "https://web.archive.org/web/20260901204911/https://en.wikipedia.org/wiki/Futurama",
+      "captured": "2026-09-01",
+      "status": "archived"
+    },
+    {
+      "post": "whats-a-god-to-a-non-believer",
+      "url": "https://en.wikipedia.org/wiki/No_Church_in_the_Wild",
+      "snapshot": "https://web.archive.org/web/20260901205035/https://en.wikipedia.org/wiki/No_Church_in_the_Wild",
+      "captured": "2026-09-01",
+      "status": "archived"
+    },
+    {
+      "post": "whats-a-god-to-a-non-believer",
+      "url": "https://en.wikipedia.org/wiki/Problem_of_evil",
+      "snapshot": "https://web.archive.org/web/20260901205120/https://en.wikipedia.org/wiki/Problem_of_evil",
+      "captured": "2026-09-01",
+      "status": "archived"
+    },
+    {
+      "post": "whats-a-god-to-a-non-believer",
+      "url": "https://en.wikipedia.org/wiki/Up_(2009_film)",
+      "snapshot": "https://web.archive.org/web/20260831170425/https://en.wikipedia.org/wiki/Up_(2009_film)",
+      "captured": "2026-08-31",
+      "status": "archived"
+    },
+    {
+      "post": "whats-a-god-to-a-non-believer",
+      "url": "https://iep.utm.edu/pasc-wag/",
+      "snapshot": "https://web.archive.org/web/20260901205356/https://iep.utm.edu/pasc-wag/",
+      "captured": "2026-09-01",
+      "status": "archived"
+    },
+    {
+      "post": "whats-a-god-to-a-non-believer",
+      "url": "https://knowyourmeme.com/memes/im-14-and-this-is-deep",
+      "snapshot": "https://web.archive.org/web/20260901205440/https://knowyourmeme.com/memes/im-14-and-this-is-deep",
+      "captured": "2026-09-01",
+      "status": "archived"
+    },
+    {
+      "post": "whats-a-god-to-a-non-believer",
+      "url": "https://plato.stanford.edu/entries/divine-hiddenness/",
+      "status": "unarchived",
+      "fallback": "https://plato.stanford.edu/archives/sum2026/entries/divine-hiddenness/",
+      "note": "Not in the Wayback Machine (SEP is excluded). Stanford maintains its own permanent quarterly editions; sum2026 is the one contemporaneous with TX_05."
+    },
+    {
+      "post": "whats-a-god-to-a-non-believer",
+      "url": "https://www.pewresearch.org/short-reads/2025/06/26/globally-1-in-10-adults-under-55-have-left-their-childhood-religion/",
+      "snapshot": "https://web.archive.org/web/20260901210458/https://www.pewresearch.org/short-reads/2025/06/26/globally-1-in-10-adults-under-55-have-left-their-childhood-religion/",
+      "captured": "2026-09-01",
+      "status": "archived"
+    }
+  ]
+}
