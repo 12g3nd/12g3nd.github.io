@@ -24,6 +24,8 @@ BLOG_ROADMAP.md
 # working files here — README is the one exception.
 /*.md
 !/README.md
+!/AGENTS.md
+!/CLAUDE.md
 /*.png
 /*.jpg
 /*.jpeg
