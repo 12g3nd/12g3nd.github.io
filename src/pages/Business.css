@@ -85,6 +85,44 @@
 .xls-row--rec { grid-template-columns: 2.5rem 4rem minmax(0, 1fr) 8rem; }
 .xls-row--cov { grid-template-columns: 2.5rem 5rem minmax(0, 1fr) 7rem; }
 .xls-row--file { grid-template-columns: 2.5rem minmax(0, 1fr) minmax(0, 1.6fr) auto; }
+.xls-row--svc { grid-template-columns: 2.5rem minmax(0, 1.6fr) minmax(0, 2fr) minmax(0, 1fr); }
+
+/* ── Org bands and their nested roles ──────────────────────
+   One employer can hold several titles, so the EXPERIENCE sheet groups rather
+   than lists: an org band, then its roles indented beneath it. Without the
+   band, a summer role that converted to a term role reads as two separate
+   stints at the same company. */
+.xls-row--org {
+  background: rgba(var(--accent-rgb), 0.06);
+  border-bottom-color: rgba(var(--accent-rgb), 0.18);
+}
+
+.xls-row--org:not(.xls-row--head):hover {
+  background: rgba(var(--accent-rgb), 0.09);
+}
+
+.xls-cell--org {
+  color: var(--accent-primary);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+/* The decimal gutter number (1.1, 1.2) already says "child"; the indent and
+   the inset rule keep that legible once the eye is scanning columns, not
+   numbers. */
+.xls-row--role {
+  border-left: 2px solid rgba(var(--accent-rgb), 0.22);
+}
+
+.xls-row--role .xls-cell--key {
+  padding-left: 0.9rem;
+  font-weight: 600;
+}
 
 .xls-row--head {
   background: rgba(var(--accent-rgb), 0.05);
@@ -172,6 +210,13 @@
 .xls-chip--pending {
   border-color: var(--accent-secondary);
   color: var(--accent-secondary);
+}
+
+/* Amber, so "I founded this" never reads as a third flavour of "I work here" —
+   cyan is employment, purple is pending, this is ownership. */
+.xls-chip--founder {
+  border-color: var(--accent-warm);
+  color: var(--accent-warm);
 }
 
 /* Pending coverage rows read as scaffolding, not finished work. */
@@ -263,6 +308,7 @@
   .xls-row--exp,
   .xls-row--rec,
   .xls-row--cov,
+  .xls-row--svc,
   .xls-row--file {
     grid-template-columns: 2rem 1fr;
     gap: 0.25rem 0.75rem;
@@ -274,12 +320,25 @@
   .xls-row--exp .xls-cell,
   .xls-row--rec .xls-cell,
   .xls-row--cov .xls-cell,
+  .xls-row--svc .xls-cell,
   .xls-row--file .xls-cell {
     grid-column: 2;
     overflow: visible;
     white-space: normal;
     text-overflow: clip;
   }
+
+  /* The org cell is a cell like any other once rows stack. */
+  .xls-row--exp .xls-cell--org { grid-column: 2; }
+
+  /* Stacked cards already sit flush left; a 2px rule plus a text indent would
+     read as a nested card rather than a nested row. The 1.1 gutter number is
+     doing the work here. */
+  .xls-row--role { border-left: none; }
+  .xls-row--role .xls-cell--key { padding-left: 0; }
+
+  /* An empty grid cell still reserves a stacked line. */
+  .xls-row--role .xls-cell:empty { display: none; }
 
   /* The gutter number labels the card from the top-left; a one-line stub border
      reads as a glitch once cells stack, so drop it here. */

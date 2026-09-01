@@ -395,7 +395,7 @@ export default function Home() {
         {resumeUnlocked && (
           <a
             href="/resume.pdf"
-            download="Srihith Jarabana - Resume.pdf"
+            download="Srihith-Jarabana-Resume.pdf"
             className="resume-chip"
           >
             [ DOWNLOAD RÉSUMÉ ↓ ]
@@ -410,14 +410,8 @@ export default function Home() {
             <img src="/smlogos/GitHub.webp" alt="GitHub" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
             [GITHUB ↗]
           </a>
-          <a href="https://letterboxd.com/Solder/" target="_blank" rel="noopener noreferrer" className="social-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-            <img src="/smlogos/Letterboxd.jpg" alt="Letterboxd" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
-            [LETTERBOXD ↗]
-          </a>
-          <a href="https://open.spotify.com/user/htofsfnpjzmpszwp8r6hz5osz" target="_blank" rel="noopener noreferrer" className="social-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-            <img src="/smlogos/Spotify.png" alt="Spotify" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
-            [SPOTIFY ↗]
-          </a>
+          {/* Spotify and Letterboxd live on /media now, as embeds rather than
+              links — a playlist you can play beats a pill you can click. */}
           <a href="https://www.instagram.com/sssrihith/" target="_blank" rel="noopener noreferrer" className="social-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
             <img src="/smlogos/Instagram.png" alt="Instagram" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
             [INSTAGRAM ↗]

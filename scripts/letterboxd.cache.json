@@ -1,0 +1,38 @@
+[
+  {
+    "title": "Star Wars: Episode III – Revenge of the Sith",
+    "year": "2005",
+    "rating": 5,
+    "stars": "★★★★★",
+    "link": "https://letterboxd.com/solder/film/star-wars-episode-iii-revenge-of-the-sith/",
+    "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/7/0/9/50709-star-wars-episode-iii-revenge-of-the-sith-0-600-0-900-crop.jpg?v=cdb8caab10",
+    "liked": true
+  },
+  {
+    "title": "20th Century Girl",
+    "year": "2022",
+    "rating": 4.5,
+    "stars": "★★★★½",
+    "link": "https://letterboxd.com/solder/film/20th-century-girl/",
+    "poster": "https://a.ltrbxd.com/resized/film-poster/7/6/6/1/9/7/766197-20th-century-girl-0-600-0-900-crop.jpg?v=b609c07095",
+    "liked": false
+  },
+  {
+    "title": "Whatever It Takes",
+    "year": "2000",
+    "rating": 3,
+    "stars": "★★★",
+    "link": "https://letterboxd.com/solder/film/whatever-it-takes/",
+    "poster": "https://a.ltrbxd.com/resized/film-poster/4/1/7/3/1/41731-whatever-it-takes-0-600-0-900-crop.jpg?v=8a00341a35",
+    "liked": true
+  },
+  {
+    "title": "Juror #2",
+    "year": "2024",
+    "rating": 2.5,
+    "stars": "★★½",
+    "link": "https://letterboxd.com/solder/film/juror-2/",
+    "poster": "https://a.ltrbxd.com/resized/film-poster/9/9/7/7/2/2/997722-juror-2-0-600-0-900-crop.jpg?v=14601fa694",
+    "liked": false
+  }
+]

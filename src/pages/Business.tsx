@@ -5,42 +5,131 @@ import useDocumentMeta from '../hooks/useDocumentMeta';
 import './Business.css';
 
 /* The business / finance pillar, framed as business.xlsx — a read-only
-   workbook. Seeded with verifiable résumé credentials; COVERAGE holds the
-   write-up slots that promote this from a hidden route to a nav tab (Phase 2). */
+   workbook. Every claim here is one a reader could check against resume.pdf,
+   which hangs off the workbook as its own sheet. */
 
-const experience = [
+/* An org holds roles, not the other way round. Sartorial is one employer with
+   two titles (a summer role that converted to a term role); flattening that to
+   two sibling rows would read as leaving and being rehired. Roles are listed
+   newest-first within an org, orgs newest-first overall. */
+type Role = {
+  role: string;
+  period: string;
+  note: string;
+};
+
+type Org = {
+  org: string;
+  location: string;
+  /* Total span across every role — the org's own dates, not any one role's. */
+  span: string;
+  tag?: string;
+  /* Drives the chip colour; defaults to the neutral chip. */
+  tagKind?: 'current' | 'founder';
+  roles: Role[];
+};
+
+const experience: Org[] = [
   {
-    role: 'Summer Research Associate',
     org: 'Sartorial Wealth',
-    period: 'May 2026 — Present',
+    location: 'Toronto, ON',
+    span: 'May 2026 — Present',
     tag: 'CURRENT',
-    note: 'Equity & cross-asset market analysis supporting and streamlining PM investment decisions. Built and maintained financial models and back-tested strategies for validation; Python (NumPy/Pandas) across large datasets.',
+    tagKind: 'current',
+    roles: [
+      {
+        role: 'Research Associate',
+        period: 'Sep 2026 — Present',
+        note: 'Conduct equity and cross-asset research for portfolio managers, building and back-testing models and strategies and analyzing datasets via FactSet and YCharts in Python/SQL to support investment decisions.',
+      },
+      {
+        role: 'Summer Research Associate',
+        period: 'May 2026 — Aug 2026',
+        note: 'Built proprietary research apps, algorithms, and experimental tools for portfolio managers and the CEO, using AI-assisted and agentic development to automate workflows and rapidly prototype new ideas.',
+      },
+    ],
+  },
+  {
+    org: 'FI99 Inc.',
+    location: 'Toronto, ON',
+    span: 'Jul 2026 — Present',
+    tag: 'FOUNDER',
+    tagKind: 'founder',
+    roles: [
+      {
+        role: 'Co-founder & Director',
+        period: 'Jul 2026 — Present',
+        note: 'Co-founded an incorporated experimental studio with Omar Badawy and Lars Fransen-Molino. Built fi99.ca end-to-end and shipped studio and client projects including Krine, PlotON, Fallow, and WR!TE.',
+      },
+    ],
+  },
+  {
+    org: 'University of Toronto, Rotman School of Management',
+    location: 'Toronto, ON',
+    span: 'Summer 2026',
+    roles: [
+      {
+        role: 'Research Assistant — Field Team Member | Prof. Tosen Nwadei',
+        period: 'Summer 2026',
+        note: 'Recruited and screened participants for a field experiment across Toronto events, adapting cold outreach and communicating study requirements and incentives across high-volume public interactions.',
+      },
+    ],
   },
 ];
 
 const trackRecord = [
-  { year: '2025', item: 'Bloomberg Finance Fundamentals', tag: 'CERT' },
+  { year: '2026', item: 'STEMINATE Hacks — 2nd of 52 teams', tag: 'HACKATHON' },
+  { year: '2025', item: 'Bloomberg Market Concepts', tag: 'CERT' },
   { year: '2025', item: 'DECA — Provincial Champion', tag: 'CASE COMP' },
   { year: '2024', item: 'DECA — Provincial Champion', tag: 'CASE COMP' },
   { year: '2024', item: 'DECA ICDC — Silver Seal', tag: 'INTERNATIONAL' },
   { year: '2024', item: 'BASEF — Inspiration Award + Silver Merit', tag: 'RESEARCH' },
+  { year: '—', item: 'Python & Django Full Stack Web Developer Bootcamp', tag: 'CERT' },
 ];
 
-// COVERAGE sheet is commented out until there are write-ups to show.
-// const coverage = [
-//   { ref: 'EQ-001', title: 'Equity pitch / investment memo', tag: 'DRAFTING' },
-//   { ref: 'CS-001', title: 'Case retrospective', tag: 'DRAFTING' },
-// ];
+/* Neither a job nor an award, so neither of the sheets above will hold them:
+   a degree in progress and a four-year mentorship. */
+const serviceEducation = [
+  {
+    entry: 'Rotman Commerce, BCom',
+    detail: 'Management Specialist (Finance Focus); Minors in Statistics & Economics',
+    period: 'Expected May 2029',
+    note: null,
+  },
+  {
+    entry: 'The Homework Club — Mentor',
+    detail: 'Big Brothers Big Sisters, Oakville, ON',
+    period: 'Jul 2021 — Jun 2025',
+    note: 'Mentored elementary-school students through long-term academic and personal support.',
+  },
+];
 
+/* Affiliations only. The degree moved to the SERVICE & EDUCATION sheet, where
+   it can carry the specialist and minors without crowding a footer strip. */
 const desk = [
   'Toronto Student Investment Counsel (Foundations Program)',
   'BMO Finance Research & Trading Lab — Bloomberg Terminal · FactSet',
-  'Rotman Commerce, BCom at the University of Toronto',
 ];
 
-const toolbar = ['Financial Modelling', 'Data Analysis', 'Python', 'R', 'SQL', 'Bloomberg', 'FactSet', 'Excel'];
+const toolbar = [
+  'Financial Modelling',
+  'Backtesting',
+  'Equity Research',
+  'Python (Pandas/NumPy)',
+  'SQL',
+  'R',
+  'TypeScript',
+  'React',
+  'Django',
+  'Git',
+  'Bloomberg Terminal',
+  'FactSet',
+  'Agentic Coding',
+];
 
-const SHEETS = 3;
+/* One source for the tab labels and the workbook's sheet count, so adding a
+   sheet can't leave the chrome claiming a number that stopped being true. */
+const SHEET_TABS = ['EXPERIENCE', 'TRACK_RECORD', 'SERVICE & EDUCATION', 'RESUME.PDF'] as const;
 
 export default function Business() {
   useDocumentMeta(
@@ -60,32 +149,48 @@ export default function Business() {
             finance's native file type, not just another card grid. */}
         <div className="xls-bar">
           <span className="xls-bar__cmd"><span className="xls-bar__prompt">srihith@sj.sys:~$</span> open business.xlsx</span>
-          <span className="xls-bar__count">{SHEETS} sheets · read-only</span>
+          <span className="xls-bar__count">{SHEET_TABS.length} sheets · read-only</span>
         </div>
 
         <div className="xls-book">
-          {/* ── Sheet 01: EXPERIENCE ───────────────────────────── */}
+          {/* ── Sheet 01: EXPERIENCE ───────────────────────────
+              Org bands with role rows nested beneath, numbered 1 / 1.1 / 1.2
+              the way the projects manifest numbers its children. */}
           <section className="xls-sheet">
-            <div className="xls-sheet__tab">EXPERIENCE</div>
+            <div className="xls-sheet__tab">{SHEET_TABS[0]}</div>
             <div className="xls-table">
               <div className="xls-row xls-row--head xls-row--exp">
                 <span className="xls-gut">#</span>
-                <span>ROLE</span>
-                <span>ORG</span>
+                <span>ORG / ROLE</span>
+                <span>LOCATION</span>
                 <span>PERIOD</span>
               </div>
-              {experience.map((r, i) => (
-                <Reveal key={r.org} delay={i * 0.06}>
-                  <div className="xls-row xls-row--exp">
+              {experience.map((org, i) => (
+                <Reveal key={org.org} delay={i * 0.06}>
+                  <div className="xls-row xls-row--exp xls-row--org">
                     <span className="xls-gut">{i + 1}</span>
-                    <span className="xls-cell xls-cell--key">
-                      {r.role}
-                      <span className="xls-chip xls-chip--current">{r.tag}</span>
+                    <span className="xls-cell xls-cell--org">
+                      {org.org}
+                      {org.tag && (
+                        <span className={`xls-chip xls-chip--${org.tagKind ?? 'plain'}`}>{org.tag}</span>
+                      )}
                     </span>
-                    <span className="xls-cell">{r.org}</span>
-                    <span className="xls-cell xls-cell--dim">{r.period}</span>
+                    <span className="xls-cell xls-cell--dim">{org.location}</span>
+                    <span className="xls-cell xls-cell--dim">{org.span}</span>
                   </div>
-                  <p className="xls-note">{r.note}</p>
+                  {org.roles.map((r, j) => (
+                    <div key={r.role}>
+                      <div className="xls-row xls-row--exp xls-row--role">
+                        <span className="xls-gut">{i + 1}.{j + 1}</span>
+                        <span className="xls-cell xls-cell--key">{r.role}</span>
+                        {/* Location belongs to the org band above, not to each
+                            role under it — a blank cell, as a sheet would have. */}
+                        <span className="xls-cell" aria-hidden="true" />
+                        <span className="xls-cell xls-cell--dim">{r.period}</span>
+                      </div>
+                      <p className="xls-note">{r.note}</p>
+                    </div>
+                  ))}
                 </Reveal>
               ))}
             </div>
@@ -93,7 +198,7 @@ export default function Business() {
 
           {/* ── Sheet 02: TRACK_RECORD ─────────────────────────── */}
           <section className="xls-sheet">
-            <div className="xls-sheet__tab">TRACK_RECORD</div>
+            <div className="xls-sheet__tab">{SHEET_TABS[1]}</div>
             <div className="xls-table">
               <div className="xls-row xls-row--head xls-row--rec">
                 <span className="xls-gut">#</span>
@@ -114,10 +219,34 @@ export default function Business() {
             </div>
           </section>
 
-          {/* ── Sheet 03: RESUME.PDF ───────────────────────────
+          {/* ── Sheet 03: SERVICE & EDUCATION ──────────────────── */}
+          <section className="xls-sheet">
+            <div className="xls-sheet__tab">{SHEET_TABS[2]}</div>
+            <div className="xls-table">
+              <div className="xls-row xls-row--head xls-row--svc">
+                <span className="xls-gut">#</span>
+                <span>ENTRY</span>
+                <span>DETAIL</span>
+                <span>PERIOD</span>
+              </div>
+              {serviceEducation.map((r, i) => (
+                <Reveal key={r.entry} delay={i * 0.06}>
+                  <div className="xls-row xls-row--svc">
+                    <span className="xls-gut">{i + 1}</span>
+                    <span className="xls-cell xls-cell--key">{r.entry}</span>
+                    <span className="xls-cell xls-cell--dim">{r.detail}</span>
+                    <span className="xls-cell xls-cell--dim">{r.period}</span>
+                  </div>
+                  {r.note && <p className="xls-note">{r.note}</p>}
+                </Reveal>
+              ))}
+            </div>
+          </section>
+
+          {/* ── Sheet 04: RESUME.PDF ───────────────────────────
               The raw file, attached to the workbook like any other sheet. */}
           <section className="xls-sheet">
-            <div className="xls-sheet__tab">RESUME.PDF</div>
+            <div className="xls-sheet__tab">{SHEET_TABS[3]}</div>
             <div className="xls-table">
               <div className="xls-row xls-row--head xls-row--file">
                 <span className="xls-gut">#</span>
@@ -138,31 +267,6 @@ export default function Business() {
               </Reveal>
             </div>
           </section>
-
-          {/* ── Sheet 04: COVERAGE (artifact slots — Phase 2) ────
-              Commented out until there are write-ups to show. */}
-          {/*
-          <section className="xls-sheet">
-            <div className="xls-sheet__tab">COVERAGE</div>
-            <div className="xls-table">
-              <div className="xls-row xls-row--head xls-row--cov">
-                <span className="xls-gut">#</span>
-                <span>REF</span>
-                <span>WRITE-UP</span>
-                <span>STATUS</span>
-              </div>
-              {coverage.map((r, i) => (
-                <div className="xls-row xls-row--cov xls-row--pending" key={r.ref}>
-                  <span className="xls-gut">{i + 1}</span>
-                  <span className="xls-cell xls-cell--dim">{r.ref}</span>
-                  <span className="xls-cell">{r.title}</span>
-                  <span className="xls-cell"><span className="xls-chip xls-chip--pending">{r.tag}</span></span>
-                </div>
-              ))}
-            </div>
-            <p className="xls-caption">// investment write-ups &amp; case studies land here. building.</p>
-          </section>
-          */}
 
           {/* ── Footer strips: affiliations + skill toolbar ────── */}
           <div className="xls-strips">

@@ -3,11 +3,26 @@ name: Deploy Vite site to Pages
 on:
   push:
     branches: ["main"]
+  # The Letterboxd ratings on /media are fetched at build time (the feed sends
+  # no CORS headers, so the browser can't), which makes them exactly as fresh as
+  # the last deploy. A nightly rebuild refreshes them without a push.
+  # 07:00 UTC ≈ 03:00 Toronto — nobody is reading the site, and it is well clear
+  # of the top of the hour when GitHub's scheduler is busiest.
+  schedule:
+    - cron: "0 7 * * *"
+  # Manual trigger, for refreshing the feed without waiting for the cron.
+  workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
+
+# Two trigger sources can now race. Queue rather than cancel: a half-finished
+# Pages deploy is worse than a redundant one.
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   build:

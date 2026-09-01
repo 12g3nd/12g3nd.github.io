@@ -188,3 +188,154 @@
     font-size: 11px;
   }
 }
+
+/* ── The live wall ──────────────────────────────────────────
+   Plates wired to accounts rather than curated by hand. Same frame as the
+   collection above so the two walls read as one room, with the bar's amber
+   edge marking which side of the room you are on. */
+.gallery-bar--live {
+  margin-top: 3.5rem;
+  border-left-color: var(--accent-warm);
+}
+
+.media-grid--live {
+  align-items: start;
+}
+
+/* ── Spotify plate ──────────────────────────────────────────
+   The embed is the one genuinely foreign object on this page: Spotify's own
+   type, chrome and green, inside a room built out of etchings. Framing it like
+   any other print is the way to survive that — the mat and placard belong to
+   the gallery even when the picture doesn't. */
+.media-plate__embed {
+  position: relative;
+  padding: 0.75rem;
+  background:
+    radial-gradient(120% 90% at 50% 25%, rgba(255, 176, 0, 0.08), transparent 60%),
+    rgba(0, 0, 0, 0.22);
+  border-bottom: 1px solid rgba(var(--text-rgb), 0.1);
+}
+
+.media-plate__embed iframe {
+  display: block;
+  width: 100%;
+  border-radius: 12px;
+}
+
+/* The placard sits under the embed rather than over it, so it reads as the
+   caption of the frame rather than a Spotify UI element. */
+.media-plate--embed .media-plate__placard {
+  padding-bottom: 1.25rem;
+}
+
+/* ── Letterboxd ratings wall ────────────────────────────────
+   Ratings, not watch dates — see the note in Media.tsx. Posters make this a
+   wall rather than a list, which is the whole reason it earns a plate. */
+.media-plate--rated .media-plate__placard {
+  border-bottom: 1px solid rgba(var(--text-rgb), 0.1);
+  padding-bottom: 1rem;
+}
+
+.media-ratings {
+  list-style: none;
+  margin: 0;
+  padding: 0.75rem 1.25rem 0.5rem;
+  flex: 1;
+}
+
+/* Override the collection list's tack bullet and hover slide: these rows are
+   links with artwork, not text entries. */
+.media-ratings li {
+  padding: 0;
+  border-bottom: 1px dashed rgba(var(--text-rgb), 0.08);
+  transform: none;
+}
+
+.media-ratings li::before {
+  display: none;
+}
+
+.media-ratings li:hover {
+  transform: none;
+}
+
+.media-ratings li:last-child {
+  border-bottom: none;
+}
+
+.media-ratings a {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.7rem 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.media-ratings__poster {
+  width: 38px;
+  height: 57px;
+  flex-shrink: 0;
+  object-fit: cover;
+  border: 1px solid rgba(var(--text-rgb), 0.15);
+  background: rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.media-ratings a:hover .media-ratings__poster {
+  transform: scale(1.05);
+  border-color: rgba(var(--accent-rgb), 0.6);
+}
+
+.media-ratings__text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.media-ratings__title {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: rgba(var(--text-rgb), 0.85);
+}
+
+.media-ratings a:hover .media-ratings__title {
+  color: var(--text-primary);
+}
+
+.media-ratings__year {
+  color: rgba(var(--text-rgb), 0.4);
+}
+
+/* Letterboxd's own ★/½ notation, in Letterboxd's own green — it needs no
+   legend, and the colour is the one place this plate admits where it came from. */
+.media-ratings__stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: #00e054;
+}
+
+.media-ratings__like {
+  color: #ff8000;
+  font-size: 11px;
+}
+
+.media-plate__source {
+  display: block;
+  padding: 0.9rem 1.25rem 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--accent-primary);
+  text-decoration: none;
+}
+
+.media-plate__source:hover {
+  text-decoration: underline;
+}
