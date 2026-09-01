@@ -108,12 +108,24 @@
 }
 
 /* Tabular figures so the digits sit in fixed columns and the number does not
-   shimmer sideways when it ticks over mid-session. */
+   shimmer sideways when it ticks over mid-session.
+
+   It is an <a> (see the note in VisitorCounter.tsx) but must not look like one:
+   no underline, no link colour it did not already have. The pointer cursor on
+   hover is the only tell, which is the point of an easter egg. */
 .visitor-counter__value {
   color: var(--accent-primary);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
+  text-decoration: none;
   text-shadow: 0 0 12px rgba(var(--accent-rgb), 0.35);
+  transition: text-shadow 0.2s ease, color 0.2s ease;
+}
+
+.visitor-counter__value:hover,
+.visitor-counter__value:focus-visible {
+  color: var(--text-primary);
+  text-shadow: 0 0 18px rgba(var(--accent-rgb), 0.7);
 }
 
 /* Dimmer than the label: this is a footnote on a footnote. */
@@ -124,7 +136,8 @@
 
 /* The placeholder dashes shown before the count lands read as inert, not as a
    value — no glow, no accent. */
-.visitor-counter__value[aria-busy='true'] {
+.visitor-counter__value[aria-busy='true'],
+.visitor-counter__value[aria-busy='true']:hover {
   color: rgba(var(--text-rgb), 0.25);
   text-shadow: none;
 }

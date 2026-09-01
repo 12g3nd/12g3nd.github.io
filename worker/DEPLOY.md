@@ -81,14 +81,22 @@ npx wrangler deploy
 Verify:
 
 ```bash
-curl https://guestbook.jarabana.com/visits          # -> {"ok":true,"count":2110}
-curl -X POST https://guestbook.jarabana.com/visit   # -> {"ok":true,"count":2111}
+curl https://guestbook.jarabana.com/visits          # -> {"ok":true,"count":N}
+curl -X POST https://guestbook.jarabana.com/visit   # -> {"ok":true,"count":N+1}
 ```
 
-The seed of 2110 is Cloudflare's unique-visitor count for 2 Aug - 1 Sep 2026.
-Everything added after it is this Worker's own count of browser sessions, which
-is a different measurement — hence `SESSIONS` and `SINCE 2026.08` in the label
-rather than any claim about people.
+The counter starts at zero. An earlier version seeded it with Cloudflare's
+unique-visitor count for August 2026 so the footer would not open on `000000`;
+that was dropped because the two are different measurements and adding one to
+the other produced a total that was true of neither. Every digit showing is one
+this Worker counted.
+
+To zero it again (the seed in `counters.sql` will not do this — it is
+`INSERT OR IGNORE`, so it never touches an existing row):
+
+```bash
+npx wrangler d1 execute sjsys-guestbook --remote --command "UPDATE counters SET value = 0 WHERE name = 'sessions';"
+```
 
 `POST /visit` is unauthenticated and trivially inflatable by anyone willing to
 run it in a loop. That is an accepted property, not an oversight: the honest

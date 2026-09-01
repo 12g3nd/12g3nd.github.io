@@ -18,8 +18,20 @@ import { WORKER_URL } from '../hooks/useGuestbook';
 /** Per-tab flag: present once this session has been counted. */
 const SESSION_KEY = 'sjsys_counted';
 
-/** Matches the seed in worker/counters.sql — see the note there about the seam. */
-const SINCE = '2026.08';
+/** The counter was zeroed on this date; every digit since is one we counted. */
+const SINCE = '2026.09';
+
+/**
+ * Easter egg on the number itself: xkcd 901, "Temperature" — the one about a
+ * y-axis cropped until a meaningless wobble looks like an emergency. It is the
+ * correct footnote for any counter in any footer, including this one.
+ *
+ * Deliberately not signposted. No underline, no tooltip, nothing that says
+ * "click me" — the cursor turning into a pointer is the whole hint. The
+ * aria-label carries the real meaning for anyone who is not going to see a
+ * hover state anyway.
+ */
+const XKCD = 'https://xkcd.com/901';
 
 /** Six digits, so the readout never changes width as the count rolls over. */
 const WIDTH = 6;
@@ -94,9 +106,20 @@ export default function VisitorCounter() {
   return (
     <p className="visitor-counter">
       <span className="visitor-counter__label">INBOUND_SESSIONS:</span>{' '}
-      <span className="visitor-counter__value" aria-busy={count === null}>
+      <a
+        className="visitor-counter__value"
+        href={XKCD}
+        target="_blank"
+        rel="noreferrer"
+        aria-busy={count === null}
+        aria-label={
+          count === null
+            ? 'Session count unavailable. Link to xkcd 901.'
+            : `${count} sessions since ${SINCE.replace('.', '-')}. Link to xkcd 901.`
+        }
+      >
         {readout}
-      </span>
+      </a>
       <span className="visitor-counter__since">SINCE {SINCE}</span>
     </p>
   );
