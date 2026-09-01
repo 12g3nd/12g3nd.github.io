@@ -41,3 +41,9 @@ BLOG_ROADMAP.md
 *.njsproj
 *.sln
 *.sw?
+
+# Visual-regression harness: screenshot baselines, and the cached guestbook
+# fixture (44 real signatures, fetched from the Worker on first run). Both are
+# local working state that must not vary with the repo. See scripts/visual.mjs.
+scripts/visual/
+scripts/fixtures/
