@@ -15,7 +15,7 @@ import useDocumentMeta from '../hooks/useDocumentMeta';
 import { routeMeta } from '../data/routeMeta';
 import useGuestbook from '../hooks/useGuestbook';
 import { age } from '../utils/time';
-import './Home.css';
+import './home/index.css';
 
 const prefersReducedMotion = () =>
   typeof window !== 'undefined' &&

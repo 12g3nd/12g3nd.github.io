@@ -1,0 +1,258 @@
+.quotes-section {
+  margin-top: 4rem;
+  border-top: 1px dashed rgba(var(--text-rgb), 0.2);
+  padding-top: 4rem;
+}
+
+.statements-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+}
+
+@media (max-width: 768px) {
+  .statements-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.statement-block h4,
+.quotes-block h4 {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  color: var(--accent-primary);
+  margin-bottom: 2rem;
+}
+
+.brutalist-list {
+  list-style: none;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.brutalist-list li {
+  border-bottom: 1px solid rgba(var(--accent-rgb), 0.2);
+  padding-bottom: 0.5rem;
+  letter-spacing: 0.05em;
+}
+
+.beliefs-graphic {
+  margin-top: 2.5rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.kepler-link {
+  display: block;
+  width: 100%;
+  max-width: 150px;
+  transition: transform 0.3s ease;
+}
+
+.kepler-link:hover {
+  transform: scale(1.03);
+}
+
+.kepler-link img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+
+  filter: invert(1) brightness(105%) sepia(10%) saturate(150%) hue-rotate(345deg);
+  mix-blend-mode: screen;
+}
+
+.beliefs-footnote {
+  margin-top: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--text-faint);
+  font-style: italic;
+}
+
+.quote-item {
+  margin-bottom: 1.5rem;
+  background-color: var(--bg-surface);
+  border-left: 2px solid var(--accent-secondary);
+  padding: 1.5rem;
+}
+
+/* ── Parchment treatment ───────────────────────────────────
+   Borrow the cream paper surface from the Poetry PDF so this block breaks the
+   cyan-on-navy monotony. Self-contained: overrides colors for its own text +
+   image so nothing leaks to the dark theme. */
+
+.quote-paper {
+  background-color: var(--paper-bg);
+  border: 1px solid rgba(var(--text-rgb), 0.15);
+  box-shadow: 4px 4px 0 rgba(var(--text-rgb), 0.1);
+  /* Just a soft warm gradient — no high-frequency dot grain here. The global
+     CRT scanlines (index.css) are a 3px pattern; a 3px paper grain on top beat
+     against them and produced a moiré shimmer over this large block. */
+  background-image: linear-gradient(160deg, var(--paper-bg) 0%, var(--paper-bg) 100%);
+  /* A soft warm gradient paired with a subtle diagonal grid. 
+     We avoid high-frequency dot grain here because the global CRT scanlines 
+     would beat against them and produce a moiré shimmer. The diagonal lines 
+     prevent that while adding enough texture to bridge the contrast gap. */
+  background-image: 
+    repeating-linear-gradient(45deg, rgba(42, 36, 24, 0.035) 0, rgba(42, 36, 24, 0.035) 1px, transparent 1px, transparent 16px),
+    repeating-linear-gradient(-45deg, rgba(42, 36, 24, 0.035) 0, rgba(42, 36, 24, 0.035) 1px, transparent 1px, transparent 16px),
+    linear-gradient(160deg, var(--paper-bg) 0%, var(--paper-bg) 100%);
+  box-shadow: var(--shadow-paper);
+}
+
+/* Compound selectors (.quote-item.quote-paper) so these beat the .quote-item /
+   .large-quote text rules that follow later in the file at equal specificity. */
+
+.quote-item.quote-paper p {
+  color: var(--paper-ink);
+  font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+  font-style: italic;
+}
+
+.quote-item.quote-paper span {
+  color: var(--paper-ink-soft);
+}
+
+/* On parchment the portrait wants normal tones, not the dark-theme invert. */
+
+.quote-paper .aristotle-img {
+  filter: contrast(1.05) sepia(0.15);
+  border-color: rgba(42, 36, 24, 0.25);
+}
+
+.quote-paper .aristotle-img:hover {
+  filter: contrast(1.15) brightness(1.02);
+  border-color: rgba(42, 36, 24, 0.5);
+  box-shadow: 0 0 15px rgba(42, 36, 24, 0.15);
+}
+
+.quote-item p {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: rgba(var(--text-rgb), 0.9);
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+  font-style: italic;
+}
+
+.quote-item span {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--accent-primary);
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.large-quote {
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  height: calc(100% - 3.5rem);
+}
+
+.large-quote p {
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+}
+
+.large-quote span {
+  font-size: 14px;
+}
+
+.large-quote.quote-with-image {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.quote-text-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.quote-image-container {
+  flex-shrink: 0;
+  width: 160px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.aristotle-img {
+  width: 100%;
+  height: auto;
+
+  filter: invert(1) contrast(1.1) brightness(0.9);
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
+  border-radius: 0;
+  transition: all 0.3s ease;
+}
+
+.aristotle-img:hover {
+  filter: invert(1) contrast(1.3) brightness(1.1);
+  border-color: rgba(var(--accent-rgb), 0.6);
+  box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.1);
+}
+
+@media (max-width: 600px) {
+  .large-quote.quote-with-image {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .quote-image-container {
+    width: 120px;
+    margin-top: 1.5rem;
+    align-self: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .statements-grid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .large-quote {
+    padding: 2rem 1.5rem;
+  }
+
+  .large-quote p {
+    font-size: clamp(1rem, 4vw, 1.4rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .quotes-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+  }
+
+  .brutalist-list {
+    font-size: clamp(1.2rem, 5vw, 1.8rem);
+  }
+
+  .large-quote {
+    padding: 1.5rem 1rem;
+    height: auto;
+  }
+}
+
+@media (min-width: 1800px) {
+  .statements-grid {
+    gap: 6rem;
+  }
+}
