@@ -1,30 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
 import ScrambleText from '../components/ScrambleText';
+import LogClock from '../components/LogClock';
 import useDocumentMeta from '../hooks/useDocumentMeta';
+import { routeMeta } from '../data/routeMeta';
 import { postsSorted, quarters, quarterOf } from '../data/posts';
 import './Blog.css';
 
 const ALL = 'ARCHIVE_ROOT';
 
 export default function Blog() {
-  const [timeStr, setTimeStr] = useState('');
   const [filter, setFilter] = useState<string>(ALL);
 
-  useDocumentMeta(
-    'Transmissions // Srihith Jarabana',
-    'Essays and logs by Srihith Jarabana on ambition, design, and whatever else.'
-  );
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date();
-      setTimeStr(now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' }) + '.' + now.getMilliseconds().toString().padStart(3, '0'));
-    }, 47);
-    return () => clearInterval(interval);
-  }, []);
+  useDocumentMeta(routeMeta.blog.title, routeMeta.blog.description);
 
   const visible = filter === ALL
     ? postsSorted
@@ -70,7 +60,7 @@ export default function Blog() {
               <h4>[SYSTEM_LOG]</h4>
               <ul>
                 <li><span>&gt;</span> STATUS: <span className="blink-text status-online">ONLINE</span></li>
-                <li><span>&gt;</span> LOCAL_TIME: <br/><span className="time-display">{timeStr || 'LOADING...'}</span></li>
+                <li><span>&gt;</span> LOCAL_TIME: <br/><LogClock /></li>
                 <li><span>&gt;</span> LATENCY: 24ms</li>
                 <li><span>&gt;</span> REGION: ON_CA</li>
                 <li><span>&gt;</span> WRITE_MODE: APPEND_ONLY</li>

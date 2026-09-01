@@ -2,6 +2,7 @@ import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
 import ScrambleText from '../components/ScrambleText';
 import useDocumentMeta from '../hooks/useDocumentMeta';
+import { routeMeta } from '../data/routeMeta';
 import './Business.css';
 
 /* The business / finance pillar, framed as business.xlsx — a read-only
@@ -132,10 +133,7 @@ const toolbar = [
 const SHEET_TABS = ['EXPERIENCE', 'TRACK_RECORD', 'SERVICE & EDUCATION', 'RESUME.PDF'] as const;
 
 export default function Business() {
-  useDocumentMeta(
-    'Business // Srihith Jarabana',
-    'The business and finance side of Srihith Jarabana (research experience, competition track record, and investment write-ups).'
-  );
+  useDocumentMeta(routeMeta.business.title, routeMeta.business.description);
 
   return (
     <PageTransition>

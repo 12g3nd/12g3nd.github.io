@@ -35,6 +35,11 @@
 
   --font-display: 'Anton', sans-serif;
   --font-mono: 'Space Mono', monospace;
+  /* Long-form reading voice, used inside the document while the SJ.SYS chrome
+     around it stays monospace. The fallback chain is the same system serif the
+     poetry pages already read in, so the principle holds even before the
+     webfont lands (and if it never does). */
+  --font-reading: 'Source Serif 4', Georgia, 'Iowan Old Style', 'Times New Roman', serif;
 
   --border-faint: 1px solid rgba(var(--text-rgb), 0.15);
   --border-divider: 1px solid rgba(var(--text-rgb), 0.1);
@@ -225,7 +230,6 @@ html {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  cursor: crosshair;
 }
 
 body {
@@ -237,7 +241,7 @@ body {
 }
 
 /* Faint CRT scanlines over the whole viewport. Decorative only — never blocks
-   pointer events, so the crosshair cursor and clicks pass straight through. */
+   pointer events, so the cursor and clicks pass straight through. */
 body::before {
   content: '';
   position: fixed;

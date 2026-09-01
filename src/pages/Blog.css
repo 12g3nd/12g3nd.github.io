@@ -184,7 +184,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  cursor: crosshair;
+  cursor: pointer;
   transition: color 0.15s ease;
   color: inherit;
   background: none;

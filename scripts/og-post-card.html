@@ -1,0 +1,138 @@
+<!doctype html>
+<!--
+  Source for a per-transmission social card (public/og/<slug>.png).
+
+  Sibling of og-card.html, which is the site-wide card. This one is a template:
+  scripts/capture-og-cards.mjs substitutes the {{...}} tokens, renders it
+  headless at exactly 1200x630, and writes one PNG per post. Kept in the repo
+  for the same reason as the other card — so the design stays editable rather
+  than becoming a mystery binary.
+
+  The title auto-fits: the capture script shrinks --title-size until the block
+  stops overflowing, because titles here run from "Performative" to "Embracing
+  Brutalist X Y2K Aesthetics in Web Design".
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Source+Serif+4:ital,wght@0,400;1,400&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1200px; height: 630px; overflow: hidden; }
+
+      :root {
+        --bg-base: #0A1320;
+        --accent: #00E5FF;
+        --purple: #7B61FF;
+        --cream: #FDF6E3;
+        --title-size: 92px;
+      }
+
+      body {
+        position: relative;
+        background: var(--bg-base);
+        color: var(--cream);
+        font-family: 'Space Mono', monospace;
+        padding: 56px 72px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      /* CRT scanlines — same treatment as the live site */
+      body::before {
+        content: '';
+        position: absolute; inset: 0; pointer-events: none; z-index: 2;
+        background: repeating-linear-gradient(
+          to bottom,
+          rgba(0,0,0,0) 0, rgba(0,0,0,0) 2px, rgba(0,0,0,0.05) 3px
+        );
+      }
+      /* Cyan corner glow, mirrored from the site card */
+      body::after {
+        content: '';
+        position: absolute; inset: 0; pointer-events: none; z-index: 1;
+        background: radial-gradient(110% 120% at 82% 12%, rgba(0,229,255,0.12), transparent 58%);
+      }
+
+      .layer { position: relative; z-index: 3; }
+
+      .top { display: flex; justify-content: space-between; align-items: baseline; }
+      .brand {
+        font-family: 'Anton', sans-serif;
+        font-size: 34px; letter-spacing: 0.04em; color: var(--accent);
+      }
+      .tx {
+        font-size: 19px; letter-spacing: 0.18em; font-weight: 700;
+        color: var(--accent);
+      }
+
+      .middle { display: flex; flex-direction: column; justify-content: center; }
+
+      .rule { width: 96px; height: 3px; background: var(--purple); margin-bottom: 22px; }
+
+      .meta {
+        font-size: 17px; letter-spacing: 0.14em; text-transform: uppercase;
+        color: rgba(253,246,227,0.45); margin-bottom: 20px;
+      }
+      .meta .dot { color: var(--purple); margin: 0 10px; }
+
+      /* Anton, like every other headline on the site. */
+      .title {
+        font-family: 'Anton', sans-serif;
+        font-size: var(--title-size);
+        line-height: 1.02;
+        letter-spacing: 0.005em;
+        color: var(--cream);
+        max-width: 1040px;
+      }
+
+      /* The abstract reads in the same serif the essays now use, so the card
+         previews the voice of the thing it is linking to. */
+      .abstract {
+        margin-top: 24px;
+        font-family: 'Source Serif 4', Georgia, serif;
+        font-size: 25px;
+        line-height: 1.45;
+        color: rgba(253,246,227,0.62);
+        max-width: 980px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+      }
+
+      .bottom { display: flex; justify-content: space-between; align-items: flex-end; }
+      .prompt { font-size: 21px; color: rgba(253,246,227,0.85); }
+      .prompt .p { color: var(--accent); font-weight: 700; }
+      .cursor {
+        display: inline-block; width: 12px; height: 20px;
+        background: var(--accent); margin-left: 5px; transform: translateY(3px);
+      }
+      .url { font-size: 19px; letter-spacing: 0.06em; color: var(--accent); }
+    </style>
+  </head>
+  <body>
+    <div class="layer top">
+      <div class="brand">SJ.SYS</div>
+      <div class="tx">{{TRANSMISSION}}</div>
+    </div>
+
+    <div class="layer middle">
+      <div class="rule"></div>
+      <div class="meta">{{DATE}}<span class="dot">·</span>append-only</div>
+      <div class="title" id="title">{{TITLE}}</div>
+      <div class="abstract">{{ABSTRACT}}</div>
+    </div>
+
+    <div class="layer bottom">
+      <div class="prompt"><span class="p">srihith@sj.sys</span>:~$<span class="cursor"></span></div>
+      <div class="url">jarabana.com/blog</div>
+    </div>
+  </body>
+</html>

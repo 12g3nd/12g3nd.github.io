@@ -2,6 +2,7 @@ import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
 import ScrambleText from '../components/ScrambleText';
 import useDocumentMeta from '../hooks/useDocumentMeta';
+import { routeMeta } from '../data/routeMeta';
 import useGuestbook from '../hooks/useGuestbook';
 import GuestbookCard from '../components/GuestbookCard';
 import GuestbookForm from '../components/GuestbookForm';
@@ -10,10 +11,7 @@ import './Guestbook.css';
 export default function Guestbook() {
   const { entries, loading, error } = useGuestbook();
 
-  useDocumentMeta(
-    'Guestbook // Srihith Jarabana',
-    "Visitors who've signed Srihith Jarabana's guestbook (drawn signatures and three words each)."
-  );
+  useDocumentMeta(routeMeta.guestbook.title, routeMeta.guestbook.description);
 
   const count = entries.length;
 

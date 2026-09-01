@@ -2,6 +2,7 @@ import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
 import ScrambleText from '../components/ScrambleText';
 import useDocumentMeta from '../hooks/useDocumentMeta';
+import { routeMeta } from '../data/routeMeta';
 import './Projects.css';
 
 /* A link is a {href, text} pair rather than the old parallel
@@ -36,10 +37,42 @@ type Child = {
   credit?: string;
 };
 
+/* The page reads as four shelves rather than one undifferentiated grid. A
+   visitor who only looks at the first shelf should still have seen the work
+   worth judging me on; a visitor who reaches the last one should know they are
+   looking at teenage juvenilia on purpose. */
+const SECTIONS = [
+  {
+    key: 'selected',
+    label: 'SELECTED WORK',
+    blurb: 'the ones I would show you first',
+  },
+  {
+    key: 'studio',
+    label: 'STUDIO WORK',
+    blurb: 'everything shipping under FI99 Inc.',
+  },
+  {
+    key: 'tools',
+    label: 'SMALL TOOLS / EXPERIMENTS',
+    blurb: 'the rest of what I have built and kept running',
+  },
+  {
+    key: 'archive',
+    label: 'ARCHIVE',
+    blurb: 'older work, left standing exactly as it was',
+  },
+] as const;
+
+type SectionKey = (typeof SECTIONS)[number]['key'];
+
 type Project = {
   /* Stable React key. The number a card displays is derived from its position
-     in the array, so reordering the page can't leave two cards claiming 03. */
+     in the rendered order, so reordering the page can't leave two cards
+     claiming 03. */
   key: string;
+  /* Which shelf this sits on. Order within a section follows array order. */
+  section: SectionKey;
   name: string;
   description: string;
   stack: string[];
@@ -51,6 +84,8 @@ type Project = {
   statusLabel?: string;
   /* headline number, pulled out big so the work reads at a glance */
   metric?: Metric;
+  /* Byline for work that isn't solely mine, or that ships under the studio. */
+  credit?: string;
   /* featured projects render full-width at the top of the grid */
   featured?: boolean;
   /* spans two grid columns for extra emphasis */
@@ -63,9 +98,10 @@ type Project = {
 const projects: Project[] = [
   {
     key: 'fi99',
+    section: 'studio',
     name: 'FI99 Inc.',
     description:
-      "Co-founded an incorporated studio with Omar Badawy and Lars Fransen-Molino, and built fi99.ca end-to-end: a real-time Three.js/WebGL rocket centrepiece converted from a raw OBJ into an optimised wireframe GLB, with cursor-tracking, scroll-driven motion, and particle systems. The work below ships under the studio. Omar and Lars ship their own there too — Watt's Left and the Junior Mining Analyst Workbench are theirs, not mine.",
+      "Co-founded an incorporated studio with Omar Badawy and Lars Fransen-Molino, and built fi99.ca end-to-end: a real-time Three.js/WebGL rocket centrepiece converted from a raw OBJ into an optimised wireframe GLB, with cursor-tracking, scroll-driven motion, and particle systems. Five projects ship under the studio: PlotON and VERDANT lead this page above, and the rest are listed below. Omar and Lars ship their own work there too — Watt's Left and the Junior Mining Analyst Workbench are theirs, not mine.",
     stack: ['Astro', 'TypeScript', 'Three.js (WebGL)', 'Tailwind CSS', 'GSAP', 'Lenis'],
     links: [
       { href: 'https://fi99.ca', text: '[VISIT LIVE ↗]' },
@@ -92,19 +128,6 @@ const projects: Project[] = [
         metric: { value: '~1.4K', label: 'visitors / month', note: 'as of 6.2.26' },
       },
       {
-        name: 'PlotON',
-        description:
-          "A project I'd been thinking about since Grade 8. Explore cities across Ontario on an interactive map, weight what matters to you, and compare them side by side to find your next place to live. Data is still incomplete.",
-        stack: ['Next.js', 'Leaflet', 'Vercel'],
-        status: 'IN THE LAB',
-        links: [
-          { href: 'https://ploton-zeta.vercel.app/', text: '[LIVE ↗]' },
-          { href: 'https://github.com/12g3nd/PlotON', text: '[REPO ↗]' },
-        ],
-        logo: '/PlotONPreview.png',
-        credit: 'with Omar Badawy',
-      },
-      {
         name: 'Fallow',
         description:
           "Thirteen questions about how your brain actually works — not about what you already like — and Fallow matches you to five activities you'd never have thought to search for. An advanced hobby finder for the bored and bold.",
@@ -128,20 +151,11 @@ const projects: Project[] = [
         ],
         logo: '/projects/write.jpg',
       },
-      {
-        name: 'VERDANT',
-        description:
-          'A falsifiable recommendation engine for sparse, subjective preferences, grown out of a problem we hit in Fallow. v0.8 completed its preregistered confirmation experiment: cardinal scoring beat the historical formulation across all eleven simulated worlds, but the full policy failed six of the eleven confirmation screens, and the held-out audit was deliberately not run. Paused rather than quietly shipped.',
-        stack: ['Recommender Systems', 'Preregistration', 'Simulation'],
-        status: 'PAUSED',
-        links: [{ href: 'https://fi99.ca/research/verdant/', text: '[READ THE RESEARCH ↗]' }],
-        logo: '/projects/verdant.jpg',
-        metric: { value: '5 / 11', label: 'confirmation screens passed', note: 'audit withheld · paused after v0.8' },
-      },
     ],
   },
   {
     key: 'waive',
+    section: 'selected',
     name: 'Waive',
     description:
       "Built with Skyler Xiao, Aryan Thakur, and Adam Zaidan. Waive turns an intimidating government notice into a clear path forward before your deadline: upload the letter, get your real deadline and the remedy the law already wrote for you. The hard line: AI only reads and translates, while tested code computes every date, routes the remedy, and cites a real statute, so the model can never invent anything that costs you. Placed 2nd of 52 teams at STEMINATE Hacks 2026.",
@@ -155,10 +169,38 @@ const projects: Project[] = [
     status: 'AWARD',
     statusLabel: '🏆 AWARD',
     metric: { value: '2nd', label: 'of 52 teams', note: 'STEMINATE Hacks 2026 · 281 participants' },
-    wide: true,
+  },
+  {
+    key: 'verdant',
+    section: 'selected',
+    name: 'VERDANT',
+    description:
+      'A falsifiable recommendation engine for sparse, subjective preferences, grown out of a problem we hit in Fallow. v0.8 completed its preregistered confirmation experiment: cardinal scoring beat the historical formulation across all eleven simulated worlds, but the full policy failed six of the eleven confirmation screens, and the held-out audit was deliberately not run. Paused rather than quietly shipped — a system that cannot reject itself is not much of an experiment.',
+    stack: ['Recommender Systems', 'Preregistration', 'Simulation'],
+    links: [{ href: 'https://fi99.ca/research/verdant/', text: '[READ THE RESEARCH ↗]' }],
+    logo: '/projects/verdant.jpg',
+    status: 'PAUSED',
+    credit: 'shipped under FI99 Inc.',
+    metric: { value: '5 / 11', label: 'confirmation screens passed', note: 'audit withheld · paused after v0.8' },
+  },
+  {
+    key: 'ploton',
+    section: 'selected',
+    name: 'PlotON',
+    description:
+      "A project I'd been thinking about since Grade 8. Explore cities across Ontario on an interactive map, weight what matters to you, and compare them side by side to find your next place to live. Data is still incomplete.",
+    stack: ['Next.js', 'Leaflet', 'Vercel'],
+    links: [
+      { href: 'https://ploton-zeta.vercel.app/', text: '[VISIT LIVE ↗]' },
+      { href: 'https://github.com/12g3nd/PlotON', text: '[VIEW REPO ↗]' },
+    ],
+    logo: '/PlotONPreview.png',
+    status: 'IN THE LAB',
+    credit: 'shipped under FI99 Inc. · with Omar Badawy',
   },
   {
     key: 'courtiq',
+    section: 'tools',
     name: 'CourtIQ',
     description:
       'Built with Skyler Xiao, Aryan Thakur, and Adam Zaidan. CourtIQ imports your Sleeper NBA league and re-scores it under a different rulebook — the same player can sit 69th in a category league and 5th in a points league, and CourtIQ shows you the free-throw volume and percentage drag that explain why.',
@@ -173,6 +215,7 @@ const projects: Project[] = [
   },
   {
     key: 'linguascape',
+    section: 'tools',
     name: 'LinguaScape',
     description:
       'LinguaScape is a language learning application that helps users practice real-world speaking skills through unscripted, immersive conversations with diverse AI personas.',
@@ -186,6 +229,7 @@ const projects: Project[] = [
   },
   {
     key: 'ai-rule-miner',
+    section: 'tools',
     name: 'ai-rule-miner',
     description:
       "Mines your AI chat history — Claude, Codex, Cursor, Windsurf — for the places you corrected the model, scores each correction by recency, and emits a standing rule set or updates an MCP server so the same mistake stops coming back. Ships as two CLIs: the miner and the server.",
@@ -195,6 +239,7 @@ const projects: Project[] = [
   },
   {
     key: 'frame-loop',
+    section: 'tools',
     name: 'frame-loop',
     description:
       'A Manifest V3 Chrome extension that loops any HTML5 video between two frame-accurate points, not just the whole clip. Built to work where most loopers give up — including players that hide the video element inside a shadow DOM ordinary extensions cannot reach.',
@@ -204,6 +249,7 @@ const projects: Project[] = [
   },
   {
     key: 'lacquer',
+    section: 'tools',
     name: 'lacquer',
     description:
       'A fork of pear-devs/pear-desktop, rebuilt on top of the upstream app as a personal version of Pear tuned to my own machine and theme. The heavy lifting is upstream; what is mine is the layer on top.',
@@ -216,6 +262,7 @@ const projects: Project[] = [
   },
   {
     key: 'clearwater-forge',
+    section: 'tools',
     name: 'The Clearwater Forge',
     description:
       'A portfolio backtesting application that allows users to evaluate custom stock portfolios against benchmarks while computing advanced statistics like CAGR, Sharpe ratios, and max drawdowns.',
@@ -225,6 +272,7 @@ const projects: Project[] = [
   },
   {
     key: 'drift',
+    section: 'tools',
     name: 'drift',
     description:
       'Drift is a Chrome extension that replaces the standard new tab page with a living, procedurally generated landscape rendered from simple shapes.',
@@ -235,6 +283,7 @@ const projects: Project[] = [
   },
   {
     key: 'snapchat-filter',
+    section: 'archive',
     name: 'VOTE SRIHITH SNAPCHAT FILTER',
     description:
       "Something I did a few years ago for whenever I ran for a position and wanted an easy way for people to share my campaign on social media. Went viral somewhere else in the world and it has 198k lens plays (accurate as of 4.6.26). Thought it was funny and creative.\n\n(Note: The person in the image is not me.)",
@@ -247,6 +296,7 @@ const projects: Project[] = [
   },
   {
     key: 'spring-break',
+    section: 'archive',
     name: 'Spring Break Project',
     description:
       'A younger me during when I first became a teenager made a website where every Spring Break, I would write some articles. Kind of full circle to this website if you think about. Also, please do not flame me for my corniness back then.',
@@ -257,8 +307,21 @@ const projects: Project[] = [
   },
 ];
 
-/** `01`, `02`, … from a card's position, so the array is the only ordering. */
+/** `01`, `02`, … from a card's position, so the order is the only ordering. */
 const num = (i: number) => String(i + 1).padStart(2, '0');
+
+/* Grouped for display, but numbered as one continuous run down the page: the
+   shelves are an editorial device, and restarting at 01 under each would make
+   `pkg list` read like four unrelated indexes. Numbers are assigned here, once,
+   from the rendered order — nothing downstream gets to invent its own. */
+const shelves = SECTIONS.map((section) => ({
+  ...section,
+  items: projects.filter((p) => p.section === section.key),
+}));
+
+const numberOf = new Map<string, string>(
+  shelves.flatMap((s) => s.items).map((p, i) => [p.key, num(i)])
+);
 
 /* The pkg bar counts everything installed, children included — a count that
    only saw top-level cards would quietly start under-reporting the moment the
@@ -267,10 +330,7 @@ const packageCount =
   projects.length + projects.reduce((n, p) => n + (p.children?.length ?? 0), 0);
 
 export default function Projects() {
-  useDocumentMeta(
-    'Projects // Srihith Jarabana',
-    'Things Srihith Jarabana has built — the FI99 studio, KRINE, and a viral Snapchat lens.'
-  );
+  useDocumentMeta(routeMeta.projects.title, routeMeta.projects.description);
   return (
     <PageTransition>
       <section className="section">
@@ -285,8 +345,17 @@ export default function Projects() {
           <span className="pkg-bar__count">{packageCount} packages</span>
         </div>
 
-        <div className="projects-grid">
-          {projects.map((project, i) => (
+        {shelves.map((shelf) => (
+          <section className="projects-shelf" key={shelf.key}>
+            <div className="projects-shelf__head">
+              <h3 className="projects-shelf__label">
+                <span className="slash">//</span> {shelf.label}
+              </h3>
+              <span className="projects-shelf__blurb">{shelf.blurb}</span>
+            </div>
+
+            <div className="projects-grid">
+          {shelf.items.map((project, i) => (
             <Reveal
               key={project.key}
               delay={i * 0.08}
@@ -300,9 +369,13 @@ export default function Projects() {
                 .join(' ')}
             >
               <div className={`project-card${project.featured ? ' project-card--featured' : ''}`}>
-                <span className="project-card__num">{num(i)}</span>
+                <span className="project-card__num">{numberOf.get(project.key)}</span>
                 {project.status && (
-                  <span className={`project-card__status project-card__status--${project.status.toLowerCase()}`}>
+                  <span
+                    className={`project-card__status project-card__status--${project.status
+                      .toLowerCase()
+                      .replace(/\s+/g, '-')}`}
+                  >
                     {project.statusLabel ?? `● ${project.status}`}
                   </span>
                 )}
@@ -323,8 +396,9 @@ export default function Projects() {
                 )}
                 <div className="project-card__body">
                   <h3 className="project-card__title">
-                    <span className="slash">//</span> PROJECT {num(i)}: {project.name}
+                    <span className="slash">//</span> PROJECT {numberOf.get(project.key)}: {project.name}
                   </h3>
+                  {project.credit && <p className="project-card__credit">{project.credit}</p>}
                   {project.metric && (
                     <div className="project-card__metric">
                       <span className="project-card__metric-value">{project.metric.value}</span>
@@ -368,7 +442,7 @@ export default function Projects() {
                         {project.children.map((child, j) => (
                           <article className="project-child" key={child.name}>
                             <div className="project-child__head">
-                              <span className="project-child__num">{num(i)}.{j + 1}</span>
+                              <span className="project-child__num">{numberOf.get(project.key)}.{j + 1}</span>
                               <h4 className="project-child__title">{child.name}</h4>
                               <span
                                 className={`project-child__status project-child__status--${child.status
@@ -414,7 +488,9 @@ export default function Projects() {
               </div>
             </Reveal>
           ))}
-        </div>
+            </div>
+          </section>
+        ))}
       </section>
     </PageTransition>
   );

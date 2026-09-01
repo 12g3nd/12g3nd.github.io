@@ -12,6 +12,7 @@ import PartyOverlay from '../components/PartyOverlay';
 import WhimsyOverlay from '../components/WhimsyOverlay';
 import GuestbookCard from '../components/GuestbookCard';
 import useDocumentMeta from '../hooks/useDocumentMeta';
+import { routeMeta } from '../data/routeMeta';
 import useGuestbook from '../hooks/useGuestbook';
 import { age } from '../utils/time';
 import './Home.css';
@@ -133,10 +134,7 @@ export default function Home() {
   const { entries: guestbookEntries, loading: guestbookLoading } = useGuestbook();
   const previewEntries = guestbookEntries.slice(0, 3);
 
-  useDocumentMeta(
-    'Srihith Jarabana',
-    "Srihith Jarabana's personal corner of the internet — projects, writing, poetry, and the things that make up a worldview."
-  );
+  useDocumentMeta(routeMeta.home.title, routeMeta.home.description);
 
   return (
     <PageTransition>
@@ -234,8 +232,8 @@ export default function Home() {
           <div className="mobile-what-im-up-to">
             <div className="what-im-up-to-card">
               <h3><span className="accent-slash">//</span> WHAT I'M UP TO</h3>
-              <p>Learning & building financial models, working on some research-related work, and exploring career options.</p>
-              <span className="wiu-stamp">as of 7.2.26</span>
+              <p>Building financial models using agentic iteration (e.g. SQL and .pbip), starting sophomore year, and exploring career options.</p>
+              <span className="wiu-stamp">as of 9.1.26</span>
             </div>
             <div className="mobile-landmark-swap" onClick={() => setShowSoL(prev => !prev)}>
               <img
@@ -251,8 +249,8 @@ export default function Home() {
           </div>
           <div className="what-im-up-to-card">
             <h3><span className="accent-slash">//</span> WHAT I'M UP TO</h3>
-            <p>Learning & building financial models, working on some research-related work, and exploring career options.</p>
-            <span className="wiu-stamp">as of 7.2.26</span>
+            <p>Building financial models using agentic iteration (e.g. SQL and .pbip), starting sophomore year, and exploring career options.</p>
+            <span className="wiu-stamp">as of 9.1.26</span>
           </div>
           {/* Decorative landmark. The outer box spans the whole gutter between the
               hero card and the "what I'm up to" card; the inner __fig is centered
@@ -324,7 +322,7 @@ export default function Home() {
                 </div>
                 <div className="quote-image-container">
                   <a href="https://sententiaeantiquae.com/2018/09/22/nope-aristotle-did-not-say-it-is-the-mark-of-an-educated-mind-to-entertain-a-thought-without/" target="_blank" rel="noopener noreferrer">
-                    <img src="/Aristotle.jpg" alt="Aristotle" className="aristotle-img" />
+                    <img src="/Aristotle.jpg" alt="Aristotle" className="aristotle-img" loading="lazy" decoding="async" />
                   </a>
                 </div>
               </div>

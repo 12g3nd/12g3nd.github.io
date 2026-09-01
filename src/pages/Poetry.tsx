@@ -3,6 +3,7 @@ import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
 import ScrambleText from '../components/ScrambleText';
 import useDocumentMeta from '../hooks/useDocumentMeta';
+import { routeMeta } from '../data/routeMeta';
 import './Poetry.css';
 
 export default function Poetry() {
@@ -11,10 +12,7 @@ export default function Poetry() {
   // poetry bar toggles `--director`, surfacing a note under each poem.
   const [director, setDirector] = useState(false);
 
-  useDocumentMeta(
-    'Poetry // Srihith Jarabana',
-    'A selection of poems Srihith Jarabana has written, including award-winning work.'
-  );
+  useDocumentMeta(routeMeta.poetry.title, routeMeta.poetry.description);
 
   return (
     <PageTransition>

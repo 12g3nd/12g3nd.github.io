@@ -61,3 +61,17 @@ export function quarterOf(date: string): string {
 export const quarters: string[] = Array.from(
   new Set(postsSorted.map((p) => quarterOf(p.date)))
 );
+
+/**
+ * Posts oldest-first. A post's chronological position is its TRANSMISSION_NN —
+ * the archive is append-only and never renumbered, so position is stable.
+ */
+export const chronological = [...posts].sort(
+  (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+);
+
+/** "TRANSMISSION_05" for a slug, or '' when the slug isn't a known post. */
+export function transmissionOf(slug: string): string {
+  const i = chronological.findIndex((p) => p.slug === slug);
+  return i < 0 ? '' : `TRANSMISSION_${String(i + 1).padStart(2, '0')}`;
+}

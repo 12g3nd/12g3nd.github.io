@@ -17,11 +17,33 @@
   line-height: 1.1;
 }
 
+/* The essays read in a serif; everything framing them stays monospace. The
+   transmissions are long enough now to deserve their own voice, and a
+   monospace face at essay length is a texture, not a reading experience.
+   18px/1.7 rather than the old 16px/1.8: a serif sets narrower than Space
+   Mono, so it needs the extra size to hold the same measure, and needs less
+   leading once the letterforms stop being uniform-width. */
 .post-prose {
-  font-family: var(--font-mono);
-  font-size: 16px;
-  line-height: 1.8;
+  font-family: var(--font-reading);
+  font-size: 18px;
+  line-height: 1.7;
   color: rgba(var(--text-rgb), 0.9);
+}
+
+/* Chrome inside the prose — captions, the simulated social post, and the
+   reference list are all artifacts of SJ.SYS rather than the author's voice,
+   so they keep the monospace they had. */
+.post-prose figcaption,
+.post-prose .fake-post,
+.post-prose .fake-post-tags,
+.post-prose .post-sources {
+  font-family: var(--font-mono);
+}
+
+@media (max-width: 600px) {
+  .post-prose {
+    font-size: 17px;
+  }
 }
 
 .post-prose p {
@@ -30,7 +52,9 @@
 
 /* Author asides / thesis lines — the purple "second temperature". */
 .post-prose .lede {
-  font-weight: bold;
+  /* 600, not `bold`: only 400/600 of the serif are loaded, and asking for 700
+     makes the browser synthesise a smear instead of using the weight we have. */
+  font-weight: 600;
   color: var(--accent-secondary);
 }
 
@@ -44,6 +68,7 @@
 }
 
 .post-prose strong {
+  font-weight: 600;
   color: var(--text-primary);
 }
 

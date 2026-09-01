@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import mdx from '@mdx-js/rollup'
 import feedPlugin from './scripts/feedPlugin'
 import letterboxdPlugin from './scripts/letterboxdPlugin'
+import prerenderPlugin from './scripts/prerenderPlugin'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -17,6 +18,11 @@ export default defineConfig({
     // Bakes the Letterboxd ratings into `virtual:letterboxd` at build time —
     // the feed sends no CORS headers, so the browser cannot fetch it itself.
     letterboxdPlugin(),
+    // Writes a real HTML file per route (and per transmission) with its own
+    // title, canonical URL, OG/Twitter tags and JSON-LD, so scrapers that never
+    // run JS stop seeing the homepage's card on every page. Must come last:
+    // it rewrites the index.html Vite has already emitted.
+    prerenderPlugin(),
   ],
   base: '/',
 })

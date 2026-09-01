@@ -35,8 +35,10 @@ jobs:
         with:
           node-version: 24
           cache: 'npm'
+      # `ci`, not `install`: the lockfile is committed, so builds should install
+      # exactly what it pins rather than re-resolving semver ranges on every run.
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Build
         run: npm run build
       - name: Upload artifact

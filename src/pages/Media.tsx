@@ -3,6 +3,7 @@ import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
 import ScrambleText from '../components/ScrambleText';
 import useDocumentMeta from '../hooks/useDocumentMeta';
+import { routeMeta } from '../data/routeMeta';
 import './Media.css';
 
 /* Two walls, deliberately. The curated plates are all-time picks — a
@@ -71,10 +72,7 @@ const playlists = [
 ];
 
 export default function Media() {
-  useDocumentMeta(
-    'Media // Srihith Jarabana',
-    'Books, poetry, albums, films, and games Srihith Jarabana enjoys — plus current playlists and Letterboxd ratings.'
-  );
+  useDocumentMeta(routeMeta.media.title, routeMeta.media.description);
 
   return (
     <PageTransition>
@@ -96,7 +94,7 @@ export default function Media() {
             <Reveal key={category.key} delay={i * 0.06}>
               <figure className="media-plate" data-category={category.key}>
                 <div className="media-plate__art">
-                  <img src={category.art} alt="" aria-hidden="true" />
+                  <img src={category.art} alt="" aria-hidden="true" loading="lazy" decoding="async" />
                 </div>
                 <figcaption className="media-plate__placard">
                   <h3><span className="accent-slash">//</span> {category.label}</h3>
