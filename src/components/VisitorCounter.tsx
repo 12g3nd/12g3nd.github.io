@@ -37,6 +37,27 @@ const XKCD = 'https://xkcd.com/901';
 /** Six digits, so the readout never changes width as the count rolls over. */
 const WIDTH = 6;
 
+/**
+ * Hosts whose page loads are allowed to increment the count.
+ *
+ * localhost is CORS-allowlisted on the Worker so the guestbook works while
+ * developing, which also meant every local page load was writing to the live
+ * counter — development inflated the real number, and "cleaning up" afterwards
+ * meant zeroing real visits along with the noise. A counter that gets reset
+ * whenever someone works on the site is not a counter.
+ *
+ * So the write is gated on the origin rather than on a build flag: dev servers,
+ * `vite preview`, local network IPs and anything else that is not the live site
+ * read the number and never touch it. There is nothing to remember and no
+ * discipline to keep.
+ */
+const COUNTING_HOSTS = ['jarabana.com', '12g3nd.github.io'];
+
+function isLiveSite(): boolean {
+  const { hostname } = window.location;
+  return COUNTING_HOSTS.some((h) => hostname === h || hostname.endsWith(`.${h}`));
+}
+
 /** sessionStorage throws outright in some privacy modes rather than no-opping. */
 function alreadyCounted(): boolean {
   try {
@@ -69,14 +90,17 @@ let pending: Promise<number | null> | null = null;
 function requestCount(): Promise<number | null> {
   if (pending) return pending;
 
-  const counted = alreadyCounted();
-  const url = counted ? `${WORKER_URL}/visits` : `${WORKER_URL}/visit`;
+  // Read-only unless this is the live site and this session has not been
+  // counted yet. Anywhere else, the footer still shows the real number — it
+  // just does not add to it.
+  const write = isLiveSite() && !alreadyCounted();
+  const url = write ? `${WORKER_URL}/visit` : `${WORKER_URL}/visits`;
 
-  pending = fetch(url, counted ? undefined : { method: 'POST' })
+  pending = fetch(url, write ? { method: 'POST' } : undefined)
     .then((res) => (res.ok ? res.json() : Promise.reject(new Error(String(res.status)))))
     .then((data: { count?: unknown }) => {
       if (typeof data.count !== 'number') return null;
-      if (!counted) markCounted();
+      if (write) markCounted();
       return data.count;
     })
     .catch(() => {

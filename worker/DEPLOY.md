@@ -85,18 +85,26 @@ curl https://guestbook.jarabana.com/visits          # -> {"ok":true,"count":N}
 curl -X POST https://guestbook.jarabana.com/visit   # -> {"ok":true,"count":N+1}
 ```
 
-The counter starts at zero. An earlier version seeded it with Cloudflare's
-unique-visitor count for August 2026 so the footer would not open on `000000`;
-that was dropped because the two are different measurements and adding one to
-the other produced a total that was true of neither. Every digit showing is one
-this Worker counted.
+The counter starts at zero and is only ever written to by the live site.
+`VisitorCounter` gates the `POST` on `window.location.hostname`, so a dev
+server, a `vite preview`, or anything else that is not jarabana.com /
+12g3nd.github.io reads the number and never adds to it. That gate exists
+because localhost is CORS-allowlisted here for the guestbook, which meant local
+development was silently inflating the live count — and then "fixing" it meant
+zeroing real visits along with the noise.
 
-To zero it again (the seed in `counters.sql` will not do this — it is
-`INSERT OR IGNORE`, so it never touches an existing row):
+**Do not reset the counter as routine maintenance.** A number that gets wiped
+whenever someone works on the site measures nothing. The command below is for
+one situation only: deliberate abuse of the open endpoint.
 
 ```bash
 npx wrangler d1 execute sjsys-guestbook --remote --command "UPDATE counters SET value = 0 WHERE name = 'sessions';"
 ```
+
+To exercise the write path without touching production, run the Worker locally
+against its own D1 — `wrangler dev --local` plus
+`wrangler d1 execute sjsys-guestbook --local --file=./counters.sql` — and point
+a browser at that instead.
 
 `POST /visit` is unauthenticated and trivially inflatable by anyone willing to
 run it in a loop. That is an accepted property, not an oversight: the honest
