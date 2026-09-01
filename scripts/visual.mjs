@@ -23,9 +23,21 @@
 //                 Reveal block visible and keeps the easter eggs from firing.
 //                 See capture-pdf.mjs, which relies on the same lever.
 //
+// Point this at a preview server, never at `npm run dev`.
+//
+// The dev server transforms modules and re-optimises dependencies on demand, so
+// the first N page loads of a run render measurably differently from the ones
+// after it. That showed up as a contiguous prefix of every run differing by one
+// 35px row, and it survived both pinned storage and a browser context per shot,
+// because the varying thing was the server rather than the page. A built site is
+// static, and it is also what actually deploys.
+//
 // Usage:
+//   npm run build && npx vite preview --port 4173
 //   node scripts/visual.mjs baseline [baseURL]   # store the reference set
 //   node scripts/visual.mjs check    [baseURL]   # capture again and diff
+//
+// Rebuild before each check, or the check photographs the previous build.
 //
 // Both write PNGs under scripts/visual/, which is gitignored.
 
@@ -36,7 +48,7 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 
 const MODE = process.argv[2] || 'check';
-const BASE = process.argv[3] || 'http://localhost:5173';
+const BASE = process.argv[3] || 'http://localhost:4173';
 
 const ROOT = path.resolve('scripts', 'visual');
 const BASELINE_DIR = path.join(ROOT, 'baseline');
@@ -110,9 +122,21 @@ async function loadFixture() {
 }
 
 /**
- * Runs before any page script. Pins Math.random and pre-sets the theme class so
- * the first paint is already correct — main.tsx applies the stored theme itself,
- * and a class toggled after load would photograph a transition.
+ * Runs before any page script. Pins Math.random, the theme, and every piece of
+ * stored state the site keys behaviour off.
+ *
+ * The stored state matters more than it looks. Each shot now gets its own
+ * context, but the site writes to localStorage as it runs, and anything written
+ * before the shutter opens changes what is photographed. The nudge hint was
+ * exactly that: Navigation.tsx starts it on for a first-time visitor and a 12s
+ * timer turns it off and records that in localStorage — which, back when one
+ * context walked all thirteen routes, silently shortened every page captured
+ * after it fired, for 35px of drift that moved between runs.
+ *
+ * Everything is therefore pinned to the returning-visitor state, which is what
+ * twelve of the thirteen routes settle into anyway. The cost, stated plainly:
+ * the first-visit nudge text and the boot sequence are never photographed, so
+ * the refactor is not verified against them.
  */
 function initScript({ theme }) {
   // Seeded LCG (Numerical Recipes constants). Deterministic across runs, and
@@ -124,10 +148,55 @@ function initScript({ theme }) {
   };
   try {
     localStorage.setItem('sjsys_theme', theme);
+    localStorage.setItem('sjsys_terminal_seen', '1');
+    localStorage.removeItem('sjsys_resume_unlocked');
+    sessionStorage.setItem('sjsys_booted', '1');
+    sessionStorage.setItem('sjsys_counted', '1');
   } catch {
     // Storage denied: the class below still carries the theme for this page.
   }
   if (theme === 'light') document.documentElement.classList.add('theme-light');
+}
+
+/**
+ * Every face the design depends on, in the weights and styles index.html asks
+ * Google Fonts for. Listed explicitly because document.fonts.ready is not enough
+ * on its own: the stylesheet is loaded with display=swap, so the page paints in
+ * fallback metrics and reflows when the real face lands, and `ready` can resolve
+ * before that has happened. Text set in a fallback is a different width, which
+ * decided whether the nav phrase wrapped to a second line — the 35px of height
+ * that kept moving between runs.
+ */
+const FACES = [
+  '400 16px "Space Mono"',
+  '700 16px "Space Mono"',
+  '400 16px Anton',
+  '400 16px "Source Serif 4"',
+  '600 16px "Source Serif 4"',
+  'italic 400 16px "Source Serif 4"',
+];
+
+/**
+ * Block until every face is genuinely applied, or fail loudly.
+ *
+ * The fonts come off the network, so this is the one place a capture depends on
+ * something outside the machine. Waiting makes the outcome deterministic even
+ * when the network is slow; throwing makes a font that never arrives an obvious
+ * error rather than a silent 35px of drift.
+ */
+async function ensureFonts(page) {
+  await page.evaluate(async (faces) => {
+    await Promise.all(faces.map((f) => document.fonts.load(f)));
+    await document.fonts.ready;
+  }, FACES);
+
+  const missing = await page.evaluate(
+    (faces) => faces.filter((f) => !document.fonts.check(f)),
+    FACES,
+  );
+  if (missing.length) {
+    throw new Error(`fonts never applied: ${missing.join(', ')} — capture would be racy`);
+  }
 }
 
 /**
@@ -186,6 +255,16 @@ async function capture(outDir, fixture) {
 
   for (const theme of THEMES) {
     for (const width of WIDTHS) {
+      for (const { route, name } of ROUTES) {
+      // A context per shot, not per theme/width.
+      //
+      // Sharing one context across the thirteen routes meant each capture
+      // inherited whatever the previous twelve had left behind, and a cold first
+      // load rendered measurably differently from a warm one. The symptom was
+      // always the same shape: a contiguous prefix of the run differed by one
+      // 35px row, and the boundary moved between runs. Pinning stored state
+      // fixed part of it; isolating each shot removes the whole class, at the
+      // cost of a browser context per route.
       const context = await browser.newContext({
         viewport: { width, height: 900 },
         deviceScaleFactor: 1,
@@ -218,20 +297,25 @@ async function capture(outDir, fixture) {
       await page.clock.install({ time: FIXED_TIME });
       await page.clock.pauseAt(FIXED_TIME);
 
-      for (const { route, name } of ROUTES) {
-        await page.goto(BASE + route, { waitUntil: 'networkidle', timeout: 30000 });
-        await page.addStyleTag({ content: FREEZE_CSS });
-        await page.evaluate(() => document.fonts.ready);
-        await settle(page);
-        await page.screenshot({
-          fullPage: true,
-          path: path.join(outDir, `${name}--${theme}--${width}.png`),
-        });
-        shots += 1;
-        process.stdout.write(`\r  ${shots} shots`);
-      }
+      // Loaded twice, photographed on the second. The first load pays for
+      // whatever is cold — module transforms, font files, images — so the shot
+      // is always taken from the same warm state.
+      await page.goto(BASE + route, { waitUntil: 'networkidle', timeout: 30000 });
+      await ensureFonts(page);
+      await page.reload({ waitUntil: 'networkidle', timeout: 30000 });
+
+      await page.addStyleTag({ content: FREEZE_CSS });
+      await ensureFonts(page);
+      await settle(page);
+      await page.screenshot({
+        fullPage: true,
+        path: path.join(outDir, `${name}--${theme}--${width}.png`),
+      });
+      shots += 1;
+      process.stdout.write(`\r  ${shots} shots`);
 
       await context.close();
+      }
     }
   }
 
@@ -339,7 +423,9 @@ async function main() {
 
   console.log(`\nDRIFT — ${failures.length} of ${names.length} shots differ:\n`);
   for (const [name, why] of failures) console.log(`  ${name}  ${why}`);
-  console.log(`\ndiff images in ${DIFF_DIR}`);
+  // Only same-size pairs produce a diff image, so do not advertise a directory
+  // that a run of pure size mismatches never created.
+  if (existsSync(DIFF_DIR)) console.log(`\ndiff images in ${DIFF_DIR}`);
   process.exitCode = 1;
 }
 
