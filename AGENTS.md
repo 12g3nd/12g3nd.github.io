@@ -86,6 +86,19 @@ pinning the clock, `Math.random`, five storage keys, every CSS animation, the
 Worker responses and the webfonts, and two things are deliberately **not**
 covered: the first-visit nudge state, and the boot sequence.
 
+## Procedures worth following exactly
+
+Two jobs on this repo have a step that is easy to skip and silent when skipped.
+Both are written up in `.claude/skills/` — Claude Code loads them by name, and
+they are plain Markdown, so read them directly otherwise.
+
+- **`new-transmission`** — a post is an `.mdx` file *plus* a registration in
+  `posts.ts` that four separate surfaces read, plus a social card generated
+  locally and committed. A post missing from `posts.ts` is invisible everywhere.
+- **`verify-visual`** — how to prove a change looks identical, including the
+  baseline-before-you-edit ordering, the rebuild step, and how to tell the
+  harness's known flake from a real regression.
+
 ## Style
 
 Comments here explain *why*, not *what* — see `src/data/routeMeta.ts` or

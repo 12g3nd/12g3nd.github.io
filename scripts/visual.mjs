@@ -220,7 +220,22 @@ async function settle(page) {
     if (done) break;
     await page.waitForTimeout(250);
   }
-  await page.waitForTimeout(250);
+
+  // Then wait for the layout itself to stop moving.
+  //
+  // document.fonts.check() reports a face as loaded, not as laid out, so a
+  // shot could still be taken between the face arriving and the reflow that
+  // uses its metrics. That reflow changed where the nav wrapped, which is the
+  // 35px that kept appearing in the first shots of a run and not the later
+  // ones. Height stable across two reads means the page has finished moving,
+  // whatever the cause.
+  let last = -1;
+  for (let i = 0; i < 20; i += 1) {
+    const h = await page.evaluate(() => document.body.scrollHeight);
+    if (h === last) return;
+    last = h;
+    await page.waitForTimeout(200);
+  }
 }
 
 /**
