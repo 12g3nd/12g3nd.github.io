@@ -48,7 +48,11 @@
 
 .spotify-facade__hint {
   font-size: 0.7rem;
-  color: rgba(var(--text-rgb), 0.45);
+  /* The token, not a raw 0.45. The tier is re-derived under .theme-light —
+     ink on parchment has a quarter of cream-on-navy's luminance headroom — so a
+     hardcoded alpha silently opts out of that and lands at 2.6:1 on the light
+     theme's surfaces. This is the smallest text in the component. */
+  color: var(--text-faint);
 }
 
 /* The frame is a fixed 352px tall to match the iframe, so on a narrow screen
