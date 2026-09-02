@@ -55,7 +55,9 @@
 
 .webring-logo-img {
   width: 28px;
-  height: auto;
+  /* Explicit, not `auto`: the logo is square (256x256) and reserving its box up
+     front is what stops the footer changing height as it loads. */
+  height: 28px;
   filter: drop-shadow(0 0 5px rgba(var(--accent-rgb), 0.3));
 }
 

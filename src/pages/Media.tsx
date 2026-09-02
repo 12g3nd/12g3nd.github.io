@@ -2,6 +2,7 @@ import { films } from 'virtual:letterboxd';
 import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
 import ScrambleText from '../components/ScrambleText';
+import SpotifyEmbed from '../components/SpotifyEmbed';
 import useDocumentMeta from '../hooks/useDocumentMeta';
 import { routeMeta } from '../data/routeMeta';
 import './Media.css';
@@ -129,15 +130,7 @@ export default function Media() {
             <Reveal key={playlist.id} delay={i * 0.06}>
               <figure className="media-plate media-plate--embed">
                 <div className="media-plate__embed">
-                  <iframe
-                    src={`https://open.spotify.com/embed/playlist/${playlist.id}?utm_source=generator`}
-                    title={`Spotify playlist: ${playlist.label}`}
-                    width="100%"
-                    height="352"
-                    style={{ border: 0 }}
-                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                    loading="lazy"
-                  />
+                  <SpotifyEmbed id={playlist.id} label={playlist.label} />
                 </div>
                 <figcaption className="media-plate__placard">
                   <h3><span className="accent-slash">//</span> {playlist.label}</h3>

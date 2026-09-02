@@ -1,0 +1,66 @@
+/* The placeholder that stands where the Spotify iframe will go. It borrows the
+   embed frame's own radius so the swap reads as the same object filling in,
+   not as one element replacing another. */
+
+.spotify-facade {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+
+  width: 100%;
+  padding: 1rem;
+
+  font-family: var(--font-mono);
+  color: rgba(var(--text-rgb), 0.75);
+  text-align: center;
+
+  background: rgba(var(--accent-rgb), 0.04);
+  border: 1px dashed rgba(var(--accent-rgb), 0.3);
+  border-radius: 12px;
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.spotify-facade:hover,
+.spotify-facade:focus-visible {
+  color: var(--accent-primary);
+  background: rgba(var(--accent-rgb), 0.09);
+  border-color: rgba(var(--accent-rgb), 0.6);
+}
+
+.spotify-facade__glyph {
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--accent-primary);
+}
+
+.spotify-facade__label {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.spotify-facade__hint {
+  font-size: 0.7rem;
+  color: rgba(var(--text-rgb), 0.45);
+}
+
+/* The frame is a fixed 352px tall to match the iframe, so on a narrow screen
+   the three stacked lines are the thing that runs out of room, not the box. */
+@media (max-width: 480px) {
+  .spotify-facade__label {
+    font-size: 0.72rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spotify-facade {
+    transition: none;
+  }
+}

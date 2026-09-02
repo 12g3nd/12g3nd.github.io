@@ -36,7 +36,8 @@ src/
   data/               posts.ts and routeMeta.ts; each has two consumers
   hooks/ utils/ types/
 scripts/              vite plugins (feed, letterboxd, prerender) and local
-                      tooling (capture-*, visual.mjs) — see the header of each
+                      tooling (capture-*, visual.mjs, fetch-fonts.mjs) — see
+                      the header of each
 worker/               Cloudflare Worker: guestbook entries and the visit count
 public/               static assets; og/ cards are generated and committed
 ```
@@ -73,6 +74,18 @@ emitted.
 theme class is applied before first paint to avoid a flash, which means
 `main.tsx` cannot import the helper it would otherwise use. If you change the
 storage key or the class name, change both.
+
+**`public/fonts/` is committed, and the `@font-face` block in `index.html` is
+generated.** The webfonts are self-hosted rather than loaded from Google, which
+is what lets the rules be inlined in the `<head>` — the browser knows every font
+URL before it leaves the head instead of waiting on a third-party stylesheet
+first. Everything between the two `generated fonts` markers is rewritten
+wholesale by `scripts/fetch-fonts.mjs`, so hand-edits there are lost; change the
+script and re-run it. It is deliberately not part of `npm run build`, so neither
+a build nor CI depends on Google being reachable. If you change which families
+or weights the design uses, update the `FACES` list in `scripts/visual.mjs` too
+— that is what the screenshot harness blocks on, and a face missing there is a
+silent race rather than an error.
 
 **`scripts/letterboxd.cache.json` is committed on purpose.** `letterboxdPlugin`
 fetches the ratings at build time and falls back to this file when the feed is
@@ -127,11 +140,34 @@ pinning the clock, `Math.random`, five storage keys, every CSS animation, the
 Worker responses, the webfonts, and the footer's webring logo — that last one
 is fetched from another site and sized `height: auto`, so until it was cached
 locally the footer was one height when it had arrived and another when it had
-not, on every page.
+not, on every page. The webring logo is now served from `public/` for everyone,
+not just the harness, so that particular shift is gone from the real site too.
+
+Images are pinned as well, and that one is easy to re-break. They are
+`loading="lazy"` and they sit in boxes CSS has already sized, so an image
+arriving changes nothing about the document height — `settle()` cannot see it,
+and whether a picture below the fold had loaded when the shutter opened came
+down to timing. It showed up as one image present in a run and absent in its
+pair, in whichever direction the race fell. `ensureImages()` forces them eager
+and waits.
 
 Two things are deliberately **not** covered: the first-visit nudge state, and
 the boot sequence. Both are pinned to the returning-visitor state so they hold
 still, which means a change to either will not be caught.
+
+**The harness leans on reduced motion, and it fails silently when something
+ignores it.** Every route's content is wrapped in `PageTransition`, which starts
+at `opacity: 0` and is animated by framer-motion on `requestAnimationFrame` —
+and the harness pauses the clock before it navigates, so those frames never ran.
+For a long time every shot in the set was an empty page carrying only the nav
+and the footer, the two things that live outside that wrapper, and the diff
+reported "78 shots, zero differing pixels" because it was comparing one blank
+page against another. `PageTransition` now returns a plain div under reduced
+motion, the way `Reveal` and the boot sequence already did. A new component that
+animates itself in without honouring reduced motion will drop out of these shots
+the same way, and the diff will stay green while it does. If a change you expect
+to see does not show up as drift, open the PNG in `scripts/visual/current/`
+before concluding it was invisible.
 
 ## Procedures worth following exactly
 

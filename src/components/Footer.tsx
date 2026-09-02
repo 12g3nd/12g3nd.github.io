@@ -10,10 +10,19 @@ export default function Footer() {
             [ ← ]
           </a>
           <a href="https://uoftwebring.com" target="_blank" rel="noopener noreferrer" className="webring-logo-link">
+            {/* Served from public/ rather than uoftwebring.com. The remote copy
+                was the footer's one third-party fetch, and because it is sized
+                `height: auto` the footer stood at one height before it arrived
+                and another after — a layout shift on every page. Explicit
+                dimensions below make that impossible; the link still points at
+                the ring, only the image is local. Re-copy the file if the ring
+                ever redesigns its logo. */}
             <img
-              src="https://uoftwebring.com/ring_logo.svg"
+              src="/ring_logo.svg"
               alt="UofT Webring"
               className="webring-logo-img"
+              width="28"
+              height="28"
             />
           </a>
           <a href="https://uoftwebring.com/redirect?nav=next&id=40" className="webring-nav">
