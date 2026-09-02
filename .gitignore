@@ -53,3 +53,5 @@ scripts/fixtures/
 # Per-machine Claude Code settings. Ignored by this repo rather than only by a
 # global gitignore, so a fresh clone on another machine does not commit them.
 **/.claude/settings.local.json
+.agents/skills/verify-visual/SKILL.md
+.agents/skills/new-transmission/SKILL.md

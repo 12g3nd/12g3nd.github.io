@@ -23,8 +23,21 @@
 //                 sized `height: auto`, so the footer was one height when it had
 //                 arrived and another when it had not. Cached and served local.
 //   - motion      reducedMotion: 'reduce' skips the boot sequence, forces every
-//                 Reveal block visible and keeps the easter eggs from firing.
-//                 See capture-pdf.mjs, which relies on the same lever.
+//                 Reveal block and PageTransition visible, and keeps the easter
+//                 eggs from firing. See capture-pdf.mjs, same lever.
+//
+//                 PageTransition is load-bearing here and was missing for a
+//                 long time. It wraps the content of every route, starts at
+//                 opacity 0, and is animated by framer-motion on rAF — which
+//                 the paused clock stops dead. Every shot in this set was
+//                 therefore an empty page with only the nav and footer, the two
+//                 things that live outside it, and the diff stayed green
+//                 because it was comparing one blank page against another. If a
+//                 future component animates itself in without honouring reduced
+//                 motion, it will disappear from these shots the same way.
+//   - images      Forced eager and waited for. They sit in CSS-sized boxes, so
+//                 an arriving image never changes document height and settle()
+//                 cannot see it — see ensureImages().
 //
 // Point this at a preview server, never at `npm run dev`.
 //
@@ -121,9 +134,16 @@ const THEMES = ['dark', 'light'];
  * Holding every animation and transition at its first frame makes the caret
  * deterministic. The trade is real and worth stating: an element whose final
  * appearance is produced *by* an animation is photographed in its starting
- * state. Nothing on this site depends on that — the reveal-on-scroll blocks are
- * handled by reducedMotion, and framer-motion writes inline styles rather than
- * keyframes — but a future animation that does would be captured unverified.
+ * state. The reveal-on-scroll blocks are safe because reducedMotion makes them
+ * render plain, and framer-motion writes inline styles rather than keyframes so
+ * this rule does not reach it.
+ *
+ * That second half used to be offered as reassurance, and it was the wrong way
+ * round: being outside this rule is exactly why framer-motion is a problem. It
+ * animates on rAF, which the paused clock stops, so a component that fades
+ * itself in is photographed at opacity 0 and this rule never gets the chance to
+ * freeze it at something visible. PageTransition did that to every route in the
+ * set. Anything that animates itself in has to honour reduced motion.
  */
 const FREEZE_CSS = `*, *::before, *::after {
   animation: none !important;
@@ -236,6 +256,51 @@ async function ensureFonts(page) {
 }
 
 /**
+ * Block until every image has finished loading and is ready to paint.
+ *
+ * settle() cannot see this one. Almost every image on the site sits in a box
+ * whose size is already fixed by CSS, so an image arriving does not change
+ * document height — the height loop reads the same number before and after and
+ * concludes the page has stopped moving, while the picture is still blank.
+ *
+ * The images are `loading="lazy"`, and a full-page screenshot does not scroll,
+ * so whether one below the fold had been fetched by the time the shutter opened
+ * came down to timing. That is exactly the drift it produced: the Aristotle
+ * portrait on /home and the Krine logo on /projects appeared in one run of a
+ * pair and not the other, in whichever direction the race happened to fall.
+ * Forcing them eager and then waiting removes the race rather than narrowing it.
+ *
+ * `complete` covers a failed load too, which is deliberate: an image that 404s
+ * is a stable, reproducible blank, and blocking forever on it would turn a
+ * missing file into a hang instead of a visible diff. decode() is the last
+ * step because `complete` means the bytes arrived, not that the frame is ready
+ * to paint.
+ *
+ * Polled from Node for the same reason settle() is — the paused clock has
+ * stopped every timer inside the page.
+ */
+async function ensureImages(page) {
+  await page.evaluate(() => {
+    for (const img of document.images) img.loading = 'eager';
+  });
+
+  for (let i = 0; i < 40; i += 1) {
+    const pending = await page.evaluate(
+      () => Array.from(document.images).filter((img) => !img.complete).length,
+    );
+    if (pending === 0) {
+      await page.evaluate(() =>
+        Promise.all(Array.from(document.images).map((img) => img.decode().catch(() => {}))),
+      );
+      return;
+    }
+    await page.waitForTimeout(250);
+  }
+
+  throw new Error('images never finished loading — capture would be racy');
+}
+
+/**
  * Wait for the page to reach its settled state, rather than for a fixed delay.
  *
  * The one element that resolves asynchronously on every page is the visit
@@ -294,9 +359,27 @@ async function warmUp(browser, logo) {
   );
   const page = await context.newPage();
   for (const { route } of ROUTES) {
-    await page.goto(BASE + route, { waitUntil: 'networkidle', timeout: 30000 }).catch(() => {});
+    // Best effort, and short: a stalled warm-up is not worth thirty seconds
+    // times thirteen routes when the shot itself waits for what matters.
+    await page.goto(BASE + route, { waitUntil: 'load', timeout: 15000 }).catch(() => {});
   }
   await context.close();
+}
+
+/**
+ * Close the browser, bounded.
+ *
+ * close() can hang — a page with a frozen clock and pending timers does not
+ * always tear down promptly — and by the time this runs every shot is already
+ * on disk, so waiting forever only costs a run that has otherwise succeeded.
+ * Giving up and letting the process exit is fine: Playwright kills the browser
+ * it launched when Node exits normally.
+ */
+async function shutdown(browser) {
+  await Promise.race([
+    browser.close().catch(() => {}),
+    new Promise((resolve) => setTimeout(resolve, 15000)),
+  ]);
 }
 
 async function capture(outDir, fixture, logo) {
@@ -304,113 +387,132 @@ async function capture(outDir, fixture, logo) {
   await mkdir(outDir, { recursive: true });
 
   const browser = await chromium.launch();
-  await warmUp(browser, logo);
-  let shots = 0;
-  const metrics = {};
+  try {
+    await warmUp(browser, logo);
+    let shots = 0;
+    const metrics = {};
 
-  for (const theme of THEMES) {
-    for (const width of WIDTHS) {
-      for (const { route, name } of ROUTES) {
-      // A context per shot, not per theme/width.
-      //
-      // Sharing one context across the thirteen routes meant each capture
-      // inherited whatever the previous twelve had left behind, and a cold first
-      // load rendered measurably differently from a warm one. The symptom was
-      // always the same shape: a contiguous prefix of the run differed by one
-      // 35px row, and the boundary moved between runs. Pinning stored state
-      // fixed part of it; isolating each shot removes the whole class, at the
-      // cost of a browser context per route.
-      const context = await browser.newContext({
-        viewport: { width, height: 900 },
-        deviceScaleFactor: 1,
-        reducedMotion: 'reduce',
-      });
+    for (const theme of THEMES) {
+      for (const width of WIDTHS) {
+        for (const { route, name } of ROUTES) {
+        // A context per shot, not per theme/width.
+        //
+        // Sharing one context across the thirteen routes meant each capture
+        // inherited whatever the previous twelve had left behind, and a cold first
+        // load rendered measurably differently from a warm one. The symptom was
+        // always the same shape: a contiguous prefix of the run differed by one
+        // 35px row, and the boundary moved between runs. Pinning stored state
+        // fixed part of it; isolating each shot removes the whole class, at the
+        // cost of a browser context per route.
+        const context = await browser.newContext({
+          viewport: { width, height: 900 },
+          deviceScaleFactor: 1,
+          reducedMotion: 'reduce',
+        });
 
-      await context.addInitScript(initScript, { theme });
+        await context.addInitScript(initScript, { theme });
 
-      // Every Worker call: the entry list, and both counter endpoints. Answering
-      // them here means nothing in this run can reach the real Worker.
-      await context.route(`${WORKER}/**`, (route) => {
-        const url = route.request().url();
-        if (url.includes('/entries')) {
-          return route.fulfill({ contentType: 'application/json', body: fixture });
+        // Every Worker call: the entry list, and both counter endpoints. Answering
+        // them here means nothing in this run can reach the real Worker.
+        await context.route(`${WORKER}/**`, (route) => {
+          const url = route.request().url();
+          if (url.includes('/entries')) {
+            return route.fulfill({ contentType: 'application/json', body: fixture });
+          }
+          return route.fulfill({ contentType: 'application/json', body: '{"count":1234}' });
+        });
+
+        // The one thing that cannot be frozen. Same box, no content.
+        await context.route('https://open.spotify.com/**', (route) =>
+          route.fulfill({ contentType: 'text/html', body: '<!doctype html><body></body>' }),
+        );
+
+        // Real file, local timing — see WEBRING above.
+        await context.route(`${WEBRING}/**`, (route) =>
+          route.fulfill({ contentType: 'image/svg+xml', body: logo }),
+        );
+
+        const page = await context.newPage();
+        // install() alone leaves the clock ticking, which lets the nav typewriter
+        // advance by a timing-dependent number of characters. At 390 and 820 a
+        // longer phrase wraps to a second line, so the whole page grew by exactly
+        // one line height between runs. pauseAt stops it dead: the phrase is
+        // always caught at the same character.
+        await page.clock.install({ time: FIXED_TIME });
+        await page.clock.pauseAt(FIXED_TIME);
+
+        // 'load' is the hard requirement; network quiet is only a hint.
+        //
+        // This used to wait on 'networkidle' and treat a timeout as fatal, which
+        // killed roughly one run in three at a random shot — the run had to be
+        // started again from the beginning, so a three-minute check could cost
+        // fifteen. networkidle is a heuristic about connection counts, and it
+        // does not always settle even when the page is completely finished.
+        //
+        // Nothing was actually resting on it. The module bundle has executed by
+        // 'load', so React has mounted, and every asynchronous thing this script
+        // cares about is waited for explicitly below and from Node: fonts,
+        // images, the visit counter, and the document height. Those are the real
+        // contract. Leaving networkidle in as a best-effort hint keeps whatever
+        // it was buying on a good run, at a bounded cost when it stalls.
+        await page.goto(BASE + route, { waitUntil: 'load', timeout: 30000 });
+        await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {});
+        await page.addStyleTag({ content: FREEZE_CSS });
+        await ensureFonts(page);
+        await ensureImages(page);
+        await settle(page);
+        const shotName = `${name}--${theme}--${width}`;
+        await page.screenshot({
+          fullPage: true,
+          path: path.join(outDir, `${shotName}.png`),
+        });
+
+        // Recorded alongside the image so a drift can be read as "this element
+        // changed height" instead of being reverse-engineered from pixels. A
+        // screenshot says something moved; this says what.
+        metrics[shotName] = await page.evaluate(() => {
+          const h = (sel) => {
+            const el = document.querySelector(sel);
+            return el ? Math.round(el.getBoundingClientRect().height) : null;
+          };
+          const row = document.querySelector('.terminal-mobile-row');
+          return {
+            body: document.body.scrollHeight,
+            nav: h('.brutalist-nav'),
+            navLinks: h('.nav-links'),
+            mobileRow: h('.terminal-mobile-row'),
+            headerBox: h('.terminal-header-box'),
+            brand: h('.nav-brand'),
+            rowText: row ? row.textContent.trim().slice(0, 48) : null,
+          };
+        });
+        shots += 1;
+        process.stdout.write(`\r  ${shots} shots`);
+
+        await context.close();
         }
-        return route.fulfill({ contentType: 'application/json', body: '{"count":1234}' });
-      });
-
-      // The one thing that cannot be frozen. Same box, no content.
-      await context.route('https://open.spotify.com/**', (route) =>
-        route.fulfill({ contentType: 'text/html', body: '<!doctype html><body></body>' }),
-      );
-
-      // Real file, local timing — see WEBRING above.
-      await context.route(`${WEBRING}/**`, (route) =>
-        route.fulfill({ contentType: 'image/svg+xml', body: logo }),
-      );
-
-      const page = await context.newPage();
-      // install() alone leaves the clock ticking, which lets the nav typewriter
-      // advance by a timing-dependent number of characters. At 390 and 820 a
-      // longer phrase wraps to a second line, so the whole page grew by exactly
-      // one line height between runs. pauseAt stops it dead: the phrase is
-      // always caught at the same character.
-      await page.clock.install({ time: FIXED_TIME });
-      await page.clock.pauseAt(FIXED_TIME);
-
-      await page.goto(BASE + route, { waitUntil: 'networkidle', timeout: 30000 });
-      await page.addStyleTag({ content: FREEZE_CSS });
-      await ensureFonts(page);
-      await settle(page);
-      const shotName = `${name}--${theme}--${width}`;
-      await page.screenshot({
-        fullPage: true,
-        path: path.join(outDir, `${shotName}.png`),
-      });
-
-      // Recorded alongside the image so a drift can be read as "this element
-      // changed height" instead of being reverse-engineered from pixels. A
-      // screenshot says something moved; this says what.
-      metrics[shotName] = await page.evaluate(() => {
-        const h = (sel) => {
-          const el = document.querySelector(sel);
-          return el ? Math.round(el.getBoundingClientRect().height) : null;
-        };
-        const row = document.querySelector('.terminal-mobile-row');
-        return {
-          body: document.body.scrollHeight,
-          nav: h('.brutalist-nav'),
-          navLinks: h('.nav-links'),
-          mobileRow: h('.terminal-mobile-row'),
-          headerBox: h('.terminal-header-box'),
-          brand: h('.nav-brand'),
-          rowText: row ? row.textContent.trim().slice(0, 48) : null,
-        };
-      });
-      shots += 1;
-      process.stdout.write(`\r  ${shots} shots`);
-
-      await context.close();
       }
     }
+
+    // Metrics first, then the browser.
+    //
+    // The other order lost a completed run: browser.close() can hang — a page
+    // with a frozen clock and pending timers does not always tear down promptly —
+    // and metrics.json was written after it, so a run that had captured all 78
+    // shots ended with no metrics at all. Nothing that is already computed should
+    // depend on a teardown succeeding.
+    await writeFile(path.join(outDir, 'metrics.json'), JSON.stringify(metrics, null, 1));
+    process.stdout.write(`\r  ${shots} shots captured\n`);
+  } finally {
+    // Always, including when a shot threw. A run that died partway used to
+    // leave its headless Chrome running, and the next run started on a machine
+    // with a few hundred MB less to work with — which made that run likelier to
+    // die too, and leave another behind. The failures it produced pointed
+    // everywhere but here: 30s timeouts loading a static page from localhost,
+    // and clock.pauseAt refusing because install() and pauseAt() are one
+    // timestamp apart and the machine was too loaded to get between them.
+    await shutdown(browser);
   }
-
-  // Metrics first, then the browser.
-  //
-  // The other order lost a completed run: browser.close() can hang — a page
-  // with a frozen clock and pending timers does not always tear down promptly —
-  // and metrics.json was written after it, so a run that had captured all 78
-  // shots ended with no metrics at all. Nothing that is already computed should
-  // depend on a teardown succeeding.
-  await writeFile(path.join(outDir, 'metrics.json'), JSON.stringify(metrics, null, 1));
-
-  // Bounded, because a hang here costs a run that is otherwise complete. Every
-  // shot is on disk by now; a browser that will not close is the OS's problem.
-  await Promise.race([
-    browser.close(),
-    new Promise((resolve) => setTimeout(resolve, 15000)),
-  ]);
-
-  process.stdout.write(`\r  ${shots} shots captured\n`);
 }
 
 /** Raw-pixel compare. Returns null when identical, else a description + diff PNG. */
