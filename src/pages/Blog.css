@@ -12,7 +12,7 @@
 }
 
 .log-bar__count {
-  color: rgba(var(--text-rgb), 0.45);
+  color: var(--text-faint);
   white-space: nowrap;
 }
 

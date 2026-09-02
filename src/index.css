@@ -19,7 +19,13 @@
   --text-primary: rgb(var(--text-rgb));
   --text-dim: rgba(var(--text-rgb), 0.8);
   --text-muted: rgba(var(--text-rgb), 0.6);
-  --text-faint: rgba(var(--text-rgb), 0.4);
+  /* 0.5 rather than the 0.4 this started at: the tier is for de-emphasised
+     meta, not for text nobody can read, and 0.4 measured 3.4:1 against
+     --bg-raised. This clears 4.5:1 on --bg-base and lands just under it on the
+     lightest surface, which is as far as the tier can go before it stops
+     reading as faint at all. Consumers that hardcoded 0.4 or 0.45 inline have
+     been folded back onto this token — the two values were drift, not intent. */
+  --text-faint: rgba(var(--text-rgb), 0.5);
 
   /* ── Accents ──────────────────────────────────────────── */
   --accent-primary: #00E5FF;        /* cyan — interactive / headers */
@@ -62,8 +68,23 @@
   --bg-surface: #efe5ce;
   --bg-raised: #f7efda;
   --text-rgb: 42, 36, 24;
-  --accent-primary: #0a7d8c;
-  --accent-rgb: 10, 125, 140;
+  /* The four text tiers are one hue stepped by opacity, and that ramp does not
+     survive the theme flip: cream on navy has roughly four times the luminance
+     delta of ink on parchment, so the same alphas that read as "dim / muted /
+     faint" on dark collapse into "illegible" on cream. At the dark theme's
+     0.4, --text-faint measures 2.2:1 against --bg-base here — below every
+     WCAG threshold, and no ink colour fixes it, because 0.4 alpha over this
+     parchment cannot reach 4.5:1 even at pure black. The alphas themselves
+     have to move. These three are re-derived so the worst case (the lightest
+     surface, --bg-raised) still clears 4.5:1; the tiers stay ordered, they are
+     just closer together than on dark, which is what the smaller delta buys. */
+  --text-dim: rgba(var(--text-rgb), 0.88);
+  --text-muted: rgba(var(--text-rgb), 0.78);
+  --text-faint: rgba(var(--text-rgb), 0.68);
+  /* Deepened from #0a7d8c, which measured 3.4:1 on --bg-base — this is the
+     interactive colour, so it was the one token most worth getting right. */
+  --accent-primary: #0a6270;
+  --accent-rgb: 10, 98, 112;
   /* Deepen the secondary/warm voices: #7B61FF and #ffb000 are tuned for navy and
      wash out on cream, so meta text and warnings need more ink to hold contrast. */
   --accent-secondary: #5a3fc0;
@@ -315,7 +336,26 @@ h1, h2, h3, h4, h5, h6 {
 a {
   color: inherit;
   text-decoration: none;
-  transition: all 0.15s ease;
+  /* Named properties rather than `all`, because `all` includes `outline`, and
+     an outline that fades in leaves the first frames of a focus move with no
+     indicator at all — see the focus ring below. */
+  transition: color 0.15s ease, background-color 0.15s ease,
+    border-color 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+}
+
+/* One focus ring for the whole site.
+   Every easter egg already carried its own :focus-visible — the wireframe, the
+   y2k star, the crest, the elevator — because each was added as a deliberate
+   keyboard target. Nothing a visitor is actually trying to reach did: not a
+   nav link, not [VIEW PROJECTS], not a post link. The site had sixty :hover
+   rules and twelve :focus ones, so keyboard navigation ran on whatever the
+   browser drew by default, over a palette none of those defaults were picked
+   against. :focus-visible keeps it off pointer users, and it is deliberately
+   not transitioned. The per-component rings that already exist are more
+   specific and still win where they are declared. */
+:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 3px;
 }
 
 p, span, div {

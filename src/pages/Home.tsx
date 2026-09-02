@@ -131,7 +131,10 @@ export default function Home() {
 
   // Guestbook preview — 3 most-recent approved entries. useGuestbook caches in
   // module memory, so the full /guestbook page reuses this fetch (no second hit).
-  const { entries: guestbookEntries, loading: guestbookLoading } = useGuestbook();
+  // `error` is read here for the same reason /guestbook reads it: without it an
+  // unreachable Worker is indistinguishable from an empty log, and the preview
+  // invites a visitor to "be the first" into a guestbook that already has entries.
+  const { entries: guestbookEntries, loading: guestbookLoading, error: guestbookError } = useGuestbook();
   const previewEntries = guestbookEntries.slice(0, 3);
 
   useDocumentMeta(routeMeta.home.title, routeMeta.home.description);
@@ -343,11 +346,16 @@ export default function Home() {
           {guestbookLoading &&
             [0, 1, 2].map((i) => <div key={i} className="gb-skeleton" aria-hidden="true" />)}
 
-          {!guestbookLoading && previewEntries.length === 0 && (
+          {!guestbookLoading && guestbookError && (
+            <div className="gb-notice">[ COULDN'T REACH THE LOG — {guestbookError} ]</div>
+          )}
+
+          {!guestbookLoading && !guestbookError && previewEntries.length === 0 && (
             <div className="gb-notice">[ NO ENTRIES YET — be the first. ]</div>
           )}
 
           {!guestbookLoading &&
+            !guestbookError &&
             previewEntries.map((entry, index) => (
               <Reveal key={entry.id} delay={index * 0.07}>
                 <GuestbookCard entry={entry} compact />
@@ -400,6 +408,13 @@ export default function Home() {
           </a>
         )}
         <div className="social-links" style={{ justifyContent: 'center' }}>
+          {/* The résumé has a proper home on /business (sheet 04), but a visitor
+              who lands here and scrolls to CONNECT shouldn't have to guess that.
+              The poke-unlocked chip below is still the easter egg; this is the
+              plain door beside it. */}
+          <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="social-pill">
+            [RÉSUMÉ ↗]
+          </a>
           <a href="https://www.linkedin.com/in/srihithjarabana/" target="_blank" rel="noopener noreferrer" className="social-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
             <img src="/smlogos/LinkedIn.webp" alt="LinkedIn" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
             [LINKEDIN ↗]

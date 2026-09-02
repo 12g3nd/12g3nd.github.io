@@ -36,7 +36,7 @@
 }
 
 .project-children__count {
-  color: rgba(var(--text-rgb), 0.4);
+  color: var(--text-faint);
   white-space: nowrap;
 }
 
@@ -105,7 +105,7 @@
   border: 1px solid currentColor;
   border-radius: 999px;
   white-space: nowrap;
-  color: rgba(var(--text-rgb), 0.45);
+  color: var(--text-faint);
 }
 
 .project-child__status--shipped { color: var(--accent-primary); }

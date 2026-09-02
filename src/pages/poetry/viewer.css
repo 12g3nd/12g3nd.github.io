@@ -42,7 +42,7 @@
 }
 
 .doc-viewer__meta {
-  color: rgba(var(--text-rgb), 0.45);
+  color: var(--text-faint);
 }
 
 .doc-viewer__pages {

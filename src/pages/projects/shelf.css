@@ -38,5 +38,5 @@
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.04em;
-  color: rgba(var(--text-rgb), 0.42);
+  color: var(--text-faint);
 }

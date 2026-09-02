@@ -54,7 +54,7 @@
 .tenets-subtitle {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: rgba(var(--text-rgb), 0.4);
+  color: var(--text-faint);
   margin-top: -1rem;
   margin-bottom: 1rem;
   letter-spacing: 0.05em;

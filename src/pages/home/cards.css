@@ -93,7 +93,7 @@
   font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.08em;
-  color: rgba(var(--text-rgb), 0.45);
+  color: var(--text-faint);
   position: relative;
   z-index: 1;
 }

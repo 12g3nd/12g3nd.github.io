@@ -82,7 +82,7 @@
 }
 
 .boot__line--dim .boot__text {
-  color: rgba(var(--text-rgb), 0.45);
+  color: var(--text-faint);
 }
 
 .boot__tag {

@@ -13,7 +13,7 @@
 }
 
 .gallery-bar__count {
-  color: rgba(var(--text-rgb), 0.45);
+  color: var(--text-faint);
   white-space: nowrap;
 }
 
@@ -111,7 +111,7 @@
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(var(--text-rgb), 0.4);
+  color: var(--text-faint);
   white-space: nowrap;
 }
 
@@ -289,7 +289,7 @@
 }
 
 .media-ratings__year {
-  color: rgba(var(--text-rgb), 0.4);
+  color: var(--text-faint);
 }
 
 /* Letterboxd's own ★/½ notation, in Letterboxd's own green — it needs no

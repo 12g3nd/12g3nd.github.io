@@ -13,7 +13,7 @@
 }
 
 .xls-bar__count {
-  color: rgba(var(--text-rgb), 0.45);
+  color: var(--text-faint);
   white-space: nowrap;
 }
 
@@ -203,13 +203,13 @@
 }
 
 /* Pending coverage rows read as scaffolding, not finished work. */
-.xls-row--pending .xls-cell { color: rgba(var(--text-rgb), 0.45); }
+.xls-row--pending .xls-cell { color: var(--text-faint); }
 
 .xls-caption {
   padding: 0.9rem 1rem;
   font-family: var(--font-mono);
   font-size: 11px;
-  color: rgba(var(--text-rgb), 0.4);
+  color: var(--text-faint);
   border-top: 1px dashed rgba(var(--text-rgb), 0.12);
 }
 

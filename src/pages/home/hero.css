@@ -200,7 +200,7 @@
 .phonetic-text {
   font-family: var(--font-mono);
   font-size: clamp(1rem, 2vw, 1.5rem);
-  color: rgba(var(--text-rgb), 0.4);
+  color: var(--text-faint);
   margin-top: 0.5rem;
   letter-spacing: 0.05em;
 }
