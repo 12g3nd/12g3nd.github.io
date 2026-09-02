@@ -50,6 +50,13 @@ BLOG_ROADMAP.md
 scripts/visual/
 scripts/fixtures/
 
+# Design-critique snapshots, written by `/impeccable critique`. Point-in-time
+# scores against a file as it stood that day, so they go stale the moment the
+# file changes and read as current advice long after they stop being true.
+# .impeccable/config.json is the opposite and stays committed: it records why a
+# lint rule is suppressed, which is reasoning worth keeping.
+.impeccable/critique/
+
 # Per-machine Claude Code settings. Ignored by this repo rather than only by a
 # global gitignore, so a fresh clone on another machine does not commit them.
 **/.claude/settings.local.json
