@@ -1,4 +1,7 @@
+import { Link } from 'react-router-dom';
+import { buildInfo } from 'virtual:build-info';
 import VisitorCounter from './VisitorCounter';
+import ButtonWall from './ButtonWall';
 import './Footer.css';
 
 export default function Footer() {
@@ -30,13 +33,32 @@ export default function Footer() {
           </a>
         </div>
 
+        {/* The button the ring was always missing, plus the badge wall. */}
+        <ButtonWall />
+
         {/* Counter, copyright, motto on one baseline. The centre column is
             `auto` and the outer two are equal fractions, so the copyright stays
             optically centred no matter how wide the count or the motto get. */}
         <div className="footer-baseline">
           <VisitorCounter />
 
-          <p className="footer-credits">COPYRIGHT © 2026 SRIHITH JARABANA. ALL RIGHTS RESERVED.</p>
+          <div className="footer-centre">
+            <p className="footer-credits">COPYRIGHT © 2026 SRIHITH JARABANA. ALL RIGHTS RESERVED.</p>
+            {/* The date of the last commit, not of this page load — see
+                scripts/buildInfoPlugin.ts. A stamp that reads "today" every day
+                is the version of this everyone got wrong. <time> so the machine
+                reading gets the same fact as the human one. */}
+            <p className="footer-updated">
+              LAST UPDATED <time dateTime={buildInfo.date}>{buildInfo.date}</time>
+              {buildInfo.exact && buildInfo.sha && (
+                <span className="footer-updated__sha"> · {buildInfo.sha}</span>
+              )}
+              {/* The only route not in the nav, so this is the only way to
+                  find it that isn't typing the URL. */}
+              <span className="footer-updated__sha"> · </span>
+              <Link className="footer-index" to="/sitemap">INDEX OF /</Link>
+            </p>
+          </div>
 
           {/* Both readings live in the DOM, so a screen reader gets the Latin
               and its translation without needing the hover state that reveals

@@ -1,0 +1,111 @@
+/* ── Index of / ─────────────────────────────────────────────
+   mod_autoindex, in the site's palette rather than Apache's Times-on-white.
+   The bones are the real thing — icon column, name, last modified, the <hr />
+   rules above and below the rows, the server signature at the bottom — because
+   the joke only works if the structure is honest. */
+
+.idx-wrap {
+  margin-top: 1.5rem;
+  font-family: var(--font-mono);
+}
+
+.idx + .idx {
+  margin-top: 2.75rem;
+}
+
+.idx__heading {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 0.75rem;
+  letter-spacing: 0.02em;
+}
+
+/* The listing scrolls sideways on a narrow screen rather than reflowing. A
+   directory index that wraps its columns stops being a directory index. */
+.idx {
+  overflow-x: auto;
+}
+
+.idx__table {
+  width: 100%;
+  min-width: 34rem;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  line-height: 1.9;
+}
+
+/* Apache drew a rule under the header and above the signature; these are the
+   same two rules, which is why the borders are on the table and not on rows. */
+.idx__table thead th {
+  text-align: left;
+  font-weight: 700;
+  color: var(--accent-primary);
+  border-bottom: 1px solid rgba(var(--text-rgb), 0.18);
+  padding: 0 1.25rem 0.4rem 0;
+  white-space: nowrap;
+}
+
+.idx__table tbody tr:first-child td {
+  padding-top: 0.5rem;
+}
+
+.idx__table td {
+  padding: 0 1.25rem 0 0;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.idx__icon {
+  color: var(--text-faint);
+  width: 1px;
+  padding-right: 0.85rem !important;
+}
+
+.idx__name a {
+  color: var(--accent-primary);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+
+.idx__name a:hover,
+.idx__name a:focus-visible {
+  border-bottom-color: var(--accent-primary);
+}
+
+.idx__date {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The description column is the only one allowed to wrap, and the only one
+   that gives up its width when the table is squeezed. */
+.idx__desc {
+  color: var(--text-faint);
+  white-space: normal;
+  min-width: 12rem;
+}
+
+.idx__sig {
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(var(--text-rgb), 0.18);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-style: italic;
+  color: var(--text-faint);
+}
+
+/* Header labels that exist for screen readers only. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

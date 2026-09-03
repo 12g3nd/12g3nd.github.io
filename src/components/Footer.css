@@ -220,3 +220,63 @@
     text-align: center;
   }
 }
+
+/* ── Centre column of the baseline ──────────────────────────
+   Copyright with the last-updated stamp under it. They share a cell so the
+   three-column grid above keeps working: the copyright is still what sits
+   optically centred, and the stamp hangs off it rather than competing for a
+   column of its own. */
+.footer-centre {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.footer-updated {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(var(--text-rgb), 0.22);
+  text-align: center;
+}
+
+/* The commit hash is for the one visitor in a thousand who wants it. */
+.footer-updated__sha {
+  color: rgba(var(--text-rgb), 0.16);
+}
+
+/* Link to /sitemap. Same weight as the stamp it sits beside — it is a way in,
+   not an invitation. */
+.footer-index {
+  color: rgba(var(--text-rgb), 0.28);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.footer-index:hover,
+.footer-index:focus-visible {
+  color: var(--accent-primary);
+  border-bottom-color: rgba(var(--accent-rgb), 0.5);
+}
+
+/* The same problem index.css documents for the text tiers: cream on navy has
+   roughly four times the luminance delta of ink on parchment, so an alpha that
+   reads as "quiet" on dark reads as "gone" on cream. These three are the
+   faintest things in the footer and the ones that vanish first, so they get the
+   light theme's alphas rather than the dark theme's. The hierarchy is kept —
+   the stamp still sits under the copyright, the hash still sits under the
+   stamp — it is just moved up as a group. */
+.theme-light .footer-updated {
+  color: rgba(var(--text-rgb), 0.55);
+}
+
+.theme-light .footer-updated__sha {
+  color: rgba(var(--text-rgb), 0.42);
+}
+
+.theme-light .footer-index {
+  color: rgba(var(--text-rgb), 0.6);
+}

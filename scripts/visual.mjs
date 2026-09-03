@@ -101,20 +101,29 @@ const FIXED_TIME = new Date('2026-03-15T15:30:00Z');
 // In nav order, then the transmissions, then the 404 page — the same ordering
 // capture-pdf.mjs uses. All five posts are here, not the two that script spot
 // checks, because BlogPost.css is one of the stylesheets being split.
+//
+// Two of the five poems are here rather than all five, because they are the two
+// whose layout can actually break: the ghazal renders on the wide fold-out page
+// and carries the only footnote, and "A Spade of Leaves" is a concrete poem
+// whose silhouette depends on its lines never re-wrapping. The other three are
+// ordinary stacked verse and would only re-photograph .doc-page.
 const ROUTES = [
   { route: '/', name: '01-home' },
   { route: '/projects', name: '02-projects' },
   { route: '/business', name: '03-business' },
   { route: '/poetry', name: '04-poetry' },
-  { route: '/media', name: '05-media' },
-  { route: '/blog', name: '06-blog' },
-  { route: '/blog/whats-a-god-to-a-non-believer', name: '07-post-god' },
-  { route: '/blog/performative', name: '08-post-performative' },
-  { route: '/blog/doesnt-have-to-be-from-anywhere', name: '09-post-anywhere' },
-  { route: '/blog/wanting-things', name: '10-post-wanting' },
-  { route: '/blog/brutalist-y2k', name: '11-post-y2k' },
-  { route: '/guestbook', name: '12-guestbook' },
-  { route: '/this-page-does-not-exist', name: '13-not-found' },
+  { route: '/poetry/a-ghazal-for-gaza', name: '05-poem-ghazal' },
+  { route: '/poetry/a-spade-of-leaves-for-your-tears', name: '06-poem-spade' },
+  { route: '/media', name: '07-media' },
+  { route: '/blog', name: '08-blog' },
+  { route: '/blog/whats-a-god-to-a-non-believer', name: '09-post-god' },
+  { route: '/blog/performative', name: '10-post-performative' },
+  { route: '/blog/doesnt-have-to-be-from-anywhere', name: '11-post-anywhere' },
+  { route: '/blog/wanting-things', name: '12-post-wanting' },
+  { route: '/blog/brutalist-y2k', name: '13-post-y2k' },
+  { route: '/guestbook', name: '14-guestbook' },
+  { route: '/sitemap', name: '15-sitemap' },
+  { route: '/this-page-does-not-exist', name: '16-not-found' },
 ];
 
 // Chosen to straddle the breakpoints the CSS actually declares (480, 600, 768,

@@ -33,11 +33,12 @@ src/
                       same-named folder when one file got too big to search
     home/ projects/ guestbook/ poetry/    one file per part of the page
   content/            transmissions, as .mdx — prose only, no frontmatter
-  data/               posts.ts and routeMeta.ts; each has two consumers
+  data/               posts.ts, poems.ts + poemContent.tsx, routeMeta.ts,
+                      buttons.ts; each has more than one consumer
   hooks/ utils/ types/
-scripts/              vite plugins (feed, letterboxd, prerender) and local
-                      tooling (capture-*, visual.mjs, fetch-fonts.mjs) — see
-                      the header of each
+scripts/              vite plugins (feed, letterboxd, prerender, build-info)
+                      and local tooling (capture-*, make-buttons.mjs,
+                      visual.mjs, fetch-fonts.mjs) — see the header of each
 worker/               Cloudflare Worker: guestbook entries and the visit count
 public/               static assets; og/ cards are generated and committed
 ```
@@ -65,6 +66,16 @@ instead of the homepage's. Change the shape of one and the other must follow.
 the OG cards all read from it. A post that exists as an `.mdx` file but not here
 is invisible to all four.
 
+**`src/data/poems.ts` holds the records; `poemContent.tsx` holds the verse.**
+Same split as `posts.ts` + `content/*.mdx`, and it is not stylistic. `poems.ts`
+is imported directly by `scripts/prerenderPlugin.ts` — which runs inside
+`vite.config`'s module graph — and read as *text* by
+`scripts/capture-og-cards.mjs`. Neither survives a file that pulls in React, so
+the JSX has to live in the other file. Keep every metadata field a plain string
+literal, or the card generator stops seeing it. A poem with a record but no
+verse renders as a blank sheet, which looks deliberate; `missingContent()` in
+`poemContent.tsx` is what catches that.
+
 **Plugin order in `vite.config.ts` is not arbitrary.** MDX must run with
 `enforce: 'pre'` so the JSX it emits reaches `@vitejs/plugin-react`, and
 `prerenderPlugin()` must come last because it rewrites the HTML Vite has already
@@ -87,6 +98,26 @@ or weights the design uses, update the `FACES` list in `scripts/visual.mjs` too
 — that is what the screenshot harness blocks on, and a face missing there is a
 silent race rather than an error.
 
+**The 88x31 buttons in `public/buttons/` are generated and committed.**
+`scripts/make-buttons.mjs` draws them: the badge strip is rendered in headless
+Chromium because 7px type needs a real text renderer, and the site's own button
+is resampled to 1x (what other people hotlink) and 2x. Deliberately not part of
+`npm run build`, like `fetch-fonts.mjs`.
+
+Adding or removing a badge means editing `BADGES` in the script *and*
+`src/data/buttons.ts` — the script draws it, the data file decides whether it
+is shown and where it points. Keep the badge count **even**: the footer renders
+one row with the site's own button spliced into the midpoint, so an odd total
+puts it half a button off centre. Every badge must be true of this site or
+plainly a joke; what must never go in is a counterfeit of somebody else's mark,
+which is a lie about them rather than a joke about yourself.
+
+The button artwork itself is not in the repo — `scripts/fixtures/` is
+gitignored — so `make-buttons.mjs` falls back to the committed
+`srihith@2x.png`, which is a lossless copy of it at the same size. That keeps
+`public/buttons/` reproducible from a clean checkout; the fixture is only
+needed the day the button is redrawn.
+
 **`scripts/letterboxd.cache.json` is committed on purpose.** `letterboxdPlugin`
 fetches the ratings at build time and falls back to this file when the feed is
 unreachable, so a third party being down does not silently empty `/media`. Do
@@ -106,6 +137,14 @@ light mode. Only `--paper-bg`, `--paper-ink`, `--paper-ink-soft` and
 `index.css` currently matches any of those. The remaining raw literals are
 deliberate: they are colours that are meant *not* to follow the theme.
 
+**`src/styles/print.css` is imported last in `main.tsx`, after `App.tsx`.**
+CSS lands in the bundle in module-graph order, so anything imported before App
+is overridden by the page stylesheets App pulls in — and print.css exists to
+override exactly those. Move that import up and the print rules quietly stop
+winning. The poetry collection is the thing it is written for: that page is
+dressed as a document, and `Ctrl+P` on it used to produce the nav, the webring
+and the counter.
+
 **The visit counter only writes from the live site.** `COUNTING_HOSTS` in
 `src/components/VisitorCounter.tsx` gates the POST on hostname, so local
 development reads the number without inflating it. Anything that captures pages
@@ -119,7 +158,7 @@ it, and a mistake there loses real data.
 ## Changing anything visual
 
 The site has no tests. What it has instead is `scripts/visual.mjs`, which
-screenshots all 13 routes in both themes at three widths and diffs the result
+screenshots all 16 routes in both themes at three widths and diffs the result
 against a stored baseline.
 
 ```bash
@@ -133,7 +172,7 @@ Run it against a **built** site, never `npm run dev` — the dev server transfor
 modules on demand and the first loads of a run render differently from the later
 ones. Rebuild before every check, or you are photographing the previous build.
 
-A full run is about three minutes.
+A full run is about four minutes.
 
 Read the header of that file before trusting it. Getting it repeatable took
 pinning the clock, `Math.random`, five storage keys, every CSS animation, the
@@ -171,9 +210,9 @@ before concluding it was invisible.
 
 ## Procedures worth following exactly
 
-Two jobs on this repo have a step that is easy to skip and silent when skipped.
-Both are written up in `.claude/skills/` — Claude Code loads them by name, and
-they are plain Markdown, so read them directly otherwise.
+Some jobs on this repo have a step that is easy to skip and silent when
+skipped. The first two are written up in `.claude/skills/` — Claude Code loads
+them by name, and they are plain Markdown, so read them directly otherwise.
 
 - **`new-transmission`** — a post is an `.mdx` file *plus* a registration in
   `posts.ts` that four separate surfaces read, plus a social card generated
@@ -181,6 +220,13 @@ they are plain Markdown, so read them directly otherwise.
 - **`verify-visual`** — how to prove a change looks identical: the
   baseline-before-you-edit ordering, the rebuild step, and how to work out
   whether a drift can be your change at all.
+
+Adding a poem is the same shape as adding a transmission, and has no skill yet:
+write the record in `src/data/poems.ts` and the verse in `poemContent.tsx`, then
+`node scripts/capture-og-cards.mjs <slug>` and commit the PNG. The route, the
+prerendered HTML, the contents list on the cover and the entry in `/sitemap`
+all follow from the record — but nothing warns you about the missing card,
+because a poem without one silently falls back to the site-wide social card.
 
 ## Style
 

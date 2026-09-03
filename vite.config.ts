@@ -4,6 +4,7 @@ import mdx from '@mdx-js/rollup'
 import feedPlugin from './scripts/feedPlugin'
 import letterboxdPlugin from './scripts/letterboxdPlugin'
 import prerenderPlugin from './scripts/prerenderPlugin'
+import buildInfoPlugin from './scripts/buildInfoPlugin'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -15,6 +16,9 @@ export default defineConfig({
     react({ include: /\.(jsx|js|mdx|md|tsx|ts)$/ }),
     // Emits dist/feed.xml from src/data/posts.ts, and serves it in dev.
     feedPlugin(),
+    // Bakes the last commit's date into `virtual:build-info` for the footer's
+    // "last updated" stamp — a real fact, rather than today's date every day.
+    buildInfoPlugin(),
     // Bakes the Letterboxd ratings into `virtual:letterboxd` at build time —
     // the feed sends no CORS headers, so the browser cannot fetch it itself.
     letterboxdPlugin(),

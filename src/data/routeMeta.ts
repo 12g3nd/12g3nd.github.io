@@ -7,8 +7,9 @@
  *     file per route at build time, so a social scraper that never runs JS sees
  *     the route's own card instead of the homepage's
  *
- * Blog posts aren't listed here — their metadata comes from src/data/posts.ts,
- * which is already the one source for the feed and the archive.
+ * Blog posts and poems aren't listed here — their metadata comes from
+ * src/data/posts.ts and src/data/poems.tsx, which are already the one source
+ * for the feed, the archive and the collection.
  */
 
 /** Origin, no trailing slash. Every canonical/OG URL must be absolute. */
@@ -61,6 +62,12 @@ export const routeMeta = {
     title: 'Guestbook // Srihith Jarabana',
     description:
       "Visitors who've signed Srihith Jarabana's guestbook (drawn signatures and three words each).",
+  },
+  sitemap: {
+    path: '/sitemap',
+    title: 'Index of / // Srihith Jarabana',
+    description:
+      'Every page on this site, listed the way a web server would have told you about it.',
   },
 } as const satisfies Record<string, RouteMeta>;
 

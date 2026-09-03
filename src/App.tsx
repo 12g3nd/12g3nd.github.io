@@ -10,6 +10,7 @@ import Blog from './pages/Blog';
 import Poetry from './pages/Poetry';
 import PoemPage from './pages/PoemPage';
 import Guestbook from './pages/Guestbook';
+import Sitemap from './pages/Sitemap';
 import BlogPostPage from './pages/BlogPostPage';
 import NotFound from './pages/NotFound';
 import Navigation from './components/Navigation';
@@ -33,6 +34,7 @@ function AnimatedRoutes() {
         <Route path="/guestbook" element={<Guestbook />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPostPage />} />
+        <Route path="/sitemap" element={<Sitemap />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </AnimatePresence>
