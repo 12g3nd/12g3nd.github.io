@@ -17,6 +17,7 @@ import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import CrtBurst from './components/CrtBurst';
 import CommandPalette from './components/CommandPalette';
+import ScrollToTop from './components/ScrollToTop';
 import useKonami from './hooks/useKonami';
 
 
@@ -71,6 +72,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       {booting && <BootSequence onDone={finishBoot} />}
       <div className={`container${crt ? ' crt-burst-active' : ''}`}>
         <Navigation />

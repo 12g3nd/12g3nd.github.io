@@ -29,10 +29,7 @@ export default function CommandPalette() {
 
   // Rebuilt every render (12 items — no memo needed) so the theme label always
   // reflects the live theme, however it was last flipped.
-  const goto = (path: string) => () => {
-    navigate(path);
-    window.scrollTo(0, 0);
-  };
+  const goto = (path: string) => () => navigate(path);
   const theme = getTheme();
   const items: Item[] = [
     { id: 'home', label: 'Home', hint: 'route', keywords: '~ index start', run: goto('/') },

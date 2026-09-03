@@ -85,7 +85,7 @@ export default function PostLayout({ slug, date, children }: PostLayoutProps) {
             <ul>
               {others.map((p) => (
                 <li key={p.slug}>
-                  <Link to={`/blog/${p.slug}`} onClick={() => window.scrollTo(0, 0)}>
+                  <Link to={`/blog/${p.slug}`}>
                     <span className="post-other-date">{p.date}</span>
                     <span className="post-other-title">{p.title}</span>
                   </Link>

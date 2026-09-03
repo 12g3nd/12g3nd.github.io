@@ -177,7 +177,6 @@ export default function useTerminal() {
 
     if (cmd in ROUTES) {
       navigate(ROUTES[cmd]);
-      window.scrollTo(0, 0);
       closeCommandMode();
       return;
     }
@@ -314,7 +313,6 @@ export default function useTerminal() {
         return;
       case '404':
         navigate('/404');
-        window.scrollTo(0, 0);
         closeCommandMode();
         return;
       default:
