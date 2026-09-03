@@ -118,17 +118,6 @@ export default function Home() {
     []
   );
 
-  // Hidden résumé chip: unlocks once a visitor pokes past the email reveal
-  // (here) or runs `resume` in the terminal (sets the same flag).
-  const [resumeUnlocked, setResumeUnlocked] = useState(
-    () => typeof localStorage !== 'undefined' && localStorage.getItem('sjsys_resume_unlocked') === '1'
-  );
-  const emailPokes = useRef(0);
-  const unlockResume = () => {
-    localStorage.setItem('sjsys_resume_unlocked', '1');
-    setResumeUnlocked(true);
-  };
-
   // Guestbook preview — 3 most-recent approved entries. useGuestbook caches in
   // module memory, so the full /guestbook page reuses this fetch (no second hit).
   // `error` is read here for the same reason /guestbook reads it: without it an
@@ -377,14 +366,6 @@ export default function Home() {
           <a
             href="mailto:srihith.jarabana@mail.utoronto.ca"
             className="email-box"
-            onClick={(e) => {
-              // Keep poking and the hidden résumé chip unlocks (3rd poke).
-              emailPokes.current += 1;
-              if (emailPokes.current >= 3 && !resumeUnlocked) {
-                e.preventDefault();
-                unlockResume();
-              }
-            }}
           >
             <span className="email-text">srihith.jarabana@mail.utoronto.ca</span>
           </a>
@@ -398,23 +379,7 @@ export default function Home() {
             <span className="email-text">[ CLICK TO REVEAL ]</span>
           </button>
         )}
-        {resumeUnlocked && (
-          <a
-            href="/resume.pdf"
-            download="Srihith-Jarabana-Resume.pdf"
-            className="resume-chip"
-          >
-            [ DOWNLOAD RÉSUMÉ ↓ ]
-          </a>
-        )}
         <div className="social-links" style={{ justifyContent: 'center' }}>
-          {/* The résumé has a proper home on /business (sheet 04), but a visitor
-              who lands here and scrolls to CONNECT shouldn't have to guess that.
-              The poke-unlocked chip below is still the easter egg; this is the
-              plain door beside it. */}
-          <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="social-pill">
-            [RÉSUMÉ ↗]
-          </a>
           <a href="https://www.linkedin.com/in/srihithjarabana/" target="_blank" rel="noopener noreferrer" className="social-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
             <img src="/smlogos/LinkedIn.webp" alt="LinkedIn" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />
             [LINKEDIN ↗]

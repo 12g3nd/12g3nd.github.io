@@ -186,33 +186,6 @@
   }
 }
 
-/* Hidden résumé chip — appears once unlocked (email poke / terminal `resume`). */
-
-.resume-chip {
-  align-self: center;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--bg-base);
-  background-color: var(--accent-warm);
-  border: 1px solid var(--accent-warm);
-  padding: 0.6rem 1.25rem;
-  transition: all 0.15s ease;
-  animation: chip-in 0.4s ease-out;
-}
-
-.resume-chip:hover {
-  background-color: transparent;
-  color: var(--accent-warm);
-}
-
-@keyframes chip-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: none; }
-}
-
 .detail-col p {
   font-family: var(--font-mono);
   font-size: 12px;
