@@ -28,3 +28,33 @@
   color: var(--text-faint);
   white-space: nowrap;
 }
+
+/* The commentary hint.
+   `--director` is the best content on the page and it used to live behind an
+   unlabelled button, which meant almost nobody found it. Naming the flag costs
+   nothing — the note itself is still the reveal — and the bar has the room
+   because `justify-content: space-between` was already spreading two children
+   across it. First to go when the bar gets tight. */
+
+.poetry-bar__hint {
+  color: var(--text-faint);
+  font-style: italic;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 720px) {
+  .poetry-bar__hint {
+    display: none;
+  }
+}
+
+/* Wrapper around the bar + viewer + poem nav. Was an inline style on the
+   viewer's container; it moved here when the single-poem page started needing
+   the same block. */
+
+.poetry-shell {
+  margin-top: 1.5rem;
+  max-width: 100%;
+}

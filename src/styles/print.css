@@ -1,0 +1,202 @@
+/* What this site looks like on paper.
+ *
+ * The poetry page is dressed as a PDF viewer, and until this existed pressing
+ * Ctrl+P on it produced the nav, the webring, the visit counter and a cream
+ * page rendered as a grey box — the one page on the site whose whole fiction
+ * is "this is a document" was the one that printed worst. The collection is
+ * also the only thing here anybody would plausibly want on paper, so the rules
+ * are written for it first and kept sane for everything else.
+ *
+ * Screen styling is untouched: every rule lives inside @media print.
+ */
+
+@media print {
+  /* ── Ink ──────────────────────────────────────────────────
+     Printers do not reproduce a navy background, and a reader who prints does
+     not want them to. Everything falls back to black on white regardless of
+     which theme was on screen — including the light theme, which would
+     otherwise carry parchment through onto real paper. */
+  :root,
+  :root.theme-light {
+    --bg-base: #fff;
+    --bg-surface: #fff;
+    --bg-raised: #fff;
+    --paper-bg: #fff;
+    --text-rgb: 0, 0, 0;
+    --accent-primary: #000;
+    --accent-rgb: 0, 0, 0;
+  }
+
+  html,
+  body,
+  .container {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  /* ── Chrome that has no meaning on paper ──────────────────
+     Navigation, the terminal, the palette, the footer's webring and counter,
+     and every decorative overlay. The boot sequence is listed because a print
+     fired during the first session would otherwise paper over the page. */
+  .brutalist-nav,
+  /* A sibling of <nav>, not a child of it — hiding .brutalist-nav alone left
+     the terminal strip printed across the top of every sheet. */
+  .terminal-mobile-row,
+  .brutalist-footer,
+  .cmdk,
+  .boot,
+  .crt-burst,
+  .matrix-rain,
+  .party-overlay,
+  .whimsy-overlay,
+  .ascii-ripple,
+  .poetry-bar,
+  .poetry-compact-toggle,
+  .doc-viewer__chrome,
+  .poem-nav,
+  .spotify-embed,
+  /* The SJ.SYS heading over the collection. On screen it frames the document;
+     on paper it IS the first page, and a printed book of poems does not open
+     with a terminal wordmark. Scoped to poetry so a transmission keeps its
+     TRANSMISSION_NN header, which is that page's actual title. */
+  .section--poetry > .section-header {
+    display: none !important;
+  }
+
+  /* ── The document itself ──────────────────────────────────
+     The viewer's dark mount and its inset shadow exist to make the paper look
+     like paper on a screen. On paper they are just toner. */
+  .doc-viewer,
+  .doc-viewer__pages,
+  .poetry-shell {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .doc-page {
+    max-width: none !important;
+    width: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #fff !important;
+    color: #000 !important;
+    box-shadow: none !important;
+    /* One poem per sheet. `avoid` inside the page keeps a couplet from being
+       split across the fold when the poem itself is short enough not to need
+       it. */
+    break-after: page;
+    break-inside: avoid;
+  }
+
+  .doc-page:last-child {
+    break-after: auto;
+  }
+
+  /* The fold-out stamp and its centre crease describe a screen layout that
+     does not survive the trip to paper — a printed page has a real fold. */
+  .doc-page__foldout,
+  .doc-page--wide::after,
+  .doc-page::before {
+    display: none !important;
+  }
+
+  /* The shape poem must not be scrolled on paper — it has to be *there*.
+     Nothing else on the site relies on horizontal overflow when printed. */
+  .doc-page__body--shape {
+    overflow: visible !important;
+  }
+
+  .doc-page__shape {
+    width: auto !important;
+    min-width: 0 !important;
+  }
+
+  /* Compact mode is a fix for narrow viewports. A sheet of A4 is not one, and
+     8.5pt verse is unreadable in ink. */
+  .doc-page__body--compact {
+    font-size: 11pt !important;
+    line-height: 1.6 !important;
+  }
+
+  .doc-page__body {
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #000;
+  }
+
+  .doc-page__title {
+    font-size: 18pt;
+    color: #000;
+  }
+
+  .doc-page__date,
+  .doc-page__footer,
+  .doc-toc__page {
+    color: #444 !important;
+  }
+
+  /* Awards and footnotes keep their hierarchy without keeping their hue. */
+  .doc-page__award,
+  .doc-fn__num,
+  .doc-fn-ref a,
+  .doc-toc__medal {
+    color: #000 !important;
+  }
+
+  .doc-page__note {
+    background: none !important;
+    border-left: 2px solid #999 !important;
+    color: #333 !important;
+    break-inside: avoid;
+  }
+
+  /* Links are dead on paper, so they should stop looking clickable. The
+     collection's own internal links are not worth printing a URL for — the
+     contents list already carries page numbers, which is the paper equivalent. */
+  .doc-page__title-link,
+  .doc-toc__link,
+  .doc-fn__back {
+    color: #000 !important;
+    text-decoration: none !important;
+  }
+
+  .doc-fn__back {
+    display: none !important;
+  }
+
+  .doc-toc {
+    break-inside: avoid;
+  }
+
+  /* ── Everything else ──────────────────────────────────────
+     Not just poetry: a transmission should print cleanly too. */
+  .section {
+    padding: 0 !important;
+  }
+
+  .post-prose a::after {
+    /* A printed essay loses its links entirely unless the URL comes with it. */
+    content: ' (' attr(href) ')';
+    font-size: 9pt;
+    word-break: break-all;
+  }
+
+  .post-prose img {
+    max-width: 100% !important;
+    break-inside: avoid;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    break-after: avoid;
+  }
+
+  @page {
+    margin: 18mm 16mm;
+  }
+}

@@ -8,10 +8,17 @@
  * specificity and the compact override wins on source order alone. Move
  * compact above page and compact mode stops applying, silently — nothing
  * errors, the text just stops shrinking.
+ *
+ * toc / footnotes / nav are additive — they style their own elements and
+ * nothing else declares those classes — so their position is free. They sit
+ * after the pair that isn't.
  */
 
 @import './bar.css';
 @import './viewer.css';
 @import './page.css';
 @import './compact.css';
+@import './toc.css';
+@import './footnotes.css';
+@import './nav.css';
 @import './ack.css';

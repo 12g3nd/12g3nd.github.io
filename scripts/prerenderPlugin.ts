@@ -18,12 +18,17 @@
 // GitHub Pages serves dist/blog/<slug>/index.html for /blog/<slug>, so these
 // files are hit directly and public/404.html's SPA redirect stops being
 // involved for any route prerendered here.
+//
+// Poems get the same treatment as transmissions. Until they had their own
+// routes the whole collection was a single URL, so the one piece here that has
+// actually won something could not be linked, shared or scraped on its own.
 
 import type { Plugin } from 'vite';
 import { readFile, writeFile, mkdir, access } from 'node:fs/promises';
 import path from 'node:path';
 import { SITE, staticRoutes } from '../src/data/routeMeta';
 import { posts, transmissionOf } from '../src/data/posts';
+import { pageOf, poems } from '../src/data/poems';
 
 type Route = {
   /** Route path, no trailing slash except the root. */
@@ -206,6 +211,44 @@ export default function prerenderPlugin(): Plugin {
         ogType: 'website',
       }));
 
+      // Poems. `CreativeWork` rather than `BlogPosting`: this is a poem in a
+      // collection, and `isPartOf` is what says which collection.
+      for (const poem of poems) {
+        const url = `${SITE}/poetry/${poem.slug}/`;
+        const image = await cardFor(poem.slug);
+        routes.push({
+          path: `/poetry/${poem.slug}`,
+          title: `${poem.title} // Srihith Jarabana`,
+          description: poem.blurb,
+          image,
+          imageAlt: `${poem.title} — a poem by Srihith Jarabana`,
+          ogType: 'article',
+          jsonLd: {
+            '@context': 'https://schema.org',
+            '@type': 'CreativeWork',
+            '@id': url,
+            name: poem.title,
+            headline: poem.title,
+            description: poem.blurb,
+            genre: 'Poetry',
+            datePublished: poem.date,
+            url,
+            mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+            image: SITE + image,
+            author: { '@type': 'Person', name: 'Srihith Jarabana', url: SITE },
+            position: pageOf(poem.slug),
+            isPartOf: {
+              '@type': 'Collection',
+              name: 'Selected Poems',
+              url: `${SITE}/poetry`,
+            },
+            // Only present where there is one — an empty award key would claim
+            // a distinction the poem does not hold.
+            ...(poem.award ? { award: poem.award } : {}),
+          },
+        });
+      }
+
       for (const post of posts) {
         const url = `${SITE}/blog/${post.slug}/`;
         const image = await cardFor(post.slug);
@@ -248,7 +291,10 @@ export default function prerenderPlugin(): Plugin {
         await writeFile(path.join(dir, 'index.html'), html, 'utf8');
       }
 
-      console.log(`[prerender] ${routes.length} routes (${posts.length} transmissions)`);
+      console.log(
+        `[prerender] ${routes.length} routes ` +
+          `(${posts.length} transmissions, ${poems.length} poems)`
+      );
     },
   };
 }

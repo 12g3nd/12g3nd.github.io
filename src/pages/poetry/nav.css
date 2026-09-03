@@ -1,0 +1,84 @@
+/* ── Prev / next, on a single poem's page ───────────────────
+   Outside the paper, in the SJ.SYS voice: this is the reader moving through
+   the document, not part of the document. */
+
+.poem-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.poem-nav__link {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.9rem 1.1rem;
+  border: 1px solid rgba(var(--accent-rgb), 0.2);
+  background: var(--bg-surface);
+  text-decoration: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.poem-nav__link:hover,
+.poem-nav__link:focus-visible {
+  border-color: rgba(var(--accent-rgb), 0.55);
+  background: rgba(var(--accent-rgb), 0.05);
+}
+
+/* The "next" card is right-aligned so the pair reads outward from the centre,
+   the way the arrows point. */
+.poem-nav__link--next {
+  text-align: right;
+}
+
+.poem-nav__dir {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+}
+
+.poem-nav__title {
+  font-family: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+  font-size: 15px;
+  line-height: 1.35;
+  color: var(--text-dim);
+}
+
+/* The ends of the collection hold their slot rather than collapsing, so the
+   surviving link stays on its own side instead of sliding to the middle. */
+.poem-nav__end {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 1.1rem;
+  border: 1px dashed rgba(var(--text-rgb), 0.12);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: rgba(var(--text-rgb), 0.28);
+  text-align: center;
+}
+
+.poem-nav__all {
+  color: var(--accent-primary);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(var(--accent-rgb), 0.35);
+}
+
+.poem-nav__all:hover,
+.poem-nav__all:focus-visible {
+  border-bottom-color: var(--accent-primary);
+}
+
+@media (max-width: 600px) {
+  .poem-nav {
+    grid-template-columns: 1fr;
+  }
+
+  .poem-nav__link--next {
+    text-align: left;
+  }
+}

@@ -8,6 +8,7 @@ import Business from './pages/Business';
 import Media from './pages/Media';
 import Blog from './pages/Blog';
 import Poetry from './pages/Poetry';
+import PoemPage from './pages/PoemPage';
 import Guestbook from './pages/Guestbook';
 import BlogPostPage from './pages/BlogPostPage';
 import NotFound from './pages/NotFound';
@@ -28,6 +29,7 @@ function AnimatedRoutes() {
         <Route path="/business" element={<Business />} />
         <Route path="/media" element={<Media />} />
         <Route path="/poetry" element={<Poetry />} />
+        <Route path="/poetry/:slug" element={<PoemPage />} />
         <Route path="/guestbook" element={<Guestbook />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/blog/:slug" element={<BlogPostPage />} />
