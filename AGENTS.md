@@ -145,6 +145,21 @@ winning. The poetry collection is the thing it is written for: that page is
 dressed as a document, and `Ctrl+P` on it used to produce the nav, the webring
 and the counter.
 
+**`ScrollRestoration` waits for the incoming page before it restores.**
+`src/components/ScrollRestoration.tsx` puts a new navigation at the top and a
+back or forward one at the offset it recorded for that history entry. Two parts
+are load-bearing and both fail quietly. It scrolls with `behavior: 'instant'`
+because `html` sets `scroll-behavior: smooth` for in-page jumps and a bare
+`scrollTo` inherits it — the page animates its way up while `PageTransition`
+cross-fades, and the incoming page can mount mid-flight and be seen scrolling
+itself. And a restore polls on rAF until the document is tall enough to reach
+the target rather than scrolling straight away, because `AnimatePresence
+mode="wait"` holds the outgoing page for its 300ms exit: applied on the location
+change, an offset is measured against the *old* page's height and clamps to it.
+Leaving any of this to the browser does not work — it restores at popstate,
+before React has rendered the route, which is what the ad-hoc `window.scrollTo`
+calls in the terminal, the palette and `PostLayout` used to work around.
+
 **The visit counter only writes from the live site.** `COUNTING_HOSTS` in
 `src/components/VisitorCounter.tsx` gates the POST on hostname, so local
 development reads the number without inflating it. Anything that captures pages
