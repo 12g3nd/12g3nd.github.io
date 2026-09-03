@@ -80,12 +80,12 @@ const experience: Org[] = [
 
 const trackRecord = [
   { year: '2026', item: 'STEMINATE Hacks — 2nd of 52 teams', tag: 'HACKATHON' },
-  { year: '2025', item: 'Bloomberg Market Concepts', tag: 'CERT' },
+  { year: '2026', item: 'Bloomberg Market Concepts', tag: 'CERT' },
   { year: '2025', item: 'DECA — Provincial Champion', tag: 'CASE COMP' },
+  { year: '2025', item: 'Python & Django Full Stack Web Developer Bootcamp', tag: 'CERT' },
   { year: '2024', item: 'DECA — Provincial Champion', tag: 'CASE COMP' },
   { year: '2024', item: 'DECA ICDC — Silver Seal', tag: 'INTERNATIONAL' },
   { year: '2024', item: 'BASEF — Inspiration Award + Silver Merit', tag: 'RESEARCH' },
-  { year: '—', item: 'Python & Django Full Stack Web Developer Bootcamp', tag: 'CERT' },
 ];
 
 /* Neither a job nor an award, so neither of the sheets above will hold them:
