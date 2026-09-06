@@ -60,7 +60,7 @@ const experience: Org[] = [
       {
         role: 'Co-founder & Director',
         period: 'Jul 2026 — Present',
-        note: 'Co-founded an incorporated experimental studio with Omar Badawy and Lars Fransen-Molino. Built fi99.ca end-to-end and shipped studio and client projects including Krine, PlotON, Fallow, and WR!TE.',
+        note: 'Co-founded an incorporated experimental studio with Omar Badawy and Lars Fransen-Molino. Built fi99.ca end-to-end and shipped studio and client projects including PlotON, Fallow, and WR!TE.',
       },
     ],
   },

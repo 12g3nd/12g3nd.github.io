@@ -40,7 +40,7 @@ type Child = {
 /* The page reads as four shelves rather than one undifferentiated grid. A
    visitor who only looks at the first shelf should still have seen the work
    worth judging me on; a visitor who reaches the last one should know they are
-   looking at teenage juvenilia on purpose. */
+   looking at retired work on purpose. */
 const SECTIONS = [
   {
     key: 'selected',
@@ -60,7 +60,7 @@ const SECTIONS = [
   {
     key: 'archive',
     label: 'ARCHIVE',
-    blurb: 'older work, left standing exactly as it was',
+    blurb: 'finished work, left standing exactly as it was',
   },
 ] as const;
 
@@ -84,7 +84,8 @@ type Project = {
   statusLabel?: string;
   /* headline number, pulled out big so the work reads at a glance */
   metric?: Metric;
-  /* Byline for work that isn't solely mine, or that ships under the studio. */
+  /* Byline for work that isn't solely mine, ships under the studio, or needs
+     its provenance stated. */
   credit?: string;
   /* featured projects render full-width at the top of the grid */
   featured?: boolean;
@@ -101,7 +102,7 @@ const projects: Project[] = [
     section: 'studio',
     name: 'FI99 Inc.',
     description:
-      "Co-founded an incorporated studio with Omar Badawy and Lars Fransen-Molino, and built fi99.ca end-to-end: a real-time Three.js/WebGL rocket centrepiece converted from a raw OBJ into an optimised wireframe GLB, with cursor-tracking, scroll-driven motion, and particle systems. Five projects ship under the studio: PlotON and VERDANT lead this page above, and the rest are listed below. Omar and Lars ship their own work there too — Watt's Left and the Junior Mining Analyst Workbench are theirs, not mine.",
+      "Co-founded an incorporated studio with Omar Badawy and Lars Fransen-Molino, and built fi99.ca end-to-end: a real-time Three.js/WebGL rocket centrepiece converted from a raw OBJ into an optimised wireframe GLB, with cursor-tracking, scroll-driven motion, and particle systems. Four projects ship under the studio: PlotON and VERDANT lead this page above, and the rest are listed below. Omar and Lars ship their own work there too — Watt's Left and the Junior Mining Analyst Workbench are theirs, not mine.",
     stack: ['Astro', 'TypeScript', 'Three.js (WebGL)', 'Tailwind CSS', 'GSAP', 'Lenis'],
     links: [
       { href: 'https://fi99.ca', text: '[VISIT LIVE ↗]' },
@@ -111,22 +112,9 @@ const projects: Project[] = [
     logo: '/projects/fi99.jpg',
     status: 'STUDIO',
     statusLabel: '◆ STUDIO',
-    metric: { value: '5', label: 'projects shipped under it', note: 'incorporated Jul 2026' },
+    metric: { value: '4', label: 'projects shipped under it', note: 'incorporated Jul 2026' },
     featured: true,
     children: [
-      {
-        name: 'Krine',
-        description:
-          'Founded and solely developed a digital platform for anonymous messages — end-to-end technical stack and community guidelines. Built for open, high-fidelity conversation inside a moderated environment: a safe place to talk without the risk of losing anonymity.',
-        stack: ['Python', 'Django', 'PostgreSQL', 'Redis', 'Hugging Face', 'Docker', 'AWS S3'],
-        status: 'SHIPPED',
-        links: [
-          { href: 'https://krine.ca/', text: '[LIVE ↗]' },
-          { href: 'https://github.com/FI99-Inc/Krine', text: '[REPO ↗]' },
-        ],
-        logo: '/KrineLogo.jfif',
-        metric: { value: '~1.4K', label: 'visitors / month', note: 'as of 6.2.26' },
-      },
       {
         name: 'Fallow',
         description:
@@ -293,6 +281,23 @@ const projects: Project[] = [
     status: 'VIRAL',
     metric: { value: '198K', label: 'lens plays' },
     wide: true,
+  },
+  {
+    key: 'krine',
+    section: 'archive',
+    name: 'Krine',
+    description:
+      'Founded and solely developed a digital platform for anonymous messages — end-to-end technical stack and community guidelines. Krine is now permanently retired as Krine / Closed Network; krine.ca remains online as a read-only static archive with no accounts, posting, likes, reports, or new comments.',
+    stack: ['Python', 'Django', 'PostgreSQL', 'Redis', 'Hugging Face', 'Docker', 'AWS S3'],
+    links: [
+      { href: 'https://krine.ca/', text: '[READ-ONLY SITE ↗]' },
+      { href: 'https://github.com/12g3nd/Krine', text: '[REPO ↗]' },
+    ],
+    logo: '/KrineLogo.jfif',
+    status: 'ARCHIVE',
+    statusLabel: '● ARCHIVED',
+    credit: 'personal project · independently developed',
+    metric: { value: '83', label: 'public entries preserved', note: 'final archive · 9.5.26' },
   },
   {
     key: 'spring-break',

@@ -33,7 +33,7 @@ export const routeMeta = {
     path: '/projects',
     title: 'Projects // Srihith Jarabana',
     description:
-      'Things Srihith Jarabana has built — the FI99 studio, KRINE, and a viral Snapchat lens.',
+      'Things Srihith Jarabana has built — personal projects, the FI99 studio, and a viral Snapchat lens.',
   },
   business: {
     path: '/business',

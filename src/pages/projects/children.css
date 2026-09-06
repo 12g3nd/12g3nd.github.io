@@ -1,9 +1,9 @@
 /* ── Studio tier (FI99 children) ────────────────────────────
    Projects shipped under FI99 sit inside the FI99 card rather than as siblings
-   in the main grid. They keep screenshots and metrics — a compact text row
-   could not carry Krine's traffic number or VERDANT's screen count — but at a
-   smaller size, so the studio's work reads as belonging to the card above it
-   rather than competing with the top-level projects for the same weight. */
+   in the main grid. They keep their screenshots and metrics because a compact
+   text row could not carry them — but at a smaller size, so the studio's work
+   reads as belonging to the card above it rather than competing with the
+   top-level projects for the same weight. */
 
 .project-children {
   position: relative;
@@ -124,7 +124,7 @@
 }
 
 /* `contain`, matching the parent cards: this tier mixes wide site captures with
-   square-ish logos (Krine), and `cover` crops a logo to an unreadable slice. */
+   square-ish logos, and `cover` crops a logo to an unreadable slice. */
 
 .project-child__preview img {
   width: 100%;
@@ -202,7 +202,7 @@
   color: rgba(var(--text-rgb), 0.65);
 }
 
-/* Bare links, not the parent's boxed buttons: five child cards' worth of
+/* Bare links, not the parent's boxed buttons: several child cards' worth of
    bordered CTAs inside one card would read as a toolbar. */
 
 .project-child__links {
