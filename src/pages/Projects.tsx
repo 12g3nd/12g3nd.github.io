@@ -270,19 +270,6 @@ const projects: Project[] = [
     status: 'REPO',
   },
   {
-    key: 'snapchat-filter',
-    section: 'archive',
-    name: 'VOTE SRIHITH SNAPCHAT FILTER',
-    description:
-      "Something I did a few years ago for whenever I ran for a position and wanted an easy way for people to share my campaign on social media. Went viral somewhere else in the world and it has 198k lens plays (accurate as of 4.6.26). Thought it was funny and creative.\n\n(Note: The person in the image is not me.)",
-    stack: ['Snapchat Lens Studio', 'AR', 'Social Media'],
-    links: [{ href: 'https://www.snapchat.com/lens/5f0f516178844f8a8980e5abb0d93ad0', text: '[VIEW LENS ↗]' }],
-    logo: '/filter.png',
-    status: 'VIRAL',
-    metric: { value: '198K', label: 'lens plays' },
-    wide: true,
-  },
-  {
     key: 'krine',
     section: 'archive',
     name: 'Krine',
@@ -298,6 +285,19 @@ const projects: Project[] = [
     statusLabel: '● ARCHIVED',
     credit: 'personal project · independently developed',
     metric: { value: '83', label: 'public entries preserved', note: 'final archive · 9.5.26' },
+  },
+  {
+    key: 'snapchat-filter',
+    section: 'archive',
+    name: 'VOTE SRIHITH SNAPCHAT FILTER',
+    description:
+      "Something I did a few years ago for whenever I ran for a position and wanted an easy way for people to share my campaign on social media. Went viral somewhere else in the world and it has 198k lens plays (accurate as of 4.6.26). Thought it was funny and creative.\n\n(Note: The person in the image is not me.)",
+    stack: ['Snapchat Lens Studio', 'AR', 'Social Media'],
+    links: [{ href: 'https://www.snapchat.com/lens/5f0f516178844f8a8980e5abb0d93ad0', text: '[VIEW LENS ↗]' }],
+    logo: '/filter.png',
+    status: 'VIRAL',
+    metric: { value: '198K', label: 'lens plays' },
+    wide: true,
   },
   {
     key: 'spring-break',
