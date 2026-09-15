@@ -66,7 +66,8 @@
 /* Faint draftsman's column lines between cells — blueprint texture. */
 .xls-row--exp { grid-template-columns: 2.5rem minmax(0, 2.2fr) minmax(0, 1.4fr) minmax(0, 1.2fr); }
 .xls-row--rec { grid-template-columns: 2.5rem 4rem minmax(0, 1fr) 8rem; }
-.xls-row--cov { grid-template-columns: 2.5rem 5rem minmax(0, 1fr) 7rem; }
+/* COVERAGE ends in a link column, sized to its [REPORT ↗] [REPO ↗] pair like the RESUME sheet's. */
+.xls-row--cov { grid-template-columns: 2.5rem 5rem minmax(0, 1fr) auto; }
 .xls-row--file { grid-template-columns: 2.5rem minmax(0, 1fr) minmax(0, 1.6fr) auto; }
 .xls-row--svc { grid-template-columns: 2.5rem minmax(0, 1.6fr) minmax(0, 2fr) minmax(0, 1fr); }
 

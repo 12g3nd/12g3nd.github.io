@@ -78,6 +78,22 @@ const experience: Org[] = [
   },
 ];
 
+/* COVERAGE is the sell-side word for the names an analyst writes on. A row lands
+   here only once its write-up is public and linkable: the placeholder rows this
+   sheet used to carry advertised work that did not exist yet. */
+const coverage = [
+  {
+    ref: 'EQ-001',
+    title: 'DEERE // CYCLEBOOK',
+    ticker: 'NYSE: DE',
+    note: 'An equity research report on Deere & Company, built in Power BI. Seven cards run from the latest quarter through the farm cycle to a scenario model and what the share price assumes, and every figure is tagged as reported, guided or assumed.',
+    links: [
+      { label: '[REPORT ↗]', href: 'https://johndeere.jarabana.com' },
+      { label: '[REPO ↗]', href: 'https://github.com/12g3nd/deere-cyclebook' },
+    ],
+  },
+];
+
 const trackRecord = [
   { year: '2026', item: 'STEMINATE Hacks — 2nd of 52 teams', tag: 'HACKATHON' },
   { year: '2026', item: 'Bloomberg Market Concepts', tag: 'CERT' },
@@ -130,7 +146,7 @@ const toolbar = [
 
 /* One source for the tab labels and the workbook's sheet count, so adding a
    sheet can't leave the chrome claiming a number that stopped being true. */
-const SHEET_TABS = ['EXPERIENCE', 'TRACK_RECORD', 'SERVICE & EDUCATION', 'RESUME.PDF'] as const;
+const SHEET_TABS = ['EXPERIENCE', 'COVERAGE', 'TRACK_RECORD', 'SERVICE & EDUCATION', 'RESUME.PDF'] as const;
 
 export default function Business() {
   useDocumentMeta(routeMeta.business.title, routeMeta.business.description);
@@ -194,9 +210,41 @@ export default function Business() {
             </div>
           </section>
 
-          {/* ── Sheet 02: TRACK_RECORD ─────────────────────────── */}
+          {/* ── Sheet 02: COVERAGE ─────────────────────────────
+              Published write-ups, one row per name, each linked to the work itself. */}
           <section className="xls-sheet">
             <div className="xls-sheet__tab">{SHEET_TABS[1]}</div>
+            <div className="xls-table">
+              <div className="xls-row xls-row--head xls-row--cov">
+                <span className="xls-gut">#</span>
+                <span>REF</span>
+                <span>WRITE-UP</span>
+                <span>LINK</span>
+              </div>
+              {coverage.map((r, i) => (
+                <Reveal key={r.ref} delay={i * 0.06}>
+                  <div className="xls-row xls-row--cov">
+                    <span className="xls-gut">{i + 1}</span>
+                    <span className="xls-cell xls-cell--dim">{r.ref}</span>
+                    <span className="xls-cell xls-cell--key">
+                      {r.title}
+                      <span className="xls-chip">{r.ticker}</span>
+                    </span>
+                    <span className="xls-cell xls-cell--links">
+                      {r.links.map((l) => (
+                        <a key={l.href} href={l.href} target="_blank" rel="noreferrer">{l.label}</a>
+                      ))}
+                    </span>
+                  </div>
+                  <p className="xls-note">{r.note}</p>
+                </Reveal>
+              ))}
+            </div>
+          </section>
+
+          {/* ── Sheet 03: TRACK_RECORD ─────────────────────────── */}
+          <section className="xls-sheet">
+            <div className="xls-sheet__tab">{SHEET_TABS[2]}</div>
             <div className="xls-table">
               <div className="xls-row xls-row--head xls-row--rec">
                 <span className="xls-gut">#</span>
@@ -217,9 +265,9 @@ export default function Business() {
             </div>
           </section>
 
-          {/* ── Sheet 03: SERVICE & EDUCATION ──────────────────── */}
+          {/* ── Sheet 04: SERVICE & EDUCATION ──────────────────── */}
           <section className="xls-sheet">
-            <div className="xls-sheet__tab">{SHEET_TABS[2]}</div>
+            <div className="xls-sheet__tab">{SHEET_TABS[3]}</div>
             <div className="xls-table">
               <div className="xls-row xls-row--head xls-row--svc">
                 <span className="xls-gut">#</span>
@@ -241,10 +289,10 @@ export default function Business() {
             </div>
           </section>
 
-          {/* ── Sheet 04: RESUME.PDF ───────────────────────────
+          {/* ── Sheet 05: RESUME.PDF ───────────────────────────
               The raw file, attached to the workbook like any other sheet. */}
           <section className="xls-sheet">
-            <div className="xls-sheet__tab">{SHEET_TABS[3]}</div>
+            <div className="xls-sheet__tab">{SHEET_TABS[4]}</div>
             <div className="xls-table">
               <div className="xls-row xls-row--head xls-row--file">
                 <span className="xls-gut">#</span>
