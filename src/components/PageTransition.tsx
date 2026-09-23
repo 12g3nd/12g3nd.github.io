@@ -1,4 +1,4 @@
-import { motion, useReducedMotion } from 'framer-motion';
+import { m, useReducedMotion } from 'framer-motion';
 import React from 'react';
 
 const variants = {
@@ -32,7 +32,7 @@ export default function PageTransition({ children }: { children: React.ReactNode
   }
 
   return (
-    <motion.div
+    <m.div
       initial="initial"
       animate="animate"
       exit="exit"
@@ -40,6 +40,6 @@ export default function PageTransition({ children }: { children: React.ReactNode
       transition={{ duration: 0.3, ease: 'easeOut' }}
     >
       {children}
-    </motion.div>
+    </m.div>
   );
 }
