@@ -23,7 +23,7 @@
 // routes the whole collection was a single URL, so the one piece here that has
 // actually won something could not be linked, shared or scraped on its own.
 
-import type { Plugin } from 'vite';
+import type { Plugin, Rollup } from 'vite';
 import { readFile, writeFile, mkdir, access } from 'node:fs/promises';
 import path from 'node:path';
 import { SITE, staticRoutes } from '../src/data/routeMeta';
@@ -42,6 +42,8 @@ type Route = {
   ogType: 'website' | 'article';
   /** Emitted as a <script type="application/ld+json"> block when present. */
   jsonLd?: Record<string, unknown>;
+  /** Built JS files this route needs beyond the app entry, as `/assets/...` URLs. */
+  preload?: string[];
 };
 
 const DEFAULT_CARD = '/og-card.png';
@@ -161,6 +163,20 @@ function renderHead(html: string, route: Route): string {
     'link rel=canonical'
   );
 
+  if (route.preload?.length) {
+    // Next to the entry script, so the browser requests the post body alongside
+    // the app instead of after the app has run and asked for it.
+    const links = route.preload
+      .map((href) => `<link rel="modulepreload" crossorigin href="${attr(href)}">`)
+      .join('\n    ');
+    out = sub(
+      out,
+      /(<script type="module"[^>]*><\/script>)/,
+      `$1\n    ${links}`,
+      'script type=module'
+    );
+  }
+
   if (route.jsonLd) {
     // `</script>` inside JSON would close this block early; nothing in a post
     // abstract should contain it, but escaping costs one replace.
@@ -185,8 +201,32 @@ export default function prerenderPlugin(): Plugin {
       outDir = config.build.outDir;
     },
 
-    async writeBundle() {
+    async writeBundle(_options, bundle) {
       const root = path.resolve(outDir);
+
+      // Post bodies are split out of the main bundle (src/data/postBodies.ts),
+      // so a transmission's HTML names its own chunk up front. Without this a
+      // direct visit fetches the app, runs it, and only then asks for the text
+      // the visitor came for. Loud when a post has no chunk: that means the
+      // glob stopped matching, and every post would quietly go back to waiting.
+      const chunks = Object.values(bundle).filter(
+        (file): file is Rollup.OutputChunk => file.type === 'chunk'
+      );
+      const bodyChunkFor = (slug: string): string[] => {
+        const chunk = chunks.find((c) => c.facadeModuleId?.endsWith(`/src/content/${slug}.mdx`));
+        if (!chunk) {
+          throw new Error(
+            `[prerender] no chunk for src/content/${slug}.mdx — post bodies are no ` +
+              `longer split the way scripts/prerenderPlugin.ts expects.`
+          );
+        }
+        // Its own imports too, minus anything the entry already loads.
+        const entry = chunks.find((c) => c.isEntry);
+        const loaded = new Set([entry?.fileName, ...(entry?.imports ?? [])]);
+        return [chunk.fileName, ...chunk.imports]
+          .filter((file) => !loaded.has(file))
+          .map((file) => `/${file}`);
+      };
       const shell = await readFile(path.join(root, 'index.html'), 'utf8');
 
       // Per-post cards are generated separately (scripts/capture-og-cards.mjs)
@@ -259,6 +299,7 @@ export default function prerenderPlugin(): Plugin {
           image,
           imageAlt: `${transmissionOf(post.slug)} — ${post.title}`,
           ogType: 'article',
+          preload: bodyChunkFor(post.slug),
           jsonLd: {
             '@context': 'https://schema.org',
             '@type': 'BlogPosting',

@@ -33,12 +33,13 @@ src/
                       same-named folder when one file got too big to search
     home/ projects/ guestbook/ poetry/    one file per part of the page
   content/            transmissions, as .mdx — prose only, no frontmatter
-  data/               posts.ts, poems.ts + poemContent.tsx, routeMeta.ts,
-                      buttons.ts; each has more than one consumer
+  data/               posts.ts, postBodies.ts, poems.ts + poemContent.tsx,
+                      routeMeta.ts, buttons.ts; each has more than one consumer
   hooks/ utils/ types/
 scripts/              vite plugins (feed, letterboxd, prerender, build-info)
                       and local tooling (capture-*, make-buttons.mjs,
-                      visual.mjs, fetch-fonts.mjs) — see the header of each
+                      visual.mjs, fetch-fonts.mjs, optimize-images.mjs) — see
+                      the header of each
 worker/               Cloudflare Worker: guestbook entries and the visit count
 public/               static assets; og/ cards are generated and committed
 ```
@@ -65,6 +66,18 @@ instead of the homepage's. Change the shape of one and the other must follow.
 (`scripts/feedPlugin.ts`), the archive page, the prerendered per-post HTML, and
 the OG cards all read from it. A post that exists as an `.mdx` file but not here
 is invisible to all four.
+
+**Post bodies are split out of the bundle; pages are deliberately not.** Each
+`.mdx` body is its own chunk (`src/data/postBodies.ts`), fetched when its post
+opens, when a link to it is hovered or focused (`usePostPrefetch`), or — on a
+direct visit — up front, because `prerenderPlugin` writes a `modulepreload` for
+that post's chunk into its HTML and `main.tsx` waits for it before the first
+render. The pages themselves stay eagerly imported in `App.tsx`, in their
+existing order, because the stylesheet is one file assembled in module-graph
+order: lazy-loading a page moves its CSS behind `print.css` (see below) and
+reorders the cascade. That was measured at about 15 kB gzipped over the current
+split, which is not worth a cascade that changes silently. If you split pages
+anyway, diff the built CSS against the previous build byte for byte.
 
 **`src/data/poems.ts` holds the records; `poemContent.tsx` holds the verse.**
 Same split as `posts.ts` + `content/*.mdx`, and it is not stylistic. `poems.ts`
@@ -206,8 +219,9 @@ pair, in whichever direction the race fell. `ensureImages()` forces them eager
 and waits.
 
 Two things are deliberately **not** covered: the first-visit nudge state, and
-the boot sequence. Both are pinned to the returning-visitor state so they hold
-still, which means a change to either will not be caught.
+the boot sequence (currently switched off with `BOOT_ENABLED` in `App.tsx`; the
+code is kept for a later rework). Both are pinned to the returning-visitor
+state so they hold still, which means a change to either will not be caught.
 
 **The harness leans on reduced motion, and it fails silently when something
 ignores it.** Every route's content is wrapped in `PageTransition`, which starts
