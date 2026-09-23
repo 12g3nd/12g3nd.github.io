@@ -80,16 +80,26 @@ const experience: Org[] = [
 
 /* COVERAGE is the sell-side word for the names an analyst writes on. A row lands
    here only once its write-up is public and linkable: the placeholder rows this
-   sheet used to carry advertised work that did not exist yet. */
+   sheet used to carry advertised work that did not exist yet. The chip is the
+   ticker for a research note and the masthead for a published article. */
 const coverage = [
   {
     ref: 'EQ-001',
     title: 'DEERE // CYCLEBOOK',
-    ticker: 'NYSE: DE',
+    chip: 'NYSE: DE',
     note: 'An equity research report on Deere & Company, built in Power BI. Seven cards run from the latest quarter through the farm cycle to a scenario model and what the share price assumes, and every figure is tagged as reported, guided or assumed.',
     links: [
       { label: '[REPORT ↗]', href: 'https://johndeere.jarabana.com' },
       { label: '[REPO ↗]', href: 'https://github.com/12g3nd/deere-cyclebook' },
+    ],
+  },
+  {
+    ref: 'ED-001',
+    title: 'THE BETS BEHIND THE BIG SCREEN',
+    chip: 'THE VARSITY',
+    note: 'A feature for The Varsity\'s Business & Labour section, published 21 September 2026, asking whether financiers are the real decision-makers in the film industry.',
+    links: [
+      { label: '[ARTICLE ↗]', href: 'https://thevarsity.ca/2026/09/21/the-bets-behind-the-big-screen/' },
     ],
   },
 ];
@@ -228,7 +238,7 @@ export default function Business() {
                     <span className="xls-cell xls-cell--dim">{r.ref}</span>
                     <span className="xls-cell xls-cell--key">
                       {r.title}
-                      <span className="xls-chip">{r.ticker}</span>
+                      <span className="xls-chip">{r.chip}</span>
                     </span>
                     <span className="xls-cell xls-cell--links">
                       {r.links.map((l) => (
