@@ -56,6 +56,17 @@
   color: var(--text-primary);
 }
 
+/* Same italic serif as the subtitle on the post page, so it reads as the
+   author's line rather than another piece of the log's monospace. The negative
+   top margin pulls it up under the title into the gap .post-title leaves. */
+.post-card-subtitle {
+  margin: -0.5rem 0 1rem 0;
+  font-family: var(--font-reading);
+  font-style: italic;
+  font-size: 17px;
+  color: rgba(var(--text-rgb), 0.7);
+}
+
 .post-abstract {
   font-size: 14px;
   font-family: var(--font-mono);

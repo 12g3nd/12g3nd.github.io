@@ -4,10 +4,21 @@ export interface Post {
   /** YYYY-MM-DD */
   date: string;
   title: string;
+  /** optional line set under the title on the post page and the /blog card —
+   *  the feed and the social card carry the abstract instead */
+  subtitle?: string;
   abstract: string;
 }
 
 export const posts: Post[] = [
+  {
+    slug: 'youll-pick-it-up',
+    date: '2026-09-30',
+    title: 'You’ll Pick It Up',
+    subtitle: 'A provisional visitor’s guide.',
+    abstract:
+      'A weekend in London, Ontario, written up as a field guide: a minivan out of Toronto, a Western Grandma shirt, and two threes in a row.',
+  },
   {
     slug: 'whats-a-god-to-a-non-believer',
     date: '2026-08-31',

@@ -17,6 +17,20 @@
   line-height: 1.1;
 }
 
+/* A subtitle is the author's line, not chrome, so it sits in the reading serif
+   (italic 400 is one of the loaded faces) and takes over the title's gap. */
+.post-title-main.has-subtitle {
+  margin-bottom: 0.75rem;
+}
+
+.post-subtitle {
+  margin: 0 0 2rem 0;
+  font-family: var(--font-reading);
+  font-style: italic;
+  font-size: 20px;
+  color: rgba(var(--text-rgb), 0.7);
+}
+
 /* The essays read in a serif; everything framing them stays monospace. The
    transmissions are long enough now to deserve their own voice, and a
    monospace face at essay length is a texture, not a reading experience.
@@ -135,6 +149,19 @@
 
 .post-prose .post-quote p:last-child {
   margin-bottom: 0;
+}
+
+/* Numbered section heads, first used by the field-guide post. Mono and on the
+   accent like the rest of the chrome: the headings are the guidebook's
+   apparatus, the prose under them is the author. Markdown `##` (h2) rather
+   than h3, because the title is the h1 and nothing sits between them; that
+   also keeps these clear of .post-sources-title, which is an h3. */
+.post-prose h2 {
+  margin: 3rem 0 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--accent-primary);
 }
 
 /* Dinkus between the long post's movements — the author's asterisk, kept. */

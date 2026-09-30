@@ -42,6 +42,7 @@ export default function Blog() {
                 <article className="blog-post">
                   <span className="post-date">[{post.date}]</span>
                   <h3 className="post-title">{post.title}</h3>
+                  {post.subtitle && <p className="post-card-subtitle">{post.subtitle}</p>}
                   <p className="post-abstract">{post.abstract}</p>
                   <Link to={`/blog/${post.slug}`} className="post-link">
                     [READ_FULL_TRANSMISSION →]

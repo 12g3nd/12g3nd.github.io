@@ -55,7 +55,10 @@ export default function BlogPostPage() {
         </div>
 
         <PostLayout slug={post.slug} date={post.date}>
-          <h1 className="post-title-main">{post.title}</h1>
+          <h1 className={post.subtitle ? 'post-title-main has-subtitle' : 'post-title-main'}>
+            {post.title}
+          </h1>
+          {post.subtitle && <p className="post-subtitle">{post.subtitle}</p>}
           <div className="post-prose">
             <Body components={mdxComponents} />
           </div>

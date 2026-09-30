@@ -116,6 +116,8 @@ const ROUTES = [
   { route: '/poetry/a-spade-of-leaves-for-your-tears', name: '06-poem-spade' },
   { route: '/media', name: '07-media' },
   { route: '/blog', name: '08-blog' },
+  // Suffixed rather than renumbered, so every existing baseline keeps its name.
+  { route: '/blog/youll-pick-it-up', name: '08a-post-pickup' },
   { route: '/blog/whats-a-god-to-a-non-believer', name: '09-post-god' },
   { route: '/blog/performative', name: '10-post-performative' },
   { route: '/blog/doesnt-have-to-be-from-anywhere', name: '11-post-anywhere' },
