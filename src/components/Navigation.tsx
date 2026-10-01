@@ -12,7 +12,8 @@ const BRAND_GLITCH = ['SRIHITH.SYS', 'SJARABANA.OS', 'BUSINESSMAN.EXE', 'SJ.SYS'
 const BRAND_STEP = 650; // ms per glitch frame
 
 /**
- * The nav bar: a wordmark, the terminal, and five links.
+ * The masthead: a wordmark, the terminal, and five links in plain words —
+ * the pages themselves keep their document names (LEDGER.XLSX, POETRY.PDF).
  *
  * The terminal is most of what this bar does and none of what it is, so it
  * lives in ./terminal — the state and interpreter in useTerminal, the markup in
@@ -119,11 +120,11 @@ export default function Navigation() {
         </div>
 
         <div className="nav-links">
-          <NavLink to="/business">BUSINESS</NavLink>
-          <NavLink to="/projects">PROJECTS</NavLink>
-          <NavLink to="/poetry">POETRY</NavLink>
-          <NavLink to="/media">MEDIA</NavLink>
-          <NavLink to="/blog">BLOG</NavLink>
+          <NavLink to="/projects">Projects</NavLink>
+          <NavLink to="/business">Résumé</NavLink>
+          <NavLink to="/blog">Writing</NavLink>
+          <NavLink to="/poetry">Poetry</NavLink>
+          <NavLink to="/media">Media</NavLink>
         </div>
       </nav>
 
@@ -134,7 +135,7 @@ export default function Navigation() {
         <TerminalBody t={t} />
         {!t.commandMode && (
           <span className="terminal-mobile-hint" aria-hidden="true">
-            {t.nudge ? '▸ tap & type `help`' : '▸ tap to type'}
+            {t.nudge ? 'tap, then type help' : 'tap to type'}
           </span>
         )}
       </div>

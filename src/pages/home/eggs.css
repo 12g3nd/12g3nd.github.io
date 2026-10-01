@@ -1,0 +1,141 @@
+/* ── The home page's easter eggs ────────────────────────────────────────────
+   Every one of these is a real control (role="button", keyboard-operable) and
+   every one has a reduced-motion answer. They are invoked, never ambient. */
+
+/* The y2k star after the first name → whimsy mode. */
+.y2k-accent {
+  display: inline-block;
+  height: 0.5em;
+  width: auto;
+  margin-left: 0.12em;
+  vertical-align: 0.42em;
+  cursor: pointer;
+  /* It is a button, not a picture: a double-tap or a drag across the name
+     would otherwise paint it with the selection highlight. */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  /* Ships cream (it was drawn for the navy site); on paper it prints in ink. */
+  filter: brightness(0) invert(13%) sepia(1) brightness(0.92);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.theme-dark .y2k-accent {
+  filter: none;
+}
+
+.y2k-accent:hover {
+  transform: rotate(14deg);
+}
+
+.y2k-accent.y2k-spinning {
+  animation: y2k-spin 1.1s linear infinite;
+}
+
+@keyframes y2k-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* The Rotman crest → the CRT burst. */
+.crest-icon {
+  flex: 0 0 auto;
+  width: 1.75rem;
+  height: 1.75rem;
+  cursor: pointer;
+  filter: brightness(0);
+  opacity: 0.75;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: opacity var(--dur-fast) var(--ease-out), transform var(--dur-base) var(--ease-out);
+}
+
+.crest-icon:hover {
+  opacity: 1;
+  transform: rotate(-8deg);
+}
+
+.theme-dark .crest-icon {
+  filter: brightness(0) invert(0.9);
+}
+
+/* 'SJ' → the S and J of the name ink in red, then dry back to black. */
+.sj-trigger {
+  cursor: pointer;
+  text-decoration: underline dotted var(--ink-faint);
+  text-underline-offset: 3px;
+}
+
+.sj-trigger:hover {
+  text-decoration-color: var(--accent);
+}
+
+.home-name .letter-inked {
+  color: var(--accent);
+  -webkit-text-stroke-color: var(--accent);
+  animation: ink-dry 1.8s var(--ease-in-out) forwards;
+}
+
+.home-name__line--outline .letter-inked {
+  color: var(--accent);
+}
+
+@keyframes ink-dry {
+  0%, 55% { opacity: 1; }
+  100% { opacity: 1; color: inherit; -webkit-text-stroke-color: var(--ink); }
+}
+
+/* "elevators" in the fact sheet → a tiny elevator drops, the row shakes. */
+.elevator-trigger {
+  cursor: pointer;
+  text-decoration: underline dotted var(--ink-faint);
+  text-underline-offset: 3px;
+}
+
+.elevator-trigger:hover {
+  color: var(--accent);
+  text-decoration-color: currentColor;
+}
+
+.elevator-dropping {
+  animation: ef-shake 0.5s ease-in-out;
+}
+
+.falling-elevator {
+  position: absolute;
+  right: 1rem;
+  top: -1.6rem;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--ink);
+  pointer-events: none;
+  animation: ef-fall 1.15s cubic-bezier(0.6, 0, 0.9, 1) forwards;
+}
+
+@keyframes ef-fall {
+  0% { transform: translateY(0); opacity: 0; }
+  10% { opacity: 1; }
+  72% { transform: translateY(130px); }
+  82% { transform: translateY(112px); }
+  100% { transform: translateY(122px); opacity: 0; }
+}
+
+@keyframes ef-shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-3px); }
+  40% { transform: translateX(3px); }
+  60% { transform: translateX(-2px); }
+  80% { transform: translateX(2px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .y2k-accent.y2k-spinning,
+  .elevator-dropping,
+  .home-name .letter-inked {
+    animation: none;
+  }
+
+  .falling-elevator {
+    display: none;
+  }
+}

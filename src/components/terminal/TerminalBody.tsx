@@ -18,7 +18,7 @@ export default function TerminalBody({ t }: { t: Terminal }) {
           <span className="terminal-cursor">_</span>
         </span>
         <span className="terminal-hint" aria-hidden="true">
-          {t.nudge ? '▸ dbl-click & type `help`' : '▸ dbl-click'}
+          {t.nudge ? 'double-click, then type help' : 'double-click to type'}
         </span>
       </>
     );

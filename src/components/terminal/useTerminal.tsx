@@ -183,7 +183,7 @@ export default function useTerminal() {
 
     switch (cmd) {
       case 'help':
-        setOutput('nav: projects · business · media · poetry · blog · home  |  try: whoami · cat beliefs.txt · uptime · resume · sudo hire-me · ls · clear · exit  |  ↑/↓ = history · tab = autocomplete  |  (some commands are undocumented. poke around.)');
+        setOutput('nav: projects · business · media · poetry · blog · home  |  try: whoami · cat beliefs.txt · uptime · resume · theme dark · ls · clear · exit  |  ↑/↓ = history · tab = autocomplete  |  (some commands are undocumented. poke around.)');
         break;
       case 'whoami':
         setOutput(`srihith jarabana — businessman by craft. ${age()}. probably overthinking something.`);

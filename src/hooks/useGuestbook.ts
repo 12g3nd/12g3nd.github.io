@@ -66,10 +66,15 @@ export default function useGuestbook(): {
   entries: GuestbookEntry[];
   loading: boolean;
   error: string | null;
+  /** Ask the Worker again after a failure. A no-op once entries are cached. */
+  retry: () => void;
 } {
   const [entries, setEntries] = useState<GuestbookEntry[]>(cache.entries ?? []);
   const [loading, setLoading] = useState(cache.entries === null);
   const [error, setError] = useState<string | null>(null);
+  // Bumped by retry() to re-run the load effect. A failed fetch leaves
+  // cache.promise null, so the next run starts a fresh request.
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     let active = true;
@@ -104,7 +109,14 @@ export default function useGuestbook(): {
     return () => {
       active = false;
     };
-  }, []);
+  }, [attempt]);
 
-  return { entries, loading, error };
+  const retry = () => {
+    if (cache.entries !== null) return;
+    setLoading(true);
+    setError(null);
+    setAttempt((n) => n + 1);
+  };
+
+  return { entries, loading, error, retry };
 }

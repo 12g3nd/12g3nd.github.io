@@ -1,16 +1,42 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { buildInfo } from 'virtual:build-info';
+import { getTheme, toggleTheme, type Theme } from '../utils/theme';
 import VisitorCounter from './VisitorCounter';
 import ButtonWall from './ButtonWall';
 import './Footer.css';
+
+/**
+ * The visible way into dark mode. Paper is the default for everyone; this, the
+ * terminal's `theme dark` and the ⌘K palette are the three ways out of it.
+ * Watches the <html> class so it stays right whichever of the three was used.
+ */
+function ThemeToggle() {
+  const [theme, setTheme] = useState<Theme>(() => getTheme());
+  useEffect(() => {
+    const obs = new MutationObserver(() => setTheme(getTheme()));
+    obs.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => obs.disconnect();
+  }, []);
+  return (
+    <button
+      type="button"
+      className="footer-theme"
+      aria-pressed={theme === 'dark'}
+      onClick={() => setTheme(toggleTheme())}
+    >
+      Dark mode {theme === 'dark' ? 'on' : 'off'}
+    </button>
+  );
+}
 
 export default function Footer() {
   return (
     <footer className="brutalist-footer">
       <div className="webring-container">
         <div className="webring-widget">
-          <a href="https://uoftwebring.com/redirect?nav=prev&id=40" className="webring-nav">
-            [ ← ]
+          <a href="https://uoftwebring.com/redirect?nav=prev&id=40" className="webring-nav" aria-label="Previous site in the UofT Webring">
+            ← prev
           </a>
           <a href="https://uoftwebring.com" target="_blank" rel="noopener noreferrer" className="webring-logo-link">
             {/* Served from public/ rather than uoftwebring.com. The remote copy
@@ -28,8 +54,8 @@ export default function Footer() {
               height="28"
             />
           </a>
-          <a href="https://uoftwebring.com/redirect?nav=next&id=40" className="webring-nav">
-            [ → ]
+          <a href="https://uoftwebring.com/redirect?nav=next&id=40" className="webring-nav" aria-label="Next site in the UofT Webring">
+            next →
           </a>
         </div>
 
@@ -43,21 +69,22 @@ export default function Footer() {
           <VisitorCounter />
 
           <div className="footer-centre">
-            <p className="footer-credits">COPYRIGHT © 2026 SRIHITH JARABANA. ALL RIGHTS RESERVED.</p>
+            <p className="footer-credits">© 2026 Srihith Jarabana. All rights reserved.</p>
             {/* The date of the last commit, not of this page load — see
                 scripts/buildInfoPlugin.ts. A stamp that reads "today" every day
                 is the version of this everyone got wrong. <time> so the machine
                 reading gets the same fact as the human one. */}
             <p className="footer-updated">
-              LAST UPDATED <time dateTime={buildInfo.date}>{buildInfo.date}</time>
+              Last updated <time dateTime={buildInfo.date}>{buildInfo.date}</time>
               {buildInfo.exact && buildInfo.sha && (
                 <span className="footer-updated__sha"> · {buildInfo.sha}</span>
               )}
               {/* The only route not in the nav, so this is the only way to
                   find it that isn't typing the URL. */}
               <span className="footer-updated__sha"> · </span>
-              <Link className="footer-index" to="/sitemap">INDEX OF /</Link>
+              <Link className="footer-index" to="/sitemap">Index of /</Link>
             </p>
+            <ThemeToggle />
           </div>
 
           {/* Both readings live in the DOM, so a screen reader gets the Latin

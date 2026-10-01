@@ -11,8 +11,11 @@
   height: min(100vh, 70vw);
   width: auto;
   object-fit: contain;
-  z-index: 9999;
-  mix-blend-mode: screen;
+  z-index: var(--z-egg);
+  /* White strokes on black: on paper, invert to ink and multiply it onto the
+     page; on the dark screen, the original screens straight through. */
+  filter: invert(1);
+  mix-blend-mode: multiply;
   pointer-events: none;
   animation: smiley-lifecycle 6s ease-in-out forwards;
 }
@@ -22,4 +25,9 @@
   5%   { opacity: 1; transform: translateX(0); }
   80%  { opacity: 1; transform: translateX(0); }
   100% { opacity: 0; transform: translateX(0); }
+}
+
+.theme-dark .whimsy-smiley {
+  filter: none;
+  mix-blend-mode: screen;
 }

@@ -1,0 +1,350 @@
+/* ── Everything below the name block ────────────────────────────────────────
+   One rhythm for every section: the same padding, more space above a title than
+   under it, a hairline between sections. What changes from section to section
+   is the document each one is set as — a revised clause list, a taped clipping,
+   a punched fact sheet — not the spacing. */
+
+.home-section {
+  padding: var(--space-8) var(--gutter);
+  border-bottom: var(--border);
+}
+
+.home-section > h2,
+.home-section__head h2 {
+  font-size: var(--fs-title);
+  color: var(--ink);
+}
+
+.home-section__head {
+  margin-bottom: var(--space-6);
+}
+
+.home-section > h2 {
+  margin-bottom: var(--space-6);
+}
+
+.home-section__note {
+  margin-top: var(--space-2);
+  font-size: var(--fs-small);
+  color: var(--ink-soft);
+}
+
+.home-section__note.t-data {
+  font-size: var(--fs-meta);
+  color: var(--ink-faint);
+}
+
+/* ── Tenets: a short clause list, revised in place ─────────── */
+.tenets__list {
+  border-top: 1px solid var(--rule-strong);
+  max-width: 68rem;
+}
+
+.tenets__item {
+  display: grid;
+  grid-template-columns: minmax(0, 18rem) minmax(0, 1fr);
+  gap: var(--space-2) var(--space-7);
+  padding: var(--space-5) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.tenets__item dt {
+  font-size: var(--fs-lede);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.tenets__item dd {
+  max-width: var(--measure);
+}
+
+/* ── Beliefs + the clipping ───────────────────────────────── */
+.beliefs {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-8);
+  align-items: start;
+}
+
+.beliefs__list {
+  list-style: none;
+}
+
+/* Anton in mixed case: the same voice as the titles, said less loudly. */
+.beliefs__list li {
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  line-height: 1.1;
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.beliefs__list sup {
+  font-size: 0.5em;
+  vertical-align: 0.9em;
+  margin-left: 0.05em;
+}
+
+.beliefs__footnote {
+  margin-top: var(--space-4);
+  max-width: 44ch;
+  font-size: var(--fs-small);
+  color: var(--ink-soft);
+}
+
+.kepler-link {
+  display: inline-block;
+  margin-top: var(--space-6);
+}
+
+.kepler-link img {
+  display: block;
+  width: 11rem;
+  height: auto;
+  mix-blend-mode: multiply;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.kepler-link:hover img {
+  transform: rotate(-4deg);
+}
+
+.theme-dark .kepler-link img {
+  filter: invert(0.92) sepia(0.2);
+  mix-blend-mode: screen;
+}
+
+/* A quote clipped from somewhere and taped in, slightly crooked. */
+.clipping {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: var(--space-5);
+  align-items: end;
+  margin-top: var(--space-6);
+  padding: var(--space-7) var(--space-6) var(--space-6);
+  background: var(--sheet);
+  box-shadow: var(--shadow-sheet);
+  transform: rotate(0.8deg);
+}
+
+/* Masking tape. */
+.clipping::before {
+  content: '';
+  position: absolute;
+  top: -0.7rem;
+  left: 50%;
+  width: 6.5rem;
+  height: 1.6rem;
+  background: rgba(232, 214, 160, 0.72);
+  box-shadow: 0 1px 1px rgba(var(--ink-rgb), 0.08);
+  transform: translateX(-50%) rotate(-2.5deg);
+}
+
+.theme-dark .clipping::before {
+  background: rgba(238, 228, 205, 0.16);
+}
+
+.clipping blockquote {
+  grid-column: 1;
+}
+
+.clipping blockquote p {
+  --casl: 1;
+  font-size: var(--fs-lede);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.clipping figcaption {
+  --mono: 1;
+  --casl: var(--casl-data);
+  grid-column: 1;
+  font-size: var(--fs-meta);
+  color: var(--ink-faint);
+}
+
+.clipping figcaption a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.clipping__portrait {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  width: 7.5rem;
+  height: auto;
+  mix-blend-mode: multiply;
+  filter: contrast(1.05) sepia(0.15);
+}
+
+.theme-dark .clipping__portrait {
+  filter: invert(0.9) sepia(0.2);
+  mix-blend-mode: screen;
+}
+
+/* ── Fact sheet ───────────────────────────────────────────── */
+/* A typed form on a punched sheet — three binder holes down the margin. */
+.facts__sheet {
+  --holes: radial-gradient(circle, var(--ground) 0 0.42rem, rgba(var(--ink-rgb), 0.18) 0.42rem 0.5rem, transparent 0.5rem);
+  position: relative;
+  max-width: 52rem;
+  padding: var(--space-5) var(--space-6) var(--space-5) var(--space-8);
+  background-color: var(--sheet);
+  background-image: var(--holes), var(--holes), var(--holes);
+  background-size: 1.2rem 1.2rem;
+  background-position: 1.1rem 18%, 1.1rem 50%, 1.1rem 82%;
+  background-repeat: no-repeat;
+  box-shadow: var(--shadow-sheet);
+}
+
+.facts__row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: var(--space-2) var(--space-5);
+  align-items: baseline;
+  padding: var(--space-3) 0;
+  border-bottom: 1px dotted var(--rule-strong);
+}
+
+.facts__row:last-child {
+  border-bottom: none;
+}
+
+.facts__row dt {
+  font-size: var(--fs-meta);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+}
+
+/* ── Guestbook preview ────────────────────────────────────── */
+/* The cards themselves (.gb-card / .gb-skeleton) are the guestbook's own and
+   are styled in pages/guestbook/entries.css; only the layout lives here. */
+.guestbook-preview__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-5);
+}
+
+.guestbook-preview__notice {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-5);
+  padding: var(--space-5) var(--space-6);
+  background: var(--sheet);
+  box-shadow: var(--shadow-sheet);
+}
+
+.guestbook-preview__notice button {
+  min-height: 44px;
+  padding: var(--space-2) var(--space-4);
+  background: transparent;
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  color: var(--ink);
+  font: inherit;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.guestbook-preview__notice button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.guestbook-preview__more {
+  margin-top: var(--space-5);
+}
+
+.guestbook-preview__more a,
+.contact__email,
+.contact__elsewhere a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.guestbook-preview__more a {
+  font-weight: 600;
+}
+
+.guestbook-preview__more a:hover,
+.contact__email:hover,
+.contact__elsewhere a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* ── Contact ──────────────────────────────────────────────── */
+.contact__email {
+  display: inline-block;
+  font-size: var(--fs-lede);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.contact__elsewhere {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-6);
+  margin-top: var(--space-5);
+}
+
+.contact__elsewhere a {
+  display: inline-block;
+  padding: var(--space-2) 0;
+  font-weight: 600;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 1080px) {
+  .guestbook-preview__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .home-section {
+    padding-top: var(--space-7);
+    padding-bottom: var(--space-7);
+  }
+
+  .tenets__item,
+  .beliefs,
+  .facts__row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .beliefs {
+    gap: var(--space-7);
+  }
+
+  .facts__sheet {
+    padding-left: var(--space-7);
+    background-position: 0.7rem 18%, 0.7rem 50%, 0.7rem 82%;
+  }
+
+  .guestbook-preview__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .clipping {
+    grid-template-columns: minmax(0, 1fr);
+    padding: var(--space-6) var(--space-5) var(--space-5);
+  }
+
+  .clipping__portrait {
+    grid-column: 1;
+    grid-row: auto;
+    width: 6rem;
+  }
+}

@@ -15,8 +15,7 @@
 export const PHRASES = [
   "> scanning user... name: srihith jarabana... status: building things",
   "> clout: [citation needed]. aura: self-reported.",
-  "> running diagnostics... critical error: caffeine levels low.",
-  "> current aesthetic: brutalism x y2k.",
+  "> current aesthetic: brutalism x y2k, printed on manila.",
   "> location ping: robarts library, 12th floor. status: on the grind.",
   "> fit check... evaluating... result: trying too hard. recalibrating.",
   "> easter egg check... found one: most images are clickable.",
@@ -74,5 +73,5 @@ export const COMPLETIONS: string[] = [
   'projects', 'business', 'media', 'poetry', 'blog', 'guestbook', 'home',
   'help', 'whoami', 'uptime', 'resume', 'ls', 'clear', 'exit',
   'cat beliefs.txt', 'cat rootbeer.log', 'cat guestbook.log',
-  'sudo hire-me', 'theme dark', 'theme light', 'matrix', 'party mode',
+  'theme dark', 'theme light', 'matrix', 'party mode',
 ];

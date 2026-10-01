@@ -1,19 +1,31 @@
+/* The masthead: wordmark, the one screen on the site, and five plain links.
+ *
+ * Everything on the page is paper except the command line, which is the
+ * machine the paper came out of. So it is drawn as exactly that — a small
+ * warm-black display set into the masthead, amber phosphor on black in both
+ * themes — and nothing else on the site borrows its look. The prompt, the
+ * caret and the `srihith@sj.sys:~$` live here and only here.
+ */
+
 .brutalist-nav {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba(var(--accent-rgb), 0.2);
-  padding: 1rem 2rem;
-  background-color: var(--bg-base);
+  gap: var(--space-5);
+  padding: var(--space-4) var(--gutter);
+  background-color: var(--ground);
+  /* A printout header: a heavy rule with a hairline under it. */
+  border-bottom: 3px double var(--rule-strong);
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: var(--z-sticky);
 }
 
 .nav-brand {
   font-family: var(--font-display);
-  font-size: 2.5rem;
-  color: var(--accent-primary);
+  font-size: 2.25rem;
+  line-height: 1;
+  color: var(--ink);
+  flex: 0 0 auto;
   /* The wordmark takes a long-press (the touch glitch trigger), so suppress the
      iOS link callout / text selection that would otherwise hijack the gesture. */
   -webkit-touch-callout: none;
@@ -23,83 +35,83 @@
 }
 
 .nav-brand:hover {
-  opacity: 0.8;
+  color: var(--accent);
 }
 
+/* ── Links ────────────────────────────────────────────────── */
 .nav-links {
   display: flex;
-  gap: 2.5rem;
-  font-weight: bold;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-5);
+  margin-left: auto;
 }
 
 .nav-links a {
-  border: none;
-  padding: 0.5rem 0; 
-  text-transform: uppercase;
-  color: var(--text-primary);
-  font-family: var(--font-mono);
-  font-size: 16px;
-  font-weight: bold;
-  background-color: transparent;
-  transition: color 0.2s ease;
-  position: relative;
-}
-
-.nav-links a::after {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 2px;
-  bottom: 0;
-  left: 0;
-  background-color: var(--accent-primary);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
+  display: inline-block;
+  padding: var(--space-2) 0;
+  color: var(--ink);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+  transition: color var(--dur-fast) var(--ease-out),
+    text-decoration-color var(--dur-fast) var(--ease-out);
 }
 
 .nav-links a:hover {
-  background-color: transparent;
-  color: var(--accent-primary);
+  text-decoration-color: var(--rule-strong);
 }
 
-.nav-links a:hover::after {
-  transform: scaleX(1);
-}
-
-/* Active route: persistent cyan underline + glow so the current page reads as current */
 .nav-links a.active {
-  color: var(--accent-primary);
+  color: var(--accent);
+  text-decoration-color: currentColor;
 }
 
-.nav-links a.active::after {
-  transform: scaleX(1);
-  box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.6);
+/* ── The screen ───────────────────────────────────────────── */
+/* Pinned, not themed: it is the same display whichever paper it sits in. */
+.terminal-header-box,
+.terminal-mobile-row {
+  --screen: #14110c;
+  --phosphor: #f2a93b;
+  --phosphor-rgb: 242, 169, 59;
+  --mono: 1;
+  --casl: var(--casl-data);
+  background-color: var(--screen);
+  color: var(--phosphor);
+  border: 1px solid rgba(var(--ink-rgb), 0.55);
+  border-radius: 3px;
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.7), 0 1px 0 rgba(255, 255, 255, 0.35);
+  font-size: var(--fs-meta);
+  cursor: text;
+}
+
+.theme-dark .terminal-header-box,
+.theme-dark .terminal-mobile-row {
+  --screen: #0b0906;
+  border-color: rgba(var(--phosphor-rgb), 0.25);
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.8);
 }
 
 .terminal-header-box {
-  flex: 1;
-  margin: 0 2rem;
-  background-color: var(--bg-surface);
-  border: 1px dotted rgba(var(--accent-rgb), 0.3);
-  padding: 0.5rem 1rem;
-  font-family: var(--font-mono);
-  font-size: 13px;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 720px;
+  padding: var(--space-2) var(--space-4);
   display: flex;
   align-items: center;
   white-space: nowrap;
   overflow: hidden;
-  max-width: 800px;
-  position: relative; /* anchor for the .terminal-hint affordance */
+  position: relative;
 }
 
-.terminal-header-box {
-  cursor: pointer;
+.terminal-header-box--active {
+  border-color: rgba(var(--phosphor-rgb), 0.7);
 }
 
-/* Idle prompt (typewriter + cursor). Flex child that shrinks first and clips
-   its text with an ellipsis, so a long phrase truncates BEFORE the hint instead
-   of sliding under it. Keeps the bar to a single line. */
+/* Idle line: the typewriter plus caret. Shrinks first and clips with an
+   ellipsis, so a long phrase truncates before the hint rather than under it. */
 .terminal-idle {
   display: inline-flex;
   align-items: center;
@@ -115,44 +127,37 @@
   min-width: 0;
 }
 
-.terminal-idle .terminal-cursor {
-  flex: 0 0 auto;
+.terminal-text {
+  color: rgba(var(--phosphor-rgb), 0.92);
 }
 
-/* Persistent "you can type in here" affordance. A non-shrinking flex sibling
-   pinned right via margin-left:auto — physically separated from the prompt, so
-   they can never intersect. The command line is the spine, not a hidden egg. */
+.terminal-cursor {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 0.6em;
+  height: 1.1em;
+  margin-left: 3px;
+  /* The underscore is in the markup for screen readers that read it; the
+     block caret is what is seen. */
+  color: transparent;
+  background-color: var(--phosphor);
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite; /* @keyframes blink lives in index.css */
+}
+
+/* "You can type here." Pinned right, never under the prompt. */
 .terminal-hint {
   flex: 0 0 auto;
   margin-left: auto;
-  padding-left: 1.25rem;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(var(--text-rgb), 0.35);
+  padding-left: var(--space-4);
+  color: rgba(var(--phosphor-rgb), 0.62);
   pointer-events: none;
   white-space: nowrap;
-  transition: color 0.15s ease;
 }
 
-.terminal-header-box:hover .terminal-hint {
-  color: var(--accent-primary);
-}
-
-/* The mobile row is a single-tap target and space is tight — hide the hint
-   there; the typewriter copy already advertises the command line. */
-.terminal-mobile-row .terminal-hint {
-  display: none;
-}
-
-.terminal-header-box--active {
-  border-style: solid;
-  border-color: var(--accent-primary);
-  box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.25);
-}
-
-.terminal-text {
-  color: rgba(var(--text-rgb), 0.7);
+.terminal-header-box:hover .terminal-hint,
+.terminal-nudge .terminal-hint {
+  color: var(--phosphor);
 }
 
 /* ── Command-line mode ─────────────────────────────────── */
@@ -165,13 +170,13 @@
 }
 
 .terminal-prompt {
-  color: var(--accent-primary);
-  font-weight: bold;
+  color: var(--phosphor);
+  font-weight: 700;
   white-space: nowrap;
 }
 
 .terminal-prompt-sep {
-  color: rgba(var(--text-rgb), 0.5);
+  color: rgba(var(--phosphor-rgb), 0.7);
   white-space: nowrap;
 }
 
@@ -181,26 +186,25 @@
   background: transparent;
   border: none;
   outline: none;
-  color: var(--text-primary);
-  font-family: var(--font-mono);
-  font-size: 13px;
-  caret-color: var(--accent-primary);
+  color: #fbe7c4;
+  font: inherit;
+  caret-color: var(--phosphor);
 }
 
 .terminal-output {
-  color: rgba(var(--text-rgb), 0.6);
+  color: rgba(var(--phosphor-rgb), 0.85);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  border-left: 1px solid rgba(var(--text-rgb), 0.2);
+  border-left: 1px solid rgba(var(--phosphor-rgb), 0.3);
   padding-left: 0.6rem;
   flex: 1 1 auto;
   min-width: 0;
 }
 
-/* ── Multi-line output (cat rootbeer.log, hire-me --serious, …) ──────────
-   Long, formatted responses drop below the prompt row instead of clipping to
-   one ellipsised line. The box grows to fit and the prompt+input stay on line 1. */
+/* ── Multi-line output (cat rootbeer.log, ls, …) ──────────
+   Long responses drop below the prompt row instead of clipping to one line.
+   The box grows to fit and the prompt + input stay on line 1. */
 .terminal-header-box--multiline {
   align-items: flex-start;
   white-space: normal;
@@ -218,13 +222,11 @@
   text-overflow: clip;
   border-left: none;
   padding-left: 0;
-  margin-top: 0.5rem;
+  margin-top: var(--space-2);
   line-height: 1.55;
-  color: rgba(var(--text-rgb), 0.75);
 }
 
-/* Clickable `ls` listing — each filename is a button that runs its command.
-   Underlined cyan to read as interactive; wraps to fit the bar. */
+/* Clickable `ls` listing — each filename runs its command. */
 .terminal-ls {
   display: flex;
   flex-wrap: wrap;
@@ -235,37 +237,46 @@
   background: none;
   border: none;
   padding: 0;
-  font-family: var(--font-mono);
-  font-size: inherit;
-  line-height: inherit;
-  color: var(--accent-primary);
+  font: inherit;
+  color: var(--phosphor);
   cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 2px;
-  text-decoration-color: rgba(var(--accent-rgb), 0.4);
-  transition: color 0.12s ease, text-decoration-color 0.12s ease;
+  text-decoration-color: rgba(var(--phosphor-rgb), 0.45);
 }
 
 .terminal-ls-item:hover {
-  color: var(--text-primary);
-  text-decoration-color: var(--accent-primary);
+  color: #fbe7c4;
+  text-decoration-color: currentColor;
 }
 
-.terminal-cursor {
-  display: inline-block;
-  width: 8px;
-  height: 14px;
-  background-color: var(--accent-primary);
-  margin-left: 6px;
-  animation: blink 1s step-end infinite; /* @keyframes blink lives in index.css */
+.terminal-expand-btn {
+  flex: 0 0 auto;
+  margin-left: auto;
+  padding-left: var(--space-4);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font: inherit;
+  color: rgba(var(--phosphor-rgb), 0.62);
+  white-space: nowrap;
 }
 
-/* Mobile terminal row — hidden on desktop, shown on mobile below the nav */
+.terminal-expand-btn:hover {
+  color: var(--phosphor);
+}
+
+.terminal-header-box :focus-visible,
+.terminal-mobile-row :focus-visible {
+  outline-color: var(--phosphor);
+}
+
+/* ── Mobile: the screen gets its own row under the masthead ── */
 .terminal-mobile-row {
   display: none;
 }
 
-@media (max-width: 950px) {
+@media (max-width: 1080px) {
   .terminal-header-box {
     display: none;
   }
@@ -273,36 +284,27 @@
   .terminal-mobile-row {
     display: flex;
     align-items: center;
-    width: 100%;
-    /* The command line is the heart of the site; on mobile this strip is its
-       only entry point, so give it a proper ≥44px tap target. */
+    gap: var(--space-3);
+    /* Its only entry point on a phone — a proper tap target. */
     min-height: 44px;
-    box-sizing: border-box;
-    background-color: var(--bg-surface);
-    border: 1px dotted rgba(var(--accent-rgb), 0.3);
-    border-top: none;
-    padding: 0.5rem 1rem;
-    font-family: var(--font-mono);
-    font-size: 11px;
+    margin: var(--space-3) var(--gutter) 0;
+    padding: var(--space-2) var(--space-3);
     white-space: normal;
-    word-break: break-word;
+    overflow-wrap: anywhere;
   }
 
-  /* 16px keeps iOS from force-zooming the page when the command input is focused. */
+  /* 16px keeps iOS from force-zooming the page when the input is focused. */
   .terminal-mobile-row .terminal-input {
     font-size: 16px;
   }
 
-  /* The desktop fix clips the idle prompt to one line (so it can't collide with
-     the hint). The mobile row has no hint and is meant to wrap, so let it. */
+  /* No hint row here, so the idle line is free to wrap — in flow, so the
+     caret follows the last character instead of the paragraph's edge. */
   .terminal-mobile-row .terminal-idle {
+    display: block;
     overflow: visible;
     flex: 1 1 auto;
     min-width: 0;
-    /* Inline flow, not flex: as a flex item the cursor sat beside the whole
-       wrapped paragraph, stranded at the right edge. In flow it follows the
-       last character typed. */
-    display: block;
   }
 
   .terminal-mobile-row .terminal-text {
@@ -311,100 +313,51 @@
     text-overflow: clip;
   }
 
-  .terminal-mobile-row .terminal-cursor {
-    width: 0.6em;
-    height: 1.1em;
-    margin-left: 3px;
-    vertical-align: text-bottom;
+  .terminal-mobile-row .terminal-hint {
+    display: none;
   }
 
   .terminal-mobile-hint {
     flex: 0 0 auto;
     margin-left: auto;
-    padding-left: 0.75rem;
-    font-size: 9px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
     white-space: nowrap;
-    color: rgba(var(--text-rgb), 0.4);
+    color: rgba(var(--phosphor-rgb), 0.62);
   }
 }
 
 @media (max-width: 768px) {
   .brutalist-nav {
-    padding: 0.75rem 1rem;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-5);
+    padding: var(--space-3) var(--gutter);
   }
 
   .nav-brand {
-    font-size: 2rem;
+    font-size: 1.875rem;
   }
 
   .nav-links {
-    gap: 1rem;
-    /* Pull the row back so the first link's padded edge still lines up. */
-    margin-left: -0.5rem;
+    gap: 0 var(--space-4);
   }
 
+  /* Taller rows, so short labels are not sub-44px tap zones. */
   .nav-links a {
-    font-size: 13px;
-    /* Roomier touch target — taller, and wide enough that short labels
-       (BLOG, MEDIA) aren't sub-30px tap zones. */
-    padding: 0.6rem 0.5rem;
-  }
-
-  .terminal-mobile-row {
-    font-size: 11px;
-    padding: 0.35rem 1rem;
+    padding: var(--space-3) 0;
   }
 }
 
 @media (max-width: 480px) {
-  .brutalist-nav {
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    padding: 0.75rem 1rem;
-  }
-
-  .nav-brand {
-    font-size: 1.75rem;
-  }
-
   .nav-links {
-    gap: 0.5rem;
+    margin-left: 0;
     width: 100%;
-    justify-content: flex-start;
-    margin-left: -0.45rem;
-  }
-
-  .nav-links a {
-    font-size: 12px;
-    padding: 0.55rem 0.45rem;
-  }
-
-  .terminal-mobile-row {
-    font-size: 10px;
-    padding: 0.3rem 0.75rem;
+    justify-content: space-between;
   }
 }
 
-.terminal-expand-btn {
-  flex: 0 0 auto;
-  margin-left: auto;
-  padding-left: 1.25rem;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(var(--text-rgb), 0.35);
-  white-space: nowrap;
-  transition: color 0.15s ease;
-}
-
-.terminal-expand-btn:hover {
-  color: var(--accent-primary);
+@media (prefers-reduced-motion: reduce) {
+  .terminal-cursor {
+    animation: none;
+  }
 }
 
 /* ── Party-mode nav brand wave ─────────────────────────── */

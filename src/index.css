@@ -227,69 +227,7 @@ html:not(.theme-dark) .media-plate:hover {
     0 0 26px -6px rgba(181, 101, 29, 0.25);
 }
 
-/* Home: the beliefs (kepler) graphic uses the same invert/screen trick — flip it
-   to dark ink on parchment too. */
-html:not(.theme-dark) .kepler-link img {
-  filter: sepia(0.25) saturate(1.1) brightness(0.9);
-  mix-blend-mode: multiply;
-}
-
-/* Hero wireframe: light mode swaps in a dedicated high-res render
-   (lightmodefigure.jpg, chosen in Home.tsx) that's already drawn on a light
-   ground. It ships with a white background, so `multiply` drops that onto the
-   parchment — the teal mesh + perspective grid read as if printed on the page.
-   No blur/bloom needed here; dark mode keeps figure.png with its cyan glow +
-   glitch animation, so we just stop that animation for the still light render. */
-/* Light mode swaps in a transparent cutout of the supplied high-res surfer
-   render (lightmodefigure.png — the supplied JPG with its white studio
-   background keyed to transparent). It drops onto the parchment cleanly in any
-   layout, so no frame or blend tricks are needed — just stop the dark-mode
-   glitch animation and add a soft shadow to ground it. (Dark mode keeps the
-   low-poly figure.png with its cyan glow + glitch.) */
-html:not(.theme-dark) .wireframe-glitch {
-  animation: none;
-  filter: drop-shadow(0 12px 18px rgba(42, 36, 24, 0.18));
-}
-/* The landscape surfer is wider than the old portrait figure, so on phones (where
-   it overlays the name) trim it a little so the wordmark stays readable. */
-@media (max-width: 768px) {
-  html:not(.theme-dark) .mobile-figure-inline { max-height: 150px; }
-}
-
-/* CN-tower landmark + crest seal are tinted near-white to glow on navy, so they
-   vanish on parchment. Recolor to dark ink (filter only — leave the landmark's
-   opacity-driven hover swap alone). */
-html:not(.theme-dark) .landmark-default,
-html:not(.theme-dark) .landmark-hover,
-html:not(.theme-dark) .mobile-landmark-swap img {
-  filter: brightness(0) saturate(100%);
-}
-html:not(.theme-dark) .crest-icon {
-  filter: brightness(0) saturate(100%);
-  opacity: 0.72;
-}
-html:not(.theme-dark) .crest-icon:hover,
-html:not(.theme-dark) .crest-icon:focus-visible {
-  filter: brightness(0) saturate(100%);
-  opacity: 1;
-}
-
-/* The y2k sparkle ships cream (to glow on navy); on parchment recolor it to the
-   wordmark's ink so it reads as part of the name. The filter chain lands on
-   ~rgb(42,36,24) = --text-primary; hover keeps the ink and adds a faint accent
-   glow for the interactive cue. */
-html:not(.theme-dark) .y2k-accent {
-  filter: brightness(0) invert(13%) sepia(1) brightness(0.92);
-}
-html:not(.theme-dark) .y2k-accent:hover,
-html:not(.theme-dark) .y2k-accent:focus-visible {
-  filter: brightness(0) invert(13%) sepia(1) brightness(0.92)
-    drop-shadow(0 0 10px rgba(var(--accent-rgb), 0.35));
-}
-
-/* Watermark numerals were near-invisible cyan-on-navy values; on parchment bump
-   them so they read as faint debossed numbers instead of nothing. */
-html:not(.theme-dark) .tenet-number { color: rgba(90, 63, 192, 0.26); }
+/* Project watermark numerals, bumped so they read as debossed on paper. */
 html:not(.theme-dark) .project-card__num { color: rgba(var(--accent-rgb), 0.16); }
 
 /* Project status chip rode a translucent-navy fill; give it a parchment fill and

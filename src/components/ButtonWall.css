@@ -42,7 +42,7 @@
 
 .buttons__img--own {
   /* The one button whose artwork has no border of its own. */
-  border: 1px solid rgba(var(--accent-rgb), 0.35);
+  border: 1px solid var(--rule-strong);
 }
 
 /* The own button is a <button>, so it has native chrome to strip. */
@@ -80,7 +80,7 @@
   left: 50%;
   bottom: 2rem;
   transform: translateX(-50%);
-  z-index: 60;
+  z-index: var(--z-toast);
   pointer-events: none;
   max-width: min(92vw, 44rem);
 }
@@ -91,19 +91,16 @@
   gap: 0.6rem;
   margin: 0;
   padding: 0.7rem 1.1rem;
-  background: var(--bg-surface);
-  border: 1px solid rgba(var(--accent-rgb), 0.45);
-  border-left: 2px solid var(--accent-primary);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  color: var(--text-dim);
+  background: var(--sheet);
+  border: 1px solid var(--rule-strong);
+  box-shadow: var(--shadow-sheet);
+  font-size: var(--fs-meta);
+  color: var(--ink);
   animation: buttons-toast-in 0.18s ease-out;
 }
 
 .buttons__toast-mark {
-  color: var(--accent-primary);
+  color: var(--ink);
   font-weight: 700;
 }
 
@@ -123,11 +120,11 @@
   flex: 1 1 18rem;
   min-width: 0;
   padding: 0.35rem 0.5rem;
-  background: var(--bg-base);
-  border: 1px solid rgba(var(--accent-rgb), 0.3);
-  color: var(--text-dim);
-  font-family: var(--font-mono);
-  font-size: 10px;
+  background: var(--ground);
+  border: 1px solid var(--rule-strong);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: var(--fs-meta);
 }
 
 .buttons__toast-close {
