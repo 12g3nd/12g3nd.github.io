@@ -298,12 +298,35 @@
   .terminal-mobile-row .terminal-idle {
     overflow: visible;
     flex: 1 1 auto;
+    min-width: 0;
+    /* Inline flow, not flex: as a flex item the cursor sat beside the whole
+       wrapped paragraph, stranded at the right edge. In flow it follows the
+       last character typed. */
+    display: block;
   }
 
   .terminal-mobile-row .terminal-text {
     white-space: normal;
     overflow: visible;
     text-overflow: clip;
+  }
+
+  .terminal-mobile-row .terminal-cursor {
+    width: 0.6em;
+    height: 1.1em;
+    margin-left: 3px;
+    vertical-align: text-bottom;
+  }
+
+  .terminal-mobile-hint {
+    flex: 0 0 auto;
+    margin-left: auto;
+    padding-left: 0.75rem;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: rgba(var(--text-rgb), 0.4);
   }
 }
 

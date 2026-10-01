@@ -153,6 +153,7 @@ export default function Home() {
                 className={`y2k-accent${partyActive && !calmMode ? ' y2k-spinning' : ''}`}
                 role="button"
                 tabIndex={0}
+                draggable={false}
                 onClick={triggerWhimsy}
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); triggerWhimsy(); } }}
               />
