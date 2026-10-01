@@ -340,7 +340,7 @@ export default function Projects() {
     <PageTransition>
       <section className="section">
         <div className="section-header">
-          <h2><ScrambleText text="PROJECTS_" /></h2>
+          <h1><ScrambleText text="PROJECTS_" /></h1>
           <p className="section-desc">the second pillar: things I've built (platforms, tools, and experiments)</p>
         </div>
 

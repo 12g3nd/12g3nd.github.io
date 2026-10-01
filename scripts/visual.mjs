@@ -222,7 +222,7 @@ function initScript({ theme }) {
   } catch {
     // Storage denied: the class below still carries the theme for this page.
   }
-  if (theme === 'light') document.documentElement.classList.add('theme-light');
+  if (theme === 'dark') document.documentElement.classList.add('theme-dark');
 }
 
 /**
@@ -235,12 +235,9 @@ function initScript({ theme }) {
  * that kept moving between runs.
  */
 const FACES = [
-  '400 16px "Space Mono"',
-  '700 16px "Space Mono"',
   '400 16px Anton',
-  '400 16px "Source Serif 4"',
-  '600 16px "Source Serif 4"',
-  'italic 400 16px "Source Serif 4"',
+  '400 16px Recursive',
+  '700 16px Recursive',
 ];
 
 /**

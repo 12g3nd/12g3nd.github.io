@@ -24,7 +24,7 @@ export default function Blog() {
     <PageTransition>
       <section className="section">
         <div className="section-header">
-          <h2><ScrambleText text="TRANSMISSIONS_" /></h2>
+          <h1><ScrambleText text="TRANSMISSIONS_" /></h1>
           <p className="section-desc">essays and logs, append-only — once a transmission goes out, I don't edit it</p>
         </div>
 

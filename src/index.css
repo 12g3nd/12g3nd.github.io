@@ -1,149 +1,227 @@
-/* Fonts (Anton + Space Mono) are loaded via <link> in index.html, not @import
-   here — an @import would force the browser to download and parse this file
-   before it even discovers the fonts, serializing the request and delaying the
-   hero's first paint. */
+/* ─────────────────────────────────────────────────────────────────────────────
+   The design tokens.
+
+   The site is paper first. The terminal survives as one instrument — the
+   command line in the nav — and everything else is the paper that terminal
+   would have printed: a ledger, a bound book, a directory listing, a wire log.
+   So the default ground is manila, the ink is ribbon black, and the one accent
+   is the red half of a two-colour typewriter ribbon. Dark mode is the screen
+   the printout came off: warm black with amber phosphor, never navy. It is an
+   opt-in class (`.theme-dark`), applied before first paint by the inline script
+   in index.html, so a visitor who never asks for it never sees it.
+
+   Every value below was picked against measured contrast, not by eye alone:
+   --ink-faint is the floor for any text and clears 4.5:1 on --ground, --sheet
+   and --paper-blue in both themes. Nothing that carries words may be lighter.
+   The blue-bar stripe (--paper-blue-bar) is a surface only — faint text on it
+   drops to 4.3:1, so text over stripes uses --ink-soft or darker.
+   ───────────────────────────────────────────────────────────────────────────── */
 :root {
-  /* ── Surfaces (dark → raised) ─────────────────────────── */
-  --bg-base: #0A1320;
-  --bg-surface: #162032;
-  --bg-raised: #1A2A40;
+  /* ── Paper ─────────────────────────────────────────────── */
+  --ground: #ece0c2;          /* the manila the whole site sits on */
+  --sheet: #f6efdc;           /* a document laid on the ground */
+  --sheet-deep: #e0d2ae;      /* wells, gutters, the shadow side of a fold */
+  --paper-blue: #dfe8ef;      /* index cards and the ledger's blue-bar paper */
+  --paper-blue-bar: #c9d9e6;  /* the blue-bar stripe — surface only, see above */
 
-  /* Warm "paper" surface — borrowed from the Poetry PDF so other sections can
-     break the cyan-on-navy monotony with the site's best-looking treatment. */
-  --paper-bg: #f5ecd6;
-  --paper-ink: #2a2418;
-  --paper-ink-soft: #6b5e3f;
+  /* ── Ink ───────────────────────────────────────────────── */
+  --ink-rgb: 33, 27, 18;
+  --ink: rgb(var(--ink-rgb));
+  --ink-soft: #54472f;        /* secondary copy           13px+ ≥ 6.0:1 */
+  --ink-faint: #6e5f43;       /* meta, dates, the floor   13px+ ≥ 4.5:1 */
+  --rule: rgba(var(--ink-rgb), 0.22);
+  --rule-strong: rgba(var(--ink-rgb), 0.5);
 
-  /* ── Text (one cream hue, tiered by opacity) ──────────── */
-  --text-rgb: 253, 246, 227;
-  --text-primary: rgb(var(--text-rgb));
-  --text-dim: rgba(var(--text-rgb), 0.8);
-  --text-muted: rgba(var(--text-rgb), 0.6);
-  /* 0.5 rather than the 0.4 this started at: the tier is for de-emphasised
-     meta, not for text nobody can read, and 0.4 measured 3.4:1 against
-     --bg-raised. This clears 4.5:1 on --bg-base and lands just under it on the
-     lightest surface, which is as far as the tier can go before it stops
-     reading as faint at all. Consumers that hardcoded 0.4 or 0.45 inline have
-     been folded back onto this token — the two values were drift, not intent. */
-  --text-faint: rgba(var(--text-rgb), 0.5);
+  /* ── The one accent ────────────────────────────────────── */
+  /* Ribbon red. Links and the current page in the nav — nothing else. */
+  --accent: #a8261a;
+  --accent-rgb: 168, 38, 26;
 
-  /* ── Accents ──────────────────────────────────────────── */
-  --accent-primary: #00E5FF;        /* cyan — interactive / headers */
-  --accent-secondary: #7B61FF;      /* purple — temporal / meta */
-  --accent-rgb: 0, 229, 255;
+  /* ── Type ──────────────────────────────────────────────── */
+  --font-display: 'Anton', 'Arial Narrow', sans-serif;
+  /* Recursive carries every reading and data voice. Which voice is decided by
+     two axes, set as custom properties so any element can change voice without
+     restating the family: --casl (0 linear → 1 casual) and --mono (0
+     proportional → 1 monospace). The `*` rule below turns them into
+     font-variation-settings on every element, because that property inherits
+     as a computed string and would otherwise ignore a child's override. */
+  --font-text: 'Recursive', ui-sans-serif, system-ui, sans-serif;
+  --casl-prose: 0.6;
+  --casl-data: 0.3;
 
-  /* Reserved "warmer voice" — used sparingly for emotional / significant beats
-     (boot warnings, gallery light, poetry awards). On dark surfaces use the
-     bright amber; on the cream paper surfaces use the deeper ink so it reads. */
-  --accent-warm-rgb: 255, 176, 0;
-  --accent-warm: #ffb000;
-  --accent-warm-ink: #a8651a;
+  /* Six sizes. rem, so a reader's own browser font size is respected — the
+     old site set ~70 px literals and ignored it. 13px is the floor. */
+  --fs-meta: 0.8125rem;                             /* 13 — dates, labels   */
+  --fs-small: 0.9375rem;                            /* 15 — captions, chips */
+  --fs-body: 1.125rem;                              /* 18 — running text    */
+  --fs-lede: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);/* 20–24 — openers     */
+  --fs-title: clamp(2.25rem, 1.5rem + 3vw, 3.75rem);/* 36–60 — page titles */
+  --fs-display: clamp(3.75rem, 1.6rem + 9vw, 9.5rem);/* the name, once     */
 
-  --font-display: 'Anton', sans-serif;
-  --font-mono: 'Space Mono', monospace;
-  /* Long-form reading voice, used inside the document while the SJ.SYS chrome
-     around it stays monospace. The fallback chain is the same system serif the
-     poetry pages already read in, so the principle holds even before the
-     webfont lands (and if it never does). */
-  --font-reading: 'Source Serif 4', Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+  --lh-body: 1.6;
+  --lh-tight: 1.05;
+  --measure: 66ch;
 
-  --border-faint: 1px solid rgba(var(--text-rgb), 0.15);
-  --border-divider: 1px solid rgba(var(--text-rgb), 0.1);
+  /* ── Space (4px base) ──────────────────────────────────── */
+  --space-1: 0.25rem;   /*  4 */
+  --space-2: 0.5rem;    /*  8 */
+  --space-3: 0.75rem;   /* 12 */
+  --space-4: 1rem;      /* 16 */
+  --space-5: 1.5rem;    /* 24 */
+  --space-6: 2rem;      /* 32 */
+  --space-7: 3rem;      /* 48 */
+  --space-8: 4rem;      /* 64 */
+  --space-9: 6rem;      /* 96 */
+  --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
 
-  /* Shared "floating paper card" shadow + terminal green. Defined as vars so the
-     light theme can warm/soften them in one place instead of per component. */
-  --shadow-paper: 0 2px 0 rgba(0, 0, 0, 0.4), 0 14px 30px rgba(0, 0, 0, 0.55);
-  --term-green: #0f0;
+  /* ── Layers ────────────────────────────────────────────── */
+  /* Named so nothing needs a 9999 again. Easter eggs sit above everything
+     because they are the visitor's own doing and are meant to take over. */
+  --z-raised: 1;
+  --z-sticky: 100;
+  --z-overlay: 1000;
+  --z-modal: 1100;
+  --z-toast: 1200;
+  --z-egg: 2000;
+
+  /* Breakpoints, for reference — custom properties cannot be read inside a
+     media query, so these are the three widths every @media should use:
+     480px (phone), 768px (tablet), 1080px (desktop). */
+
+  /* ── Motion ────────────────────────────────────────────── */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.6, 0, 0.3, 1);
+  --dur-fast: 120ms;
+  --dur-base: 220ms;
+
+  /* ── Material ──────────────────────────────────────────── */
+  --border: 1px solid var(--rule);
+  --shadow-sheet: 0 1px 0 rgba(var(--ink-rgb), 0.08), 0 10px 24px -14px rgba(var(--ink-rgb), 0.35);
+
+  color-scheme: light;
+
+  /* ── Legacy names ──────────────────────────────────────── */
+  /* Every page stylesheet was written against these. They now resolve to the
+     paper palette so the whole site turns over at once; each page drops them
+     as it is redesigned, and when nothing reads them they go. Do not use them
+     in new code. */
+  --bg-base: var(--ground);
+  --bg-surface: var(--sheet);
+  --bg-raised: var(--sheet);
+  --text-rgb: var(--ink-rgb);
+  --text-primary: var(--ink);
+  --text-dim: var(--ink);
+  --text-muted: var(--ink-soft);
+  --text-faint: var(--ink-faint);
+  --accent-primary: var(--accent);
+  --accent-secondary: var(--ink-soft);
+  --accent-warm-rgb: 138, 82, 18;
+  --accent-warm: #8a5212;
+  --accent-warm-ink: #8a5212;
+  --paper-bg: var(--sheet);
+  --paper-ink: var(--ink);
+  --paper-ink-soft: var(--ink-soft);
+  --term-green: #2f6a35;
+  --font-mono: var(--font-text);
+  --font-reading: var(--font-text);
+  --border-faint: var(--border);
+  --border-divider: var(--border);
+  --shadow-paper: var(--shadow-sheet);
 }
 
-/* Easter-egg "heresy" theme (terminal: `theme light`). Cyan-on-navy is the real
-   identity; this flips the core surface + ink + accent vars to the warm paper
-   palette. Because the whole site reads from these variables, most components
-   invert automatically. Persisted in localStorage and re-applied in main.tsx. */
-.theme-light {
-  /* Surfaces spread further apart than the near-identical originals so cards and
-     panels actually lift off the page (the dark theme gets this separation for
-     free from glows; on parchment it has to come from tone). base = the "desk". */
-  --bg-base: #e3d7bb;
-  --bg-surface: #efe5ce;
-  --bg-raised: #f7efda;
-  --text-rgb: 42, 36, 24;
-  /* The four text tiers are one hue stepped by opacity, and that ramp does not
-     survive the theme flip: cream on navy has roughly four times the luminance
-     delta of ink on parchment, so the same alphas that read as "dim / muted /
-     faint" on dark collapse into "illegible" on cream. At the dark theme's
-     0.4, --text-faint measures 2.2:1 against --bg-base here — below every
-     WCAG threshold, and no ink colour fixes it, because 0.4 alpha over this
-     parchment cannot reach 4.5:1 even at pure black. The alphas themselves
-     have to move. These three are re-derived so the worst case (the lightest
-     surface, --bg-raised) still clears 4.5:1; the tiers stay ordered, they are
-     just closer together than on dark, which is what the smaller delta buys. */
-  --text-dim: rgba(var(--text-rgb), 0.88);
-  --text-muted: rgba(var(--text-rgb), 0.78);
-  --text-faint: rgba(var(--text-rgb), 0.68);
-  /* Deepened from #0a7d8c, which measured 3.4:1 on --bg-base — this is the
-     interactive colour, so it was the one token most worth getting right. */
-  --accent-primary: #0a6270;
-  --accent-rgb: 10, 98, 112;
-  /* Deepen the secondary/warm voices: #7B61FF and #ffb000 are tuned for navy and
-     wash out on cream, so meta text and warnings need more ink to hold contrast. */
-  --accent-secondary: #5a3fc0;
-  --accent-warm-rgb: 181, 101, 29;
-  --accent-warm: #b5651d;
-  /* Warm, soft shadow instead of the heavy black one (which muddies on parchment)
-     and a forest green the eye can actually read on cream. */
-  --shadow-paper: 0 1px 0 rgba(42, 36, 24, 0.10), 0 12px 28px -10px rgba(42, 36, 24, 0.28);
-  --term-green: #1f7a33;
+/* The screen the printout came off. Warm black, amber phosphor. */
+.theme-dark {
+  --ground: #16130e;
+  --sheet: #1f1b15;
+  --sheet-deep: #2a241c;
+  --paper-blue: #1b232b;
+  --paper-blue-bar: #22303b;
+
+  --ink-rgb: 238, 228, 205;
+  --ink-soft: #bdb197;
+  --ink-faint: #9a8f77;
+  --rule: rgba(var(--ink-rgb), 0.16);
+  --rule-strong: rgba(var(--ink-rgb), 0.4);
+
+  --accent: #f2a93b;
+  --accent-rgb: 242, 169, 59;
+
+  --shadow-sheet: 0 1px 0 rgba(0, 0, 0, 0.5), 0 14px 30px -12px rgba(0, 0, 0, 0.7);
+  color-scheme: dark;
+
+  --accent-warm-rgb: 242, 169, 59;
+  --accent-warm: #f2a93b;
+  --accent-warm-ink: #f2a93b;
+  --term-green: #7fd37a;
 }
 
-/* ── Light-theme ("heresy") component adjustments ─────────────────────────────
-   The variable swap above re-skins ~90% of the site automatically. These rules
-   fix the places that hard-coded a dark surface underneath them: black device
-   frames, invert/screen image tricks that assume a dark mat, and cyan watermarks
-   tuned to glow on navy. Scoped to .theme-light so the dark theme is untouched. */
+/* Recursive's two voice axes, resolved per element (see --font-text). Anton
+   has neither axis and ignores them. */
+* {
+  font-variation-settings: 'CASL' var(--casl, var(--casl-prose)), 'MONO' var(--mono, 0);
+}
+
+/* The data voice: dates, ledger cells, the command line, code. Same family,
+   monospaced and a little straighter. */
+.t-data,
+code,
+kbd,
+samp,
+pre {
+  --mono: 1;
+  --casl: var(--casl-data);
+  font-family: var(--font-text);
+}
+
+/* ── Paper-ground component adjustments (transitional) ─────────────────────────
+   These began life as the light ("heresy") theme's patches for components that
+   assumed a dark surface underneath them: invert/screen image tricks, black
+   device frames, near-white engravings. Paper is the default now, so they apply
+   whenever dark mode is off. Each one moves into its own component's
+   stylesheet — and out of this file — as that page is redesigned. */
 
 /* Poetry / Guestbook "document viewer": keep the framed-manuscript drama, but
    warm the black bezel to espresso so it reads as an intentional frame on the
    parchment desk rather than a cold slab dropped onto it. The cream pages inside
    stay cream and pop against it exactly as they do in the dark theme. */
-.theme-light .doc-viewer,
-.theme-light .gb-form-viewer {
+html:not(.theme-dark) .doc-viewer,
+html:not(.theme-dark) .gb-form-viewer {
   background: linear-gradient(180deg, #2e2719 0%, #1c1710 100%);
   border-color: rgba(245, 236, 214, 0.14);
 }
-.theme-light .doc-viewer__chrome,
-.theme-light .gb-form-chrome {
+html:not(.theme-dark) .doc-viewer__chrome,
+html:not(.theme-dark) .gb-form-chrome {
   background: #1c1710;
   color: rgba(245, 236, 214, 0.7);
   border-bottom-color: rgba(245, 236, 214, 0.1);
 }
-.theme-light .doc-viewer__meta { color: rgba(245, 236, 214, 0.45); }
-.theme-light .doc-viewer__filename::before { border-color: rgba(245, 236, 214, 0.5); }
-.theme-light .doc-viewer__pages {
+html:not(.theme-dark) .doc-viewer__meta { color: rgba(245, 236, 214, 0.45); }
+html:not(.theme-dark) .doc-viewer__filename::before { border-color: rgba(245, 236, 214, 0.5); }
+html:not(.theme-dark) .doc-viewer__pages {
   background:
     repeating-linear-gradient(135deg, rgba(245, 236, 214, 0.02) 0px, rgba(245, 236, 214, 0.02) 2px, transparent 2px, transparent 6px),
     #241d13;
 }
-.theme-light .gb-form-chrome__prompt { color: #1fbecf; }
+html:not(.theme-dark) .gb-form-chrome__prompt { color: #1fbecf; }
 
 /* Media gallery: prints are white-bg ink art shown via invert+screen on a dark
    mat. On parchment, flip to a light mat + multiply so the ink reads as dark
    linework — i.e. actual framed prints, the stated intent of the section. */
-.theme-light .media-plate__art {
+html:not(.theme-dark) .media-plate__art {
   background:
     radial-gradient(120% 90% at 50% 25%, rgba(181, 101, 29, 0.10), transparent 60%),
     rgba(42, 36, 24, 0.05);
 }
-.theme-light .media-plate__art img {
+html:not(.theme-dark) .media-plate__art img {
   filter: sepia(0.25) saturate(1.1) brightness(0.92);
   mix-blend-mode: multiply;
 }
-.theme-light .media-plate {
+html:not(.theme-dark) .media-plate {
   box-shadow:
     0 16px 34px -22px rgba(42, 36, 24, 0.45),
     inset 0 1px 0 rgba(255, 255, 255, 0.45);
 }
-.theme-light .media-plate:hover {
+html:not(.theme-dark) .media-plate:hover {
   box-shadow:
     0 22px 44px -20px rgba(42, 36, 24, 0.5),
     0 0 26px -6px rgba(181, 101, 29, 0.25);
@@ -151,7 +229,7 @@
 
 /* Home: the beliefs (kepler) graphic uses the same invert/screen trick — flip it
    to dark ink on parchment too. */
-.theme-light .kepler-link img {
+html:not(.theme-dark) .kepler-link img {
   filter: sepia(0.25) saturate(1.1) brightness(0.9);
   mix-blend-mode: multiply;
 }
@@ -168,30 +246,30 @@
    layout, so no frame or blend tricks are needed — just stop the dark-mode
    glitch animation and add a soft shadow to ground it. (Dark mode keeps the
    low-poly figure.png with its cyan glow + glitch.) */
-.theme-light .wireframe-glitch {
+html:not(.theme-dark) .wireframe-glitch {
   animation: none;
   filter: drop-shadow(0 12px 18px rgba(42, 36, 24, 0.18));
 }
 /* The landscape surfer is wider than the old portrait figure, so on phones (where
    it overlays the name) trim it a little so the wordmark stays readable. */
 @media (max-width: 768px) {
-  .theme-light .mobile-figure-inline { max-height: 150px; }
+  html:not(.theme-dark) .mobile-figure-inline { max-height: 150px; }
 }
 
 /* CN-tower landmark + crest seal are tinted near-white to glow on navy, so they
    vanish on parchment. Recolor to dark ink (filter only — leave the landmark's
    opacity-driven hover swap alone). */
-.theme-light .landmark-default,
-.theme-light .landmark-hover,
-.theme-light .mobile-landmark-swap img {
+html:not(.theme-dark) .landmark-default,
+html:not(.theme-dark) .landmark-hover,
+html:not(.theme-dark) .mobile-landmark-swap img {
   filter: brightness(0) saturate(100%);
 }
-.theme-light .crest-icon {
+html:not(.theme-dark) .crest-icon {
   filter: brightness(0) saturate(100%);
   opacity: 0.72;
 }
-.theme-light .crest-icon:hover,
-.theme-light .crest-icon:focus-visible {
+html:not(.theme-dark) .crest-icon:hover,
+html:not(.theme-dark) .crest-icon:focus-visible {
   filter: brightness(0) saturate(100%);
   opacity: 1;
 }
@@ -200,33 +278,32 @@
    wordmark's ink so it reads as part of the name. The filter chain lands on
    ~rgb(42,36,24) = --text-primary; hover keeps the ink and adds a faint accent
    glow for the interactive cue. */
-.theme-light .y2k-accent {
+html:not(.theme-dark) .y2k-accent {
   filter: brightness(0) invert(13%) sepia(1) brightness(0.92);
 }
-.theme-light .y2k-accent:hover,
-.theme-light .y2k-accent:focus-visible {
+html:not(.theme-dark) .y2k-accent:hover,
+html:not(.theme-dark) .y2k-accent:focus-visible {
   filter: brightness(0) invert(13%) sepia(1) brightness(0.92)
     drop-shadow(0 0 10px rgba(var(--accent-rgb), 0.35));
 }
 
 /* Watermark numerals were near-invisible cyan-on-navy values; on parchment bump
    them so they read as faint debossed numbers instead of nothing. */
-.theme-light .tenet-number { color: rgba(90, 63, 192, 0.26); }
-.theme-light .project-card__num { color: rgba(var(--accent-rgb), 0.16); }
+html:not(.theme-dark) .tenet-number { color: rgba(90, 63, 192, 0.26); }
+html:not(.theme-dark) .project-card__num { color: rgba(var(--accent-rgb), 0.16); }
 
 /* Project status chip rode a translucent-navy fill; give it a parchment fill and
    pull the "viral" amber down to the readable warm ink. */
-.theme-light .project-card__status { background: rgba(247, 239, 218, 0.92); }
-.theme-light .project-card__status--viral { color: var(--accent-warm); }
+html:not(.theme-dark) .project-card__status { background: rgba(247, 239, 218, 0.92); }
+html:not(.theme-dark) .project-card__status--viral { color: var(--accent-warm); }
 
-/* The boot self-test is the machine powering on — it should always be a dark CRT.
-   Re-pin the dark palette on its subtree so a light-theme reload doesn't bleed
-   parchment into the vignette or hide the cream log text. */
-.theme-light .boot {
-  --bg-base: #0A1320;
-  --text-rgb: 253, 246, 227;
-  --accent-primary: #00E5FF;
-  --accent-rgb: 0, 229, 255;
+/* The boot self-test is the machine powering on, so it is always the screen,
+   whichever theme the page underneath is in. Pinned on its own subtree. */
+.boot {
+  --bg-base: #16130e;
+  --text-rgb: 238, 228, 205;
+  --accent-primary: #f2a93b;
+  --accent-rgb: 242, 169, 59;
 }
 
 /* Canonical blink. (Two identical-purpose @keyframes blink used to live in
@@ -239,6 +316,10 @@
 
 html {
   scroll-behavior: smooth;
+  /* clip, not hidden: hidden makes the root a scroll container, which breaks
+     position: sticky and quietly hides real overflow instead of preventing it.
+     The 320px overflow this used to mask is fixed at its source. */
+  overflow-x: clip;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -254,20 +335,24 @@ html {
 }
 
 body {
-  background-color: var(--bg-base);
-  color: var(--text-primary);
-  font-family: var(--font-mono);
-  overflow-x: hidden;
+  background-color: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-text);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-/* Faint CRT scanlines over the whole viewport. Decorative only — never blocks
-   pointer events, so the cursor and clicks pass straight through. */
-body::before {
+/* CRT scanlines. Parked, not deleted: the site is paper now, and a screen
+   texture over paper is costume. Add `fx-scanlines` to <html> to bring them
+   back (see src/effects.ts). */
+html.fx-scanlines body::before {
   content: '';
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  z-index: var(--z-egg);
   pointer-events: none;
   background: repeating-linear-gradient(
     to bottom,
@@ -278,26 +363,68 @@ body::before {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body::before {
+  html.fx-scanlines body::before {
     display: none;
   }
 }
 
+/* Anton is for page and section titles, and it is the only thing set in
+   capitals by default. Everything below h2 is Recursive in sentence case: the
+   old rule capitalised and tracked every heading on the site, which is how
+   eyebrow labels ended up outnumbering the things they labelled. */
 h1, h2, h3, h4, h5, h6 {
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  line-height: 1;
   margin: 0;
+  line-height: var(--lh-tight);
+  font-weight: 700;
+}
+
+h1, h2 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+h3, h4, h5, h6 {
+  font-family: var(--font-text);
+}
+
+p {
+  max-width: var(--measure);
 }
 
 .container {
   max-width: 1400px;
   margin: 0 auto;
-  border-left: var(--border-divider);
-  border-right: var(--border-divider);
+  border-left: var(--border);
+  border-right: var(--border);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+}
+
+/* The landmark every route renders into. */
+#content {
+  flex: 1 0 auto;
+  min-width: 0;
+}
+
+/* Hidden until focused, then the first thing a keyboard reaches. */
+.skip-link {
+  position: absolute;
+  left: var(--space-4);
+  top: var(--space-2);
+  z-index: var(--z-modal);
+  padding: var(--space-2) var(--space-4);
+  background: var(--sheet);
+  color: var(--ink);
+  border: 1px solid var(--rule-strong);
+  font-size: var(--fs-small);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus-visible {
+  transform: none;
 }
 
 /* ── Large / ultrawide screens ─────────────────────────── */
@@ -314,23 +441,21 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .section {
-  border-bottom: var(--border-divider);
-  padding: 80px 2rem;
+  border-bottom: var(--border);
+  padding: var(--space-8) var(--gutter);
 }
 
-.section-header h2 {
-  font-family: var(--font-display);
-  font-size: 3rem;
-  color: var(--accent-primary);
-  margin-bottom: 2rem;
+.section-header :is(h1, h2) {
+  font-size: var(--fs-title);
+  color: var(--ink);
+  margin-bottom: var(--space-5);
 }
 
 /* Tagline under a section title (Media, Poetry, …). */
 .section-desc {
-  margin-top: 0.5rem;
-  font-family: var(--font-mono);
-  color: var(--text-muted);
-  font-size: 14px;
+  margin-top: var(--space-2);
+  color: var(--ink-soft);
+  font-size: var(--fs-small);
 }
 
 a {
@@ -339,27 +464,27 @@ a {
   /* Named properties rather than `all`, because `all` includes `outline`, and
      an outline that fades in leaves the first frames of a focus move with no
      indicator at all — see the focus ring below. */
-  transition: color 0.15s ease, background-color 0.15s ease,
-    border-color 0.15s ease, transform 0.15s ease, opacity 0.15s ease;
+  transition: color var(--dur-fast) var(--ease-out), background-color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out), opacity var(--dur-fast) var(--ease-out);
 }
 
-/* One focus ring for the whole site.
-   Every easter egg already carried its own :focus-visible — the wireframe, the
-   y2k star, the crest, the elevator — because each was added as a deliberate
-   keyboard target. Nothing a visitor is actually trying to reach did: not a
-   nav link, not [VIEW PROJECTS], not a post link. The site had sixty :hover
-   rules and twelve :focus ones, so keyboard navigation ran on whatever the
-   browser drew by default, over a palette none of those defaults were picked
-   against. :focus-visible keeps it off pointer users, and it is deliberately
-   not transitioned. The per-component rings that already exist are more
-   specific and still win where they are declared. */
+/* One focus ring for the whole site, never transitioned so it is there on the
+   first frame of a focus move. Per-component rings may add to it; they should
+   not replace it. */
 :focus-visible {
-  outline: 2px solid var(--accent-primary);
+  outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
 
-p, span, div {
-  transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+/* Programmatic focus on a page's heading after a route change (see
+   ScrollRestoration) is for screen readers; it should not paint a ring. */
+[tabindex="-1"]:focus {
+  outline: none;
+}
+
+::selection {
+  background: rgba(var(--accent-rgb), 0.22);
+  color: var(--ink);
 }
 
 @media (max-width: 768px) {
@@ -405,17 +530,17 @@ body.party-mode * {
   cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32"><text y="26" font-size="26">🦄</text></svg>') 6 6, auto;
 }
 
-/* Recolor the entire app through the rainbow. hue-rotate keeps cyan-on-navy's
+/* Recolor the entire app through the rainbow. hue-rotate keeps the ground-and-ink
    contrast intact while sweeping every hue — readable chaos. */
 body.party-mode .container {
   animation: party-hue 7s linear infinite;
-  background: rgba(10, 19, 32, 0.6);
+  background: color-mix(in srgb, var(--ground) 60%, transparent);
   backdrop-filter: blur(1px);
 }
 
 /* Let the rainbow show through the section surfaces a little. */
 body.party-mode .section {
-  background-color: rgba(22, 32, 50, 0.78);
+  background-color: color-mix(in srgb, var(--sheet) 78%, transparent);
 }
 
 body.party-mode .nav-brand {

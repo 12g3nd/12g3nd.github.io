@@ -79,7 +79,7 @@ export default function Media() {
     <PageTransition>
       <section className="section">
         <div className="section-header">
-          <h2><ScrambleText text="FAV_MEDIA.DAT" /></h2>
+          <h1><ScrambleText text="FAV_MEDIA.DAT" /></h1>
           <p className="section-desc">the media I enjoy — a shortcut to understanding me</p>
         </div>
 

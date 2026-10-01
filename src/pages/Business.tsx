@@ -165,7 +165,7 @@ export default function Business() {
     <PageTransition>
       <section className="section">
         <div className="section-header">
-          <h2><ScrambleText text="LEDGER.XLSX" /></h2>
+          <h1><ScrambleText text="LEDGER.XLSX" /></h1>
           <p className="section-desc">the first pillar: experience, track record, and write-ups, in pseudo-spreadsheet form</p>
         </div>
 

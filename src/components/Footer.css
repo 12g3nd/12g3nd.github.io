@@ -269,14 +269,14 @@
    light theme's alphas rather than the dark theme's. The hierarchy is kept —
    the stamp still sits under the copyright, the hash still sits under the
    stamp — it is just moved up as a group. */
-.theme-light .footer-updated {
+html:not(.theme-dark) .footer-updated {
   color: rgba(var(--text-rgb), 0.55);
 }
 
-.theme-light .footer-updated__sha {
+html:not(.theme-dark) .footer-updated__sha {
   color: rgba(var(--text-rgb), 0.42);
 }
 
-.theme-light .footer-index {
+html:not(.theme-dark) .footer-index {
   color: rgba(var(--text-rgb), 0.6);
 }

@@ -27,6 +27,32 @@ function maxScroll() {
 }
 
 /**
+ * Move focus to the incoming page's <h1> once it has mounted, so a screen
+ * reader announces the new page instead of staying silent on a link that has
+ * scrolled away. Same wait as a restore, for the same reason: the outgoing page
+ * is held for its exit, so its <h1> is still in the document when the location
+ * changes, and focusing straight away would land on the page being left.
+ * preventScroll, because where the page sits is this component's other job.
+ * Returns a cancel for when the visitor navigates again before it lands.
+ */
+function focusIncomingHeading() {
+  const outgoing = document.querySelector('#content h1');
+  const deadline = performance.now() + RESTORE_BUDGET_MS;
+  let frame = 0;
+  const step = () => {
+    const h1 = document.querySelector<HTMLElement>('#content h1');
+    if (h1 && h1 !== outgoing && h1.isConnected) {
+      if (!h1.hasAttribute('tabindex')) h1.setAttribute('tabindex', '-1');
+      h1.focus({ preventScroll: true });
+      return;
+    }
+    if (performance.now() < deadline) frame = requestAnimationFrame(step);
+  };
+  frame = requestAnimationFrame(step);
+  return () => cancelAnimationFrame(frame);
+}
+
+/**
  * Scroll position per history entry: the top of the page on a new navigation,
  * and the offset you left behind when you go back or forward to one you have
  * already seen.
@@ -107,11 +133,12 @@ export default function ScrollRestoration() {
     savePositions(positions.current);
 
     const target = navigationType === 'POP' ? positions.current[key] ?? 0 : 0;
+    const stopFocus = focusIncomingHeading();
 
     if (target === 0) {
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
       offset.current = 0;
-      return;
+      return stopFocus;
     }
 
     let frame = 0;
@@ -138,6 +165,7 @@ export default function ScrollRestoration() {
 
     return () => {
       done = true;
+      stopFocus();
       cancelAnimationFrame(frame);
       window.removeEventListener('wheel', abandon);
       window.removeEventListener('touchstart', abandon);

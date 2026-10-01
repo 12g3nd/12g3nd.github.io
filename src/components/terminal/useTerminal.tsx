@@ -245,11 +245,11 @@ export default function useTerminal() {
         break;
       case 'theme light':
         applyTheme('light');
-        setOutput('theme → light. cyan-on-navy is sacred; this is heresy. enjoy.');
+        setOutput('theme → paper. back on the printout.');
         break;
       case 'theme dark':
         applyTheme('dark');
-        setOutput('theme → dark. order restored.');
+        setOutput('theme → dark. you are reading it off the screen now.');
         break;
       case 'theme':
         setOutput('usage: theme dark | theme light');

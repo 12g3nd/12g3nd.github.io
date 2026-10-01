@@ -23,7 +23,7 @@ export default function Poetry() {
     <PageTransition>
       <section className="section section--poetry">
         <div className="section-header">
-          <h2><ScrambleText text="POETRY.PDF" /></h2>
+          <h1><ScrambleText text="POETRY.PDF" /></h1>
           <p className="section-desc">some of my favourite poems I've ever written at various points in my life. the third pillar.</p>
           <button
             className="poetry-compact-toggle"

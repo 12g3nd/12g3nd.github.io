@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { AMBIENT } from '../effects';
 
 const CHARS = '!<>-_\\/[]{}=+*^?#%@01';
 
@@ -10,14 +11,15 @@ interface ScrambleTextProps {
 /**
  * "Decrypts" its text on mount: each character scrambles through random glyphs,
  * then settles to its final value in a left-to-right stagger. Respects
- * prefers-reduced-motion (renders the final text immediately).
+ * prefers-reduced-motion (renders the final text immediately), and is parked
+ * behind AMBIENT.scramble in src/effects.ts.
  */
 export default function ScrambleText({ text, className }: ScrambleTextProps) {
   const [display, setDisplay] = useState(text);
   const raf = useRef(0);
 
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (!AMBIENT.scramble || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setDisplay(text);
       return;
     }

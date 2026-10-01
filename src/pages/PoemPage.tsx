@@ -34,7 +34,7 @@ export default function PoemPage() {
     <PageTransition>
       <section className="section section--poetry" style={{ paddingBottom: '5rem' }}>
         <div className="section-header">
-          <h2><ScrambleText text="POETRY.PDF" /></h2>
+          <h1><ScrambleText text="POETRY.PDF" /></h1>
           <p className="section-desc">
             page {page} of {poemsSorted.length} — <Link className="poem-nav__all" to="/poetry">open the whole collection</Link>
           </p>

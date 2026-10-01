@@ -201,3 +201,16 @@
 .post-prose .post-sources a {
   color: var(--text-primary);
 }
+
+/* The "TRANSMISSION_06" line above a post. It labels the post rather than
+   titling it — the post's own title is the page's <h1> — so it is a paragraph
+   set like a section title, not a second heading. */
+.section-header .post-transmission {
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  line-height: var(--lh-tight);
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: var(--space-3);
+  max-width: none;
+}

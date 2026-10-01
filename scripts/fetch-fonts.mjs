@@ -26,11 +26,17 @@ import path from 'node:path';
 // The exact request the old <link> in index.html made. Keep this in sync with
 // the FACES list in scripts/visual.mjs — that list is what the screenshot
 // harness blocks on, and a face here that is missing there is a silent race.
+//
+// Recursive is one variable file covering every reading and data voice: the
+// CASL axis moves it from linear to casual and MONO from proportional to
+// monospace, so prose and the command line are the same family on different
+// settings. The slant axis is deliberately left out — it more than doubles the
+// file (142 KB → 305 KB for latin) for the odd <em>, which the browser can
+// synthesise.
 const GOOGLE_CSS =
   'https://fonts.googleapis.com/css2' +
   '?family=Anton' +
-  '&family=Source+Serif+4:ital,wght@0,400;0,600;1,400' +
-  '&family=Space+Mono:wght@400;700' +
+  '&family=Recursive:wght,CASL,MONO@400..800,0..1,0..1' +
   '&display=swap';
 
 // Google serves woff2 only to a UA it believes supports it. Ask as Chrome, or
@@ -73,7 +79,7 @@ function parseFaces(css) {
       url,
       family: block.match(/font-family:\s*'([^']+)'/)?.[1],
       style: block.match(/font-style:\s*(\w+)/)?.[1] ?? 'normal',
-      weight: block.match(/font-weight:\s*(\d+)/)?.[1] ?? '400',
+      weight: block.match(/font-weight:\s*(\d+(?:\s+\d+)?)/)?.[1] ?? '400',
       range: block.match(/unicode-range:\s*([^;]+);/)?.[1],
     });
   }
@@ -90,7 +96,7 @@ function parseFaces(css) {
 function filenameFor(face) {
   const family = face.family.toLowerCase().replace(/\s+/g, '-');
   const style = face.style === 'italic' ? '-italic' : '';
-  return `${family}-${face.weight}${style}-${face.subset}.woff2`;
+  return `${family}-${face.weight.replace(/\s+/g, '-')}${style}-${face.subset}.woff2`;
 }
 
 async function main() {
@@ -132,13 +138,10 @@ async function main() {
 
   console.log(`\n${faces.length} files, ${(bytes / 1024).toFixed(1)} KB total`);
 
-  // Preload only what the shell paints before any route decides anything: the
-  // nav is Space Mono and the wordmark is Anton. Source Serif is reading copy,
-  // which is below the fold everywhere it appears and arrives in time on its
-  // own — preloading it too would make these two compete for bandwidth and
-  // delay the text that is actually on screen.
+  // Preload only what the shell paints before any route decides anything:
+  // Recursive is every line of running text and the nav, Anton the wordmark.
   const preloadNames = new Set([
-    'space-mono-400-latin.woff2',
+    'recursive-400-800-latin.woff2',
     'anton-400-latin.woff2',
   ]);
 

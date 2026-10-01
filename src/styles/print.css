@@ -12,18 +12,19 @@
 
 @media print {
   /* ── Ink ──────────────────────────────────────────────────
-     Printers do not reproduce a navy background, and a reader who prints does
-     not want them to. Everything falls back to black on white regardless of
-     which theme was on screen — including the light theme, which would
-     otherwise carry parchment through onto real paper. */
+     The screen is dressed as paper; real paper does not need to be. Everything
+     falls back to black on white regardless of which theme was on screen, so
+     neither the manila ground nor dark mode's warm black reaches the printer. */
   :root,
-  :root.theme-light {
-    --bg-base: #fff;
-    --bg-surface: #fff;
-    --bg-raised: #fff;
-    --paper-bg: #fff;
-    --text-rgb: 0, 0, 0;
-    --accent-primary: #000;
+  :root.theme-dark {
+    --ground: #fff;
+    --sheet: #fff;
+    --sheet-deep: #fff;
+    --paper-blue: #fff;
+    --ink-rgb: 0, 0, 0;
+    --ink-soft: #000;
+    --ink-faint: #333;
+    --accent: #000;
     --accent-rgb: 0, 0, 0;
   }
 

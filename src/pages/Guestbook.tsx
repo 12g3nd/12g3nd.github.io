@@ -25,9 +25,9 @@ export default function Guestbook() {
     <PageTransition>
       <section className="section">
         <div className="section-header">
-          <h2>
+          <h1>
             <ScrambleText text="GUESTBOOK_" />
-          </h2>
+          </h1>
           <p className="section-desc">
             visitors who've left their mark (drawn signatures &amp; three words)
           </p>

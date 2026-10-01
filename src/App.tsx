@@ -98,9 +98,12 @@ function App() {
       <Router>
         <ScrollRestoration />
         {booting && <BootSequence onDone={finishBoot} />}
+        <a className="skip-link" href="#content">Skip to content</a>
         <div className={`container${crt ? ' crt-burst-active' : ''}`}>
           <Navigation />
-          <AnimatedRoutes />
+          <main id="content">
+            <AnimatedRoutes />
+          </main>
           <Footer />
         </div>
         {crt && <CrtBurst />}

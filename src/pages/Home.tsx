@@ -8,6 +8,7 @@ import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
 import ScrambleText from '../components/ScrambleText';
 import AsciiRipple from '../components/AsciiRipple';
+import { AMBIENT } from '../effects';
 import PartyOverlay from '../components/PartyOverlay';
 import WhimsyOverlay from '../components/WhimsyOverlay';
 import GuestbookCard from '../components/GuestbookCard';
@@ -141,7 +142,7 @@ export default function Home() {
       )}
 
       <section className="section info-section">
-        <AsciiRipple />
+        {AMBIENT.asciiRipple && <AsciiRipple />}
 
         <div className="hero-content">
           <div className="giant-text">

@@ -50,7 +50,7 @@ export default function BlogPostPage() {
     <PageTransition>
       <section className="section" style={{ paddingBottom: '5rem' }}>
         <div className="section-header" style={{ marginBottom: '3rem' }}>
-          <h2><ScrambleText text={transmission} /></h2>
+          <p className="post-transmission"><ScrambleText text={transmission} /></p>
           <p className="post-log-date">{post.date} // LOG</p>
         </div>
 

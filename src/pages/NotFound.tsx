@@ -17,7 +17,7 @@ export default function NotFound() {
     <PageTransition>
       <section className="section panic-section">
         <div className="panic-box">
-          <h2 className="panic-title"><ScrambleText text="KERNEL_PANIC" /></h2>
+          <h1 className="panic-title"><ScrambleText text="KERNEL_PANIC" /></h1>
           <p className="panic-code">ERR 0x194 — route not mounted</p>
 
           <pre className="panic-log">{`> requested .................. ${location.pathname}

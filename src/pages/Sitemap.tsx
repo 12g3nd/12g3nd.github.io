@@ -110,7 +110,7 @@ export default function Sitemap() {
     <PageTransition>
       <section className="section" style={{ paddingBottom: '5rem' }}>
         <div className="section-header">
-          <h2><ScrambleText text="INDEX OF /" /></h2>
+          <h1><ScrambleText text="INDEX OF /" /></h1>
           <p className="section-desc">
             every page on this site, the way a web server would have told you about it.
           </p>

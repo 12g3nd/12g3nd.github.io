@@ -41,7 +41,7 @@ export default function CommandPalette() {
     { id: 'guestbook', label: 'Guestbook', hint: 'route', keywords: 'sign log visitors', run: goto('/guestbook') },
     {
       id: 'theme',
-      label: theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme',
+      label: theme === 'light' ? 'Switch to dark theme' : 'Switch to paper theme',
       hint: 'theme',
       keywords: 'mode color light dark',
       run: () => applyTheme(theme === 'light' ? 'dark' : 'light'),
