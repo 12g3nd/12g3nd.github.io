@@ -16,7 +16,7 @@ export default function MatrixRain() {
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
     const fontSize = 16;
-    const chars = 'アイウエオカキクケコ0123456789SJ.SYS<>/{}[]'.split('');
+    const chars = 'アイウエオカキクケコ0123456789SJ.EXE<>/{}[]'.split('');
     let drops = new Array(Math.ceil(width / fontSize))
       .fill(0)
       .map(() => Math.random() * -50);

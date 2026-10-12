@@ -2,7 +2,7 @@
 
 /* ── Command chrome ────────────────────────────────────────
    Matches pkg-bar (Projects), gallery-bar (Media), log-bar (Blog) so Poetry
-   reads as an SJ.SYS app too — `$ open poetry.pdf`, then the PDF viewer. */
+   reads as an SJ.EXE app too — `$ open poetry.pdf`, then the PDF viewer. */
 
 .poetry-bar__cmd {
   /* It's a real button (toggles director's-note mode) — strip native chrome. */

@@ -41,6 +41,50 @@ button.email-box {
   user-select: none;
 }
 
+/* ── Scratch-and-win (ScratchReveal) ───────────────────────
+   The email is laid out underneath exactly as it was shown after the old
+   click-to-reveal, and the foil canvas covers the whole box. When enough is
+   scratched the foil fades and stops taking the pointer. */
+.scratch-box {
+  position: relative;
+}
+
+.scratch-box__foil {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  touch-action: pan-y;
+  transition: opacity 0.5s ease;
+}
+
+.scratch-box__foil:active {
+  cursor: grabbing;
+}
+
+.scratch-box__foil:focus-visible {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 3px;
+}
+
+.scratch-box--revealed .scratch-box__foil {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Not revealed yet: the address is still there under the foil, but it is
+   not a link anyone can reach by accident. */
+.scratch-box:not(.scratch-box--revealed) .scratch-box__email {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scratch-box__foil {
+    transition: none;
+  }
+}
+
 .social-links {
   display: flex;
   gap: 1rem;

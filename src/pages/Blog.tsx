@@ -9,7 +9,7 @@ import { routeMeta } from '../data/routeMeta';
 import { postsSorted, quarters, quarterOf } from '../data/posts';
 import './Blog.css';
 
-const ALL = 'ARCHIVE_ROOT';
+const ALL = 'ARCHIVE ROOT';
 
 export default function Blog() {
   const [filter, setFilter] = useState<string>(ALL);
@@ -24,13 +24,13 @@ export default function Blog() {
     <PageTransition>
       <section className="section">
         <div className="section-header">
-          <h2><ScrambleText text="TRANSMISSIONS_" /></h2>
+          <h2><ScrambleText text="TRANSMISSIONS" /></h2>
           <p className="section-desc">essays and logs, append-only — once a transmission goes out, I don't edit it</p>
         </div>
 
-        {/* Log chrome: frames the feed as a live log stream inside SJ.SYS */}
+        {/* Log chrome: frames the feed as a live log stream inside SJ.EXE */}
         <div className="log-bar">
-          <span className="log-bar__cmd"><span className="log-bar__prompt">srihith@sj.sys:~$</span> tail -f transmissions.log</span>
+          <span className="log-bar__cmd"><span className="log-bar__prompt">srihith@sj.exe:~$</span> tail -f transmissions.log</span>
           <span className="log-bar__count">{postsSorted.length} entries</span>
         </div>
 
@@ -45,31 +45,31 @@ export default function Blog() {
                   {post.subtitle && <p className="post-card-subtitle">{post.subtitle}</p>}
                   <p className="post-abstract">{post.abstract}</p>
                   <Link to={`/blog/${post.slug}`} className="post-link">
-                    [READ_FULL_TRANSMISSION →]
+                    [READ FULL TRANSMISSION →]
                   </Link>
                 </article>
               </Reveal>
             ))}
             {visible.length === 0 && (
-              <p className="blog-empty">// no transmissions logged this quarter.</p>
+              <p className="blog-empty">no transmissions logged this quarter.</p>
             )}
           </div>
 
           {/* Sidebar */}
           <aside className="blog-sidebar">
             <div className="system-log-box">
-              <h4>[SYSTEM_LOG]</h4>
+              <h4>[SYSTEM LOG]</h4>
               <ul>
                 <li><span>&gt;</span> STATUS: <span className="blink-text status-online">ONLINE</span></li>
-                <li><span>&gt;</span> LOCAL_TIME: <br/><LogClock /></li>
+                <li><span>&gt;</span> LOCAL TIME: <br/><LogClock /></li>
                 <li><span>&gt;</span> LATENCY: 24ms</li>
-                <li><span>&gt;</span> REGION: ON_CA</li>
-                <li><span>&gt;</span> WRITE_MODE: APPEND_ONLY</li>
+                <li><span>&gt;</span> REGION: ON CA</li>
+                <li><span>&gt;</span> WRITE MODE: APPEND ONLY</li>
               </ul>
             </div>
 
             <div className="sidebar-section">
-              <h4>[QUICK_SEEK]</h4>
+              <h4>[QUICK SEEK]</h4>
               <ul className="quick-seek-list">
                 {quarters.map((q) => (
                   <li key={q}>

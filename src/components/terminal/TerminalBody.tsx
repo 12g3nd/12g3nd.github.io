@@ -26,7 +26,7 @@ export default function TerminalBody({ t }: { t: Terminal }) {
 
   return (
     <div className={`terminal-cmd${t.block ? ' terminal-cmd--multiline' : ''}`}>
-      <span className="terminal-prompt">srihith@sj.sys</span>
+      <span className="terminal-prompt">srihith@sj.exe</span>
       <span className="terminal-prompt-sep">:~$</span>
       <input
         className="terminal-input"

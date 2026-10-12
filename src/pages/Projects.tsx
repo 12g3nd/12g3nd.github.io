@@ -340,13 +340,13 @@ export default function Projects() {
     <PageTransition>
       <section className="section">
         <div className="section-header">
-          <h2><ScrambleText text="PROJECTS_" /></h2>
+          <h2><ScrambleText text="PROJECTS" /></h2>
           <p className="section-desc">the second pillar: things I've built (platforms, tools, and experiments)</p>
         </div>
 
-        {/* Package-manager chrome: frames the page as `pkg list` inside SJ.SYS */}
+        {/* Package-manager chrome: frames the page as `pkg list` inside SJ.EXE */}
         <div className="pkg-bar">
-          <span className="pkg-bar__cmd"><span className="pkg-bar__prompt">srihith@sj.sys:~$</span> pkg list --built</span>
+          <span className="pkg-bar__cmd"><span className="pkg-bar__prompt">srihith@sj.exe:~$</span> pkg list --built</span>
           <span className="pkg-bar__count">{packageCount} packages</span>
         </div>
 
@@ -354,7 +354,7 @@ export default function Projects() {
           <section className="projects-shelf" key={shelf.key}>
             <div className="projects-shelf__head">
               <h3 className="projects-shelf__label">
-                <span className="slash">//</span> {shelf.label}
+                {shelf.label}
               </h3>
               <span className="projects-shelf__blurb">{shelf.blurb}</span>
             </div>
@@ -401,7 +401,7 @@ export default function Projects() {
                 )}
                 <div className="project-card__body">
                   <h3 className="project-card__title">
-                    <span className="slash">//</span> PROJECT {numberOf.get(project.key)}: {project.name}
+                    PROJECT {numberOf.get(project.key)}: {project.name}
                   </h3>
                   {project.credit && <p className="project-card__credit">{project.credit}</p>}
                   {project.metric && (
@@ -437,7 +437,7 @@ export default function Projects() {
                     <div className="project-children">
                       <div className="project-children__bar">
                         <span className="project-children__cmd">
-                          <span className="pkg-bar__prompt">srihith@sj.sys:~$</span> pkg list --studio
+                          <span className="pkg-bar__prompt">srihith@sj.exe:~$</span> pkg list --studio
                         </span>
                         <span className="project-children__count">
                           {project.children.length} packages

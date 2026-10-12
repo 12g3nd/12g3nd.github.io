@@ -42,7 +42,7 @@ export default function Poetry() {
               aria-pressed={director}
               title="run command"
             >
-              <span className="poetry-bar__prompt">srihith@sj.sys:~$</span> open poetry.pdf{director ? ' --director' : ''}
+              <span className="poetry-bar__prompt">srihith@sj.exe:~$</span> open poetry.pdf{director ? ' --director' : ''}
             </button>
             {/* The commentary is the best writing on this page and it used to
                 sit behind an unlabelled button nobody pressed. The hint says

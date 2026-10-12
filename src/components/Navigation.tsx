@@ -7,12 +7,12 @@ import useTerminal from './terminal/useTerminal';
 import TerminalBody from './terminal/TerminalBody';
 import './Navigation.css';
 
-// The brand cycles through these on a triple-click, then settles back to SJ.SYS.
-const BRAND_GLITCH = ['SRIHITH.SYS', 'SJARABANA.OS', 'BUSINESSMAN.EXE', 'SJ.SYS'];
+// The brand cycles through these on a triple-click, then settles back to SJ.EXE.
+const BRAND_GLITCH = ['SRIHITH.EXE', 'SJARABANA.OS', 'BUSINESSMAN.EXE', 'SJ.EXE'];
 const BRAND_STEP = 650; // ms per glitch frame
 
 /**
- * The nav bar: a wordmark, the terminal, and five links.
+ * The nav bar: a wordmark, the terminal, and six links.
  *
  * The terminal is most of what this bar does and none of what it is, so it
  * lives in ./terminal — the state and interpreter in useTerminal, the markup in
@@ -27,7 +27,7 @@ const BRAND_STEP = 650; // ms per glitch frame
 export default function Navigation() {
   const t = useTerminal();
 
-  const [brand, setBrand] = useState('SJ.SYS');
+  const [brand, setBrand] = useState('SJ.EXE');
   const [brandGlitch, setBrandGlitch] = useState(false);
   const brandTimers = useRef<number[]>([]);
   const longPressTimer = useRef(0);
@@ -107,7 +107,7 @@ export default function Navigation() {
             }
           }}
         >
-          {brandGlitch ? <ScrambleText text={brand} /> : 'SJ.SYS'}
+          {brandGlitch ? <ScrambleText text={brand} /> : 'SJ.EXE'}
         </NavLink>
 
         <div
@@ -123,6 +123,7 @@ export default function Navigation() {
           <NavLink to="/projects"><span className="nav-label">PROJECTS</span></NavLink>
           <NavLink to="/poetry"><span className="nav-label">POETRY</span></NavLink>
           <NavLink to="/media"><span className="nav-label">MEDIA</span></NavLink>
+          <NavLink to="/guestbook"><span className="nav-label">GUESTBOOK</span></NavLink>
           <NavLink to="/blog"><span className="nav-label">BLOG</span></NavLink>
         </div>
       </nav>

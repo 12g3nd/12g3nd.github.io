@@ -60,7 +60,7 @@ export default function GuestbookForm() {
     return (
       <div className="gb-form-viewer">
         <div className="gb-form-chrome">
-          <span className="gb-form-chrome__prompt">srihith@sj.sys:~$</span> sign guestbook.log
+          <span className="gb-form-chrome__prompt">srihith@sj.exe:~$</span> sign guestbook.log
         </div>
         <div className="gb-success">
           <span className="gb-success__badge">[ ✓ ENTRY RECEIVED ]</span>
@@ -75,7 +75,7 @@ export default function GuestbookForm() {
   return (
     <div className="gb-form-viewer">
       <div className="gb-form-chrome">
-        <span className="gb-form-chrome__prompt">srihith@sj.sys:~$</span> sign guestbook.log
+        <span className="gb-form-chrome__prompt">srihith@sj.exe:~$</span> sign guestbook.log
       </div>
 
       <form className="gb-form" onSubmit={handleSubmit}>

@@ -126,7 +126,7 @@ export default function CommandPalette() {
     >
       <div className="cmdk__panel">
         <div className="cmdk__chrome">
-          <span className="cmdk__chrome-label">SJ.SYS ▸ run</span>
+          <span className="cmdk__chrome-label">SJ.EXE ▸ run</span>
           <span className="cmdk__chrome-esc">esc</span>
         </div>
         <div className="cmdk__inputrow">

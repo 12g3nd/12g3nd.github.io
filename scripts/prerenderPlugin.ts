@@ -48,7 +48,7 @@ type Route = {
 
 const DEFAULT_CARD = '/og-card.png';
 const DEFAULT_CARD_ALT =
-  "SJ.SYS — Srihith Jarabana. Businessman by craft. Builds things he probably shouldn't be able to.";
+  "SJ.EXE — Srihith Jarabana. Businessman by craft. Builds things he probably shouldn't be able to.";
 
 /** Escape for an HTML attribute value. */
 function attr(value: string): string {
@@ -258,7 +258,7 @@ export default function prerenderPlugin(): Plugin {
         const image = await cardFor(poem.slug);
         routes.push({
           path: `/poetry/${poem.slug}`,
-          title: `${poem.title} // Srihith Jarabana`,
+          title: `${poem.title} · Srihith Jarabana`,
           description: poem.blurb,
           image,
           imageAlt: `${poem.title} — a poem by Srihith Jarabana`,
@@ -294,7 +294,7 @@ export default function prerenderPlugin(): Plugin {
         const image = await cardFor(post.slug);
         routes.push({
           path: `/blog/${post.slug}`,
-          title: `${post.title} // Srihith Jarabana`,
+          title: `${post.title} · Srihith Jarabana`,
           description: post.abstract,
           image,
           imageAlt: `${transmissionOf(post.slug)} — ${post.title}`,

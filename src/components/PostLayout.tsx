@@ -70,18 +70,18 @@ export default function PostLayout({ slug, date, children }: PostLayoutProps) {
         </div>
 
         <div className="post-meta-box">
-          <h4>[TRANSMISSION_META]</h4>
+          <h4>[TRANSMISSION META]</h4>
           <ul>
             <li><span className="seek-bullet">&gt;</span> DATE: <span className="post-meta-date">{date}</span></li>
-            <li><span className="seek-bullet">&gt;</span> READ_TIME: <span className="post-meta-value">{stats.minutes} MIN</span></li>
-            <li><span className="seek-bullet">&gt;</span> WORD_COUNT: <span className="post-meta-value">{stats.words}</span></li>
+            <li><span className="seek-bullet">&gt;</span> READ TIME: <span className="post-meta-value">{stats.minutes} MIN</span></li>
+            <li><span className="seek-bullet">&gt;</span> WORD COUNT: <span className="post-meta-value">{stats.words}</span></li>
             <li><span className="seek-bullet">&gt;</span> STATUS: <span className="post-meta-status">DECRYPTED</span></li>
           </ul>
         </div>
 
         {others.length > 0 && (
           <div className="post-other-box">
-            <h4>[OTHER_TRANSMISSIONS]</h4>
+            <h4>[OTHER TRANSMISSIONS]</h4>
             <ul>
               {others.map((p) => (
                 <li key={p.slug}>

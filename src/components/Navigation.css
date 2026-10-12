@@ -27,7 +27,7 @@
   opacity: 0.8;
 }
 
-/* Racing stripes: five tall parallelograms leaning right, packed tight and
+/* Racing stripes: six tall parallelograms leaning right, packed tight and
    pushed to the right edge so the terminal gets the room. Each word runs up
    its own stripe at the stripe's angle. The parallelogram is a skewed ::before
    box behind the link (skew stretches text, so the text is rotated instead);
@@ -409,6 +409,15 @@
   .terminal-mobile-row {
     font-size: 10px;
     padding: 0.3rem 0.75rem;
+  }
+}
+
+/* The narrowest phones: six stripes beside the wordmark only fit if each
+   gives up a little width. */
+@media (max-width: 340px) {
+  .nav-links {
+    --stripe-w: 1.75rem;
+    gap: 0.15rem;
   }
 }
 

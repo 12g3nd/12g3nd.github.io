@@ -37,19 +37,19 @@ const collection: Category[] = [
     /* Albums, songs and films each have a live counterpart on the wall below,
        so they say all-time out loud rather than letting a feed contradict them. */
     key: 'albums',
-    label: 'ALBUMS // ALL-TIME',
+    label: 'ALBUMS · ALL-TIME',
     art: '/Media/Albums.png',
     items: ['beerbongs & bentleys - Post Malone', 'songs - Adrienne Lenker', 'Live on Red Barn Radio I & II - Tyler Childers', 'Around Fur - Deftones'],
   },
   {
     key: 'songs',
-    label: 'SONGS // ALL-TIME',
+    label: 'SONGS · ALL-TIME',
     art: '/Media/Songs.png',
     items: ['SICKO MODE - Travis Scott ft. Drake', 'Rattlesnake - Jack Van Cleaf ft. Zach Bryan', 'Run Away With Me - Carly Rae Jepsen', 'NOT FAIR - The Kid LAROI ft. Corbin', 'Fast Car - Tracy Chapman'],
   },
   {
     key: 'films',
-    label: 'FILMS // ALL-TIME',
+    label: 'FILMS · ALL-TIME',
     art: '/Media/Films.png',
     items: ['Catch Me If You Can (2002)', '10 Things I Hate About You (1999)', 'Star Wars: Episode III - Revenge of the Sith (2005)', 'Fantastic Mr. Fox (2009)'],
   },
@@ -79,14 +79,14 @@ export default function Media() {
     <PageTransition>
       <section className="section">
         <div className="section-header">
-          <h2><ScrambleText text="FAV_MEDIA.DAT" /></h2>
+          <h2><ScrambleText text="FAV MEDIA.DAT" /></h2>
           <p className="section-desc">the media I enjoy — a shortcut to understanding me</p>
         </div>
 
         {/* Gallery chrome: the per-section "temperature" — this room is a wall of
             framed prints, not a database dump. */}
         <div className="gallery-bar">
-          <span className="gallery-bar__cmd"><span className="gallery-bar__prompt">srihith@sj.sys:~$</span> open gallery.app</span>
+          <span className="gallery-bar__cmd"><span className="gallery-bar__prompt">srihith@sj.exe:~$</span> open gallery.app</span>
           <span className="gallery-bar__count">{collection.length} plates · est. one human</span>
         </div>
 
@@ -98,7 +98,7 @@ export default function Media() {
                   <img src={category.art} alt="" aria-hidden="true" loading="lazy" decoding="async" />
                 </div>
                 <figcaption className="media-plate__placard">
-                  <h3><span className="accent-slash">//</span> {category.label}</h3>
+                  <h3>{category.label}</h3>
                   <span className="media-plate__count">
                     {category.items.length} {category.items.length === 1 ? 'entry' : 'entries'}
                   </span>
@@ -118,7 +118,7 @@ export default function Media() {
             accounts rather than chosen. */}
         <div className="gallery-bar gallery-bar--live">
           <span className="gallery-bar__cmd">
-            <span className="gallery-bar__prompt">srihith@sj.sys:~$</span> open gallery.app --wired
+            <span className="gallery-bar__prompt">srihith@sj.exe:~$</span> open gallery.app --wired
           </span>
           <span className="gallery-bar__count">
             {playlists.length} playlists{films.length > 0 && ` · ${films.length} rated films`}
@@ -133,7 +133,7 @@ export default function Media() {
                   <SpotifyEmbed id={playlist.id} label={playlist.label} />
                 </div>
                 <figcaption className="media-plate__placard">
-                  <h3><span className="accent-slash">//</span> {playlist.label}</h3>
+                  <h3>{playlist.label}</h3>
                   <span className="media-plate__count">playlist</span>
                 </figcaption>
               </figure>
@@ -148,7 +148,7 @@ export default function Media() {
             <Reveal delay={playlists.length * 0.06}>
               <figure className="media-plate media-plate--rated">
                 <figcaption className="media-plate__placard">
-                  <h3><span className="accent-slash">//</span> RATED ON LETTERBOXD</h3>
+                  <h3>RATED ON LETTERBOXD</h3>
                   <span className="media-plate__count">
                     {films.length} {films.length === 1 ? 'film' : 'films'}
                   </span>

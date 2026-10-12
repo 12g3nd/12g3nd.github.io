@@ -85,7 +85,7 @@ const experience: Org[] = [
 const coverage = [
   {
     ref: 'EQ-001',
-    title: 'DEERE // CYCLEBOOK',
+    title: 'DEERE · CYCLEBOOK',
     chip: 'NYSE: DE',
     note: 'An equity research report on Deere & Company, built in Power BI. Seven cards run from the latest quarter through the farm cycle to a scenario model and what the share price assumes, and every figure is tagged as reported, guided or assumed.',
     links: [
@@ -156,7 +156,7 @@ const toolbar = [
 
 /* One source for the tab labels and the workbook's sheet count, so adding a
    sheet can't leave the chrome claiming a number that stopped being true. */
-const SHEET_TABS = ['EXPERIENCE', 'COVERAGE', 'TRACK_RECORD', 'SERVICE & EDUCATION', 'RESUME.PDF'] as const;
+const SHEET_TABS = ['EXPERIENCE', 'COVERAGE', 'TRACK RECORD', 'SERVICE & EDUCATION', 'RESUME.PDF'] as const;
 
 export default function Business() {
   useDocumentMeta(routeMeta.business.title, routeMeta.business.description);
@@ -172,7 +172,7 @@ export default function Business() {
         {/* Workbook chrome: the per-section "temperature" — a read-only .xlsx,
             finance's native file type, not just another card grid. */}
         <div className="xls-bar">
-          <span className="xls-bar__cmd"><span className="xls-bar__prompt">srihith@sj.sys:~$</span> open business.xlsx</span>
+          <span className="xls-bar__cmd"><span className="xls-bar__prompt">srihith@sj.exe:~$</span> open business.xlsx</span>
           <span className="xls-bar__count">{SHEET_TABS.length} sheets · read-only</span>
         </div>
 

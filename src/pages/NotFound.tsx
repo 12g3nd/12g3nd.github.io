@@ -9,15 +9,15 @@ import './NotFound.css';
 export default function NotFound() {
   const location = useLocation();
   useDocumentMeta(
-    '404 // KERNEL PANIC',
-    "That route isn't mounted on SJ.SYS."
+    '404 · KERNEL PANIC',
+    "That route isn't mounted on SJ.EXE."
   );
 
   return (
     <PageTransition>
       <section className="section panic-section">
         <div className="panic-box">
-          <h2 className="panic-title"><ScrambleText text="KERNEL_PANIC" /></h2>
+          <h2 className="panic-title"><ScrambleText text="KERNEL PANIC" /></h2>
           <p className="panic-code">ERR 0x194 — route not mounted</p>
 
           <pre className="panic-log">{`> requested .................. ${location.pathname}
@@ -25,7 +25,7 @@ export default function NotFound() {
 > the path you asked for is not part of this system.`}</pre>
 
           <div className="panic-mounts">
-            <span className="panic-mounts__label">// MOUNTED VOLUMES</span>
+            <span className="panic-mounts__label">MOUNTED VOLUMES</span>
             <div className="panic-mounts__list">
               <Link to="/">/home</Link>
               <Link to="/projects">/projects</Link>

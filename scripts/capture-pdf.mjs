@@ -15,7 +15,7 @@ import { writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 
 const BASE = process.argv[2] || 'http://localhost:5173';
-const OUT = process.argv[3] || path.resolve('SJ.SYS-portfolio.pdf');
+const OUT = process.argv[3] || path.resolve('SJ.EXE-portfolio.pdf');
 const SHOTS_DIR = path.resolve('scripts', 'shots');
 
 const VIEWPORT_WIDTH = 1280;

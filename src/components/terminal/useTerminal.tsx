@@ -216,7 +216,7 @@ export default function useTerminal() {
       case 'hire-me --serious':
         setOutput(
           [
-            'srihith jarabana // availability report',
+            'srihith jarabana · availability report',
             '----------------------------------------',
             'status    : open to summer 2027 internships',
             'seeking   : finance · quant research · IB / PE',
@@ -233,7 +233,7 @@ export default function useTerminal() {
       case 'rootbeer':
         setOutput(
           [
-            '== ROOTBEER.LOG // field notes, unscientific ==',
+            '== ROOTBEER.LOG · field notes, unscientific ==',
             '1. A&W (on tap)        ★★★★★  the benchmark. creamy, correct.',
             '2. Barq\'s              ★★★★☆  the bite. respect the caffeine.',
             '3. Mug                 ★★★★☆  reliable. fridge staple.',
@@ -284,7 +284,7 @@ export default function useTerminal() {
       case 'sudo rm -rf /*':
       case 'rm -rf /':
       case 'rm -rf /*':
-        setOutput('nice try. SJ.SYS is read-only to visitors. (and to me, on a good day.)');
+        setOutput('nice try. SJ.EXE is read-only to visitors. (and to me, on a good day.)');
         break;
       case 'ls':
         setOutputNode(

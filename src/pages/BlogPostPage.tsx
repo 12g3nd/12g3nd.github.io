@@ -38,7 +38,7 @@ export default function BlogPostPage() {
 
   // Called unconditionally (rules of hooks); falls back for the missing case.
   useDocumentMeta(
-    post ? `${post.title} // Srihith Jarabana` : 'Not Found // Srihith Jarabana',
+    post ? `${post.title} · Srihith Jarabana` : 'Not Found · Srihith Jarabana',
     post?.abstract
   );
 
@@ -51,7 +51,7 @@ export default function BlogPostPage() {
       <section className="section" style={{ paddingBottom: '5rem' }}>
         <div className="section-header" style={{ marginBottom: '3rem' }}>
           <h2><ScrambleText text={transmission} /></h2>
-          <p className="post-log-date">{post.date} // LOG</p>
+          <p className="post-log-date">{post.date} · LOG</p>
         </div>
 
         <PostLayout slug={post.slug} date={post.date}>

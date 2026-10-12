@@ -84,5 +84,5 @@ export const chronological = [...posts].sort(
 /** "TRANSMISSION_05" for a slug, or '' when the slug isn't a known post. */
 export function transmissionOf(slug: string): string {
   const i = chronological.findIndex((p) => p.slug === slug);
-  return i < 0 ? '' : `TRANSMISSION_${String(i + 1).padStart(2, '0')}`;
+  return i < 0 ? '' : `TRANSMISSION ${String(i + 1).padStart(2, '0')}`;
 }

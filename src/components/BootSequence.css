@@ -1,4 +1,4 @@
-/* SJ.SYS boot overlay — sits above everything, including the global CRT
+/* SJ.EXE boot overlay — sits above everything, including the global CRT
    scanlines (z 9999 in index.css). It carries its own atmosphere so it reads
    as the machine powering on rather than a loading spinner. */
 .boot {

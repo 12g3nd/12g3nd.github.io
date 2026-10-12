@@ -21,7 +21,7 @@ export default function PoemPage() {
 
   // Called unconditionally (rules of hooks); falls back for the missing case.
   useDocumentMeta(
-    poem ? `${poem.title} // Srihith Jarabana` : 'Not Found // Srihith Jarabana',
+    poem ? `${poem.title} · Srihith Jarabana` : 'Not Found · Srihith Jarabana',
     poem?.blurb
   );
 
@@ -49,7 +49,7 @@ export default function PoemPage() {
               aria-pressed={director}
               title="run command"
             >
-              <span className="poetry-bar__prompt">srihith@sj.sys:~$</span> open poetry.pdf --page={page}
+              <span className="poetry-bar__prompt">srihith@sj.exe:~$</span> open poetry.pdf --page={page}
               {director ? ' --director' : ''}
             </button>
             <span className="poetry-bar__hint" aria-hidden="true">

@@ -93,7 +93,7 @@ async function loadPoems() {
 function numbering(posts) {
   const chronological = [...posts].sort((a, b) => new Date(a.date) - new Date(b.date));
   return new Map(
-    chronological.map((p, i) => [p.slug, `TRANSMISSION_${String(i + 1).padStart(2, '0')}`])
+    chronological.map((p, i) => [p.slug, `TRANSMISSION ${String(i + 1).padStart(2, '0')}`])
   );
 }
 

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { isLateNight } from '../utils/time';
 import './BootSequence.css';
 
-/* SJ.SYS power-on self test. Shows once per browser session (sessionStorage),
+/* SJ.EXE power-on self test. Shows once per browser session (sessionStorage),
    fully skippable, and never runs for prefers-reduced-motion users — App gates
    it on both before this ever mounts. The lines are diegetic: the site frames
    itself as an operating system, so it boots like one. */
@@ -21,7 +21,7 @@ type Line = {
 // reflects the actual hour the page booted.
 function buildLines(lateNight: boolean): Line[] {
   return [
-    { text: 'SJ.SYS // POWER-ON SELF TEST', strong: true },
+    { text: 'SJ.EXE · POWER-ON SELF TEST', strong: true },
     { text: 'BIOS v0.3.0 — Rotman Commerce build', dim: true },
     { spacer: true },
     { text: '> initializing kernel ............', tag: 'OK', tone: 'ok' },

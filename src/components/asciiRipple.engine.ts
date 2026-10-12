@@ -83,7 +83,7 @@ export interface Pointer { x: number; y: number; active: boolean; }
 
 /** Medium intensity — the approved default. */
 export const MEDIUM: PhysicsConfig = { radius: 88, strength: 1.5, spring: 0.05, damping: 0.82 };
-export const BASE_ALPHA = 0.06;     // resting glyph opacity (matches the ~0.05 site default)
+export const BASE_ALPHA = 0.18;     // resting glyph opacity — raised from 0.06 so the stars read at rest, not only when disturbed
 export const DISP_NORM = 55;        // displacement at which a glyph is "fully" disturbed
 export const GLOW_THRESHOLD = 0.15; // disturbance level above which the cyan glow kicks in
 

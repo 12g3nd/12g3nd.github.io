@@ -41,7 +41,7 @@
 
   --font-display: 'Anton', sans-serif;
   --font-mono: 'Space Mono', monospace;
-  /* Long-form reading voice, used inside the document while the SJ.SYS chrome
+  /* Long-form reading voice, used inside the document while the SJ.EXE chrome
      around it stays monospace. The fallback chain is the same system serif the
      poetry pages already read in, so the principle holds even before the
      webfont lands (and if it never does). */
@@ -201,12 +201,16 @@
    ~rgb(42,36,24) = --text-primary; hover keeps the ink and adds a faint accent
    glow for the interactive cue. */
 .theme-light .y2k-accent {
-  filter: brightness(0) invert(13%) sepia(1) brightness(0.92);
+  --pop: #d1172f;
+  filter: brightness(0) invert(13%) sepia(1) brightness(0.92)
+    drop-shadow(0.02em 0.02em 0 var(--pop)) drop-shadow(0.02em 0.02em 0 var(--pop))
+    drop-shadow(0.02em 0.02em 0 var(--pop));
 }
 .theme-light .y2k-accent:hover,
 .theme-light .y2k-accent:focus-visible {
   filter: brightness(0) invert(13%) sepia(1) brightness(0.92)
-    drop-shadow(0 0 10px rgba(var(--accent-rgb), 0.35));
+    drop-shadow(0.025em 0.025em 0 var(--pop)) drop-shadow(0.025em 0.025em 0 var(--pop))
+    drop-shadow(0.025em 0.025em 0 var(--pop));
 }
 
 /* Watermark numerals were near-invisible cyan-on-navy values; on parchment bump

@@ -30,7 +30,7 @@ const FEED_PATH = 'feed.xml';
  */
 const MAX_ITEMS = 50;
 
-const CHANNEL_TITLE = 'Transmissions // Srihith Jarabana';
+const CHANNEL_TITLE = 'Transmissions · Srihith Jarabana';
 const CHANNEL_DESCRIPTION =
   'Essays and logs by Srihith Jarabana on ambition, design, and whatever else. ' +
   "Append-only — once a transmission goes out, it doesn't get edited.";

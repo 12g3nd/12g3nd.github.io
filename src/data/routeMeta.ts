@@ -31,41 +31,41 @@ export const routeMeta = {
   },
   projects: {
     path: '/projects',
-    title: 'Projects // Srihith Jarabana',
+    title: 'Projects · Srihith Jarabana',
     description:
       'Things Srihith Jarabana has built — personal projects, the FI99 studio, and a viral Snapchat lens.',
   },
   business: {
     path: '/business',
-    title: 'Business // Srihith Jarabana',
+    title: 'Business · Srihith Jarabana',
     description:
       'The business and finance side of Srihith Jarabana (research experience, competition track record, and investment write-ups).',
   },
   media: {
     path: '/media',
-    title: 'Media // Srihith Jarabana',
+    title: 'Media · Srihith Jarabana',
     description:
       'Books, poetry, albums, films, and games Srihith Jarabana enjoys — plus current playlists and Letterboxd ratings.',
   },
   poetry: {
     path: '/poetry',
-    title: 'Poetry // Srihith Jarabana',
+    title: 'Poetry · Srihith Jarabana',
     description: 'A selection of poems Srihith Jarabana has written, including award-winning work.',
   },
   blog: {
     path: '/blog',
-    title: 'Transmissions // Srihith Jarabana',
+    title: 'Transmissions · Srihith Jarabana',
     description: 'Essays and logs by Srihith Jarabana on ambition, design, and whatever else.',
   },
   guestbook: {
     path: '/guestbook',
-    title: 'Guestbook // Srihith Jarabana',
+    title: 'Guestbook · Srihith Jarabana',
     description:
       "Visitors who've signed Srihith Jarabana's guestbook (drawn signatures and three words each).",
   },
   sitemap: {
     path: '/sitemap',
-    title: 'Index of / // Srihith Jarabana',
+    title: 'Index of / · Srihith Jarabana',
     description:
       'Every page on this site, listed the way a web server would have told you about it.',
   },

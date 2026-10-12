@@ -11,6 +11,7 @@ import AsciiRipple from '../components/AsciiRipple';
 import PartyOverlay from '../components/PartyOverlay';
 import WhimsyOverlay from '../components/WhimsyOverlay';
 import GuestbookCard from '../components/GuestbookCard';
+import ScratchReveal from '../components/ScratchReveal';
 import useDocumentMeta from '../hooks/useDocumentMeta';
 import { routeMeta } from '../data/routeMeta';
 import useGuestbook from '../hooks/useGuestbook';
@@ -23,7 +24,6 @@ const prefersReducedMotion = () =>
 
 export default function Home() {
   const [showSoL, setShowSoL] = useState(false);
-  const [emailRevealed, setEmailRevealed] = useState(false);
 
   // Clicking "elevators" in the fun facts drops a tiny elevator + shakes the card.
   const [elevatorDropping, setElevatorDropping] = useState(false);
@@ -165,7 +165,7 @@ export default function Home() {
             <p className="phonetic-text">/sriːhɪθ dʒʊəˌræˈbɑːnə/</p>
           </div>
           <div className="badge-row">
-            <div className="badge">Rotman Commerce // Class of '29</div>
+            <div className="badge">Rotman Commerce · Class of '29</div>
             <img
                 src="/crest.png"
                 alt="Fire a CRT burst"
@@ -195,15 +195,15 @@ export default function Home() {
           </div>
           <div className="expanded-details">
             <div className="detail-col">
-              <span className="accent-slash">//</span><strong>HOBBIES</strong>
+              <strong>HOBBIES</strong>
               <p>Writing (poetry, flash fiction, whatever), rating root beers, world history / politics.</p>
             </div>
             <div className="detail-col">
-              <span className="accent-slash">//</span><strong>PET PEEVES</strong>
+              <strong>PET PEEVES</strong>
               <p>Lack of turn signals, inconsiderateness, "could of."</p>
             </div>
             <div className={`detail-col fun-facts${elevatorDropping ? ' elevator-dropping' : ''}`}>
-              <span className="accent-slash">//</span><strong>FUN FACTS</strong>
+              <strong>FUN FACTS</strong>
               <p>
                 Afraid of{' '}
                 <span
@@ -224,7 +224,7 @@ export default function Home() {
           {/* Mobile-only: What I'm Up To + Landmark */}
           <div className="mobile-what-im-up-to">
             <div className="what-im-up-to-card">
-              <h3><span className="accent-slash">//</span> WHAT I'M UP TO</h3>
+              <h3>WHAT I'M UP TO</h3>
               <p>Building financial models using agentic iteration (e.g. SQL and .pbip), starting sophomore year, and exploring career options.</p>
               <span className="wiu-stamp">as of 9.1.26</span>
             </div>
@@ -241,7 +241,7 @@ export default function Home() {
             <img src={figureSrc} alt="Wireframe Figure" className="wireframe-glitch" {...wireframeThemeProps} />
           </div>
           <div className="what-im-up-to-card">
-            <h3><span className="accent-slash">//</span> WHAT I'M UP TO</h3>
+            <h3>WHAT I'M UP TO</h3>
             <p>Building financial models using agentic iteration (e.g. SQL and .pbip), starting sophomore year, and exploring career options.</p>
             <span className="wiu-stamp">as of 9.1.26</span>
           </div>
@@ -261,29 +261,29 @@ export default function Home() {
 
       <section className="section tenets-section">
         <div className="section-header">
-          <h2 className="tenets-title"><ScrambleText text="TENETS_" /></h2>
-          <p className="tenets-subtitle">// v0.3, subject to revision without notice</p>
+          <h2 className="tenets-title"><ScrambleText text="TENETS" /></h2>
+          <p className="tenets-subtitle">v0.3, subject to revision without notice</p>
         </div>
         <div className="divider-line"></div>
         <div className="tenets-grid">
           <Reveal delay={0}>
           <div className="tenet-card">
             <div className="tenet-number">01</div>
-            <h3><span className="accent-slash">//</span> THE FALSE EQUIVALENCE</h3>
+            <h3>THE FALSE EQUIVALENCE</h3>
             <p>Being content ≠ being happy. Content means nothing hurts. Happy means something's alive. The dangerous part is how similar they feel from the inside.</p>
           </div>
           </Reveal>
           <Reveal delay={0.1}>
           <div className="tenet-card">
             <div className="tenet-number">02</div>
-            <h3><span className="accent-slash">//</span> THE MUNDANE ENTERTAINED</h3>
+            <h3>THE MUNDANE ENTERTAINED</h3>
             <p>Trying to never be bored is a mistake. A commute, a queue, a slow Tuesday afternoon. Anything gets interesting if you stare at it long enough.</p>
           </div>
           </Reveal>
           <Reveal delay={0.2}>
           <div className="tenet-card">
             <div className="tenet-number">03</div>
-            <h3><span className="accent-slash">//</span> THE ALTERNATIVE HYPOTHESIS</h3>
+            <h3>THE ALTERNATIVE HYPOTHESIS</h3>
             <p>The plan will change. What matters is whether you change with it or stand there mourning past potential. "Life, uh, finds a way."</p>
           </div>
           </Reveal>
@@ -292,11 +292,11 @@ export default function Home() {
         <div className="quotes-section">
           <div className="statements-grid">
             <div className="statement-block">
-              <h4>[CORE_BELIEFS]</h4>
+              <h4>[CORE BELIEFS]</h4>
               <ul className="brutalist-list">
-                <li><span className="accent-slash">//</span> Art is political.</li>
-                <li><span className="accent-slash">//</span> Business is personal.</li>
-                <li><span className="accent-slash">//</span> Technology is philosophy.</li>
+                <li>Art is political.</li>
+                <li>Business is personal.</li>
+                <li>Technology is philosophy.</li>
               </ul>
               <p className="beliefs-footnote">/* three things I'll probably over-defend at a party, but I feel an imperative need to for some reason */</p>
               <div className="beliefs-graphic">
@@ -307,7 +307,7 @@ export default function Home() {
             </div>
 
             <div className="quotes-block">
-              <h4>[REFERENCE_QUOTE]</h4>
+              <h4>[REFERENCE QUOTE]</h4>
               <div className="quote-item large-quote quote-with-image quote-paper">
                 <div className="quote-text-content">
                   <p>"It is the mark of an educated mind, to entertain a thought without accepting it."</p>
@@ -327,7 +327,7 @@ export default function Home() {
 
       <section className="section guestbook-preview-section">
         <div className="section-header">
-          <h2><ScrambleText text="GUESTBOOK_" /></h2>
+          <h2><ScrambleText text="GUESTBOOK" /></h2>
           <p className="section-desc">visitors who've left their mark</p>
         </div>
 
@@ -361,25 +361,9 @@ export default function Home() {
 
       <section className="section contact-section">
         <div className="section-header">
-          <h2><ScrambleText text="CONNECT_" /></h2>
+          <h2><ScrambleText text="CONNECT" /></h2>
         </div>
-        {emailRevealed ? (
-          <a
-            href="mailto:srihith.jarabana@mail.utoronto.ca"
-            className="email-box"
-          >
-            <span className="email-text">srihith.jarabana@mail.utoronto.ca</span>
-          </a>
-        ) : (
-          <button
-            type="button"
-            className="email-box email-box-hidden"
-            onClick={() => setEmailRevealed(true)}
-            aria-label="Click to reveal email address"
-          >
-            <span className="email-text">[ CLICK TO REVEAL ]</span>
-          </button>
-        )}
+        <ScratchReveal email="srihith.jarabana@mail.utoronto.ca" />
         <div className="social-links" style={{ justifyContent: 'center' }}>
           <a href="https://www.linkedin.com/in/srihithjarabana/" target="_blank" rel="noopener noreferrer" className="social-pill" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
             <img src="/smlogos/LinkedIn.webp" alt="LinkedIn" style={{ width: '16px', height: '16px', objectFit: 'contain' }} />

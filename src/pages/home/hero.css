@@ -6,13 +6,13 @@
   font-family: var(--font-mono), monospace;
   font-size: clamp(10px, 1.2vw, 18px);
   line-height: 1.2;
-  color: rgba(var(--text-rgb), 0.05);
+  color: rgba(var(--text-rgb), 0.16);
   pointer-events: none;
   z-index: 0;
   white-space: pre;
   user-select: none;
 
-  text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.1);
+  text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.25);
 }
 
 .ascii-art-secondary {
@@ -22,12 +22,12 @@
   font-family: var(--font-mono), monospace;
   font-size: clamp(8px, 1vw, 16px);
   line-height: 1.2;
-  color: rgba(var(--text-rgb), 0.05);
+  color: rgba(var(--text-rgb), 0.16);
   pointer-events: none;
   z-index: 0;
   white-space: pre;
   user-select: none;
-  text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.1);
+  text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.25);
 }
 
 .hero-content {
@@ -150,6 +150,41 @@
   font-size: clamp(4rem, 10vw, 10rem);
   line-height: 0.9;
   color: var(--text-primary);
+  /* The pop-out: a stepped red extrusion behind the name, so it reads as
+     letters lifted off the page rather than printed on it. In em so the depth
+     scales with the name at every breakpoint; on hover it lifts further. The
+     outlined JARABANA gets it too — its fill is transparent, so the extrusion
+     shows through the stroke as a solid red block behind each letter. */
+  --pop: #ff2e4d;
+  text-shadow:
+    0.01em 0.01em 0 var(--pop),
+    0.02em 0.02em 0 var(--pop),
+    0.03em 0.03em 0 var(--pop),
+    0.04em 0.04em 0 var(--pop),
+    0.05em 0.05em 0 var(--pop);
+  transition: transform 0.2s ease, text-shadow 0.2s ease;
+}
+
+.giant-text h1:hover {
+  transform: translate(-0.02em, -0.02em);
+  text-shadow:
+    0.01em 0.01em 0 var(--pop),
+    0.02em 0.02em 0 var(--pop),
+    0.03em 0.03em 0 var(--pop),
+    0.04em 0.04em 0 var(--pop),
+    0.05em 0.05em 0 var(--pop),
+    0.06em 0.06em 0 var(--pop),
+    0.07em 0.07em 0 var(--pop);
+}
+
+.theme-light .giant-text h1 {
+  --pop: #d1172f;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .giant-text h1 {
+    transition: none;
+  }
 }
 
 .title-srihith {
@@ -171,14 +206,19 @@
   -webkit-user-select: none;
   -webkit-touch-callout: none;
   -webkit-tap-highlight-color: transparent;
-  filter: drop-shadow(0 0 10px rgba(var(--accent-rgb), 0.3));
+  /* Same red extrusion as the name, built from stacked hard drop-shadows
+     (each one shadows the last, so three 0.02em steps make a 0.06em block). */
+  --pop: #ff2e4d;
+  filter: drop-shadow(0.02em 0.02em 0 var(--pop)) drop-shadow(0.02em 0.02em 0 var(--pop))
+    drop-shadow(0.02em 0.02em 0 var(--pop));
   transition: transform 0.2s ease, filter 0.2s ease;
 }
 
 .y2k-accent:hover,
 .y2k-accent:focus-visible {
   transform: scale(1.18) rotate(8deg);
-  filter: drop-shadow(0 0 16px rgba(var(--accent-rgb), 0.7));
+  filter: drop-shadow(0.025em 0.025em 0 var(--pop)) drop-shadow(0.025em 0.025em 0 var(--pop))
+    drop-shadow(0.025em 0.025em 0 var(--pop)) drop-shadow(0 0 16px rgba(var(--accent-rgb), 0.5));
   outline: none;
 }
 

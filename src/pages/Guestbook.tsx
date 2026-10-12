@@ -26,7 +26,7 @@ export default function Guestbook() {
       <section className="section">
         <div className="section-header">
           <h2>
-            <ScrambleText text="GUESTBOOK_" />
+            <ScrambleText text="GUESTBOOK" />
           </h2>
           <p className="section-desc">
             visitors who've left their mark (drawn signatures &amp; three words)
@@ -39,7 +39,7 @@ export default function Guestbook() {
         {/* Command chrome — `cat guestbook.log`, matching pkg-bar / poetry-bar. */}
         <div className="guestbook-bar">
           <span className="guestbook-bar__cmd">
-            <span className="guestbook-bar__prompt">srihith@sj.sys:~$</span> cat guestbook.log
+            <span className="guestbook-bar__prompt">srihith@sj.exe:~$</span> cat guestbook.log
             {/* The flag appears in the command itself, so the state of the page
                 is legible in the metaphor rather than only in the button. */}
             {showDates && <span className="guestbook-bar__flag"> --dates</span>}

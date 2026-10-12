@@ -150,7 +150,7 @@
 
 .xls-cell--dim { color: rgba(var(--text-rgb), 0.55); }
 
-/* File-action links (RESUME sheet) — same [ACTION] idiom as the rest of SJ.SYS. */
+/* File-action links (RESUME sheet) — same [ACTION] idiom as the rest of SJ.EXE. */
 .xls-cell--links {
   display: flex;
   gap: 1rem;
