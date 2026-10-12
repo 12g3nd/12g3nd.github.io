@@ -119,11 +119,11 @@ export default function Navigation() {
         </div>
 
         <div className="nav-links">
-          <NavLink to="/business">BUSINESS</NavLink>
-          <NavLink to="/projects">PROJECTS</NavLink>
-          <NavLink to="/poetry">POETRY</NavLink>
-          <NavLink to="/media">MEDIA</NavLink>
-          <NavLink to="/blog">BLOG</NavLink>
+          <NavLink to="/business"><span className="nav-label">BUSINESS</span></NavLink>
+          <NavLink to="/projects"><span className="nav-label">PROJECTS</span></NavLink>
+          <NavLink to="/poetry"><span className="nav-label">POETRY</span></NavLink>
+          <NavLink to="/media"><span className="nav-label">MEDIA</span></NavLink>
+          <NavLink to="/blog"><span className="nav-label">BLOG</span></NavLink>
         </div>
       </nav>
 

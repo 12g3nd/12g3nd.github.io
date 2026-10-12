@@ -1,9 +1,10 @@
 .brutalist-nav {
+  --nav-pad-y: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid rgba(var(--accent-rgb), 0.2);
-  padding: 1rem 2rem;
+  padding: var(--nav-pad-y) 2rem;
   background-color: var(--bg-base);
   position: sticky;
   top: 0;
@@ -26,60 +27,88 @@
   opacity: 0.8;
 }
 
+/* Racing stripes: five tall parallelograms leaning right, packed tight and
+   pushed to the right edge so the terminal gets the room. Each word runs up
+   its own stripe at the stripe's angle. The parallelogram is a skewed ::before
+   box behind the link (skew stretches text, so the text is rotated instead);
+   both are driven from --lean so the word always lies along its stripe.
+
+   --lean is the stripe's tilt off vertical. The text is rotated by the
+   complement: a stripe leaning 20° runs at 70° from horizontal. */
 .nav-links {
+  --lean: 20deg;
+  --stripe-w: 2.4rem;
+  --stripe-h: 5.6rem;
   display: flex;
-  gap: 2.5rem;
-  font-weight: bold;
+  gap: 0.25rem;
+  margin-left: auto;
+  /* Flush with the top of the bar and its bottom rule: the stripes reach out
+     through the nav's own vertical padding (--nav-pad-y) and stretch to fill
+     whatever height the bar ends up, never less than --stripe-h. */
+  align-self: stretch;
+  margin-block: calc(var(--nav-pad-y) * -1);
+  /* The skew pushes each stripe's top edge right of its box; keep the last
+     one off the nav's edge. */
+  padding-right: calc(var(--stripe-h) * 0.18);
 }
 
 .nav-links a {
-  border: none;
-  padding: 0.5rem 0; 
-  text-transform: uppercase;
+  position: relative;
+  isolation: isolate;
+  display: block;
+  flex: 0 0 auto;
+  width: var(--stripe-w);
+  min-height: var(--stripe-h);
   color: var(--text-primary);
   font-family: var(--font-mono);
-  font-size: 16px;
+  font-size: 13px;
   font-weight: bold;
-  background-color: transparent;
+  letter-spacing: 0.04em;
+  line-height: 1;
   transition: color 0.2s ease;
-  position: relative;
 }
 
-.nav-links a::after {
+.nav-links a::before {
   content: '';
   position: absolute;
-  width: 100%;
-  height: 2px;
-  bottom: 0;
-  left: 0;
-  background-color: var(--accent-primary);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform 0.3s ease;
+  inset: 0;
+  z-index: -1;
+  transform: skewX(calc(var(--lean) * -1));
+  background-color: var(--bg-surface);
+  border: 1px solid rgba(var(--accent-rgb), 0.3);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+/* The word, laid along the stripe and stretched along its letters' height. */
+.nav-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  white-space: nowrap;
+  transform: translate(-50%, -50%) rotate(calc(var(--lean) - 90deg)) scaleY(1.3);
 }
 
 .nav-links a:hover {
-  background-color: transparent;
   color: var(--accent-primary);
 }
 
-.nav-links a:hover::after {
-  transform: scaleX(1);
+.nav-links a:hover::before {
+  border-color: var(--accent-primary);
 }
 
-/* Active route: persistent cyan underline + glow so the current page reads as current */
+/* Active route: the stripe fills in, so the current page reads as current. */
 .nav-links a.active {
-  color: var(--accent-primary);
+  color: var(--bg-base);
 }
 
-.nav-links a.active::after {
-  transform: scaleX(1);
-  box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.6);
+.nav-links a.active::before {
+  background-color: var(--accent-primary);
+  border-color: var(--accent-primary);
 }
 
 .terminal-header-box {
   flex: 1;
-  margin: 0 2rem;
+  margin: 0 1.5rem 0 2rem;
   background-color: var(--bg-surface);
   border: 1px dotted rgba(var(--accent-rgb), 0.3);
   padding: 0.5rem 1rem;
@@ -89,7 +118,7 @@
   align-items: center;
   white-space: nowrap;
   overflow: hidden;
-  max-width: 800px;
+  max-width: 1000px;
   position: relative; /* anchor for the .terminal-hint affordance */
 }
 
@@ -332,7 +361,8 @@
 
 @media (max-width: 768px) {
   .brutalist-nav {
-    padding: 0.75rem 1rem;
+    --nav-pad-y: 0.75rem;
+    padding: var(--nav-pad-y) 1rem;
   }
 
   .nav-brand {
@@ -340,16 +370,12 @@
   }
 
   .nav-links {
-    gap: 1rem;
-    /* Pull the row back so the first link's padded edge still lines up. */
-    margin-left: -0.5rem;
+    --stripe-w: 2.25rem;
+    --stripe-h: 5rem;
   }
 
   .nav-links a {
-    font-size: 13px;
-    /* Roomier touch target — taller, and wide enough that short labels
-       (BLOG, MEDIA) aren't sub-30px tap zones. */
-    padding: 0.6rem 0.5rem;
+    font-size: 12px;
   }
 
   .terminal-mobile-row {
@@ -362,23 +388,22 @@
   .brutalist-nav {
     flex-wrap: wrap;
     gap: 0.5rem;
-    padding: 0.75rem 1rem;
+    padding: var(--nav-pad-y) 1rem;
   }
 
   .nav-brand {
     font-size: 1.75rem;
   }
 
+  /* Narrow enough to share the wordmark's row, which keeps the header short. */
   .nav-links {
-    gap: 0.5rem;
-    width: 100%;
-    justify-content: flex-start;
-    margin-left: -0.45rem;
+    --stripe-w: 2rem;
+    --stripe-h: 4.4rem;
+    gap: 0.2rem;
   }
 
   .nav-links a {
-    font-size: 12px;
-    padding: 0.55rem 0.45rem;
+    font-size: 11px;
   }
 
   .terminal-mobile-row {
