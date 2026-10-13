@@ -192,7 +192,6 @@
 
 /* Watermark numerals were near-invisible cyan-on-navy values; on parchment bump
    them so they read as faint debossed numbers instead of nothing. */
-.theme-light .tenet-number { color: rgba(90, 63, 192, 0.26); }
 .theme-light .project-card__num { color: rgba(var(--accent-rgb), 0.16); }
 
 /* Project status chip rode a translucent-navy fill; give it a parchment fill and

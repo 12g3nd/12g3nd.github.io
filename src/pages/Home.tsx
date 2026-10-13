@@ -12,6 +12,7 @@ import GuestbookCard from '../components/GuestbookCard';
 import ScratchReveal from '../components/ScratchReveal';
 import Incubator from '../components/incubator/Incubator';
 import PillarsMenu from '../components/PillarsMenu';
+import TenetCards from '../components/TenetCards';
 import { postsSorted } from '../data/posts';
 import useDocumentMeta from '../hooks/useDocumentMeta';
 import { routeMeta } from '../data/routeMeta';
@@ -308,29 +309,7 @@ export default function Home() {
           <p className="tenets-subtitle">v0.3, subject to revision without notice</p>
         </div>
         <div className="divider-line"></div>
-        <div className="tenets-grid">
-          <Reveal delay={0}>
-          <div className="tenet-card">
-            <div className="tenet-number">01</div>
-            <h3>THE FALSE EQUIVALENCE</h3>
-            <p>Being content ≠ being happy. Content means nothing hurts. Happy means something's alive. The dangerous part is how similar they feel from the inside.</p>
-          </div>
-          </Reveal>
-          <Reveal delay={0.1}>
-          <div className="tenet-card">
-            <div className="tenet-number">02</div>
-            <h3>THE MUNDANE ENTERTAINED</h3>
-            <p>Trying to never be bored is a mistake. A commute, a queue, a slow Tuesday afternoon. Anything gets interesting if you stare at it long enough.</p>
-          </div>
-          </Reveal>
-          <Reveal delay={0.2}>
-          <div className="tenet-card">
-            <div className="tenet-number">03</div>
-            <h3>THE ALTERNATIVE HYPOTHESIS</h3>
-            <p>The plan will change. What matters is whether you change with it or stand there mourning past potential. "Life, uh, finds a way."</p>
-          </div>
-          </Reveal>
-        </div>
+        <TenetCards />
 
         <div className="quotes-section">
           <div className="statements-grid">

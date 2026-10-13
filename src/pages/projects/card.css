@@ -34,7 +34,7 @@
   box-shadow: 0 12px 30px -12px rgba(var(--accent-rgb), 0.3);
 }
 
-/* big faint watermark number, like the home-page tenet cards */
+/* big faint watermark number */
 
 .project-card__num {
   position: absolute;

@@ -47,8 +47,14 @@
       transparent 33.333%);
 }
 
+/* Outlined like JARABANA, with an offset accent shadow. The !important beats
+   the shared .section-header h2 colour. */
 .tenets-title {
-  color: var(--accent-secondary) !important;
+  color: transparent !important;
+  -webkit-text-stroke: 2px var(--text-primary);
+  text-shadow: 0.05em 0.05em 0 rgba(var(--accent-rgb), 0.35);
+  font-size: clamp(3rem, 6vw, 4.5rem) !important;
+  letter-spacing: 0.01em;
 }
 
 .tenets-subtitle {
@@ -79,62 +85,9 @@
   height: 100%;
 }
 
-.tenet-card {
-  background-color: var(--bg-raised);
-  border: 1px solid rgba(var(--text-rgb), 0.15);
-  padding: 2rem;
-  position: relative;
-  overflow: hidden;
-  height: 100%;
-}
-
-.tenet-card:hover {
-  border-color: rgba(var(--accent-rgb), 0.6);
-}
-
-.tenet-number {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  font-family: var(--font-display);
-  font-size: 56px;
-  color: rgba(123, 97, 255, 0.3);
-  line-height: 1;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.tenet-card h3 {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: bold;
-  color: var(--text-primary);
-  margin-bottom: 1rem;
-  position: relative;
-  z-index: 1;
-  text-transform: uppercase;
-}
-
-.tenet-card h3::first-line {}
-
-.tenet-card p {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  color: rgba(var(--text-rgb), 0.75);
-  line-height: 1.6;
-  position: relative;
-  z-index: 1;
-}
-
 @media (max-width: 768px) {
   .tenets-grid {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 480px) {
-  .tenet-card {
-    padding: 1.5rem;
   }
 }
 
