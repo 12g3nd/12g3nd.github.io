@@ -63,10 +63,10 @@
       .layer { position: relative; z-index: 3; }
 
       .top { display: flex; justify-content: space-between; align-items: baseline; }
-      .brand {
-        font-family: 'Anton', sans-serif;
-        font-size: 34px; letter-spacing: 0.04em; color: var(--accent);
-      }
+      /* The SJ'S WORLD logo, embedded as a data URI by capture-og-cards.mjs
+         ({{LOGO}}) because the card is rendered with setContent and has no
+         file location to resolve a path against. */
+      .brand-logo { display: block; height: 72px; width: auto; }
       .tx {
         font-size: 19px; letter-spacing: 0.18em; font-weight: 700;
         color: var(--accent);
@@ -119,7 +119,7 @@
   </head>
   <body>
     <div class="layer top">
-      <div class="brand">SJ.EXE</div>
+      <img class="brand-logo" src="{{LOGO}}" alt="SJ'S WORLD" />
       <div class="tx">{{TRANSMISSION}}</div>
     </div>
 

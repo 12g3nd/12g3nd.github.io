@@ -48,7 +48,7 @@ type Route = {
 
 const DEFAULT_CARD = '/og-card.png';
 const DEFAULT_CARD_ALT =
-  "SJ.EXE — Srihith Jarabana. Businessman by craft. Builds things he probably shouldn't be able to.";
+  "SJ'S WORLD — Srihith Jarabana. Businessman by craft. Builds things he probably shouldn't be able to.";
 
 /** Escape for an HTML attribute value. */
 function attr(value: string): string {

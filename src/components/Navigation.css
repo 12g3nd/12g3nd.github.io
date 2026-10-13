@@ -81,8 +81,15 @@
   align-self: stretch;
   margin-block: calc(var(--nav-pad-y) * -1);
   /* The skew pushes each stripe's top edge right of its box; keep the last
-     one off the nav's edge. */
+     one off the nav's edge. (On desktop the utility panel follows instead,
+     set the stripes' own gap away — see .nav-utils--bar.) */
   padding-right: calc(var(--stripe-h) * 0.18);
+}
+
+@media (min-width: 951px) {
+  .nav-links {
+    padding-right: 0;
+  }
 }
 
 .nav-links a {
@@ -137,6 +144,187 @@
 .nav-links a.active::before {
   background-color: var(--accent-primary);
   border-color: var(--accent-primary);
+}
+
+/* ── The light switch and the letter ─────────────────────────
+   One panel after the stripes, split in two: the switch above, the letter
+   below. Its left edge leans with the stripes, parallel to BLOG and the same
+   gap away, and its right edge runs straight to the bar's edge — so it fills
+   the corner instead of sitting in it as two squares. */
+.nav-utils {
+  display: grid;
+  flex: 0 0 auto;
+}
+
+.nav-utils--bar {
+  --lean: 20deg;
+  /* Room on the left for the lean to overhang into, wider than any skew the
+     bar's height can produce. The panel clips to its own box (overflow:
+     hidden), which is what keeps the skewed shape from widening the page. */
+  --overhang: 1.5rem;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  grid-template-rows: 1fr 1fr;
+  align-self: stretch;
+  width: calc(3rem + var(--overhang));
+  padding-left: var(--overhang);
+  margin-block: calc(var(--nav-pad-y) * -1);
+  /* The stripes' own gap from BLOG, measured at mid-height like theirs. */
+  margin-left: calc(0.25rem - var(--overhang));
+  /* Reach the bar's right edge, like the stripes reach its top and bottom. */
+  margin-right: -2rem;
+}
+
+/* The panel itself: a box skewed exactly as a stripe is (same --lean, same
+   height, centred on its own box), so its left edge runs parallel to BLOG's.
+   It overhangs on the right too, where the clipping squares it off. */
+.nav-utils--bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--overhang);
+  right: calc(var(--overhang) * -2);
+  z-index: -1;
+  transform: skewX(calc(var(--lean) * -1));
+  background-color: var(--bg-surface);
+  border: 1px solid rgba(var(--accent-rgb), 0.3);
+}
+
+/* The divider, across the whole panel. At mid-height the leaning edge is
+   exactly at the overhang's line, so a straight line from there meets it. */
+.nav-utils--bar::after {
+  content: '';
+  position: absolute;
+  left: var(--overhang);
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: rgba(var(--accent-rgb), 0.3);
+  pointer-events: none;
+}
+
+/* The panel clips, so draw the focus ring inside the button. */
+.nav-utils--bar .nav-util:focus-visible {
+  outline-offset: -4px;
+}
+
+/* Optical centring. The lean shaves the top half's left side and widens the
+   bottom half's, so each icon moves toward the middle of what is visible:
+   the switch right, the letter a touch left, and the letter larger, since a
+   wide envelope reads small next to a tall switch at the same box size. */
+.nav-utils--bar .nav-util--switch .nav-util__icon {
+  transform: translateX(5px);
+}
+
+.nav-utils--bar .nav-util--mail .nav-util__icon {
+  width: 28px;
+  height: 28px;
+  transform: translateX(-2px);
+}
+
+.nav-utils--row {
+  display: none;
+}
+
+.nav-util {
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+  background: var(--bg-surface);
+  border: none;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.nav-utils--bar .nav-util {
+  background: transparent;
+}
+
+.nav-util:hover {
+  color: var(--accent-primary);
+}
+
+.nav-utils--row .nav-util:hover {
+  background: rgba(var(--accent-rgb), 0.08);
+}
+
+.nav-util__icon {
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.nav-util--mail .nav-util__icon {
+  width: 22px;
+  height: 22px;
+}
+
+/* The switch: lever down is lights off (the navy site), up is lights on. */
+.nav-util--switch .nav-util__icon {
+  width: 20px;
+  height: 27px;
+  overflow: visible;
+}
+
+.switch__screw {
+  fill: currentColor;
+  stroke: none;
+}
+
+.switch__slot {
+  stroke-width: 1.2;
+  opacity: 0.55;
+}
+
+.switch__lever {
+  fill: currentColor;
+  stroke: none;
+  transition: transform 0.18s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.nav-util--switch.is-on .switch__lever {
+  transform: translateY(-6px);
+  fill: var(--accent-primary);
+}
+
+/* Lights on: a little warmth leaks round the plate. */
+.nav-util--switch.is-on .switch__plate {
+  stroke: var(--accent-primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .switch__lever {
+    transition: none;
+  }
+}
+
+/* Phones: the bar has no spare width, so the pair moves to the end of the
+   terminal row, side by side. */
+@media (max-width: 950px) {
+  .nav-utils--bar {
+    display: none;
+  }
+
+  .nav-utils--row {
+    display: flex;
+    gap: 4px;
+    margin-left: 0.5rem;
+    flex: 0 0 auto;
+  }
+
+  .nav-utils--row .nav-util {
+    min-width: 36px;
+    min-height: 36px;
+    border: 1px solid rgba(var(--accent-rgb), 0.3);
+  }
 }
 
 .terminal-header-box {

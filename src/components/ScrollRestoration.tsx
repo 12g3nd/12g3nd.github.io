@@ -67,8 +67,60 @@ function maxScroll() {
  * a module-level map. A key with no recorded offset means an entry from before
  * this tab's history, and the answer for it is the top of the page.
  */
+/**
+ * Scroll to the element a `#hash` names, once it exists. The same wait as a
+ * restore and for the same reason: a link to /#connect from another page lands
+ * while the outgoing page is still on its way out, and the section does not
+ * mount until it has gone. Already on the page, it glides there; arriving
+ * from elsewhere, it jumps, so the new page is not seen scrolling itself.
+ * Returns a cancel for a navigation that supersedes it.
+ */
+function scrollToHash(id: string) {
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const here = document.getElementById(id);
+  if (here) {
+    here.scrollIntoView({ behavior: reduce ? 'instant' : 'smooth', block: 'start' });
+    return () => {};
+  }
+  window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  const deadline = performance.now() + RESTORE_BUDGET_MS * 2;
+  let frame = 0;
+  let done = false;
+  // Images above the target keep arriving after the jump and push it up the
+  // page, so hold it in place for a moment after landing — unless the visitor
+  // starts scrolling, which means they have taken over.
+  const settleFor = 900;
+  let landedAt = 0;
+  const stop = () => { done = true; };
+  window.addEventListener('wheel', stop, { passive: true });
+  window.addEventListener('touchstart', stop, { passive: true });
+  window.addEventListener('keydown', stop);
+  const step = (now: number) => {
+    if (done) return;
+    const el = document.getElementById(id);
+    if (el) {
+      const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+      if (Math.abs(el.getBoundingClientRect().top - margin) > 1) {
+        el.scrollIntoView({ behavior: 'instant', block: 'start' });
+      }
+      if (!landedAt) landedAt = now;
+      if (now - landedAt < settleFor) frame = requestAnimationFrame(step);
+      return;
+    }
+    if (now < deadline) frame = requestAnimationFrame(step);
+  };
+  frame = requestAnimationFrame(step);
+  return () => {
+    done = true;
+    cancelAnimationFrame(frame);
+    window.removeEventListener('wheel', stop);
+    window.removeEventListener('touchstart', stop);
+    window.removeEventListener('keydown', stop);
+  };
+}
+
 export default function ScrollRestoration() {
-  const { key } = useLocation();
+  const { key, hash } = useLocation();
   const navigationType = useNavigationType();
 
   const positions = useRef<Positions>(null!);
@@ -96,15 +148,25 @@ export default function ScrollRestoration() {
   }, []);
 
   useEffect(() => {
+    const hashId = hash ? decodeURIComponent(hash.slice(1)) : '';
+
     if (firstRender.current) {
       firstRender.current = false;
       currentKey.current = key;
-      return;
+      // A direct load of /#connect: the browser looked for the target before
+      // React had rendered it, so do it now that it can be found.
+      return hashId ? scrollToHash(hashId) : undefined;
     }
 
     positions.current[currentKey.current] = offset.current;
     currentKey.current = key;
     savePositions(positions.current);
+
+    // A link to a section of a page goes to that section, not the top.
+    if (hashId && navigationType !== 'POP') {
+      const cancel = scrollToHash(hashId);
+      return cancel;
+    }
 
     const target = navigationType === 'POP' ? positions.current[key] ?? 0 : 0;
 
@@ -143,7 +205,7 @@ export default function ScrollRestoration() {
       window.removeEventListener('touchstart', abandon);
       window.removeEventListener('keydown', abandon);
     };
-  }, [key, navigationType]);
+  }, [key, hash, navigationType]);
 
   return null;
 }

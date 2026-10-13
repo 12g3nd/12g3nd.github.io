@@ -13,7 +13,9 @@
 // namespace — two pieces with the same slug would overwrite each other's card.
 // main() checks for that rather than letting the second one win silently.
 //
-// Usage: node scripts/capture-og-cards.mjs [slug ...]   (default: all)
+// Also renders the site-wide card (public/og-card.png) from og-card.html.
+//
+// Usage: node scripts/capture-og-cards.mjs [slug ... | site]   (default: all)
 
 import { chromium } from 'playwright';
 import { readFile, mkdir, stat } from 'node:fs/promises';
@@ -23,6 +25,11 @@ import { pathToFileURL } from 'node:url';
 const OUT_DIR = path.resolve('public', 'og');
 const POST_TEMPLATE = path.resolve('scripts', 'og-post-card.html');
 const POEM_TEMPLATE = path.resolve('scripts', 'og-poem-card.html');
+const SITE_TEMPLATE = path.resolve('scripts', 'og-card.html');
+/** The site-wide card, used by every page without one of its own. */
+const SITE_OUT = path.resolve('public', 'og-card.png');
+/** The nav's logo, inlined into the cards as a data URI (see the templates). */
+const LOGO_FILE = path.resolve('public', 'sj-world@2x.png');
 
 const WIDTH = 1200;
 const HEIGHT = 630;
@@ -185,7 +192,7 @@ async function main() {
   const posts = only.length ? allPosts.filter((p) => only.includes(p.slug)) : allPosts;
   const poems = only.length ? allPoems.filter((p) => only.includes(p.slug)) : allPoems;
 
-  if (!posts.length && !poems.length) {
+  if (!posts.length && !poems.length && !only.includes('site')) {
     const known = [...allPosts, ...allPoems].map((p) => p.slug).join(', ');
     console.error(`nothing matched. known: ${known}`);
     process.exitCode = 1;
@@ -198,6 +205,7 @@ async function main() {
   const order = [...allPoems].sort((a, b) => new Date(b.date) - new Date(a.date));
   const pageOf = new Map(order.map((p, i) => [p.slug, i + 1]));
 
+  const LOGO = `data:image/png;base64,${(await readFile(LOGO_FILE)).toString('base64')}`;
   const postTemplate = await readFile(POST_TEMPLATE, 'utf8');
   const poemTemplate = await readFile(POEM_TEMPLATE, 'utf8');
   await mkdir(OUT_DIR, { recursive: true });
@@ -220,6 +228,7 @@ async function main() {
       out: path.join(OUT_DIR, `${post.slug}.png`),
       titleMax: TITLE_MAX,
       tokens: {
+        LOGO,
         TRANSMISSION: tx.get(post.slug),
         DATE: post.date,
         TITLE: post.title,
@@ -248,6 +257,17 @@ async function main() {
       },
     });
   }
+  // The site-wide card. Rendered on a full run, or on its own with `site`.
+  if (!only.length || only.includes('site')) {
+    process.stdout.write(`card SITE ${'og-card'.padEnd(49)} `);
+    await shoot(page, {
+      template: await readFile(SITE_TEMPLATE, 'utf8'),
+      out: SITE_OUT,
+      titleMax: TITLE_MAX,
+      tokens: { LOGO },
+    });
+  }
+
 
   await browser.close();
 }

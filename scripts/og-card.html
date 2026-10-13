@@ -30,7 +30,7 @@
         background: var(--bg-base);
         color: var(--cream);
         font-family: 'Space Mono', monospace;
-        padding: 60px 72px;
+        padding: 44px 72px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -54,11 +54,11 @@
 
       .layer { position: relative; z-index: 3; }
 
-      .top { display: flex; justify-content: space-between; align-items: baseline; }
-      .brand {
-        font-family: 'Anton', sans-serif;
-        font-size: 36px; letter-spacing: 0.04em; color: var(--accent);
-      }
+      .top { display: flex; justify-content: space-between; align-items: center; }
+      /* The SJ'S WORLD logo, embedded as a data URI by capture-og-cards.mjs
+         ({{LOGO}}) because the card is rendered with setContent and has no
+         file location to resolve a path against. */
+      .brand-logo { display: block; height: 52px; width: auto; }
       .boot {
         font-size: 15px; letter-spacing: 0.14em; text-transform: uppercase;
         color: rgba(253,246,227,0.5);
@@ -66,15 +66,15 @@
       .boot .ok { color: var(--accent); }
 
       .name { font-family: 'Anton', sans-serif; line-height: 0.88; }
-      .name .l1 { display: block; font-size: 150px; letter-spacing: 0.01em; color: var(--cream); }
+      .name .l1 { display: block; font-size: 136px; letter-spacing: 0.01em; color: var(--cream); }
       .name .l2 {
-        display: block; font-size: 150px; letter-spacing: 0.01em;
+        display: block; font-size: 136px; letter-spacing: 0.01em;
         color: transparent; -webkit-text-stroke: 2px var(--accent);
       }
       .phon { margin-top: 16px; font-size: 19px; color: rgba(253,246,227,0.48); }
 
       .tag {
-        margin-top: 30px; font-size: 31px; font-weight: 700; line-height: 1.28;
+        margin-top: 22px; font-size: 31px; font-weight: 700; line-height: 1.28;
         max-width: 980px;
       }
       .tag .accent { color: var(--accent); }
@@ -91,7 +91,7 @@
   </head>
   <body>
     <div class="layer top">
-      <div class="brand">SJ.EXE</div>
+      <img class="brand-logo" src="{{LOGO}}" alt="SJ'S WORLD" />
       <div class="boot">power-on self test <span class="ok">[ OK ]</span></div>
     </div>
 

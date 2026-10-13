@@ -1,4 +1,6 @@
 .contact-section {
+  /* Clear the sticky nav when a /#connect link scrolls here. */
+  scroll-margin-top: 100px;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;

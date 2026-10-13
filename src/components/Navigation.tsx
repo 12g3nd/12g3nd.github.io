@@ -5,6 +5,7 @@ import MatrixRain from './MatrixRain';
 import PartyOverlay from './PartyOverlay';
 import useTerminal from './terminal/useTerminal';
 import TerminalBody from './terminal/TerminalBody';
+import NavUtils from './NavUtils';
 import './Navigation.css';
 
 // The brand cycles through these on a triple-click, laid over the logo, then
@@ -139,6 +140,8 @@ export default function Navigation() {
           <NavLink to="/guestbook"><span className="nav-label">GUESTBOOK</span></NavLink>
           <NavLink to="/blog"><span className="nav-label">BLOG</span></NavLink>
         </div>
+
+        <NavUtils placement="bar" />
       </nav>
 
       <div
@@ -151,6 +154,7 @@ export default function Navigation() {
             {t.nudge ? '▸ tap & type `help`' : '▸ tap to type'}
           </span>
         )}
+        <NavUtils placement="row" />
       </div>
     </>
   );

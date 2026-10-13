@@ -359,7 +359,7 @@ export default function Home() {
       </section>
 
 
-      <section className="section contact-section">
+      <section className="section contact-section" id="connect">
         <div className="section-header">
           <h2><ScrambleText text="CONNECT" /></h2>
         </div>
