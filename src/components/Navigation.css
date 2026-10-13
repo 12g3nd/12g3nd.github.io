@@ -115,7 +115,12 @@
   z-index: -1;
   transform: skewX(calc(var(--lean) * -1));
   background-color: var(--bg-surface);
+  /* Each page's line colour, as a wash across the whole stripe and a solid
+     line down its leaning edge (see PAGES in Navigation.tsx). The current
+     page fills solid on top of that, below. */
+  background-color: color-mix(in srgb, var(--line, var(--accent-primary)) 30%, var(--bg-surface));
   border: 1px solid rgba(var(--accent-rgb), 0.3);
+  border-left: 5px solid var(--line, var(--accent-primary));
   transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
@@ -133,17 +138,19 @@
 }
 
 .nav-links a:hover::before {
-  border-color: var(--accent-primary);
+  /* Outline the stripe in its own line colour, not the site cyan. */
+  border-color: var(--line, var(--accent-primary));
 }
 
-/* Active route: the stripe fills in, so the current page reads as current. */
+/* Active route: the stripe fills in with its own line colour, so the
+   current page reads as current — and as which line you are on. */
 .nav-links a.active {
-  color: var(--bg-base);
+  color: var(--on-line, var(--bg-base));
 }
 
 .nav-links a.active::before {
-  background-color: var(--accent-primary);
-  border-color: var(--accent-primary);
+  background-color: var(--line, var(--accent-primary));
+  border-color: var(--line, var(--accent-primary));
 }
 
 /* ── The light switch and the letter ─────────────────────────
@@ -215,7 +222,7 @@
    the switch right, the letter a touch left, and the letter larger, since a
    wide envelope reads small next to a tall switch at the same box size. */
 .nav-utils--bar .nav-util--switch .nav-util__icon {
-  transform: translateX(5px);
+  transform: translateX(3px);
 }
 
 .nav-utils--bar .nav-util--mail .nav-util__icon {
@@ -269,7 +276,7 @@
 
 /* The switch: lever down is lights off (the navy site), up is lights on. */
 .nav-util--switch .nav-util__icon {
-  width: 20px;
+  width: 25px;
   height: 27px;
   overflow: visible;
 }

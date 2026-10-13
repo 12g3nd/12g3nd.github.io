@@ -164,9 +164,12 @@ export default function Home() {
             <img src={figureSrc} alt="Wireframe Figure" className="mobile-figure-inline wireframe-glitch" {...wireframeThemeProps} />
             <p className="phonetic-text">/sriːhɪθ dʒʊəˌræˈbɑːnə/</p>
           </div>
+          {/* One segmented strip: the crest (still the CRT-burst egg) as its
+              first cell, so it is always centred against the text, then the
+              program and the year. */}
           <div className="badge-row">
-            <div className="badge">Rotman Commerce · Class of '29</div>
-            <img
+            <span className="badge-cell badge-cell--crest">
+              <img
                 src="/crest.png"
                 alt="Fire a CRT burst"
                 className="crest-icon"
@@ -175,8 +178,20 @@ export default function Home() {
                 onClick={() => window.dispatchEvent(new CustomEvent('sjsys:crt'))}
                 onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.dispatchEvent(new CustomEvent('sjsys:crt')); } }}
               />
+            </span>
+            <span className="badge-cell badge-cell--rotman">
+              <span className="rotman-logo" role="img" aria-label="Rotman Commerce" />
+            </span>
+            <span className="badge-cell badge-cell--year">Class of '29</span>
           </div>
-          <p className="sub-badge">Intended: Management Specialist, Focus in Finance, Minor in Statistics and Economics</p>
+          <div className="sub-badge">
+            <p className="sub-badge__label">Intended program</p>
+            <dl className="sub-badge__fields">
+              <div><dt>Specialist</dt><dd>Management</dd></div>
+              <div><dt>Focus</dt><dd>Finance</dd></div>
+              <div><dt>Minors</dt><dd>Statistics, Economics</dd></div>
+            </dl>
+          </div>
           <div className="description-card">
             <p>
               '<span

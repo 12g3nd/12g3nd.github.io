@@ -40,22 +40,97 @@
   z-index: 1;
 }
 
+/* The ID strip: crest | program | year, one outlined bar split into cells.
+   The year is the filled cell, so it reads as the stamp on the card. */
 .badge-row {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  display: inline-flex;
+  align-items: stretch;
+  max-width: fit-content;
+  border: 1px solid var(--accent-primary);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  text-transform: uppercase;
+  color: var(--accent-primary);
 }
 
+.badge-cell {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  white-space: nowrap;
+}
+
+.badge-cell + .badge-cell {
+  border-left: 1px solid var(--accent-primary);
+}
+
+.badge-cell--crest {
+  padding: 0.25rem 0.6rem;
+}
+
+.badge-cell--rotman {
+  padding-block: 0.3rem;
+}
+
+/* The Rotman Commerce wordmark, used as a mask so it takes the strip's colour
+   (cyan here, teal on the light theme) rather than shipping its own. */
+.rotman-logo {
+  display: block;
+  height: 26px;
+  aspect-ratio: 366 / 96;
+  background-color: currentColor;
+  -webkit-mask: url('/rotman-commerce.png') center / contain no-repeat;
+  mask: url('/rotman-commerce.png') center / contain no-repeat;
+}
+
+.badge-cell--year {
+  background: var(--accent-primary);
+  color: var(--bg-base);
+  font-weight: 700;
+}
+
+/* The intended program, as labelled fields rather than one run-on sentence. */
 .sub-badge {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  color: rgba(var(--text-rgb), 0.6);
-  margin-top: -0.5rem;
+  margin-top: -0.4rem;
   margin-bottom: 0.5rem;
+  font-family: var(--font-mono);
+}
+
+.sub-badge__label {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 0.45rem;
+}
+
+.sub-badge__fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.75rem;
+}
+
+.sub-badge__fields div {
+  padding-left: 0.65rem;
+  border-left: 1px solid rgba(var(--accent-rgb), 0.35);
+}
+
+.sub-badge__fields dt {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.sub-badge__fields dd {
+  margin: 0.15rem 0 0;
+  font-size: 14px;
+  color: var(--text-primary);
 }
 
 .crest-icon {
-  height: 48px;
+  display: block;
+  height: 28px;
   width: auto;
   cursor: pointer;
   filter: brightness(0) saturate(100%) invert(75%) sepia(35%) saturate(7174%) hue-rotate(143deg) brightness(104%) contrast(101%);
@@ -267,15 +342,6 @@
   display: none;
 }
 
-.badge {
-  font-family: var(--font-mono);
-  font-size: 14px;
-  color: var(--accent-primary);
-  border: 1px solid var(--accent-primary);
-  padding: 0.5rem 1rem;
-  max-width: fit-content;
-  text-transform: uppercase;
-}
 
 @media (max-width: 768px) {
   /* Keep the faint y2k ASCII background on mobile too. body has overflow-x:
@@ -383,17 +449,24 @@
     font-size: 0.8rem;
   }
 
-  .badge {
+  .badge-row {
     font-size: 12px;
-    padding: 0.4rem 0.75rem;
+  }
+
+  .badge-cell {
+    padding: 0.4rem 0.7rem;
   }
 
   .crest-icon {
-    height: 36px;
+    height: 24px;
   }
 
-  .sub-badge {
-    font-size: 11px;
+  .rotman-logo {
+    height: 22px;
+  }
+
+  .sub-badge__fields dd {
+    font-size: 13px;
   }
 
   .right-column {

@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { useState, useEffect, useRef, type PointerEvent as ReactPointerEvent } from 'react';
+import { useState, useEffect, useRef, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react';
 import ScrambleText from './ScrambleText';
 import MatrixRain from './MatrixRain';
 import PartyOverlay from './PartyOverlay';
@@ -7,6 +7,22 @@ import useTerminal from './terminal/useTerminal';
 import TerminalBody from './terminal/TerminalBody';
 import NavUtils from './NavUtils';
 import './Navigation.css';
+
+/**
+ * The pages, each on its own line colour, the way a transit map colours its
+ * lines: Toronto's subway lines for the first four (it is the TSJ's terminus),
+ * the TSJ's own red for TRAVEL, Line 6's silver for GUESTBOOK, and the site's
+ * cyan for BLOG. `onLine` is the text colour that reads on a full fill of it.
+ */
+const PAGES = [
+  { to: '/business', label: 'BUSINESS', line: '#ffc41e', onLine: '#0a1320' },
+  { to: '/projects', label: 'PROJECTS', line: '#00a54f', onLine: '#0a1320' },
+  { to: '/poetry', label: 'POETRY', line: '#a21a68', onLine: '#fdf6e3' },
+  { to: '/media', label: 'MEDIA', line: '#f58025', onLine: '#0a1320' },
+  { to: '/travel', label: 'TRAVEL', line: '#ff2e4d', onLine: '#0a1320' },
+  { to: '/guestbook', label: 'GUESTBOOK', line: '#a8a8a8', onLine: '#0a1320' },
+  { to: '/blog', label: 'BLOG', line: '#00e5ff', onLine: '#0a1320' },
+] as const;
 
 // The brand cycles through these on a triple-click, laid over the logo, then
 // clears back to it.
@@ -132,13 +148,15 @@ export default function Navigation() {
         </div>
 
         <div className="nav-links">
-          <NavLink to="/business"><span className="nav-label">BUSINESS</span></NavLink>
-          <NavLink to="/projects"><span className="nav-label">PROJECTS</span></NavLink>
-          <NavLink to="/poetry"><span className="nav-label">POETRY</span></NavLink>
-          <NavLink to="/media"><span className="nav-label">MEDIA</span></NavLink>
-          <NavLink to="/travel"><span className="nav-label">TRAVEL</span></NavLink>
-          <NavLink to="/guestbook"><span className="nav-label">GUESTBOOK</span></NavLink>
-          <NavLink to="/blog"><span className="nav-label">BLOG</span></NavLink>
+          {PAGES.map((p) => (
+            <NavLink
+              key={p.to}
+              to={p.to}
+              style={{ '--line': p.line, '--on-line': p.onLine } as CSSProperties}
+            >
+              <span className="nav-label">{p.label}</span>
+            </NavLink>
+          ))}
         </div>
 
         <NavUtils placement="bar" />

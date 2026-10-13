@@ -5,9 +5,9 @@ import { getTheme, toggleTheme, type Theme } from '../utils/theme';
 /**
  * The two boxes at the end of the nav: a light switch and a letter.
  *
- * The theme toggle is drawn as an actual wall light switch, because that is
- * what it is: lights off is the navy site, lights on is the paper one, and
- * the lever sits down or up to match. It reads the <html> class rather than
+ * The theme toggle is drawn as an actual wall light switch, leaning with the
+ * stripes, because that is what it is: lights off is the navy site, lights on
+ * is the paper one, and the lever sits down or up to match. It reads the <html> class rather than
  * keeping its own copy of the theme, so it stays right whichever way the
  * theme last changed — here, the terminal's `theme light`, or the ⌘K palette.
  *
@@ -40,12 +40,17 @@ export default function NavUtils({ placement }: { placement: 'bar' | 'row' }) {
         title={lightsOn ? 'Lights off' : 'Lights on'}
         onClick={() => setTheme(toggleTheme())}
       >
-        <svg className="nav-util__icon" viewBox="0 0 24 32" aria-hidden="true">
-          <rect className="switch__plate" x="3" y="1" width="18" height="30" rx="3" />
-          <circle className="switch__screw" cx="12" cy="4.6" r="1.1" />
-          <circle className="switch__screw" cx="12" cy="27.4" r="1.1" />
-          <rect className="switch__slot" x="8.5" y="8.5" width="7" height="15" rx="1.6" />
-          <rect className="switch__lever" x="9.4" y="15.6" width="5.2" height="7" rx="1.2" />
+        {/* The plate leans with the stripes (the same 20°), so it sits in the
+            panel's slanted corner instead of standing upright against it. The
+            skew is on the group, so the lever slides along the lean too. */}
+        <svg className="nav-util__icon" viewBox="-6 0 30 32" aria-hidden="true">
+          <g transform="skewX(-20) translate(5.8 0)">
+            <rect className="switch__plate" x="3" y="1" width="18" height="30" rx="2.5" />
+            <circle className="switch__screw" cx="12" cy="4.6" r="1.1" />
+            <circle className="switch__screw" cx="12" cy="27.4" r="1.1" />
+            <rect className="switch__slot" x="8.5" y="8.5" width="7" height="15" rx="1.4" />
+            <rect className="switch__lever" x="9.4" y="15.6" width="5.2" height="7" rx="1" />
+          </g>
         </svg>
       </button>
       <Link
