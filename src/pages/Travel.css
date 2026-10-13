@@ -1,0 +1,652 @@
+/* ── Travel ─────────────────────────────────────────────────
+   A world map in the site's own voice: navy land, cyan dots for places
+   visited, purple squares for places lived, and one red subway line — the
+   Transmundane Subway Journey — drawn as a straight-faced transit diagram
+   that crosses an ocean between adjacent stations. The red is the same one
+   the name pops out in on the home page. */
+
+.travel-page {
+  --tsj: #ff2e4d;
+  --home-mark: var(--accent-secondary);
+  --visit-mark: var(--accent-primary);
+}
+
+.theme-light .travel-page {
+  --tsj: #d1172f;
+}
+
+/* ── Command bar (shared box in styles/command-bar.css) ─── */
+.travel-bar {
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.travel-bar__prompt {
+  color: var(--accent-primary);
+  font-weight: 700;
+  margin-right: 0.5rem;
+}
+
+.travel-bar__count {
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+/* ── The TSJ notice: a station service board ─────────────── */
+.tsj-notice {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
+  align-items: center;
+  gap: 1.5rem 2.5rem;
+  margin-bottom: 2rem;
+  padding: 1.25rem 1.5rem 1.4rem;
+  background: var(--bg-surface);
+  border: 1px solid rgba(var(--text-rgb), 0.15);
+  /* A transit line's colour band along the top, the way a platform sign
+     carries its line. */
+  box-shadow: inset 0 6px 0 var(--tsj);
+}
+
+.tsj-notice__kicker {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--tsj);
+  margin-top: 0.4rem;
+}
+
+.tsj-notice__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+  line-height: 1;
+  margin: 0.4rem 0 0.75rem;
+  color: var(--text-primary);
+}
+
+.tsj-notice__art {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  height: auto;
+  justify-self: center;
+}
+
+.tsj-notice__body {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-dim);
+  max-width: 78ch;
+}
+
+/* ── Controls ─────────────────────────────────────────────── */
+.travel-controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.travel-controls__group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.travel-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 36px;
+  padding: 0.45rem 0.75rem;
+  background: transparent;
+  border: 1px solid rgba(var(--accent-rgb), 0.3);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.travel-chip:hover {
+  border-color: var(--accent-primary);
+  color: var(--text-primary);
+}
+
+.travel-chip[aria-pressed='true'] {
+  color: var(--text-primary);
+  border-color: var(--accent-primary);
+  background: rgba(var(--accent-rgb), 0.1);
+}
+
+.travel-chip--region[aria-pressed='true'] {
+  background: var(--accent-primary);
+  color: var(--bg-base);
+}
+
+.travel-chip__key {
+  width: 10px;
+  height: 10px;
+  flex: 0 0 auto;
+}
+
+.travel-chip--tsj .travel-chip__key { background: var(--tsj); border-radius: 50%; }
+.travel-chip--visit .travel-chip__key { background: var(--visit-mark); border-radius: 50%; width: 8px; height: 8px; }
+.travel-chip--home .travel-chip__key { background: var(--home-mark); }
+
+.travel-chip[aria-pressed='false'] .travel-chip__key {
+  opacity: 0.3;
+}
+
+/* ── Map + card ───────────────────────────────────────────── */
+.travel-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 1rem;
+  align-items: start;
+}
+
+.travel-map {
+  position: relative;
+  background:
+    radial-gradient(circle, rgba(var(--accent-rgb), 0.07) 1px, transparent 1.4px) 0 0 / 14px 14px,
+    var(--bg-surface);
+  border: 1px solid rgba(var(--accent-rgb), 0.25);
+  /* Matches src/data/worldMap.ts until it loads; the page then sets it from
+     the data, so a regenerated map never letterboxes. */
+  aspect-ratio: 1000 / 431;
+  overflow: hidden;
+  scroll-margin-top: 110px;
+}
+
+.travel-map__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: grab;
+  /* One finger scrolls the page; two are the map's (see Travel.tsx). */
+  touch-action: pan-x pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.travel-map__svg:active {
+  cursor: grabbing;
+}
+
+/* ── Zoom buttons + gesture hint ─────────────────────────── */
+.travel-zoom {
+  position: absolute;
+  right: 0.6rem;
+  bottom: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.travel-zoom button {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  background: var(--bg-base);
+  border: 1px solid rgba(var(--accent-rgb), 0.45);
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.travel-zoom button:hover {
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+.travel-map__hint {
+  position: absolute;
+  left: 0.6rem;
+  bottom: 0.5rem;
+  margin: 0;
+  padding: 0.15rem 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  pointer-events: none;
+}
+
+.travel-map__hint--touch {
+  display: none;
+}
+
+@media (hover: none) {
+  .travel-map__hint--pointer { display: none; }
+  .travel-map__hint--touch { display: inline; }
+}
+
+.travel-map__land {
+  fill: rgba(var(--text-rgb), 0.09);
+  stroke: rgba(var(--accent-rgb), 0.35);
+  stroke-linejoin: round;
+}
+
+.travel-map__loading {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-faint);
+}
+
+/* The line. Stroke widths are screen pixels whatever the zoom. */
+.tsj-line path {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tsj-line__casing {
+  stroke: var(--bg-surface);
+  stroke-width: 8;
+}
+
+.tsj-line__track {
+  stroke: var(--tsj);
+  stroke-width: 4;
+}
+
+.tsj-line__track--return {
+  stroke-width: 3;
+  stroke-dasharray: 2 7;
+  opacity: 0.85;
+}
+
+/* Markers. Their sizes come from the component, in screen pixels. */
+.tv-marker {
+  cursor: pointer;
+}
+
+.tv-marker__hit {
+  fill: transparent;
+}
+
+.tv-marker--visit .tv-marker__dot {
+  fill: var(--visit-mark);
+}
+
+.tv-marker--home .tv-marker__dot {
+  fill: var(--home-mark);
+}
+
+.tv-marker--tsj .tv-marker__dot {
+  fill: var(--text-primary);
+  stroke: var(--tsj);
+}
+
+.tv-marker__terminus {
+  fill: none;
+  stroke: var(--tsj);
+}
+
+.tv-marker__halo {
+  fill: none;
+  stroke: var(--text-primary);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+.tv-marker__label {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  fill: var(--text-primary);
+  /* A halo in the map's own colour keeps labels readable over coastlines. */
+  stroke: var(--bg-surface);
+  paint-order: stroke;
+  pointer-events: none;
+}
+
+.tv-marker--tsj .tv-marker__label,
+.tv-marker.is-terminus .tv-marker__label {
+  fill: var(--tsj);
+}
+
+/* ── The card ─────────────────────────────────────────────── */
+.travel-card {
+  background: var(--bg-surface);
+  border: 1px solid rgba(var(--accent-rgb), 0.25);
+  padding: 1.1rem 1.2rem 1.3rem;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-dim);
+  min-height: 100%;
+}
+
+.travel-card__eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--accent-primary);
+  margin-bottom: 0.5rem;
+}
+
+.travel-card__body--tsj .travel-card__eyebrow { color: var(--tsj); }
+.travel-card__body--home .travel-card__eyebrow { color: var(--home-mark); }
+
+.travel-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.travel-card__close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 22px;
+  line-height: 1;
+  min-width: 32px;
+  min-height: 32px;
+  cursor: pointer;
+}
+
+.travel-card__close:hover { color: var(--text-primary); }
+
+.travel-card__city {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--text-primary);
+}
+
+.travel-card__where {
+  margin: 0.3rem 0 0.9rem;
+  color: var(--text-muted);
+}
+
+.travel-card__dates {
+  list-style: none;
+  border-top: 1px solid rgba(var(--text-rgb), 0.12);
+}
+
+.travel-card__dates li {
+  padding: 0.35rem 0;
+  border-bottom: 1px solid rgba(var(--text-rgb), 0.12);
+  color: var(--text-primary);
+}
+
+.travel-card__note {
+  margin-top: 0.9rem;
+  color: var(--text-muted);
+}
+
+/* The faux-Polaroid: the same proportions as the real print — a 90 × 110
+   card with an 80 × 80 photo, 5 on three sides and 25 underneath. */
+.tsj-print {
+  margin: 0 auto;
+  width: min(100%, 240px);
+  aspect-ratio: 90 / 110;
+  background: #fbfaf6;
+  padding: 5.55% 5.55% 0;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35), 0 12px 24px rgba(0, 0, 0, 0.45);
+  transform: rotate(-1.5deg);
+}
+
+.tsj-print__photo {
+  aspect-ratio: 1;
+  background: #d9d6cc;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.tsj-print__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tsj-print__pending {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5c5a52;
+}
+
+.tsj-print__caption {
+  padding: 0.55rem 0.2rem;
+  font-family: 'Comic Sans MS', 'Segoe Print', 'Bradley Hand', cursive;
+  font-size: 14px;
+  color: #23201a;
+  text-align: center;
+}
+
+.tsj-notes {
+  margin-top: 1.1rem;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.tsj-notes h4 {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: var(--tsj);
+  margin-bottom: 0.3rem;
+}
+
+.tsj-notes ul {
+  padding-left: 1.1rem;
+}
+
+/* Empty state + legend */
+.travel-legend {
+  list-style: none;
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.travel-legend li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.travel-legend__key {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+}
+
+.travel-legend__key--tsj { border-radius: 50%; background: var(--text-primary); box-shadow: inset 0 0 0 3px var(--tsj); }
+.travel-legend__key--line { height: 4px; background: var(--tsj); }
+.travel-legend__key--home { width: 10px; height: 10px; margin: 0 2px; background: var(--home-mark); }
+.travel-legend__key--visit { width: 8px; height: 8px; margin: 0 3px; border-radius: 50%; background: var(--visit-mark); }
+
+/* ── Index below the map ──────────────────────────────────── */
+.travel-index {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr);
+  gap: 1.5rem 2rem;
+  margin-top: 2.5rem;
+}
+
+.travel-index__title {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: var(--accent-primary);
+  margin-bottom: 0.75rem;
+}
+
+.travel-index__col--wide {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 0 1.5rem;
+  align-content: start;
+}
+
+.travel-index__col--wide .travel-index__title {
+  grid-column: 1 / -1;
+}
+
+.travel-index__country-name {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 0.35rem;
+}
+
+.travel-index__country {
+  margin-bottom: 1rem;
+}
+
+.travel-index__list {
+  list-style: none;
+  border-top: 1px solid rgba(var(--text-rgb), 0.12);
+}
+
+.travel-index__list li {
+  border-bottom: 1px solid rgba(var(--text-rgb), 0.12);
+}
+
+.travel-index__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: 36px;
+  padding: 0.4rem 0;
+  background: none;
+  border: none;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.travel-index__item:hover,
+.travel-index__item[aria-pressed='true'] {
+  color: var(--accent-primary);
+}
+
+.travel-index__when {
+  /* Shrinks and wraps rather than spilling into the next column: some
+     entries are dates, some are "too many times to date". */
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 60%;
+  font-size: 12px;
+  line-height: 1.35;
+  color: var(--text-faint);
+  text-align: right;
+}
+
+.travel-index__code {
+  color: var(--tsj);
+  font-weight: 700;
+}
+
+.travel-index__more {
+  margin-top: 0.4rem;
+  min-height: 36px;
+  padding: 0.3rem 0;
+  background: none;
+  border: none;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--accent-primary);
+  cursor: pointer;
+}
+
+.travel-index__more:hover {
+  color: var(--text-primary);
+}
+
+.travel-index__terminus {
+  display: block;
+  padding: 0.4rem 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--tsj);
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 1080px) {
+  /* The train goes above the text once there is no room beside it. */
+  .tsj-notice {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tsj-notice__art {
+    order: -1;
+    max-width: 440px;
+  }
+
+  .travel-stage {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .travel-index {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .travel-index__col--wide {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 600px) {
+  /* The map is short on a phone: lay the zoom buttons in a row so they cover
+     a corner rather than a whole edge. */
+  .travel-zoom {
+    flex-direction: row;
+    right: 0.4rem;
+    bottom: 0.4rem;
+  }
+
+  .travel-zoom button {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
+
+  .travel-map__hint {
+    bottom: 0.4rem;
+    font-size: 10px;
+    max-width: calc(100% - 7.5rem);
+  }
+
+  .travel-index {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tsj-notice {
+    padding: 1rem 1rem 1.2rem;
+  }
+
+  .tsj-notice__art {
+    max-width: 360px;
+  }
+
+  .tsj-notice__body {
+    font-size: 13px;
+  }
+}

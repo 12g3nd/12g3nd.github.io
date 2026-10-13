@@ -118,10 +118,7 @@ export default function GuestbookForm() {
         </label>
 
         <div className="gb-field">
-          <span className="gb-field__label">Signature</span>
-          <span className="gb-field__hint">
-            (not legal, just for fun — you can leave a drawing if you want instead)
-          </span>
+          <span className="gb-field__label">Sign your name / Leave a fun drawing</span>
           <SignatureCanvas mode="draw" onChange={setStrokes} width={300} height={110} />
         </div>
 

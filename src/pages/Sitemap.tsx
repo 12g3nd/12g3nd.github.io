@@ -83,6 +83,7 @@ export default function Sitemap() {
     { icon: 'DIR', name: 'projects/', to: '/projects', modified: built, description: 'things built, shipped or abandoned' },
     { icon: 'DIR', name: 'business/', to: '/business', modified: built, description: 'research, competitions, write-ups' },
     { icon: 'DIR', name: 'media/', to: '/media', modified: built, description: 'books, albums, films, games' },
+    { icon: 'DIR', name: 'travel/', to: '/travel', modified: built, description: 'the map, and the Transmundane Subway Journey' },
     { icon: 'DIR', name: 'poetry/', to: '/poetry', modified: poemsSorted[0]?.date ?? built, description: 'selected poems — the third pillar' },
     { icon: 'DIR', name: 'blog/', to: '/blog', modified: postsSorted[0]?.date ?? built, description: 'transmissions' },
     { icon: 'DIR', name: 'guestbook/', to: '/guestbook', modified: built, description: 'sign it' },

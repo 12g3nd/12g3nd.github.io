@@ -13,6 +13,7 @@ import Home from './pages/Home';
 import Projects from './pages/Projects';
 import Business from './pages/Business';
 import Media from './pages/Media';
+import Travel from './pages/Travel';
 import Blog from './pages/Blog';
 import Poetry from './pages/Poetry';
 import PoemPage from './pages/PoemPage';
@@ -47,6 +48,7 @@ function AnimatedRoutes() {
           <Route path="/projects" element={<Projects />} />
           <Route path="/business" element={<Business />} />
           <Route path="/media" element={<Media />} />
+          <Route path="/travel" element={<Travel />} />
           <Route path="/poetry" element={<Poetry />} />
           <Route path="/poetry/:slug" element={<PoemPage />} />
           <Route path="/guestbook" element={<Guestbook />} />

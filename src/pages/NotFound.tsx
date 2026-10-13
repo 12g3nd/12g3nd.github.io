@@ -30,6 +30,7 @@ export default function NotFound() {
               <Link to="/">/home</Link>
               <Link to="/projects">/projects</Link>
               <Link to="/media">/media</Link>
+              <Link to="/travel">/travel</Link>
               <Link to="/poetry">/poetry</Link>
               <Link to="/blog">/blog</Link>
             </div>

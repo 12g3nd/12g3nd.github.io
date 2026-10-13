@@ -38,6 +38,10 @@ export const ROUTES: Record<string, string> = {
   'business.xlsx': '/business',
   'open business.xlsx': '/business',
   media: '/media',
+  travel: '/travel',
+  'cd travel': '/travel',
+  'open atlas.map': '/travel',
+  tsj: '/travel',
   poetry: '/poetry',
   guestbook: '/guestbook',
   'cat guestbook.log': '/guestbook',
@@ -56,6 +60,7 @@ export const ROUTES: Record<string, string> = {
 export const LS_ENTRIES: { label: string; cmd: string }[] = [
   { label: 'projects/', cmd: 'projects' },
   { label: 'media/', cmd: 'media' },
+  { label: 'travel/', cmd: 'travel' },
   { label: 'poetry/', cmd: 'poetry' },
   { label: 'blog/', cmd: 'blog' },
   { label: 'business.xlsx', cmd: 'business' },
@@ -71,7 +76,7 @@ export const LS_ENTRIES: { label: string; cmd: string }[] = [
  * eggs (cat .secret, 42, whoami --real, …) so poking around still rewards.
  */
 export const COMPLETIONS: string[] = [
-  'projects', 'business', 'media', 'poetry', 'blog', 'guestbook', 'home',
+  'projects', 'business', 'media', 'travel', 'poetry', 'blog', 'guestbook', 'home',
   'help', 'whoami', 'uptime', 'resume', 'ls', 'clear', 'exit',
   'cat beliefs.txt', 'cat rootbeer.log', 'cat guestbook.log',
   'sudo hire-me', 'theme dark', 'theme light', 'matrix', 'party mode',

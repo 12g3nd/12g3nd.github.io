@@ -20,6 +20,7 @@
 .log-bar,
 .xls-bar,
 .gallery-bar,
+.travel-bar,
 .poetry-bar,
 .guestbook-bar {
   display: flex;
@@ -40,6 +41,7 @@
 .log-bar__cmd,
 .xls-bar__cmd,
 .gallery-bar__cmd,
+.travel-bar__cmd,
 .poetry-bar__cmd,
 .guestbook-bar__cmd {
   color: rgba(var(--text-rgb), 0.7);

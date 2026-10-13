@@ -12,6 +12,14 @@
 }
 
 .nav-brand {
+  /* The SJ'S WORLD logo. Its lettering is the widest part of a round mark, so
+     it needs real height to stay legible: it reaches into the bar's padding,
+     the way the stripes do, rather than sitting inside it. */
+  position: relative;
+  flex: 0 0 auto;
+  display: block;
+  line-height: 0;
+  margin-block: -3px;
   font-family: var(--font-display);
   font-size: 2.5rem;
   color: var(--accent-primary);
@@ -27,7 +35,32 @@
   opacity: 0.8;
 }
 
-/* Racing stripes: six tall parallelograms leaning right, packed tight and
+.nav-brand__logo {
+  display: block;
+  height: 66px;
+  width: auto;
+  pointer-events: none;
+}
+
+/* Cream ink drawn for the navy bar; on the light theme's parchment it would
+   vanish, so it prints dark there instead. */
+.theme-light .nav-brand__logo {
+  filter: brightness(0) opacity(0.82);
+}
+
+/* The triple-click glitch, laid over the logo so nothing beside it moves. */
+.nav-brand__glitch {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: var(--bg-base);
+  font-size: 1.15rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Racing stripes: seven tall parallelograms leaning right, packed tight and
    pushed to the right edge so the terminal gets the room. Each word runs up
    its own stripe at the stripe's angle. The parallelogram is a skewed ::before
    box behind the link (skew stretches text, so the text is rotated instead);
@@ -366,7 +399,11 @@
   }
 
   .nav-brand {
-    font-size: 2rem;
+    margin-block: 0;
+  }
+
+  .nav-brand__logo {
+    height: 52px;
   }
 
   .nav-links {
@@ -391,8 +428,8 @@
     padding: var(--nav-pad-y) 1rem;
   }
 
-  .nav-brand {
-    font-size: 1.75rem;
+  .nav-brand__logo {
+    height: 46px;
   }
 
   /* Narrow enough to share the wordmark's row, which keeps the header short. */
@@ -412,12 +449,24 @@
   }
 }
 
-/* The narrowest phones: six stripes beside the wordmark only fit if each
-   gives up a little width. */
-@media (max-width: 340px) {
+/* The narrowest phones: seven stripes beside the wordmark only fit if both
+   give a little — narrower stripes, a smaller wordmark. */
+@media (max-width: 380px) {
+  .nav-brand {
+    margin-block: 0;
+  }
+
+  .nav-brand__logo {
+    height: 44px;
+  }
+
   .nav-links {
-    --stripe-w: 1.75rem;
+    --stripe-w: 1.6rem;
     gap: 0.15rem;
+  }
+
+  .nav-links a {
+    font-size: 10px;
   }
 }
 

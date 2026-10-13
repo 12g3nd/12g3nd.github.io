@@ -36,6 +36,7 @@ export default function CommandPalette() {
     { id: 'projects', label: 'Projects', hint: 'route', run: goto('/projects') },
     { id: 'business', label: 'Business', hint: 'route', keywords: 'xlsx finance', run: goto('/business') },
     { id: 'media', label: 'Media', hint: 'route', keywords: 'gallery art prints', run: goto('/media') },
+    { id: 'travel', label: 'Travel', hint: 'route', keywords: 'map tsj transmundane subway journey places', run: goto('/travel') },
     { id: 'poetry', label: 'Poetry', hint: 'route', keywords: 'writing poems', run: goto('/poetry') },
     { id: 'blog', label: 'Blog', hint: 'route', keywords: 'writing posts', run: goto('/blog') },
     { id: 'guestbook', label: 'Guestbook', hint: 'route', keywords: 'sign log visitors', run: goto('/guestbook') },

@@ -47,6 +47,12 @@ export const routeMeta = {
     description:
       'Books, poetry, albums, films, and games Srihith Jarabana enjoys — plus current playlists and Letterboxd ratings.',
   },
+  travel: {
+    path: '/travel',
+    title: 'Travel · Srihith Jarabana',
+    description:
+      'Where Srihith Jarabana has been and lived, and the Transmundane Subway Journey: one city, new country, one photograph.',
+  },
   poetry: {
     path: '/poetry',
     title: 'Poetry · Srihith Jarabana',

@@ -25,7 +25,7 @@ export default function Blog() {
       <section className="section">
         <div className="section-header">
           <h2><ScrambleText text="TRANSMISSIONS" /></h2>
-          <p className="section-desc">essays and logs, append-only — once a transmission goes out, I don't edit it</p>
+          <p className="section-desc">essays and logs, append-only</p>
         </div>
 
         {/* Log chrome: frames the feed as a live log stream inside SJ.EXE */}
