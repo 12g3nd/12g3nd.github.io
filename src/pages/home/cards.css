@@ -1,20 +1,3 @@
-.description-card {
-  background-color: var(--bg-surface);
-  border-left: 2px solid var(--accent-primary);
-  padding: 2rem;
-  margin-top: 1rem;
-  max-width: 650px;
-}
-
-.description-card p {
-  font-family: var(--font-mono);
-  font-size: 16px;
-  line-height: 1.6;
-  margin-bottom: 2rem;
-  color: rgba(var(--text-rgb), 0.8);
-
-}
-
 .hero-actions {
   display: flex;
   gap: 1.5rem;
@@ -52,79 +35,6 @@
 .btn-ghost:hover {
   background-color: rgba(var(--accent-rgb), 0.1);
   border-color: rgba(var(--accent-rgb), 1);
-}
-
-.what-im-up-to-card {
-  width: 100%;
-  max-width: 400px;
-
-  background-color: var(--bg-surface);
-  border: 1px dashed var(--accent-primary);
-  padding: 1.5rem;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  margin-top: 2rem;
-}
-
-.what-im-up-to-card h3 {
-  font-family: var(--font-mono);
-  font-size: 14px;
-  color: var(--accent-primary);
-  margin-bottom: 0.75rem;
-  text-transform: uppercase;
-  font-weight: bold;
-}
-
-.what-im-up-to-card p {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  line-height: 1.6;
-  color: rgba(var(--text-rgb), 0.85);
-  position: relative;
-  z-index: 1;
-}
-
-/* Timestamp under the card copy — the readout says when it was last true. */
-
-.what-im-up-to-card .wiu-stamp {
-  margin-top: 0.6rem;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  color: var(--text-faint);
-  position: relative;
-  z-index: 1;
-}
-
-.what-im-up-to-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.08) 0%, rgba(var(--accent-rgb), 0) 100%);
-  pointer-events: none;
-}
-
-.expanded-details {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1.5rem;
-  background-color: var(--bg-surface);
-  border-left: 2px solid var(--accent-secondary);
-  padding: 1.5rem;
-  max-width: 650px;
-  margin-top: auto;
-
-}
-
-.detail-col strong {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  color: var(--text-primary);
 }
 
 /* ── "afraid of elevators" easter egg ──────────────────── */
@@ -186,35 +96,287 @@
   }
 }
 
-.detail-col p {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: rgba(var(--text-rgb), 0.7);
+/* ── The intro, the departures board, the stops ─────────────────────────────
+   The intro closes the left column and the board closes the right one, under
+   the incubator, which stretches to take up the difference so both columns end
+   level. The stops and the skyline (landmark.css) run full width beneath, in
+   .hero-lower. */
+
+.hero-intro {
   margin-top: 0.5rem;
 }
 
+/* The bio: an aside, then the claim set in the display face on a leaning
+   accent stripe (the nav's lean), then the welcome. The
+   stripe wipes in from the left and the claim lifts in after it. */
+.bio {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+  margin-bottom: 1.75rem;
+  font-family: var(--font-mono);
+}
+
+.bio__aside {
+  font-size: 16px;
+  color: var(--text-dim);
+}
+
+.bio__claim {
+  position: relative;
+  display: inline-block;
+  padding: 0.12em 0.45em 0.08em 0.35em;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.4vw, 3.1rem);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  color: var(--bg-base);
+  isolation: isolate;
+}
+
+.bio__claim::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background: var(--accent-primary);
+  transform: skewX(-20deg);
+  transform-origin: left;
+  box-shadow: 0.12em 0.12em 0 #ff2e4d;
+  animation: bio-wipe 0.6s cubic-bezier(0.25, 1, 0.5, 1) 0.25s both;
+}
+
+.bio__claim > span {
+  display: inline-block;
+  animation: bio-lift 0.45s cubic-bezier(0.25, 1, 0.5, 1) 0.55s both;
+}
+
+.theme-light .bio__claim::before {
+  box-shadow: 0.12em 0.12em 0 #d1172f;
+}
+
+.bio__welcome {
+  font-size: clamp(16px, 1.3vw, 19px);
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+@keyframes bio-wipe {
+  from { transform: skewX(-20deg) scaleX(0); }
+  to { transform: skewX(-20deg) scaleX(1); }
+}
+
+@keyframes bio-lift {
+  from { opacity: 0; transform: translateY(0.25em); }
+}
+
+/* Keeps the claim on one line on the narrowest phones. */
+@media (max-width: 380px) {
+  .bio__claim {
+    font-size: 1.7rem;
+  }
+}
+
+@media (max-width: 340px) {
+  .bio__claim {
+    font-size: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bio__claim::before,
+  .bio__claim > span {
+    animation: none;
+  }
+}
+
+.hero-lower {
+  flex: 1 1 100%;
+  order: 2;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 3rem;
+  margin-top: 2.5rem;
+}
+
+/* The board is a device, not a page surface: dark glass and amber LEDs in both
+   themes, which is why these colours are literals rather than tokens. */
+.dep-board {
+  width: 100%;
+  max-width: 460px;
+  position: relative;
+  background: #05080d;
+  border: 2px solid #26324a;
+  padding: 14px 18px 16px;
+  font-family: var(--font-mono);
+}
+
+/* The dot matrix: a fine grid of dark pitch laid over the lit characters. */
+.dep-board::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.45) 0.6px, transparent 1.1px);
+  background-size: 3px 3px;
+  pointer-events: none;
+}
+
+.dep-board__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  border-bottom: 1px solid #26324a;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+}
+
+.dep-board__head h2 {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #ffb000;
+  margin: 0;
+}
+
+.dep-board__head span {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: #b28d4a;
+}
+
+.dep-board__rows > div {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 0.75rem;
+  padding: 5px 0;
+}
+
+.dep-board__rows dt {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: #ffb000;
+  padding-top: 3px;
+}
+
+.dep-board__rows dd {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #ffd27a;
+  text-shadow: 0 0 6px rgba(255, 176, 0, 0.35);
+}
+
+/* The stops: one line in three colours, a station ring at the start of each
+   segment. The line is each stop's ::before and the ring its ::after, so the
+   segments meet with no gap and a phone can turn the line vertical without
+   new markup. */
+.stops {
+  grid-column: 1 / -1;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.stop {
+  position: relative;
+  padding: 3.5rem 2rem 0 0;
+}
+
+.stop::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 17px;
+  height: 6px;
+  background: var(--line);
+}
+
+.stop::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 6px solid var(--line);
+  background: var(--bg-base);
+}
+
+.stop h3 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin-bottom: 0.6rem;
+}
+
+.stop p {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-dim);
+  max-width: 34ch;
+}
+
+/* The elevator egg used to fall inside a clipped card; on a stop it falls
+   past the line instead. */
+.stop.fun-facts {
+  overflow: visible;
+}
+
 @media (max-width: 768px) {
-  .description-card {
-    max-width: 100%;
-    padding: 1.5rem;
+  .hero-lower {
+    gap: 2rem;
+    margin-top: 1rem;
   }
 
-  .expanded-details {
-    max-width: 100%;
-    grid-template-columns: 1fr 1fr 1fr;
+  .dep-board {
+    max-width: none;
+  }
+
+  .stops {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* The line turns to run down the left edge, a ring beside each stop. */
+  .stop {
+    padding: 6px 0 1.75rem 3.25rem;
+  }
+
+  .stop::before {
+    left: 17px;
+    right: auto;
+    top: 0;
+    bottom: 0;
+    width: 6px;
+    height: auto;
+  }
+
+  .stop:last-child::before {
+    bottom: auto;
+    height: 20px;
+  }
+
+  .stop h3 {
+    font-size: 24px;
   }
 }
 
 @media (max-width: 480px) {
-  .description-card {
-    padding: 1.25rem;
-  }
-
-  .description-card p {
-    font-size: 14px;
-    margin-bottom: 1.5rem;
-  }
-
   .hero-actions {
     flex-direction: column;
     gap: 0.75rem;
@@ -228,26 +390,16 @@
     font-size: 13px;
   }
 
-  .expanded-details {
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
+  .pillars {
+    width: 100%;
   }
 
-  .detail-col p {
-    font-size: 11px;
+  .dep-board__rows > div {
+    grid-template-columns: 4.75rem 1fr;
+  }
+
+  .dep-board__rows dd {
+    font-size: 13px;
   }
 }
 
-@media (min-width: 1800px) {
-  .description-card {
-    max-width: 900px;
-  }
-
-  .expanded-details {
-    max-width: 900px;
-  }
-
-  .what-im-up-to-card {
-    max-width: 550px;
-  }
-}

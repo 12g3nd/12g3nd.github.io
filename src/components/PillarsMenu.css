@@ -1,0 +1,92 @@
+.pillars {
+  position: relative;
+  display: inline-flex;
+}
+
+.pillars__caret {
+  display: inline-block;
+  transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.pillars.is-open .pillars__caret {
+  transform: rotate(180deg);
+}
+
+/* The menu hangs off the button's left edge, at least as wide as it, and
+   above the stops that sit below the hero. */
+.pillars__menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: max(100%, 15rem);
+  z-index: 20;
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  background: var(--bg-surface);
+  border: 1px solid rgba(var(--accent-rgb), 0.5);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* Each item carries its line as a leaning stripe on the left, like the nav
+   tab it leads to; hover and focus fill the whole row with the line. */
+.pillars__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.7rem 0.9rem 0.7rem 1.6rem;
+  font-family: var(--font-display);
+  font-size: 22px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  text-decoration: none;
+  isolation: isolate;
+  animation: pillars-in 0.22s cubic-bezier(0.25, 1, 0.5, 1) both;
+  animation-delay: calc(var(--i) * 40ms);
+}
+
+/* The fill is always full size; at rest it is clipped down to the stripe, and
+   hover unclips it. Clipping repaints without touching layout. */
+.pillars__item::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 0.25rem;
+  right: 0.25rem;
+  top: 0.35rem;
+  bottom: 0.35rem;
+  background: var(--line);
+  transform: skewX(-20deg);
+  clip-path: inset(0 calc(100% - 0.25rem - 6px) 0 0.25rem);
+  transition: clip-path 0.18s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.pillars__item:hover::before,
+.pillars__item:focus-visible::before {
+  clip-path: inset(0);
+}
+
+.pillars__item:hover,
+.pillars__item:focus-visible {
+  color: var(--on-line);
+  outline: none;
+}
+
+.pillars__arrow {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  opacity: 0.6;
+}
+
+@keyframes pillars-in {
+  from { opacity: 0; transform: translateY(-4px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pillars__item { animation: none; }
+  .pillars__item::before,
+  .pillars__caret { transition: none; }
+}

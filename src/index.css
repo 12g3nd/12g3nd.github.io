@@ -156,34 +156,11 @@
   mix-blend-mode: multiply;
 }
 
-/* Hero wireframe: light mode swaps in a dedicated high-res render
-   (lightmodefigure.jpg, chosen in Home.tsx) that's already drawn on a light
-   ground. It ships with a white background, so `multiply` drops that onto the
-   parchment — the teal mesh + perspective grid read as if printed on the page.
-   No blur/bloom needed here; dark mode keeps figure.png with its cyan glow +
-   glitch animation, so we just stop that animation for the still light render. */
-/* Light mode swaps in a transparent cutout of the supplied high-res surfer
-   render (lightmodefigure.png — the supplied JPG with its white studio
-   background keyed to transparent). It drops onto the parchment cleanly in any
-   layout, so no frame or blend tricks are needed — just stop the dark-mode
-   glitch animation and add a soft shadow to ground it. (Dark mode keeps the
-   low-poly figure.png with its cyan glow + glitch.) */
-.theme-light .wireframe-glitch {
-  animation: none;
-  filter: drop-shadow(0 12px 18px rgba(42, 36, 24, 0.18));
-}
-/* The landscape surfer is wider than the old portrait figure, so on phones (where
-   it overlays the name) trim it a little so the wordmark stays readable. */
-@media (max-width: 768px) {
-  .theme-light .mobile-figure-inline { max-height: 150px; }
-}
-
 /* CN-tower landmark + crest seal are tinted near-white to glow on navy, so they
    vanish on parchment. Recolor to dark ink (filter only — leave the landmark's
    opacity-driven hover swap alone). */
 .theme-light .landmark-default,
-.theme-light .landmark-hover,
-.theme-light .mobile-landmark-swap img {
+.theme-light .landmark-hover {
   filter: brightness(0) saturate(100%);
 }
 .theme-light .crest-icon {
@@ -348,8 +325,8 @@ a {
 }
 
 /* One focus ring for the whole site.
-   Every easter egg already carried its own :focus-visible — the wireframe, the
-   y2k star, the crest, the elevator — because each was added as a deliberate
+   Every easter egg already carried its own :focus-visible — the y2k star,
+   the crest, the elevator — because each was added as a deliberate
    keyboard target. Nothing a visitor is actually trying to reach did: not a
    nav link, not [VIEW PROJECTS], not a post link. The site had sixty :hover
    rules and twelve :focus ones, so keyboard navigation ran on whatever the

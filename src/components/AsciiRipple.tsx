@@ -89,10 +89,10 @@ export default function AsciiRipple() {
       const cellS = ctx.measureText('⣿').width || fsS * 0.6;
 
       fieldP = layoutFigure(FIGURE_PRIMARY, {
-        fontSize: fsP, cellW: cellP, anchorX: 0.55 * w, topY: 0.15 * h, anchor: 'center',
+        fontSize: fsP, cellW: cellP, anchorX: 0.49 * w, topY: 0.15 * h, anchor: 'center',
       });
       fieldS = layoutFigure(FIGURE_SECONDARY, {
-        fontSize: fsS, cellW: cellS, anchorX: 0.95 * w, topY: 0, anchor: 'right',
+        fontSize: fsS, cellW: cellS, anchorX: 0.89 * w, topY: 0, anchor: 'right',
       });
     };
 

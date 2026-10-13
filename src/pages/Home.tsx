@@ -1,8 +1,6 @@
-import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { createPortal } from 'react-dom';
 import { Link } from 'react-router-dom';
-
-import { toggleTheme, getTheme, type Theme } from '../utils/theme';
 
 import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
@@ -12,11 +10,35 @@ import PartyOverlay from '../components/PartyOverlay';
 import WhimsyOverlay from '../components/WhimsyOverlay';
 import GuestbookCard from '../components/GuestbookCard';
 import ScratchReveal from '../components/ScratchReveal';
+import Incubator from '../components/incubator/Incubator';
+import PillarsMenu from '../components/PillarsMenu';
+import { postsSorted } from '../data/posts';
 import useDocumentMeta from '../hooks/useDocumentMeta';
 import { routeMeta } from '../data/routeMeta';
 import useGuestbook from '../hooks/useGuestbook';
+import useMediaQuery from '../hooks/useMediaQuery';
 import { age } from '../utils/time';
 import './home/index.css';
+
+// The departures board. Each row is [label, line]; keep lines short enough to
+// sit on one or two rows of the board.
+const NOW_BOARD = {
+  asOf: '10.13.26',
+  rows: [
+    ['NOW', 'Agentic iteration on Power BI reports (.pbip). Travelling, and exploring the city more.'],
+    ['THIS FALL', 'Midterms. Unfortunately.'],
+    ['ALSO', 'Looking into alternative career options.'],
+  ],
+} as const;
+
+// The skyline: [width %, height %] per block, left to right, with the
+// landmark standing in the slot at TOWER_AT. Fixed, not random, so the
+// screenshot harness sees the same city every run.
+const SKYLINE: ReadonlyArray<readonly [number, number]> = [
+  [5, 34], [3, 58], [6, 26], [3.5, 46], [0, 0], [4, 40], [7, 30], [2.5, 64], [5, 38],
+  [6, 24], [3, 52], [8, 30], [4, 44], [5.5, 28], [3, 56], [9, 22], [4.5, 36], [6, 26],
+];
+const TOWER_AT = 4;
 
 const prefersReducedMotion = () =>
   typeof window !== 'undefined' &&
@@ -43,35 +65,6 @@ export default function Home() {
     setSjGlow(true);
     sjGlowTimer.current = window.setTimeout(() => setSjGlow(false), 1800);
   };
-
-  // Clicking the wireframe figure flips the site between light and dark — a
-  // diegetic power switch for the OS. Shared props so the desktop and mobile
-  // figures behave identically and stay keyboard-accessible.
-  const wireframeThemeProps = {
-    onClick: () => { toggleTheme(); },
-    onKeyDown: (e: KeyboardEvent<HTMLImageElement>) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        toggleTheme();
-      }
-    },
-    role: 'button' as const,
-    tabIndex: 0,
-    title: 'Toggle theme (light / dark)',
-    'aria-label': 'Toggle color theme between light and dark',
-  };
-
-  // The wireframe has a dedicated, light-background render for light mode. Track
-  // the theme (it can flip via this figure, the terminal, or a fresh load) and
-  // swap the source to match. Observing the <html> class keeps it in sync no
-  // matter which path toggled it.
-  const [theme, setTheme] = useState<Theme>(() => getTheme());
-  useEffect(() => {
-    const obs = new MutationObserver(() => setTheme(getTheme()));
-    obs.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-    return () => obs.disconnect();
-  }, []);
-  const figureSrc = theme === 'light' ? '/lightmodefigure.png' : '/figure.png';
 
   // Clicking the Y2K star fires "whimsy mode": the star spins, the existing
   // party recolor + confetti kick in, and a full-bleed splash takes over for a
@@ -128,6 +121,28 @@ export default function Home() {
 
   useDocumentMeta(routeMeta.home.title, routeMeta.home.description);
 
+  // One incubator, mounted in whichever spot the layout shows: the right
+  // column on desktop, inline under the program on phones. Two would mean two
+  // WebGL contexts, one of them drawing into a hidden column.
+  const phone = useMediaQuery('(max-width: 768px)');
+
+  // "What I'm up to", as a departures board (edit NOW_BOARD above). It sits
+  // under the incubator on desktop and after the intro on phones, where the
+  // right column is hidden.
+  const nowBoard = (
+    <section className="dep-board" aria-labelledby="dep-board-title">
+      <header className="dep-board__head">
+        <h2 id="dep-board-title">What I'm up to</h2>
+        <span>as of {NOW_BOARD.asOf}</span>
+      </header>
+      <dl className="dep-board__rows">
+        {NOW_BOARD.rows.map(([when, what]) => (
+          <div key={what}><dt>{when}</dt><dd>{what}</dd></div>
+        ))}
+      </dl>
+    </section>
+  );
+
   return (
     <PageTransition>
       {/* Portal to <body>: PageTransition is a framer-motion transform, which
@@ -161,7 +176,6 @@ export default function Home() {
             <h1 className="outline-text">
               <span className={sjGlow ? 'letter-glow' : ''}>J</span>ARABANA
             </h1>
-            <img src={figureSrc} alt="Wireframe Figure" className="mobile-figure-inline wireframe-glitch" {...wireframeThemeProps} />
             <p className="phonetic-text">/sriːhɪθ dʒʊəˌræˈbɑːnə/</p>
           </div>
           {/* One segmented strip: the crest (still the CRT-burst egg) as its
@@ -192,33 +206,61 @@ export default function Home() {
               <div><dt>Minors</dt><dd>Statistics, Economics</dd></div>
             </dl>
           </div>
-          <div className="description-card">
-            <p>
-              '<span
-                role="button"
-                tabIndex={0}
-                className="sj-trigger"
-                onClick={triggerSjGlow}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); triggerSjGlow(); } }}
-              >SJ</span>' also welcome. {age()}. Businessman by craft.
-              Welcome to my personal corner of the internet.
+          {phone && (
+            <div className="hero-figure hero-figure--inline">
+              <Incubator />
+            </div>
+          )}
+          <div className="hero-intro">
+            {/* One sentence read as three: the aside, the claim on its own
+                leaning stripe, and the welcome. */}
+            <p className="bio">
+              <span className="bio__aside">
+                '<span
+                  role="button"
+                  tabIndex={0}
+                  className="sj-trigger"
+                  onClick={triggerSjGlow}
+                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); triggerSjGlow(); } }}
+                >SJ</span>' also welcome. {age()}.
+              </span>{' '}
+              <span className="bio__claim"><span>Interdisciplinary builder.</span></span>{' '}
+              <span className="bio__welcome">
+                Welcome to my personal corner of the internet.
+              </span>
             </p>
             <div className="hero-actions">
-              <Link to="/projects" className="btn-primary">[VIEW PROJECTS →]</Link>
-              <Link to="/blog" className="btn-ghost">[READ BLOG →]</Link>
+              <PillarsMenu />
+              <Link to="/blog" className="btn-ghost" title={`Latest: ${postsSorted[0].title}`}>
+                [TRANSMISSIONS →]
+              </Link>
             </div>
           </div>
-          <div className="expanded-details">
-            <div className="detail-col">
-              <strong>HOBBIES</strong>
+          {phone && nowBoard}
+        </div>
+        <div className="right-column">
+          <div className="hero-figure">
+            {!phone && <Incubator />}
+          </div>
+          {!phone && nowBoard}
+        </div>
+
+        <div className="hero-lower">
+          {/* The three lists as stops on one line, in the nav's line colours. */}
+          <ol className="stops">
+            <li className="stop" style={{ '--line': '#ffc41e' } as CSSProperties}>
+              <h3>Hobbies</h3>
               <p>Writing (poetry, flash fiction, whatever), rating root beers, world history / politics.</p>
-            </div>
-            <div className="detail-col">
-              <strong>PET PEEVES</strong>
+            </li>
+            <li className="stop" style={{ '--line': '#00a54f' } as CSSProperties}>
+              <h3>Pet peeves</h3>
               <p>Lack of turn signals, inconsiderateness, "could of."</p>
-            </div>
-            <div className={`detail-col fun-facts${elevatorDropping ? ' elevator-dropping' : ''}`}>
-              <strong>FUN FACTS</strong>
+            </li>
+            <li
+              className={`stop fun-facts${elevatorDropping ? ' elevator-dropping' : ''}`}
+              style={{ '--line': '#a21a68' } as CSSProperties}
+            >
+              <h3>Fun facts</h3>
               <p>
                 Afraid of{' '}
                 <span
@@ -233,42 +275,28 @@ export default function Home() {
                 . Japanese mechanical pencils collection. Double jointed in both thumbs.
               </p>
               {elevatorDropping && <span className="falling-elevator" aria-hidden="true">▯</span>}
-            </div>
-          </div>
+            </li>
+          </ol>
 
-          {/* Mobile-only: What I'm Up To + Landmark */}
-          <div className="mobile-what-im-up-to">
-            <div className="what-im-up-to-card">
-              <h3>WHAT I'M UP TO</h3>
-              <p>Building financial models using agentic iteration (e.g. SQL and .pbip), starting sophomore year, and exploring career options.</p>
-              <span className="wiu-stamp">as of 9.1.26</span>
-            </div>
-            <div className="mobile-landmark-swap" onClick={() => setShowSoL(prev => !prev)}>
-              <img
-                src={showSoL ? '/SoL.png' : '/CNtower.png'}
-                alt={showSoL ? 'Statue of Liberty' : 'CN Tower'}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="right-column">
-          <div className="hero-figure">
-            <img src={figureSrc} alt="Wireframe Figure" className="wireframe-glitch" {...wireframeThemeProps} />
-          </div>
-          <div className="what-im-up-to-card">
-            <h3>WHAT I'M UP TO</h3>
-            <p>Building financial models using agentic iteration (e.g. SQL and .pbip), starting sophomore year, and exploring career options.</p>
-            <span className="wiu-stamp">as of 9.1.26</span>
-          </div>
-          {/* Decorative landmark. The outer box spans the whole gutter between the
-              hero card and the "what I'm up to" card; the inner __fig is centered
-              inside it, so the tower sits dead-centre between the two boxes at any
-              width. Swaps CN Tower ↔ Statue of Liberty on hover. */}
-          <div className="landmark-swap">
-            <div className="landmark-swap__fig">
-              <img src="/CNtower.png" alt="CN Tower" className="cn-tower-decor landmark-default" />
-              <img src="/SoL.png" alt="Statue of Liberty" className="cn-tower-decor landmark-hover" />
-            </div>
+          {/* The skyline that closes the hero. The tower swaps to the Statue of
+              Liberty on hover, or on a tap where there is no hover. */}
+          <div className="skyline">
+            {SKYLINE.map(([w, h], i) =>
+              i === TOWER_AT ? (
+                <button
+                  key="landmark"
+                  type="button"
+                  className={`skyline__landmark${showSoL ? ' is-swapped' : ''}`}
+                  aria-label={showSoL ? 'Statue of Liberty: show the CN Tower' : 'CN Tower: show the Statue of Liberty'}
+                  onClick={() => setShowSoL((v) => !v)}
+                >
+                  <img src="/CNtower.png" alt="" className="landmark-default" />
+                  <img src="/SoL.png" alt="" className="landmark-hover" />
+                </button>
+              ) : (
+                <i key={i} className="skyline__block" style={{ flexGrow: w, height: `${h}%` }} aria-hidden="true" />
+              ),
+            )}
           </div>
         </div>
       </section>
