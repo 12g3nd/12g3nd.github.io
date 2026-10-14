@@ -233,7 +233,7 @@ export default function SignatureCanvas({
       />
       {mode === 'draw' && (
         <button type="button" className="sig-canvas__clear" onClick={clear}>
-          [ CLEAR ]
+          Clear
         </button>
       )}
     </div>

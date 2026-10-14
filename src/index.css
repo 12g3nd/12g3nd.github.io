@@ -122,17 +122,15 @@
    frames, invert/screen image tricks that assume a dark mat, and cyan watermarks
    tuned to glow on navy. Scoped to .theme-light so the dark theme is untouched. */
 
-/* Poetry / Guestbook "document viewer": keep the framed-manuscript drama, but
+/* Poetry "document viewer": keep the framed-manuscript drama, but
    warm the black bezel to espresso so it reads as an intentional frame on the
    parchment desk rather than a cold slab dropped onto it. The cream pages inside
    stay cream and pop against it exactly as they do in the dark theme. */
-.theme-light .doc-viewer,
-.theme-light .gb-form-viewer {
+.theme-light .doc-viewer {
   background: linear-gradient(180deg, #2e2719 0%, #1c1710 100%);
   border-color: rgba(245, 236, 214, 0.14);
 }
-.theme-light .doc-viewer__chrome,
-.theme-light .gb-form-chrome {
+.theme-light .doc-viewer__chrome {
   background: #1c1710;
   color: rgba(245, 236, 214, 0.7);
   border-bottom-color: rgba(245, 236, 214, 0.1);
@@ -144,7 +142,6 @@
     repeating-linear-gradient(135deg, rgba(245, 236, 214, 0.02) 0px, rgba(245, 236, 214, 0.02) 2px, transparent 2px, transparent 6px),
     #241d13;
 }
-.theme-light .gb-form-chrome__prompt { color: #1fbecf; }
 
 /* The CN-tower landmark is tinted near-white to glow on navy, so it vanishes
    on parchment. Recolor to dark ink (filter only — leave the landmark's

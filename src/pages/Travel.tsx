@@ -469,7 +469,7 @@ export default function Travel() {
           })
         }
       >
-        {expanded.has(group) ? '[ SHOW LESS ]' : `[ + ${total - LIST_LIMIT} MORE ${name} ]`}
+        {expanded.has(group) ? 'Show less' : `+ ${total - LIST_LIMIT} more in ${name}`}
       </button>
     ) : null;
 
@@ -492,7 +492,7 @@ export default function Travel() {
 
         <div className="tsj-notice">
           <div className="tsj-notice__text">
-            <p className="tsj-notice__kicker">[NOW BOARDING]</p>
+            <p className="tsj-notice__kicker">Now boarding</p>
             <h3 className="tsj-notice__title">Transmundane Subway Journey</h3>
             <p className="tsj-notice__body">
               One city, new country, one photograph. Imagine each trip as a stop on an imaginary subway line that
@@ -523,7 +523,7 @@ export default function Travel() {
                 onClick={() => setShown((s) => ({ ...s, [k]: !s[k] }))}
               >
                 <span className="travel-chip__key" aria-hidden="true" />
-                [{KIND_LABEL[k]}]
+                {KIND_LABEL[k]}
               </button>
             ))}
           </div>
@@ -589,7 +589,7 @@ export default function Travel() {
           <aside className="travel-card" aria-live="polite">
             {selectedItem ? <PlaceCard item={selectedItem} onClose={() => setSelected(null)} /> : (
               <div className="travel-card__empty">
-                <p className="travel-card__eyebrow">[NO STOP SELECTED]</p>
+                <p className="travel-card__eyebrow">No stop selected</p>
                 <p>Pick a dot on the map, or a place from the list below.</p>
                 <ul className="travel-legend">
                   <li><span className="travel-legend__key travel-legend__key--tsj" aria-hidden="true" />TSJ station</li>
@@ -605,7 +605,7 @@ export default function Travel() {
         <div className="travel-index">
           {shown.tsj && (
             <div className="travel-index__col">
-              <h3 className="travel-index__title">[TSJ STATIONS]</h3>
+              <h3 className="travel-index__title">TSJ stations</h3>
               <ol className="travel-index__list">
                 <li><span className="travel-index__terminus">TORONTO · TERMINUS</span></li>
                 {limited('tsj', stations).map((s) => (
@@ -622,7 +622,7 @@ export default function Travel() {
           )}
           {shown.home && (
             <div className="travel-index__col">
-              <h3 className="travel-index__title">[LIVED]</h3>
+              <h3 className="travel-index__title">Lived</h3>
               <ul className="travel-index__list">
                 {limited('home', homes).map((h) => (
                   <li key={h.id}>
@@ -638,7 +638,7 @@ export default function Travel() {
           )}
           {shown.visit && (
             <div className="travel-index__col travel-index__col--wide">
-              <h3 className="travel-index__title">[NON-TSJ]</h3>
+              <h3 className="travel-index__title">Non-TSJ</h3>
               {byCountry(visits).map(([country, list]) => (
                 <div key={country} className="travel-index__country">
                   <h4 className="travel-index__country-name">{country}</h4>
@@ -670,7 +670,7 @@ function PlaceCard({ item, onClose }: { item: Item; onClose: () => void }) {
     <div className={`travel-card__body travel-card__body--${item.kind}`}>
       <div className="travel-card__head">
         <p className="travel-card__eyebrow">
-          [{item.kind === 'tsj' ? stationCode(item.place) : KIND_LABEL[item.kind]}]
+          {item.kind === 'tsj' ? stationCode(item.place) : KIND_LABEL[item.kind]}
         </p>
         <button type="button" className="travel-card__close" onClick={onClose} aria-label="Close">×</button>
       </div>

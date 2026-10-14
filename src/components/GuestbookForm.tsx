@@ -59,11 +59,8 @@ export default function GuestbookForm() {
   if (formState === 'success') {
     return (
       <div className="gb-form-viewer">
-        <div className="gb-form-chrome">
-          <span className="gb-form-chrome__prompt">srihith@sj.exe:~$</span> sign guestbook.log
-        </div>
         <div className="gb-success">
-          <span className="gb-success__badge">[ ✓ ENTRY RECEIVED ]</span>
+          <span className="gb-success__badge">✓ Entry received</span>
           <p className="gb-success__msg">
             Your entry is pending review — it'll appear once approved.
           </p>
@@ -74,11 +71,8 @@ export default function GuestbookForm() {
 
   return (
     <div className="gb-form-viewer">
-      <div className="gb-form-chrome">
-        <span className="gb-form-chrome__prompt">srihith@sj.exe:~$</span> sign guestbook.log
-      </div>
-
-      <form className="gb-form" onSubmit={handleSubmit}>
+      <form className="gb-form" onSubmit={handleSubmit} aria-labelledby="gb-form-title">
+        <h2 className="gb-form__title" id="gb-form-title">Sign the log</h2>
         <label className="gb-field">
           <span className="gb-field__label">First Name</span>
           <input
@@ -129,8 +123,8 @@ export default function GuestbookForm() {
 
         {formState === 'error' && errorMsg && <p className="gb-form-error">▸ {errorMsg}</p>}
 
-        <button type="submit" className="gb-submit" disabled={!canSubmit}>
-          {formState === 'submitting' ? '[ SIGNING… ]' : '[ SIGN THE LOG → ]'}
+        <button type="submit" className="btn-line gb-submit" disabled={!canSubmit}>
+          {formState === 'submitting' ? 'Signing…' : 'Sign the log →'}
         </button>
       </form>
     </div>

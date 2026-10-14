@@ -172,6 +172,14 @@ export default function Business() {
           meta={`${SHEET_TABS.length} sheets · read-only`}
         />
 
+        {/* The one file a recruiter came for, first: it used to wait at the
+            bottom of the workbook as sheet 05 (which stays, for the record). */}
+        <div className="xls-cta">
+          <a className="btn-line" href="/resume.pdf" download="Srihith-Jarabana-Resume.pdf">Download résumé ↓</a>
+          <a className="line-link" href="/resume.pdf" target="_blank" rel="noreferrer">Open the PDF ↗</a>
+          <span className="xls-cta__note">the workbook below, exported to one page</span>
+        </div>
+
         <div className="xls-book">
           {/* ── Sheet 01: EXPERIENCE ───────────────────────────
               Org bands with role rows nested beneath, numbered 1 / 1.1 / 1.2
