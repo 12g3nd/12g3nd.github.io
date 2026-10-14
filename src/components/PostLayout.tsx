@@ -59,29 +59,28 @@ export default function PostLayout({ slug, date, children }: PostLayoutProps) {
       </div>
 
       <aside className="post-sidebar">
-        <div className="post-progress-box">
+        {/* How far along the line you are: the track fills in the line's
+            colour and the stop rides it. */}
+        <div className="post-progress-box" aria-hidden="true">
           <div className="post-progress-label">
-            <span>[BUFFER]</span>
+            <span>Progress</span>
             <span className="post-progress-pct">{progress}%</span>
           </div>
-          <div className="post-progress-track">
-            <div className="post-progress-fill" style={{ '--progress': progress / 100 } as React.CSSProperties} />
+          <div className="post-progress-track" style={{ '--progress': progress / 100 } as React.CSSProperties}>
+            <div className="post-progress-fill" />
+            <span className="post-progress-stop" />
           </div>
         </div>
 
-        <div className="post-meta-box">
-          <h4>[TRANSMISSION META]</h4>
-          <ul>
-            <li><span className="seek-bullet">&gt;</span> DATE: <span className="post-meta-date">{date}</span></li>
-            <li><span className="seek-bullet">&gt;</span> READ TIME: <span className="post-meta-value">{stats.minutes} MIN</span></li>
-            <li><span className="seek-bullet">&gt;</span> WORD COUNT: <span className="post-meta-value">{stats.words}</span></li>
-            <li><span className="seek-bullet">&gt;</span> STATUS: <span className="post-meta-status">DECRYPTED</span></li>
-          </ul>
-        </div>
+        <dl className="post-meta-box">
+          <div><dt>Date</dt><dd><time dateTime={date}>{date}</time></dd></div>
+          <div><dt>Read time</dt><dd>{stats.minutes} min</dd></div>
+          <div><dt>Words</dt><dd>{stats.words}</dd></div>
+        </dl>
 
         {others.length > 0 && (
           <div className="post-other-box">
-            <h4>[OTHER TRANSMISSIONS]</h4>
+            <h2>Other transmissions</h2>
             <ul>
               {others.map((p) => (
                 <li key={p.slug}>

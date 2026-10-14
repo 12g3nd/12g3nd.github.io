@@ -1,207 +1,204 @@
-.blog-layout {
-  display: flex;
+/* ── Transmissions: a reading index ─────────────────────────
+   The posts ride a vertical line in the site's cyan (the TX line), one stop
+   per post. Titles are in the essays' own serif, in sentence case, so the
+   index reads like a contents page rather than a log stream. */
+
+.tx-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
   gap: 4rem;
-  align-items: flex-start;
-  margin-top: 2rem;
+  align-items: start;
 }
 
-.blog-feed {
-  flex: 1 1 0%;
-  max-width: 800px;
-}
-
-.blog-post {
-  border-bottom: 1px solid rgba(var(--text-rgb), 0.1);
-  padding-bottom: 2.5rem;
-  margin-bottom: 2.5rem;
+.tx-feed {
   position: relative;
+  max-width: 760px;
+  margin: 0;
+  padding: 0 0 0 2.75rem;
+  list-style: none;
 }
 
-.post-date {
-  color: var(--accent-secondary);
-  font-family: var(--font-mono);
-  font-size: 13px;
-  display: block;
-  margin-bottom: 1rem;
+/* The line itself. */
+.tx-feed::before {
+  content: '';
+  position: absolute;
+  top: 0.4rem;
+  bottom: 0;
+  left: 0.55rem;
+  width: 4px;
+  border-radius: 2px;
+  background: linear-gradient(var(--page-line) 85%, transparent);
 }
 
-.blog-empty {
+.tx {
+  position: relative;
+  padding-bottom: 3.25rem;
+}
+
+/* Each post's stop: the ringed circle, centred on the line, level with its
+   date. The line's centre is 0.55rem + 2px in from the feed's edge. */
+.tx::before {
+  content: '';
+  position: absolute;
+  top: 0.05rem;
+  left: calc(-2.75rem + 0.55rem + 2px - 0.55rem);
+  width: 1.1rem;
+  height: 1.1rem;
+  box-sizing: border-box;
+  border-radius: 50%;
+  border: 4px solid var(--page-line);
+  background: var(--bg-base);
+}
+
+.tx--empty {
   font-family: var(--font-mono);
   font-size: 14px;
-  color: rgba(var(--text-rgb), 0.5);
+  color: var(--text-faint);
 }
 
-.post-title {
-  font-size: 2rem;
-  margin: 0 0 1rem 0;
-  font-family: var(--font-display);
+.tx__meta {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  margin: 0 0 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.tx__num {
+  font-weight: 700;
+  color: var(--accent-primary);
+}
+
+.tx__title {
+  margin: 0;
+  font-family: var(--font-reading);
+  font-weight: 600;
+  font-size: clamp(1.7rem, 3vw, 2.3rem);
+  line-height: 1.15;
+  letter-spacing: -0.005em;
+  text-transform: none;
+}
+
+.tx__title a {
   color: var(--text-primary);
+  text-decoration: none;
+  background-image: linear-gradient(var(--accent-primary), var(--accent-primary));
+  background-size: 0 2px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.25s ease, color 0.15s ease;
 }
 
-/* Same italic serif as the subtitle on the post page, so it reads as the
-   author's line rather than another piece of the log's monospace. The negative
-   top margin pulls it up under the title into the gap .post-title leaves. */
-.post-card-subtitle {
-  margin: -0.5rem 0 1rem 0;
+.tx__title a:hover,
+.tx__title a:focus-visible {
+  background-size: 100% 2px;
+}
+
+.tx__subtitle {
+  margin: 0.45rem 0 0;
   font-family: var(--font-reading);
   font-style: italic;
+  font-size: 18px;
+  color: var(--text-muted);
+}
+
+.tx__abstract {
+  margin: 0.9rem 0 0;
+  max-width: 62ch;
+  font-family: var(--font-reading);
   font-size: 17px;
-  color: rgba(var(--text-rgb), 0.7);
-}
-
-.post-abstract {
-  font-size: 14px;
-  font-family: var(--font-mono);
-  color: rgba(var(--text-rgb), 0.8);
   line-height: 1.6;
+  color: var(--text-dim);
 }
 
-.post-link {
-  display: inline-block;
-  margin-top: 1.5rem;
-  color: var(--accent-primary);
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: bold;
-  border-bottom: 1px solid rgba(var(--accent-rgb), 0.4);
-  padding-bottom: 4px;
-  transition: all 0.15s ease;
-  text-decoration: none;
+.tx__read {
+  margin-top: 1.1rem;
 }
 
-.post-link:hover {
-  border-color: var(--accent-primary);
-  color: var(--text-primary);
-}
+/* ── Sidebar: the archive by quarter, and the feed ─────── */
 
-.blog-sidebar {
-  width: 300px;
-  flex-shrink: 0;
+.tx-aside {
   position: sticky;
-  top: 100px;
+  top: 110px;
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
 }
 
-.system-log-box {
-  border: 1px dashed var(--accent-primary);
-  padding: 1.5rem;
-  background-color: var(--bg-surface);
+.tx-aside__block {
+  padding-top: 1rem;
+  border-top: 1px solid rgba(var(--text-rgb), 0.14);
 }
 
-.system-log-box h4, .sidebar-section h4 {
-  color: var(--accent-primary);
-  font-size: 13px;
-  margin-bottom: 1rem;
-  font-family: var(--font-mono);
-  text-transform: uppercase;
-}
-
-.sidebar-section {
-  padding: 0 1.5rem;
-}
-
-.feed-note {
-  font-size: 12px;
-  line-height: 1.6;
-  color: rgba(var(--text-rgb), 0.7);
-  font-family: var(--font-mono);
-  margin: 0;
-}
-
-/* .post-link's 1.5rem top margin is tuned for the end of an article body; in
-   the sidebar it only needs to clear the note above it. */
-.feed-link {
-  margin-top: 1rem;
-}
-
-.system-log-box ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  font-size: 13px;
-  color: rgba(var(--text-rgb), 0.7);
-  font-family: var(--font-mono);
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.system-log-box ul li span:not(.blink-text):not(.time-display) {
-  color: var(--accent-primary);
-}
-
-.time-display {
+.tx-aside__label {
+  margin: 0 0 1rem;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-stretch: 75%;
+  font-size: 1.4rem;
+  letter-spacing: -0.01em;
+  text-transform: none;
   color: var(--text-primary);
 }
 
-.status-online {
-  color: var(--term-green);
+.tx-aside__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
 }
 
-.blink-text {
-  animation: blink 2s linear infinite; /* @keyframes blink lives in index.css */
+.tx-aside__note {
+  margin: 0 0 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-muted);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .blink-text {
-    animation: none;
+  .tx__title a {
+    transition: none;
   }
-}
-
-.quick-seek-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  font-size: 13px;
-  color: rgba(var(--text-rgb), 0.7);
-  font-family: var(--font-mono);
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-
-.seek-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  transition: color 0.15s ease;
-  color: inherit;
-  background: none;
-  border: none;
-  padding: 0;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  text-align: left;
-  width: 100%;
-}
-
-.seek-btn:hover {
-  color: var(--text-primary);
-}
-
-.seek-btn--active {
-  color: var(--accent-primary);
-  font-weight: bold;
-}
-
-.seek-bullet {
-  color: var(--accent-primary);
-  font-size: 10px;
-}
-
-.seek-btn--active .seek-bullet {
-  color: var(--text-primary);
 }
 
 @media (max-width: 900px) {
-  .blog-layout {
-    flex-direction: column;
+  .tx-layout {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.5rem;
   }
-  .blog-sidebar {
-    width: 100%;
-    position: static;
+
+  /* On one column the aside dissolves into the page: the archive filter
+     comes first, above the posts, and the feed note goes after them. */
+  .tx-aside {
+    display: contents;
+  }
+
+  .tx-aside__block:first-child {
+    order: -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .tx-feed {
+    padding-left: 2rem;
+  }
+
+  .tx-feed::before {
+    left: 0.3rem;
+  }
+
+  .tx::before {
+    left: calc(-2rem + 0.3rem + 2px - 0.55rem);
+  }
+
+  .tx__abstract {
+    font-size: 16px;
   }
 }

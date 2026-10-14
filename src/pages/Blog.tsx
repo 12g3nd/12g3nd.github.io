@@ -3,14 +3,25 @@ import { Link } from 'react-router-dom';
 import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
 import StationHeader from '../components/StationHeader';
-import LogClock from '../components/LogClock';
 import useDocumentMeta from '../hooks/useDocumentMeta';
 import { routeMeta } from '../data/routeMeta';
-import { postsSorted, quarters, quarterOf } from '../data/posts';
+import { postsSorted, quarters, quarterOf, transmissionOf } from '../data/posts';
 import './Blog.css';
 
-const ALL = 'ARCHIVE ROOT';
+const ALL = 'All';
 
+/** "TRANSMISSION 06" → "06": the number each post rides under on the line. */
+const numberOf = (slug: string) => transmissionOf(slug).split(' ')[1] ?? '';
+
+/**
+ * The transmissions, as a reading index: each post a stop on the site's own
+ * cyan line, newest at the top, with its number and date, the title in the
+ * same serif the essay is set in, the author's subtitle and the abstract.
+ *
+ * The sidebar used to be a "system log" of invented readings (latency,
+ * region, a blinking ONLINE). What was real in it, the archive by quarter and
+ * the feed, stays.
+ */
 export default function Blog() {
   const [filter, setFilter] = useState<string>(ALL);
 
@@ -31,77 +42,58 @@ export default function Blog() {
           meta={`${postsSorted.length} entries`}
         />
 
-        <div className="blog-layout">
-          {/* Main Content */}
-          <div className="blog-feed">
+        <div className="tx-layout">
+          <ol className="tx-feed">
             {visible.map((post, i) => (
-              <Reveal key={post.slug} delay={i * 0.08}>
-                <article className="blog-post">
-                  <span className="post-date">[{post.date}]</span>
-                  <h3 className="post-title">{post.title}</h3>
-                  {post.subtitle && <p className="post-card-subtitle">{post.subtitle}</p>}
-                  <p className="post-abstract">{post.abstract}</p>
-                  <Link to={`/blog/${post.slug}`} className="post-link">
-                    [READ FULL TRANSMISSION →]
+              <li key={post.slug} className="tx">
+                <Reveal delay={Math.min(i, 4) * 0.06}>
+                  <p className="tx__meta">
+                    <span className="tx__num">No. {numberOf(post.slug)}</span>
+                    <time dateTime={post.date}>{post.date}</time>
+                  </p>
+                  <h2 className="tx__title">
+                    <Link to={`/blog/${post.slug}`}>{post.title}</Link>
+                  </h2>
+                  {post.subtitle && <p className="tx__subtitle">{post.subtitle}</p>}
+                  <p className="tx__abstract">{post.abstract}</p>
+                  <Link to={`/blog/${post.slug}`} className="line-link tx__read" aria-hidden="true" tabIndex={-1}>
+                    Read full transmission →
                   </Link>
-                </article>
-              </Reveal>
+                </Reveal>
+              </li>
             ))}
             {visible.length === 0 && (
-              <p className="blog-empty">no transmissions logged this quarter.</p>
+              <li className="tx tx--empty">no transmissions logged this quarter.</li>
             )}
-          </div>
+          </ol>
 
-          {/* Sidebar */}
-          <aside className="blog-sidebar">
-            <div className="system-log-box">
-              <h4>[SYSTEM LOG]</h4>
-              <ul>
-                <li><span>&gt;</span> STATUS: <span className="blink-text status-online">ONLINE</span></li>
-                <li><span>&gt;</span> LOCAL TIME: <br/><LogClock /></li>
-                <li><span>&gt;</span> LATENCY: 24ms</li>
-                <li><span>&gt;</span> REGION: ON CA</li>
-                <li><span>&gt;</span> WRITE MODE: APPEND ONLY</li>
-              </ul>
-            </div>
-
-            <div className="sidebar-section">
-              <h4>[QUICK SEEK]</h4>
-              <ul className="quick-seek-list">
-                {quarters.map((q) => (
-                  <li key={q}>
-                    <button
-                      type="button"
-                      className={`seek-btn${filter === q ? ' seek-btn--active' : ''}`}
-                      onClick={() => setFilter(q)}
-                    >
-                      <span className="seek-bullet">■</span> {q}
-                    </button>
-                  </li>
-                ))}
-                <li>
+          <aside className="tx-aside">
+            <div className="tx-aside__block">
+              <h2 className="tx-aside__label">Archive</h2>
+              <div className="tx-aside__filters">
+                {[...quarters, ALL].map((q) => (
                   <button
+                    key={q}
                     type="button"
-                    className={`seek-btn${filter === ALL ? ' seek-btn--active' : ''}`}
-                    onClick={() => setFilter(ALL)}
+                    className="tool-toggle"
+                    aria-pressed={filter === q}
+                    onClick={() => setFilter(q)}
                   >
-                    <span className="seek-bullet">■</span> {ALL}
+                    {q}
                   </button>
-                </li>
-              </ul>
+                ))}
+              </div>
             </div>
 
-            <div className="sidebar-section">
-              <h4>[SUBSCRIBE]</h4>
-              <p className="feed-note">
+            <div className="tx-aside__block">
+              <h2 className="tx-aside__label">Subscribe</h2>
+              <p className="tx-aside__note">
                 no email, no account. point a reader at the feed and new
                 transmissions arrive on their own.
               </p>
               {/* Plain anchor, not react-router Link: feed.xml is a real file
                   emitted next to index.html, so this has to leave the SPA. */}
-              <a className="post-link feed-link" href="/feed.xml">
-                [RSS_FEED →]
-              </a>
+              <a className="btn-line btn-sm" href="/feed.xml">RSS feed →</a>
             </div>
           </aside>
         </div>

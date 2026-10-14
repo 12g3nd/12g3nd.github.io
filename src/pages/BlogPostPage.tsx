@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import type { MDXComponents } from 'mdx/types';
 
 import PageTransition from '../components/PageTransition';
@@ -49,7 +49,13 @@ export default function BlogPostPage() {
   return (
     <PageTransition>
       <section className="section line--transmissions" style={{ paddingBottom: '5rem' }}>
-        <StationHeader line="transmissions" name={transmission} as="p" meta={`${post.date} · log`} />
+        <StationHeader
+          line="transmissions"
+          name={transmission.replace('TRANSMISSION', 'Transmission')}
+          as="p"
+          desc={<Link className="line-link" to="/blog">All transmissions</Link>}
+          meta={`${post.date} · log`}
+        />
 
         <PostLayout slug={post.slug} date={post.date}>
           <h1 className={post.subtitle ? 'post-title-main has-subtitle' : 'post-title-main'}>
