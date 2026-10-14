@@ -146,29 +146,6 @@
 }
 .theme-light .gb-form-chrome__prompt { color: #1fbecf; }
 
-/* Media gallery: prints are white-bg ink art shown via invert+screen on a dark
-   mat. On parchment, flip to a light mat + multiply so the ink reads as dark
-   linework — i.e. actual framed prints, the stated intent of the section. */
-.theme-light .media-plate__art {
-  background:
-    radial-gradient(120% 90% at 50% 25%, rgba(181, 101, 29, 0.10), transparent 60%),
-    rgba(42, 36, 24, 0.05);
-}
-.theme-light .media-plate__art img {
-  filter: sepia(0.25) saturate(1.1) brightness(0.92);
-  mix-blend-mode: multiply;
-}
-.theme-light .media-plate {
-  box-shadow:
-    0 16px 34px -22px rgba(42, 36, 24, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.45);
-}
-.theme-light .media-plate:hover {
-  box-shadow:
-    0 22px 44px -20px rgba(42, 36, 24, 0.5),
-    0 0 26px -6px rgba(181, 101, 29, 0.25);
-}
-
 /* The CN-tower landmark is tinted near-white to glow on navy, so it vanishes
    on parchment. Recolor to dark ink (filter only — leave the landmark's
    opacity-driven hover swap alone). */

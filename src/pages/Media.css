@@ -1,300 +1,413 @@
-/* ── Media: a wall of framed prints, on Line 5's orange ──── */
+/* ── Media: a wall of shelves, on Line 5's orange ───────────
+   Every pick is an object standing on a plank: books and posters 2:3, records
+   square with the vinyl peeking out, games as boxes, TV on a little CRT. Items
+   without a cover are drawn in type in the same shape. The covers are real
+   artwork kept in public/Media/covers/ (see the note in Media.tsx).
 
-.media-grid {
+   The objects keep their colours in both themes, like the magnets and the
+   quote cube on the home page. */
+
+.shelves {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 3.75rem 3.5rem;
 }
 
-/* Let the Reveal wrapper stretch so every plate in a row matches height. */
-.media-grid > div {
-  height: 100%;
+.shelf {
+  /* Object height (at full size) and aspect for the shelf's kind. Objects
+     shrink together to fit the shelf, never grow past this, and captions wrap
+     under their own object. */
+  --h: 150px;
+  --ar: 0.6667;
 }
 
-/* ── Framed plate ──────────────────────────────────────────── */
-.media-plate {
-  position: relative;
-  height: 100%;
+.shelf--record { --h: 128px; --ar: 1; }
+.shelf--single { --h: 104px; --ar: 1; }
+.shelf--screen { --h: 92px; --ar: 1.3333; }
+.shelf--box { --h: 140px; --ar: 0.75; }
+
+.shelf__head {
   display: flex;
-  flex-direction: column;
-  margin: 0;
-  background: linear-gradient(180deg, var(--bg-raised), var(--bg-surface));
-  border: 1px solid rgba(var(--text-rgb), 0.14);
-  box-shadow:
-    0 18px 40px -24px rgba(0, 0, 0, 0.8),
-    inset 0 1px 0 rgba(var(--text-rgb), 0.04);
-  overflow: hidden;
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-}
-
-.media-plate:hover {
-  transform: translateY(-5px);
-  border-color: rgba(var(--accent-rgb), 0.5);
-  /* Warm gallery light on hover — the reserved amber used as literal lighting. */
-  box-shadow:
-    0 26px 50px -22px rgba(0, 0, 0, 0.85),
-    0 0 26px -6px rgba(255, 176, 0, 0.18);
-}
-
-/* ── The artwork (etching) ─────────────────────────────────── */
-.media-plate__art {
-  position: relative;
-  height: 150px;
-  display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  border-bottom: 1px solid rgba(var(--text-rgb), 0.1);
-  /* warm spotlight from above + a darker mat so the print reads as framed */
-  background:
-    radial-gradient(120% 90% at 50% 25%, rgba(255, 176, 0, 0.08), transparent 60%),
-    rgba(0, 0, 0, 0.22);
-  overflow: hidden;
+  gap: 0.4rem 0.8rem;
+  margin-bottom: 1.4rem;
 }
 
-/* invert turns the white plate→black & the ink→light; `screen` then drops the
-   black so only the cream linework floats on the dark mat (no white box). */
-.media-plate__art img {
-  max-width: 68%;
-  max-height: 78%;
-  object-fit: contain;
-  filter: invert(1) sepia(0.3) saturate(1.25) brightness(1.05);
-  mix-blend-mode: screen;
-  opacity: 0.92;
-  transition: transform 0.4s ease;
-}
-
-.media-plate:hover .media-plate__art img {
-  transform: scale(1.05);
-}
-
-/* ── Museum placard ────────────────────────────────────────── */
-.media-plate__placard {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem 1.25rem 0.75rem;
-}
-
-.media-plate__placard h3 {
-  font-family: var(--font-mono);
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+.shelf__head h2 {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-stretch: 75%;
+  font-size: 1.7rem;
+  letter-spacing: -0.01em;
+  text-transform: none;
   color: var(--text-primary);
 }
 
-.accent-slash {
-  color: var(--accent-primary);
-  margin-right: 0.25rem;
+/* The engraving the old gallery plates were built on, kept as the shelf's
+   label plate. White-ground ink: inverted and screened on navy, multiplied on
+   parchment. */
+.shelf__emblem {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+  filter: invert(1) brightness(1.05);
+  mix-blend-mode: screen;
+  opacity: 0.85;
 }
 
-.media-plate__count {
+.theme-light .shelf__emblem {
+  filter: sepia(0.25) brightness(0.85);
+  mix-blend-mode: multiply;
+}
+
+.shelf__count {
+  margin-left: auto;
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-faint);
-  white-space: nowrap;
 }
 
-/* ── Collection list ───────────────────────────────────────── */
-.media-plate ul {
-  list-style: none;
+.shelf__row {
+  display: flex;
+  gap: 1.15rem;
   margin: 0;
-  padding: 0 1.25rem 1.5rem;
-  font-family: var(--font-mono);
-  font-size: 13px;
-  line-height: 1.6;
-  flex: 1;
+  padding: 0 0.6rem;
+  list-style: none;
 }
 
-.media-plate li {
+.shelf__item {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: calc(var(--h) * var(--ar));
+}
+
+/* The plank: each object stands on its own length of it, run out into the
+   gaps either side, so the row reads as one shelf. */
+.shelf__plank {
+  display: block;
+  height: 10px;
+  margin: 0 -0.6rem;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0) 30%),
+    linear-gradient(#7c5a3a, #4b3423);
+  box-shadow: 0 10px 14px -8px rgba(0, 0, 0, 0.7);
+}
+
+/* ── The objects ────────────────────────────────────────── */
+.cover {
   position: relative;
-  padding: 0.45rem 0 0.45rem 1.1rem;
-  color: rgba(var(--text-rgb), 0.8);
-  border-bottom: 1px dashed rgba(var(--text-rgb), 0.08);
-  transform: translateX(0);
-  transition: color 0.15s ease, transform 0.15s ease;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--ar);
+  overflow: hidden;
+  border-radius: 2px;
+  background: #1b2433;
+  box-shadow: 0 6px 10px -4px rgba(0, 0, 0, 0.6);
+  transition: transform 0.2s ease;
 }
 
-.media-plate li:last-child {
-  border-bottom: none;
+.cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.media-plate li:hover {
-  color: var(--text-primary);
-  transform: translateX(0.35rem);
+.shelf__item:hover .cover {
+  transform: translateY(-5px);
 }
 
-/* little diamond bullet — a framed-print tack */
-.media-plate li::before {
+/* Books: a spine down the left edge, light catching its curve. */
+.cover--book {
+  border-radius: 2px 4px 4px 2px;
+}
+
+.cover--book::after {
   content: '';
   position: absolute;
-  left: 0;
-  top: 0.95em;
-  width: 4px;
-  height: 4px;
-  background: rgba(var(--text-rgb), 0.25);
-  transform: rotate(45deg);
-  transition: background 0.15s ease;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.4) 0, rgba(255, 255, 255, 0.2) 3px, rgba(0, 0, 0, 0.08) 7px, transparent 12px);
+  pointer-events: none;
 }
 
-.media-plate li:hover::before {
-  background: var(--accent-primary);
+/* Records: the sleeve, with the disc behind it, sliding out on hover. The
+   sleeve is its own stacking context so the disc can sit under the art. */
+.cover--record,
+.cover--single {
+  overflow: visible;
+  background: none;
+  isolation: isolate;
+  /* With overflow visible, an aspect-ratio box's automatic minimum height is
+     its content's, so a portrait photo (Red Barn Radio) would stretch the
+     sleeve tall. Zero keeps every sleeve square. */
+  min-height: 0;
 }
 
-@media (max-width: 768px) {
-  .media-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
+.cover--record img,
+.cover--single img {
+  position: absolute;
+  inset: 0;
+  border-radius: 2px;
 }
 
-/* ── The live wall ──────────────────────────────────────────
-   Plates wired to accounts rather than curated by hand. */
+.cover--record::before,
+.cover--single::before {
+  content: '';
+  position: absolute;
+  top: 4%;
+  right: 4%;
+  width: 92%;
+  height: 92%;
+  z-index: -1;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, var(--line-media) 0 13%, #111 14% 16%, transparent 17%),
+    repeating-radial-gradient(circle, #151515 0 2px, #0b0b0b 2px 4px);
+  transform: translateX(12%);
+  transition: transform 0.35s ease;
+}
+
+.shelf__item:hover .cover--record::before,
+.shelf__item:hover .cover--single::before {
+  transform: translateX(34%);
+}
+
+/* TV: a small CRT, the title card on its screen. */
+.cover--screen {
+  border: 5px solid #2b2f36;
+  border-radius: 10px;
+  background: #0b0e13;
+  box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.8), 0 6px 10px -4px rgba(0, 0, 0, 0.6);
+}
+
+.cover--screen img {
+  object-fit: contain;
+  padding: 6px;
+}
+
+/* Games: a box, artwork contained on the case's own dark plastic. */
+.cover--box {
+  border-radius: 3px;
+  background: #14171d;
+}
+
+.cover--box img {
+  object-fit: contain;
+}
+
+/* ── Drawn in type, when there is no cover ──────────────── */
+.cover--type {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.3rem;
+  padding: 0.6rem 0.55rem 0.6rem 0.8rem;
+  background: var(--ink);
+}
+
+.cover__title {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-stretch: 75%;
+  font-size: 15px;
+  line-height: 1.02;
+  color: #fdf6e3;
+  overflow-wrap: anywhere;
+}
+
+.cover__by {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  line-height: 1.3;
+  color: rgba(253, 246, 227, 0.75);
+}
+
+/* A typeset book gets the bands a cloth binding has. */
+.cover--book.cover--type {
+  background:
+    linear-gradient(transparent 10%, rgba(0, 0, 0, 0.25) 10% 12%, transparent 12% 86%, rgba(0, 0, 0, 0.25) 86% 88%, transparent 88%),
+    var(--ink);
+}
+
+/* A typeset record is a hand-labelled sleeve, still with its disc. */
+.cover--single.cover--type,
+.cover--record.cover--type {
+  border-radius: 2px;
+  background: var(--ink);
+}
+
+/* A typeset TV show glows on the screen in its own colour. */
+.cover--screen.cover--type {
+  justify-content: center;
+  align-items: center;
+  padding: 0.4rem;
+  background:
+    repeating-linear-gradient(rgba(255, 255, 255, 0.04) 0 1px, transparent 1px 3px),
+    #0b0e13;
+}
+
+.cover--screen.cover--type .cover__title {
+  font-size: 16px;
+  text-align: center;
+  color: var(--ink);
+  filter: brightness(1.5);
+  text-shadow: 0 0 8px currentColor;
+}
+
+/* ── Captions, under the plank ──────────────────────────── */
+.shelf__caption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-top: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.shelf__title {
+  color: var(--text-primary);
+}
+
+.shelf__by {
+  color: var(--text-faint);
+}
+
+/* ── On rotation ────────────────────────────────────────── */
 .media-live-head {
+  margin-top: 5rem;
+}
+
+.media-playlists {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+}
+
+.media-playlist {
+  margin: 0;
+}
+
+.media-playlist figcaption {
+  margin-top: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+}
+
+.shelf--rated {
   margin-top: 3.5rem;
 }
 
-.media-grid--live {
-  align-items: start;
+.shelf__more {
+  margin-left: 1rem;
 }
 
-/* ── Spotify plate ──────────────────────────────────────────
-   The embed is the one genuinely foreign object on this page: Spotify's own
-   type, chrome and green, inside a room built out of etchings. Framing it like
-   any other print is the way to survive that — the mat and placard belong to
-   the gallery even when the picture doesn't. */
-.media-plate__embed {
-  position: relative;
-  padding: 0.75rem;
-  background:
-    radial-gradient(120% 90% at 50% 25%, rgba(255, 176, 0, 0.08), transparent 60%),
-    rgba(0, 0, 0, 0.22);
-  border-bottom: 1px solid rgba(var(--text-rgb), 0.1);
-}
-
-.media-plate__embed iframe {
-  display: block;
-  width: 100%;
-  border-radius: 12px;
-}
-
-/* The placard sits under the embed rather than over it, so it reads as the
-   caption of the frame rather than a Spotify UI element. */
-.media-plate--embed .media-plate__placard {
-  padding-bottom: 1.25rem;
-}
-
-/* ── Letterboxd ratings wall ────────────────────────────────
-   Ratings, not watch dates — see the note in Media.tsx. Posters make this a
-   wall rather than a list, which is the whole reason it earns a plate. */
-.media-plate--rated .media-plate__placard {
-  border-bottom: 1px solid rgba(var(--text-rgb), 0.1);
-  padding-bottom: 1rem;
-}
-
-.media-ratings {
-  list-style: none;
+.rated {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  gap: 1.6rem 1.1rem;
   margin: 0;
-  padding: 0.75rem 1.25rem 0.5rem;
-  flex: 1;
-}
-
-/* Override the collection list's tack bullet and hover slide: these rows are
-   links with artwork, not text entries. */
-.media-ratings li {
   padding: 0;
-  border-bottom: 1px dashed rgba(var(--text-rgb), 0.08);
-  transform: none;
+  list-style: none;
 }
 
-.media-ratings li::before {
-  display: none;
-}
-
-.media-ratings li:hover {
-  transform: none;
-}
-
-.media-ratings li:last-child {
-  border-bottom: none;
-}
-
-.media-ratings a {
+.rated a {
   display: flex;
-  align-items: center;
-  gap: 0.9rem;
-  padding: 0.7rem 0;
+  flex-direction: column;
+  gap: 0.35rem;
   color: inherit;
   text-decoration: none;
 }
 
-.media-ratings__poster {
-  width: 38px;
-  height: 57px;
-  flex-shrink: 0;
-  object-fit: cover;
-  border: 1px solid rgba(var(--text-rgb), 0.15);
-  background: rgba(0, 0, 0, 0.3);
-  transition: transform 0.2s ease, border-color 0.2s ease;
+.rated .cover {
+  height: auto;
+  aspect-ratio: 2 / 3;
 }
 
-.media-ratings a:hover .media-ratings__poster {
-  transform: scale(1.05);
-  border-color: rgba(var(--accent-rgb), 0.6);
+.rated .cover__title {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  padding: 0.5rem;
+  text-align: center;
 }
 
-.media-ratings__text {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  min-width: 0;
+.rated a:hover .cover,
+.rated a:focus-visible .cover {
+  transform: translateY(-4px);
 }
 
-.media-ratings__title {
+.rated__title {
+  margin-top: 0.3rem;
   font-family: var(--font-mono);
-  font-size: 12.5px;
-  line-height: 1.4;
-  color: rgba(var(--text-rgb), 0.85);
-}
-
-.media-ratings a:hover .media-ratings__title {
+  font-size: 11px;
+  line-height: 1.35;
   color: var(--text-primary);
 }
 
-.media-ratings__year {
+.rated__year {
   color: var(--text-faint);
 }
 
-/* Letterboxd's own ★/½ notation, in Letterboxd's own green — it needs no
-   legend, and the colour is the one place this plate admits where it came from. */
-.media-ratings__stars {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 13px;
-  letter-spacing: 0.06em;
-  color: #00e054;
-}
-
-.media-ratings__like {
-  color: #ff8000;
-  font-size: 11px;
-}
-
-.media-plate__source {
-  display: block;
-  padding: 0.9rem 1.25rem 1.25rem;
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+.rated__stars {
+  font-size: 12px;
+  letter-spacing: 0.04em;
   color: var(--accent-primary);
-  text-decoration: none;
 }
 
-.media-plate__source:hover {
-  text-decoration: underline;
+.rated__like {
+  margin-left: 0.3rem;
+  color: #ff5a7a;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cover,
+  .cover--record::before,
+  .cover--single::before {
+    transition: none;
+  }
+
+  .shelf__item:hover .cover,
+  .rated a:hover .cover {
+    transform: none;
+  }
+}
+
+@media (max-width: 1000px) {
+  .shelves {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Phones: a shelf is one row you can slide along, as it would be in a room;
+   the planks run with it. */
+@media (max-width: 600px) {
+  .shelf__row {
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+  }
+
+  .shelf__item {
+    flex: 0 0 calc(var(--h) * var(--ar) * 0.8);
+    max-width: none;
+    scroll-snap-align: start;
+  }
+
+  .media-playlists {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .rated {
+    grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+  }
 }

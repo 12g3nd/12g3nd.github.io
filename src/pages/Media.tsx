@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import { films } from 'virtual:letterboxd';
 import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
@@ -7,59 +8,146 @@ import useDocumentMeta from '../hooks/useDocumentMeta';
 import { routeMeta } from '../data/routeMeta';
 import './Media.css';
 
-/* Two walls, deliberately. The curated plates are all-time picks — a
-   self-portrait, chosen once and rarely changed. The live wall below is what
-   Spotify and Letterboxd happen to say right now. Keeping them apart is the
-   point: the contrast between what someone returns to and what they are
-   currently passing through says more than either list alone. */
+/* Two walls, deliberately. The shelves are all-time picks — a self-portrait,
+   chosen once and rarely changed. The rotation below is what Spotify and
+   Letterboxd happen to say right now. Keeping them apart is the point: the
+   contrast between what someone returns to and what they are currently
+   passing through says more than either list alone. */
+
+/* What each shelf holds, which decides the object's shape: books and posters
+   stand 2:3, records are square, a game is a box, a TV show is a screen. */
+type Kind = 'book' | 'record' | 'single' | 'poster' | 'screen' | 'box';
+
+type Item = {
+  /** As written; for most shelves "Title - Creator", split for the caption. */
+  text: string;
+  /** public/Media/covers/<cover>.webp. Without one the item is drawn in type. */
+  cover?: string;
+};
 
 type Category = {
   key: string;
   label: string;
+  /** The shelf's engraving (the plates the old gallery was built on). */
   art: string;
-  items: string[];
+  kind: Kind;
+  /** Whether `text` carries a creator after its last " - ". Films, TV and
+      games don't, and one film has a dash in its own title. */
+  byline: boolean;
+  items: Item[];
 };
 
+/* Covers are local copies (public/Media/covers/), fetched once from Open
+   Library (books) and each work's Wikipedia article (sleeves, posters, title
+   cards, box art) and shrunk to 320px; nothing on this page hotlinks a
+   cover except Letterboxd's own posters below. */
 const collection: Category[] = [
   {
     key: 'books',
-    label: 'BOOKS',
+    label: 'Books',
     art: '/Media/Books.png',
-    items: ['East of Eden - John Steinbeck', 'Martin Dressler: The Tale of an American Dreamer - Steven Millhauser', 'Song of Solomon - Toni Morrison', 'Stoner - John Williams', 'The Crucible - Arthur Miller'],
+    kind: 'book',
+    byline: true,
+    items: [
+      { text: 'East of Eden - John Steinbeck', cover: 'east-of-eden' },
+      { text: 'Martin Dressler: The Tale of an American Dreamer - Steven Millhauser', cover: 'martin-dressler' },
+      { text: 'Song of Solomon - Toni Morrison', cover: 'song-of-solomon' },
+      { text: 'Stoner - John Williams', cover: 'stoner' },
+      { text: 'The Crucible - Arthur Miller', cover: 'the-crucible' },
+    ],
   },
   {
     key: 'poetry',
-    label: 'POETRY',
+    label: 'Poetry',
     art: '/Media/Poetry.png',
-    items: ['Ariel - Sylvia Plath', 'Night Sky With Exit Wounds - Ocean Vuong', 'Serious Concerns - Wendy Cope'],
+    kind: 'book',
+    byline: true,
+    items: [
+      { text: 'Ariel - Sylvia Plath', cover: 'ariel' },
+      { text: 'Night Sky With Exit Wounds - Ocean Vuong', cover: 'night-sky' },
+      { text: 'Serious Concerns - Wendy Cope', cover: 'serious-concerns' },
+    ],
   },
   {
-    /* Albums, songs and films each have a live counterpart on the wall below,
-       so they say all-time out loud rather than letting a feed contradict them. */
+    /* Albums, songs and films each have a live counterpart further down, so
+       they say all-time out loud rather than letting a feed contradict them. */
     key: 'albums',
-    label: 'ALBUMS · ALL-TIME',
+    label: 'Albums · all-time',
     art: '/Media/Albums.png',
-    items: ['beerbongs & bentleys - Post Malone', 'songs - Adrienne Lenker', 'Live on Red Barn Radio I & II - Tyler Childers', 'Around Fur - Deftones'],
+    kind: 'record',
+    byline: true,
+    items: [
+      { text: 'beerbongs & bentleys - Post Malone', cover: 'beerbongs' },
+      { text: 'songs - Adrienne Lenker', cover: 'songs-lenker' },
+      { text: 'Live on Red Barn Radio I & II - Tyler Childers', cover: 'red-barn' },
+      { text: 'Around Fur - Deftones', cover: 'around-fur' },
+    ],
   },
   {
     key: 'songs',
-    label: 'SONGS · ALL-TIME',
+    label: 'Songs · all-time',
     art: '/Media/Songs.png',
-    items: ['SICKO MODE - Travis Scott ft. Drake', 'Rattlesnake - Jack Van Cleaf ft. Zach Bryan', 'Run Away With Me - Carly Rae Jepsen', 'NOT FAIR - The Kid LAROI ft. Corbin', 'Fast Car - Tracy Chapman'],
+    kind: 'single',
+    byline: true,
+    items: [
+      { text: 'SICKO MODE - Travis Scott ft. Drake', cover: 'sicko-mode' },
+      { text: 'Rattlesnake - Jack Van Cleaf ft. Zach Bryan' },
+      { text: 'Run Away With Me - Carly Rae Jepsen', cover: 'run-away' },
+      { text: 'NOT FAIR - The Kid LAROI ft. Corbin', cover: 'not-fair' },
+      { text: 'Fast Car - Tracy Chapman', cover: 'fast-car' },
+    ],
   },
   {
     key: 'films',
-    label: 'FILMS · ALL-TIME',
+    label: 'Films · all-time',
     art: '/Media/Films.png',
-    items: ['Catch Me If You Can (2002)', '10 Things I Hate About You (1999)', 'Star Wars: Episode III - Revenge of the Sith (2005)', 'Fantastic Mr. Fox (2009)'],
+    kind: 'poster',
+    byline: false,
+    items: [
+      { text: 'Catch Me If You Can (2002)', cover: 'catch-me' },
+      { text: '10 Things I Hate About You (1999)', cover: '10-things' },
+      { text: 'Star Wars: Episode III - Revenge of the Sith (2005)', cover: 'sith' },
+      { text: 'Fantastic Mr. Fox (2009)', cover: 'mr-fox' },
+    ],
   },
-  { key: 'tv', label: 'TV', art: '/Media/TV.png', items: ['Suits', 'Henry Danger', 'Mindhunter', 'South Park'] },
-  { key: 'games', label: 'GAMES', art: '/Media/Games.png', items: ['Minecraft', 'Fallout: New Vegas', 'Halo 3', 'Stardew Valley'] },
+  {
+    key: 'tv',
+    label: 'TV',
+    art: '/Media/TV.png',
+    kind: 'screen',
+    byline: false,
+    items: [
+      { text: 'Suits' },
+      { text: 'Henry Danger', cover: 'henry-danger' },
+      { text: 'Mindhunter' },
+      { text: 'South Park', cover: 'south-park' },
+    ],
+  },
+  {
+    key: 'games',
+    label: 'Games',
+    art: '/Media/Games.png',
+    kind: 'box',
+    byline: false,
+    items: [
+      { text: 'Minecraft', cover: 'minecraft' },
+      { text: 'Fallout: New Vegas', cover: 'new-vegas' },
+      { text: 'Halo 3', cover: 'halo-3' },
+      { text: 'Stardew Valley', cover: 'stardew' },
+    ],
+  },
   {
     key: 'other',
-    label: 'OTHER',
+    label: 'Other',
     art: '/Media/Other.png',
-    items: ['Shareholder Letters - Warren Buffett', 'neal.fun', 'The Yellow Wallpaper - Charlotte Perkins Gilman', 'The Ones Who Walk Away from Omelas - Ursula K. Le Guin'],
+    kind: 'book',
+    byline: true,
+    items: [
+      { text: 'Shareholder Letters - Warren Buffett' },
+      { text: 'neal.fun' },
+      { text: 'The Yellow Wallpaper - Charlotte Perkins Gilman', cover: 'yellow-wallpaper' },
+      { text: 'The Ones Who Walk Away from Omelas - Ursula K. Le Guin', cover: 'omelas' },
+    ],
   },
 ];
 
@@ -71,6 +159,41 @@ const playlists = [
   { id: '3O7K2iaWUxqpCaWfxJxiKf', label: 'A PURGATORY OF SAFE & INSUFFERABLE' },
   { id: '5rf3uGwkVsXQtUxiEYALE3', label: 'THE LAETUS TAPE' },
 ];
+
+function split(text: string, byline: boolean): { title: string; by?: string } {
+  if (!byline) return { title: text };
+  const at = text.lastIndexOf(' - ');
+  return at < 0 ? { title: text } : { title: text.slice(0, at), by: text.slice(at + 3) };
+}
+
+/* A spread of inks for the items drawn in type, picked by the title so a
+   given item always gets the same one. They are objects, so they keep their
+   colours in either theme. */
+const SPINE_INKS = ['#f58025', '#c4472a', '#2c5f8a', '#3d7a4f', '#7a3f6e', '#b8902f'];
+const inkFor = (s: string) => SPINE_INKS[[...s].reduce((n, c) => n + c.charCodeAt(0), 0) % SPINE_INKS.length];
+
+function ShelfItem({ item, kind, byline }: { item: Item; kind: Kind; byline: boolean }) {
+  const { title, by } = split(item.text, byline);
+  return (
+    <li className="shelf__item">
+      {item.cover ? (
+        <span className={`cover cover--${kind}`}>
+          <img src={`/Media/covers/${item.cover}.webp`} alt="" loading="lazy" decoding="async" />
+        </span>
+      ) : (
+        <span className={`cover cover--${kind} cover--type`} style={{ '--ink': inkFor(title) } as CSSProperties} aria-hidden="true">
+          <span className="cover__title">{title}</span>
+          {by && <span className="cover__by">{by}</span>}
+        </span>
+      )}
+      <span className="shelf__plank" aria-hidden="true" />
+      <span className="shelf__caption">
+        <span className="shelf__title">{title}</span>
+        {by && <span className="shelf__by">{by}</span>}
+      </span>
+    </li>
+  );
+}
 
 export default function Media() {
   useDocumentMeta(routeMeta.media.title, routeMeta.media.description);
@@ -86,32 +209,29 @@ export default function Media() {
           meta={`${collection.length} shelves · est. one human`}
         />
 
-        <div className="media-grid">
+        <div className="shelves">
           {collection.map((category, i) => (
-            <Reveal key={category.key} delay={i * 0.06}>
-              <figure className="media-plate" data-category={category.key}>
-                <div className="media-plate__art">
-                  <img src={category.art} alt="" aria-hidden="true" loading="lazy" decoding="async" />
-                </div>
-                <figcaption className="media-plate__placard">
-                  <h3>{category.label}</h3>
-                  <span className="media-plate__count">
+            <Reveal key={category.key} delay={Math.min(i, 3) * 0.05}>
+              <section className={`shelf shelf--${category.kind}`} aria-labelledby={`shelf-${category.key}`}>
+                <header className="shelf__head">
+                  <img className="shelf__emblem" src={category.art} alt="" aria-hidden="true" loading="lazy" decoding="async" />
+                  <h2 id={`shelf-${category.key}`}>{category.label}</h2>
+                  <span className="shelf__count">
                     {category.items.length} {category.items.length === 1 ? 'entry' : 'entries'}
                   </span>
-                </figcaption>
-                <ul>
+                </header>
+                <ul className="shelf__row">
                   {category.items.map((item) => (
-                    <li key={item}>{item}</li>
+                    <ShelfItem key={item.text} item={item} kind={category.kind} byline={category.byline} />
                   ))}
                 </ul>
-              </figure>
+              </section>
             </Reveal>
           ))}
         </div>
 
-        {/* ── The live wall ──────────────────────────────────────
-            Same frames, different provenance: these plates are wired to
-            accounts rather than chosen. */}
+        {/* ── On rotation ─────────────────────────────────────────
+            Wired to accounts rather than chosen. */}
         <div className="page-tools media-live-head">
           <div className="page-tools__group">
             <h2>On rotation</h2>
@@ -121,67 +241,55 @@ export default function Media() {
           </span>
         </div>
 
-        <div className="media-grid media-grid--live">
-          {playlists.map((playlist, i) => (
-            <Reveal key={playlist.id} delay={i * 0.06}>
-              <figure className="media-plate media-plate--embed">
-                <div className="media-plate__embed">
-                  <SpotifyEmbed id={playlist.id} label={playlist.label} />
-                </div>
-                <figcaption className="media-plate__placard">
-                  <h3>{playlist.label}</h3>
-                  <span className="media-plate__count">playlist</span>
-                </figcaption>
-              </figure>
-            </Reveal>
+        <div className="media-playlists">
+          {playlists.map((playlist) => (
+            <figure className="media-playlist" key={playlist.id}>
+              <SpotifyEmbed id={playlist.id} label={playlist.label} />
+              <figcaption>{playlist.label}</figcaption>
+            </figure>
           ))}
-
-          {/* Rendered from ratings, not watch dates: the feed holds a handful of
-              logs spread over years, and calling that "recently watched" would
-              claim a freshness the account does not have. Baked at build time —
-              see scripts/letterboxdPlugin.ts. */}
-          {films.length > 0 && (
-            <Reveal delay={playlists.length * 0.06}>
-              <figure className="media-plate media-plate--rated">
-                <figcaption className="media-plate__placard">
-                  <h3>RATED ON LETTERBOXD</h3>
-                  <span className="media-plate__count">
-                    {films.length} {films.length === 1 ? 'film' : 'films'}
-                  </span>
-                </figcaption>
-                <ul className="media-ratings">
-                  {films.map((film) => (
-                    <li key={film.link}>
-                      <a href={film.link} target="_blank" rel="noreferrer">
-                        {film.poster && (
-                          <img className="media-ratings__poster" src={film.poster} alt="" aria-hidden="true" loading="lazy" />
-                        )}
-                        <span className="media-ratings__text">
-                          <span className="media-ratings__title">
-                            {film.title} <span className="media-ratings__year">{film.year}</span>
-                          </span>
-                          <span className="media-ratings__stars">
-                            {film.stars}
-                            <span className="sr-only"> — {film.rating} out of 5</span>
-                            {film.liked && <span className="media-ratings__like" title="liked">♥</span>}
-                          </span>
-                        </span>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-                <a
-                  className="media-plate__source"
-                  href="https://letterboxd.com/solder/"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  [ALL ON LETTERBOXD ↗]
-                </a>
-              </figure>
-            </Reveal>
-          )}
         </div>
+
+        {/* Rendered from ratings, not watch dates: the feed holds a handful of
+            logs spread over years, and calling that "recently watched" would
+            claim a freshness the account does not have. Baked at build time —
+            see scripts/letterboxdPlugin.ts. */}
+        {films.length > 0 && (
+          <section className="shelf shelf--rated" aria-labelledby="shelf-rated">
+            <header className="shelf__head">
+              <h2 id="shelf-rated">Rated on Letterboxd</h2>
+              <span className="shelf__count">
+                {films.length} {films.length === 1 ? 'film' : 'films'}
+              </span>
+              <a className="btn-line btn-sm shelf__more" href="https://letterboxd.com/solder/" target="_blank" rel="noreferrer">
+                All on Letterboxd ↗
+              </a>
+            </header>
+            <ul className="rated">
+              {films.map((film) => (
+                <li key={film.link}>
+                  <a href={film.link} target="_blank" rel="noreferrer">
+                    <span className="cover cover--poster">
+                      {film.poster ? (
+                        <img src={film.poster} alt="" loading="lazy" decoding="async" />
+                      ) : (
+                        <span className="cover__title">{film.title}</span>
+                      )}
+                    </span>
+                    <span className="rated__title">
+                      {film.title} <span className="rated__year">{film.year}</span>
+                    </span>
+                    <span className="rated__stars">
+                      <span aria-hidden="true">{film.stars}</span>
+                      <span className="sr-only">{film.rating} out of 5</span>
+                      {film.liked && <span className="rated__like" title="liked">♥</span>}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </section>
     </PageTransition>
   );
