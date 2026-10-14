@@ -1,0 +1,14 @@
+name = "sjs-nowplaying"
+main = "index.ts"
+compatibility_date = "2024-09-23"
+
+# Serves https://nowplaying.jarabana.com/now, which is what NOW_PLAYING_URL in
+# src/components/NowPlaying.tsx points at. Cloudflare provisions the DNS record
+# and certificate on first deploy, as it did for guestbook.jarabana.com.
+routes = [
+  { pattern = "nowplaying.jarabana.com", custom_domain = true }
+]
+
+# No bindings. Three secrets, set with `npx wrangler secret put <NAME>`:
+#   SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN
+# See DEPLOY.md.

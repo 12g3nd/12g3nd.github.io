@@ -4,6 +4,7 @@ import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
 import StationHeader from '../components/StationHeader';
 import SpotifyEmbed from '../components/SpotifyEmbed';
+import NowPlaying from '../components/NowPlaying';
 import useDocumentMeta from '../hooks/useDocumentMeta';
 import { routeMeta } from '../data/routeMeta';
 import './Media.css';
@@ -277,6 +278,8 @@ export default function Media() {
             {playlists.length} playlists{films.length > 0 && ` · ${films.length} rated films`}
           </span>
         </div>
+
+        <NowPlaying />
 
         <div className="media-playlists">
           {playlists.map((playlist) => (
