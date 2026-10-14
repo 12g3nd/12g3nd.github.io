@@ -22,24 +22,9 @@
 
 /* Toggle button — hidden on desktop, shown on mobile */
 
+/* Only phones need it: a desktop page is wide enough for every line. */
 .poetry-compact-toggle {
   display: none;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  font-weight: bold;
-  text-transform: uppercase;
-  color: var(--accent-primary);
-  background-color: var(--bg-surface);
-  border: 1px solid rgba(var(--accent-rgb), 0.4);
-  padding: 0.5rem 1rem;
-  margin-top: 1rem;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.poetry-compact-toggle:hover {
-  background-color: rgba(var(--accent-rgb), 0.1);
-  border-color: rgba(var(--accent-rgb), 0.8);
 }
 
 /* Compact mode — scale text down so poem lines don't wrap */
@@ -52,7 +37,7 @@
 
 @media (max-width: 768px) {
   .poetry-compact-toggle {
-    display: inline-block;
+    display: inline-flex;
   }
 
   .poem-content--compact {

@@ -1,6 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import PageTransition from '../components/PageTransition';
-import ScrambleText from '../components/ScrambleText';
+import StationHeader from '../components/StationHeader';
 import useDocumentMeta from '../hooks/useDocumentMeta';
 import { routeMeta } from '../data/routeMeta';
 import {
@@ -481,18 +481,14 @@ export default function Travel() {
 
   return (
     <PageTransition>
-      <section className="section travel-page">
-        <div className="section-header">
-          <h2><ScrambleText text="TRAVEL" /></h2>
-          <p className="section-desc">where I've been, and where I want to go</p>
-        </div>
-
-        <div className="travel-bar">
-          <span className="travel-bar__cmd"><span className="travel-bar__prompt">srihith@sj.exe:~$</span> open atlas.map</span>
-          <span className="travel-bar__count">
-            {allItems.length} places · {countryCount} countries · {stations.length} {stations.length === 1 ? 'station' : 'stations'}
-          </span>
-        </div>
+      <section className="section travel-page line--travel">
+        <StationHeader
+          line="travel"
+          name="Travel"
+          file="atlas.map"
+          desc="where I've been, and where I want to go"
+          meta={`${allItems.length} places · ${countryCount} countries · ${stations.length} ${stations.length === 1 ? 'station' : 'stations'}`}
+        />
 
         <div className="tsj-notice">
           <div className="tsj-notice__text">

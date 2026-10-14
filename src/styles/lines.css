@@ -1,0 +1,207 @@
+/* Every page is a line.
+ *
+ * The nav already paints each page in its transit-line colour (Navigation.tsx,
+ * tokens in index.css). Clicking through used to land on the same cyan page
+ * every time; now each page's root section carries `line--<name>`, and that
+ * swaps the accent for the page's own line. Everything on the page that reads
+ * --accent-primary / --accent-rgb (links, rules, badges, focus rings) follows
+ * without the page knowing.
+ *
+ * Three values per line:
+ *   --page-line      the signage fill (bullets, tracks); same in both themes,
+ *                    because a line is the same yellow on either side of the
+ *                    switch.
+ *   --on-page-line   ink that reads on a full fill of it.
+ *   --accent-*       the line as *text*. Usually the fill itself on navy, but
+ *                    Poetry's purple measures 2.6:1 there, so it lifts; and on
+ *                    parchment every line darkens until it clears 4.5:1 on
+ *                    --bg-raised, the lightest surface.
+ *
+ * Imported from main.tsx right after index.css, so a page stylesheet can still
+ * override any of it. The nav and footer sit outside these sections and stay
+ * the site's cyan.
+ */
+
+.line--business {
+  --page-line: var(--line-business);
+  --on-page-line: var(--on-line-dark);
+  --accent-primary: #ffc41e;
+  --accent-rgb: 255, 196, 30;
+}
+
+.line--projects {
+  --page-line: var(--line-projects);
+  --on-page-line: var(--on-line-dark);
+  --accent-primary: #1fc46c;
+  --accent-rgb: 31, 196, 108;
+}
+
+.line--poetry {
+  --page-line: var(--line-poetry);
+  --on-page-line: var(--on-line-light);
+  --accent-primary: #e0569f;
+  --accent-rgb: 224, 86, 159;
+}
+
+.line--media {
+  --page-line: var(--line-media);
+  --on-page-line: var(--on-line-dark);
+  --accent-primary: #f58025;
+  --accent-rgb: 245, 128, 37;
+}
+
+.line--travel {
+  --page-line: var(--line-travel);
+  --on-page-line: var(--on-line-dark);
+  --accent-primary: #ff2e4d;
+  --accent-rgb: 255, 46, 77;
+}
+
+.line--guestbook {
+  --page-line: var(--line-guestbook);
+  --on-page-line: var(--on-line-dark);
+  --accent-primary: #c9ced6;
+  --accent-rgb: 201, 206, 214;
+}
+
+/* The site's own line: cyan is already the accent, so only the fill is set. */
+.line--transmissions {
+  --page-line: var(--line-blog);
+  --on-page-line: var(--on-line-dark);
+}
+
+.theme-light .line--business {
+  --accent-primary: #8a6100;
+  --accent-rgb: 138, 97, 0;
+}
+
+.theme-light .line--projects {
+  --accent-primary: #00703a;
+  --accent-rgb: 0, 112, 58;
+}
+
+.theme-light .line--poetry {
+  --accent-primary: #a21a68;
+  --accent-rgb: 162, 26, 104;
+}
+
+.theme-light .line--media {
+  --accent-primary: #a14a08;
+  --accent-rgb: 161, 74, 8;
+}
+
+.theme-light .line--travel {
+  --accent-primary: #c0142f;
+  --accent-rgb: 192, 20, 47;
+}
+
+.theme-light .line--guestbook {
+  --accent-primary: #5c5c5c;
+  --accent-rgb: 92, 92, 92;
+}
+
+/* ── Page toolbars ──────────────────────────────────────────────────────────
+   What the old shell bars carried that was real (a count, a toggle) now sits
+   in a plain row: a small label on the left, pill toggles on the right. */
+.page-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-bottom: 1.5rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.page-tools__group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.page-tools h2,
+.page-tools__label {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-stretch: 75%;
+  font-size: 1.6rem;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--text-primary);
+}
+
+/* A two-state pill: outlined at rest, filled in the line colour when on. */
+.tool-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+  min-height: 34px;
+  padding: 0.35rem 0.9rem;
+  border: 1px solid rgba(var(--accent-rgb), 0.55);
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.tool-toggle::before {
+  content: '';
+  width: 0.6em;
+  height: 0.6em;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+}
+
+.tool-toggle:hover {
+  border-color: var(--accent-primary);
+}
+
+.tool-toggle[aria-pressed='true'] {
+  background: var(--page-line, var(--accent-primary));
+  border-color: var(--page-line, var(--accent-primary));
+  color: var(--on-page-line, var(--bg-base));
+}
+
+.tool-toggle[aria-pressed='true']::before {
+  background: currentColor;
+}
+
+@media (pointer: coarse) {
+  .tool-toggle {
+    min-height: 44px;
+  }
+}
+
+/* An inline link that goes somewhere else: the line colour, underlined, with
+   its arrow. What [VISIT LIVE ↗] used to be, minus the brackets. */
+.line-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  white-space: nowrap;
+}
+
+.line-link:hover,
+.line-link:focus-visible {
+  color: var(--text-primary);
+  text-decoration-color: var(--accent-primary);
+}

@@ -1,6 +1,6 @@
 import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
-import ScrambleText from '../components/ScrambleText';
+import StationHeader from '../components/StationHeader';
 import useDocumentMeta from '../hooks/useDocumentMeta';
 import { routeMeta } from '../data/routeMeta';
 import './projects/index.css';
@@ -338,17 +338,14 @@ export default function Projects() {
   useDocumentMeta(routeMeta.projects.title, routeMeta.projects.description);
   return (
     <PageTransition>
-      <section className="section">
-        <div className="section-header">
-          <h2><ScrambleText text="PROJECTS" /></h2>
-          <p className="section-desc">the second pillar: things I've built (platforms, tools, and experiments)</p>
-        </div>
-
-        {/* Package-manager chrome: frames the page as `pkg list` inside SJ.EXE */}
-        <div className="pkg-bar">
-          <span className="pkg-bar__cmd"><span className="pkg-bar__prompt">srihith@sj.exe:~$</span> pkg list --built</span>
-          <span className="pkg-bar__count">{packageCount} packages</span>
-        </div>
+      <section className="section line--projects">
+        <StationHeader
+          line="projects"
+          name="Projects"
+          file="pkg list --built"
+          desc="the second pillar: things I've built (platforms, tools, and experiments)"
+          meta={`${packageCount} packages`}
+        />
 
         {shelves.map((shelf) => (
           <section className="projects-shelf" key={shelf.key}>
@@ -436,9 +433,7 @@ export default function Projects() {
                 {project.children && (
                     <div className="project-children">
                       <div className="project-children__bar">
-                        <span className="project-children__cmd">
-                          <span className="pkg-bar__prompt">srihith@sj.exe:~$</span> pkg list --studio
-                        </span>
+                        <span className="project-children__cmd">Shipped under the studio</span>
                         <span className="project-children__count">
                           {project.children.length} packages
                         </span>

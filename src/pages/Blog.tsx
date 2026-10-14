@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
-import ScrambleText from '../components/ScrambleText';
+import StationHeader from '../components/StationHeader';
 import LogClock from '../components/LogClock';
 import useDocumentMeta from '../hooks/useDocumentMeta';
 import { routeMeta } from '../data/routeMeta';
@@ -22,17 +22,14 @@ export default function Blog() {
 
   return (
     <PageTransition>
-      <section className="section">
-        <div className="section-header">
-          <h2><ScrambleText text="TRANSMISSIONS" /></h2>
-          <p className="section-desc">essays and logs, append-only</p>
-        </div>
-
-        {/* Log chrome: frames the feed as a live log stream inside SJ.EXE */}
-        <div className="log-bar">
-          <span className="log-bar__cmd"><span className="log-bar__prompt">srihith@sj.exe:~$</span> tail -f transmissions.log</span>
-          <span className="log-bar__count">{postsSorted.length} entries</span>
-        </div>
+      <section className="section line--transmissions">
+        <StationHeader
+          line="transmissions"
+          name="Transmissions"
+          file="transmissions.log"
+          desc="essays and logs, append-only"
+          meta={`${postsSorted.length} entries`}
+        />
 
         <div className="blog-layout">
           {/* Main Content */}

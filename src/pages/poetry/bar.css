@@ -1,56 +1,24 @@
 /* Poetry page styles */
 
-/* ── Command chrome ────────────────────────────────────────
-   Matches pkg-bar (Projects), gallery-bar (Media), log-bar (Blog) so Poetry
-   reads as an SJ.EXE app too — `$ open poetry.pdf`, then the PDF viewer. */
+/* ── Tools row ─────────────────────────────────────────────
+   The director's-commentary toggle (and, on phones, fit-to-screen) sit in the
+   shared .page-tools row (src/styles/lines.css) above the viewer. */
 
-.poetry-bar__cmd {
-  /* It's a real button (toggles director's-note mode) — strip native chrome. */
-  background: none;
-  border: none;
-  padding: 0;
-  font: inherit;
-  cursor: pointer;
-  transition: color 0.15s ease;
-}
-
-.poetry-bar__cmd:hover {
-  color: var(--accent-primary);
-}
-
-.poetry-bar__prompt {
-  color: var(--accent-primary);
-  font-weight: 700;
-  margin-right: 0.5rem;
-}
-
-.poetry-bar__count {
-  color: var(--text-faint);
-  white-space: nowrap;
-}
-
-/* The commentary hint.
-   `--director` is the best content on the page and it used to live behind an
-   unlabelled button, which meant almost nobody found it. Naming the flag costs
-   nothing — the note itself is still the reveal — and the bar has the room
-   because `justify-content: space-between` was already spreading two children
-   across it. First to go when the bar gets tight. */
-
-.poetry-bar__hint {
+.poetry-tools__hint {
   color: var(--text-faint);
   font-style: italic;
+  text-transform: none;
+  letter-spacing: 0.02em;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 @media (max-width: 720px) {
-  .poetry-bar__hint {
+  .poetry-tools__hint {
     display: none;
   }
 }
 
-/* Wrapper around the bar + viewer + poem nav. Was an inline style on the
+/* Wrapper around the tools + viewer + poem nav. Was an inline style on the
    viewer's container; it moved here when the single-poem page started needing
    the same block. */
 

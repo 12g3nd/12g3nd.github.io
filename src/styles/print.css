@@ -50,16 +50,16 @@
   .party-overlay,
   .whimsy-overlay,
   .ascii-ripple,
-  .poetry-bar,
+  .page-tools,
   .poetry-compact-toggle,
   .doc-viewer__chrome,
   .poem-nav,
   .spotify-embed,
-  /* The SJ.EXE heading over the collection. On screen it frames the document;
+  /* The station sign over the collection. On screen it frames the document;
      on paper it IS the first page, and a printed book of poems does not open
-     with a terminal wordmark. Scoped to poetry so a transmission keeps its
-     TRANSMISSION_NN header, which is that page's actual title. */
-  .section--poetry > .section-header {
+     with a line bullet. Scoped to poetry so a transmission keeps its
+     TRANSMISSION_NN sign, which is that page's actual title. */
+  .section--poetry > .station {
     display: none !important;
   }
 

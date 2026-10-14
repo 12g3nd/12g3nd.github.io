@@ -3,7 +3,7 @@ import type { MDXComponents } from 'mdx/types';
 
 import PageTransition from '../components/PageTransition';
 import PostLayout from '../components/PostLayout';
-import ScrambleText from '../components/ScrambleText';
+import StationHeader from '../components/StationHeader';
 import NotFound from './NotFound';
 import useDocumentMeta from '../hooks/useDocumentMeta';
 import { posts, transmissionOf } from '../data/posts';
@@ -48,11 +48,8 @@ export default function BlogPostPage() {
 
   return (
     <PageTransition>
-      <section className="section" style={{ paddingBottom: '5rem' }}>
-        <div className="section-header" style={{ marginBottom: '3rem' }}>
-          <h2><ScrambleText text={transmission} /></h2>
-          <p className="post-log-date">{post.date} · LOG</p>
-        </div>
+      <section className="section line--transmissions" style={{ paddingBottom: '5rem' }}>
+        <StationHeader line="transmissions" name={transmission} as="p" meta={`${post.date} · log`} />
 
         <PostLayout slug={post.slug} date={post.date}>
           <h1 className={post.subtitle ? 'post-title-main has-subtitle' : 'post-title-main'}>

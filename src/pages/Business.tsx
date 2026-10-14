@@ -1,6 +1,6 @@
 import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
-import ScrambleText from '../components/ScrambleText';
+import StationHeader from '../components/StationHeader';
 import useDocumentMeta from '../hooks/useDocumentMeta';
 import { routeMeta } from '../data/routeMeta';
 import './Business.css';
@@ -89,8 +89,8 @@ const coverage = [
     chip: 'NYSE: DE',
     note: 'An equity research report on Deere & Company, built in Power BI. Seven cards run from the latest quarter through the farm cycle to a scenario model and what the share price assumes, and every figure is tagged as reported, guided or assumed.',
     links: [
-      { label: '[REPORT ↗]', href: 'https://johndeere.jarabana.com' },
-      { label: '[REPO ↗]', href: 'https://github.com/12g3nd/deere-cyclebook' },
+      { label: 'Report ↗', href: 'https://johndeere.jarabana.com' },
+      { label: 'Repo ↗', href: 'https://github.com/12g3nd/deere-cyclebook' },
     ],
   },
   {
@@ -99,7 +99,7 @@ const coverage = [
     chip: 'THE VARSITY',
     note: 'A feature for The Varsity\'s Business & Labour section, published 21 September 2026, asking whether financiers are the real decision-makers in the film industry.',
     links: [
-      { label: '[ARTICLE ↗]', href: 'https://thevarsity.ca/2026/09/21/the-bets-behind-the-big-screen/' },
+      { label: 'Article ↗', href: 'https://thevarsity.ca/2026/09/21/the-bets-behind-the-big-screen/' },
     ],
   },
 ];
@@ -163,18 +163,14 @@ export default function Business() {
 
   return (
     <PageTransition>
-      <section className="section">
-        <div className="section-header">
-          <h2><ScrambleText text="LEDGER.XLSX" /></h2>
-          <p className="section-desc">the first pillar: experience, track record, and write-ups, in pseudo-spreadsheet form</p>
-        </div>
-
-        {/* Workbook chrome: the per-section "temperature" — a read-only .xlsx,
-            finance's native file type, not just another card grid. */}
-        <div className="xls-bar">
-          <span className="xls-bar__cmd"><span className="xls-bar__prompt">srihith@sj.exe:~$</span> open business.xlsx</span>
-          <span className="xls-bar__count">{SHEET_TABS.length} sheets · read-only</span>
-        </div>
+      <section className="section line--business">
+        <StationHeader
+          line="business"
+          name="Business"
+          file="ledger.xlsx"
+          desc="the first pillar: experience, track record, and write-ups, in pseudo-spreadsheet form"
+          meta={`${SHEET_TABS.length} sheets · read-only`}
+        />
 
         <div className="xls-book">
           {/* ── Sheet 01: EXPERIENCE ───────────────────────────
@@ -242,7 +238,7 @@ export default function Business() {
                     </span>
                     <span className="xls-cell xls-cell--links">
                       {r.links.map((l) => (
-                        <a key={l.href} href={l.href} target="_blank" rel="noreferrer">{l.label}</a>
+                        <a key={l.href} className="line-link" href={l.href} target="_blank" rel="noreferrer">{l.label}</a>
                       ))}
                     </span>
                   </div>
@@ -316,8 +312,8 @@ export default function Business() {
                   <span className="xls-cell xls-cell--key">resume.pdf</span>
                   <span className="xls-cell xls-cell--dim">the workbook above, exported to one page</span>
                   <span className="xls-cell xls-cell--links">
-                    <a href="/resume.pdf" target="_blank" rel="noreferrer">[OPEN ↗]</a>
-                    <a href="/resume.pdf" download="Srihith-Jarabana-Resume.pdf">[DOWNLOAD ↓]</a>
+                    <a className="line-link" href="/resume.pdf" target="_blank" rel="noreferrer">Open ↗</a>
+                    <a className="line-link" href="/resume.pdf" download="Srihith-Jarabana-Resume.pdf">Download ↓</a>
                   </span>
                 </div>
               </Reveal>
@@ -327,7 +323,7 @@ export default function Business() {
           {/* ── Footer strips: affiliations + skill toolbar ────── */}
           <div className="xls-strips">
             <div className="xls-strip">
-              <h4 className="xls-strip__label">[DESK]</h4>
+              <h2 className="xls-strip__label">Desk</h2>
               <ul className="xls-desk">
                 {desk.map((d) => (
                   <li key={d}><span className="xls-desk__bullet">&gt;</span> {d}</li>
@@ -335,7 +331,7 @@ export default function Business() {
               </ul>
             </div>
             <div className="xls-strip">
-              <h4 className="xls-strip__label">[TOOLBAR]</h4>
+              <h2 className="xls-strip__label">Toolbar</h2>
               <div className="xls-toolbar">
                 {toolbar.map((t) => (
                   <span key={t}>{t}</span>

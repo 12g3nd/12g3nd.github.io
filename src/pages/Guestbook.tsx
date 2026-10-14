@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
-import ScrambleText from '../components/ScrambleText';
+import StationHeader from '../components/StationHeader';
 import useDocumentMeta from '../hooks/useDocumentMeta';
 import { routeMeta } from '../data/routeMeta';
 import useGuestbook from '../hooks/useGuestbook';
@@ -23,41 +23,33 @@ export default function Guestbook() {
 
   return (
     <PageTransition>
-      <section className="section">
-        <div className="section-header">
-          <h2>
-            <ScrambleText text="Guestbook" accentFrom={5} />
-          </h2>
-          <p className="section-desc">
-            visitors who've left their mark (drawn signatures &amp; three words)
-          </p>
-        </div>
+      <section className="section line--guestbook">
+        <StationHeader
+          line="guestbook"
+          name="Guestbook"
+          file="guestbook.log"
+          accentFrom={5}
+          desc="visitors who've left their mark (drawn signatures & three words)"
+        />
 
         {/* Sign first: the form leads, the existing entries follow below it. */}
         <GuestbookForm />
 
-        {/* Command chrome — `cat guestbook.log`, matching pkg-bar / poetry-bar. */}
-        <div className="guestbook-bar">
-          <span className="guestbook-bar__cmd">
-            <span className="guestbook-bar__prompt">srihith@sj.exe:~$</span> cat guestbook.log
-            {/* The flag appears in the command itself, so the state of the page
-                is legible in the metaphor rather than only in the button. */}
-            {showDates && <span className="guestbook-bar__flag"> --dates</span>}
-          </span>
-          <span className="guestbook-bar__actions">
+        <div className="page-tools guestbook-tools">
+          <div className="page-tools__group">
+            <h2>The log</h2>
+            <span>{loading ? '· · ·' : `${count} ${count === 1 ? 'entry' : 'entries'}`}</span>
+          </div>
+          <div className="page-tools__group">
             <button
               type="button"
-              className="guestbook-bar__toggle"
+              className="tool-toggle"
               onClick={() => setShowDates((v) => !v)}
               aria-pressed={showDates}
-              aria-label="Show the date each entry was signed"
             >
-              [ {showDates ? '-' : '+'}DATES ]
+              Show dates
             </button>
-            <span className="guestbook-bar__count">
-              {loading ? '· · ·' : `${count} ${count === 1 ? 'entry' : 'entries'}`}
-            </span>
-          </span>
+          </div>
         </div>
 
         <div className="guestbook-grid">

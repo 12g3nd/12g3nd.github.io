@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
-import ScrambleText from '../components/ScrambleText';
+import StationHeader from '../components/StationHeader';
 import PoemPaper from '../components/poetry/PoemPaper';
 import useDocumentMeta from '../hooks/useDocumentMeta';
 import { routeMeta } from '../data/routeMeta';
@@ -21,36 +21,41 @@ export default function Poetry() {
 
   return (
     <PageTransition>
-      <section className="section section--poetry">
-        <div className="section-header">
-          <h2><ScrambleText text="POETRY.PDF" /></h2>
-          <p className="section-desc">some of my favourite poems I've ever written at various points in my life. the third pillar.</p>
-          <button
-            className="poetry-compact-toggle"
-            onClick={() => setCompactMode(prev => !prev)}
-          >
-            {compactMode ? '[NORMAL TEXT ↩]' : '[FIT TEXT →]'}
-          </button>
-        </div>
+      <section className="section section--poetry line--poetry">
+        <StationHeader
+          line="poetry"
+          name="Poetry"
+          file="poetry.pdf"
+          desc="some of my favourite poems I've ever written at various points in my life. the third pillar."
+          meta={`${total} poems`}
+        />
 
         <div className="poetry-shell">
-          <div className="poetry-bar">
+          <div className="page-tools">
+            <div className="page-tools__group">
+              <button
+                type="button"
+                className="tool-toggle"
+                onClick={() => setDirector((d) => !d)}
+                aria-pressed={director}
+              >
+                Director's commentary
+              </button>
+              {/* The commentary is the best writing on this page and it used to
+                  sit behind an unlabelled button nobody pressed. The hint says
+                  what it does without spending the reveal. */}
+              <span className="poetry-tools__hint" aria-hidden="true">
+                {director ? 'on: the margins talk back' : 'the margins have notes'}
+              </span>
+            </div>
             <button
               type="button"
-              className="poetry-bar__cmd"
-              onClick={() => setDirector((d) => !d)}
-              aria-pressed={director}
-              title="run command"
+              className="tool-toggle poetry-compact-toggle"
+              onClick={() => setCompactMode((prev) => !prev)}
+              aria-pressed={compactMode}
             >
-              <span className="poetry-bar__prompt">srihith@sj.exe:~$</span> open poetry.pdf{director ? ' --director' : ''}
+              Fit text to screen
             </button>
-            {/* The commentary is the best writing on this page and it used to
-                sit behind an unlabelled button nobody pressed. The hint says
-                what the flag does without spending the reveal. */}
-            <span className="poetry-bar__hint" aria-hidden="true">
-              {director ? 'commentary on — click to hide' : 'try the --director flag'}
-            </span>
-            <span className="poetry-bar__count">{total} poems</span>
           </div>
 
           <div className="doc-viewer">

@@ -1,7 +1,7 @@
 import { films } from 'virtual:letterboxd';
 import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
-import ScrambleText from '../components/ScrambleText';
+import StationHeader from '../components/StationHeader';
 import SpotifyEmbed from '../components/SpotifyEmbed';
 import useDocumentMeta from '../hooks/useDocumentMeta';
 import { routeMeta } from '../data/routeMeta';
@@ -77,18 +77,14 @@ export default function Media() {
 
   return (
     <PageTransition>
-      <section className="section">
-        <div className="section-header">
-          <h2><ScrambleText text="FAV MEDIA.DAT" /></h2>
-          <p className="section-desc">the media I enjoy</p>
-        </div>
-
-        {/* Gallery chrome: the per-section "temperature" — this room is a wall of
-            framed prints, not a database dump. */}
-        <div className="gallery-bar">
-          <span className="gallery-bar__cmd"><span className="gallery-bar__prompt">srihith@sj.exe:~$</span> open gallery.app</span>
-          <span className="gallery-bar__count">{collection.length} plates · est. one human</span>
-        </div>
+      <section className="section line--media">
+        <StationHeader
+          line="media"
+          name="Media"
+          file="fav media.dat"
+          desc="the media I enjoy"
+          meta={`${collection.length} shelves · est. one human`}
+        />
 
         <div className="media-grid">
           {collection.map((category, i) => (
@@ -116,11 +112,11 @@ export default function Media() {
         {/* ── The live wall ──────────────────────────────────────
             Same frames, different provenance: these plates are wired to
             accounts rather than chosen. */}
-        <div className="gallery-bar gallery-bar--live">
-          <span className="gallery-bar__cmd">
-            <span className="gallery-bar__prompt">srihith@sj.exe:~$</span> open gallery.app --wired
-          </span>
-          <span className="gallery-bar__count">
+        <div className="page-tools media-live-head">
+          <div className="page-tools__group">
+            <h2>On rotation</h2>
+          </div>
+          <span>
             {playlists.length} playlists{films.length > 0 && ` · ${films.length} rated films`}
           </span>
         </div>

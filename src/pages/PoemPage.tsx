@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
-import ScrambleText from '../components/ScrambleText';
+import StationHeader from '../components/StationHeader';
 import PoemPaper from '../components/poetry/PoemPaper';
 import NotFound from './NotFound';
 import useDocumentMeta from '../hooks/useDocumentMeta';
@@ -32,30 +32,35 @@ export default function PoemPage() {
 
   return (
     <PageTransition>
-      <section className="section section--poetry" style={{ paddingBottom: '5rem' }}>
-        <div className="section-header">
-          <h2><ScrambleText text="POETRY.PDF" /></h2>
-          <p className="section-desc">
-            page {page} of {poemsSorted.length} — <Link className="poem-nav__all" to="/poetry">open the whole collection</Link>
-          </p>
-        </div>
+      <section className="section section--poetry line--poetry" style={{ paddingBottom: '5rem' }}>
+        <StationHeader
+          line="poetry"
+          name="Poetry"
+          file="poetry.pdf"
+          as="p"
+          desc={<>page {page} of {poemsSorted.length} — <Link className="poem-nav__all" to="/poetry">open the whole collection</Link></>}
+          meta={poem.date}
+        />
 
         <div className="poetry-shell">
-          <div className="poetry-bar">
-            <button
-              type="button"
-              className="poetry-bar__cmd"
-              onClick={() => setDirector((d) => !d)}
-              aria-pressed={director}
-              title="run command"
-            >
-              <span className="poetry-bar__prompt">srihith@sj.exe:~$</span> open poetry.pdf --page={page}
-              {director ? ' --director' : ''}
-            </button>
-            <span className="poetry-bar__hint" aria-hidden="true">
-              {director ? 'commentary on — click to hide' : 'try the --director flag'}
-            </span>
-            <span className="poetry-bar__count">{poem.date}</span>
+          <div className="page-tools">
+            <div className="page-tools__group">
+              <button
+                type="button"
+                className="tool-toggle"
+                onClick={() => setDirector((d) => !d)}
+                aria-pressed={director}
+              >
+                Director's commentary
+              </button>
+              {/* The commentary is the best writing on this page and it used to
+                  sit behind an unlabelled button nobody pressed. The hint says
+                  what it does without spending the reveal. */}
+              <span className="poetry-tools__hint" aria-hidden="true">
+                {director ? 'on: the margins talk back' : 'the margins have notes'}
+              </span>
+            </div>
+            
           </div>
 
           <div className="doc-viewer">

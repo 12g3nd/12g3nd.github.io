@@ -1,21 +1,4 @@
-/* ── Gallery chrome ────────────────────────────────────────
-   Per-section temperature for Media: a wall of framed prints. The ink
-   illustrations (previously hidden at 15% as watermarks) become the art. */
-.gallery-bar {
-  margin-top: 1.5rem;
-  margin-bottom: 2.5rem;
-}
-
-.gallery-bar__prompt {
-  color: var(--accent-primary);
-  font-weight: 700;
-  margin-right: 0.5rem;
-}
-
-.gallery-bar__count {
-  color: var(--text-faint);
-  white-space: nowrap;
-}
+/* ── Media: a wall of framed prints, on Line 5's orange ──── */
 
 .media-grid {
   display: grid;
@@ -166,19 +149,12 @@
     grid-template-columns: 1fr;
     gap: 1.5rem;
   }
-
-  .gallery-bar {
-    font-size: 11px;
-  }
 }
 
 /* ── The live wall ──────────────────────────────────────────
-   Plates wired to accounts rather than curated by hand. Same frame as the
-   collection above so the two walls read as one room, with the bar's amber
-   edge marking which side of the room you are on. */
-.gallery-bar--live {
+   Plates wired to accounts rather than curated by hand. */
+.media-live-head {
   margin-top: 3.5rem;
-  border-left-color: var(--accent-warm);
 }
 
 .media-grid--live {

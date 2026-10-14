@@ -1,21 +1,7 @@
 /* ── business.xlsx ─────────────────────────────────────────
    The business / finance pillar's "temperature": a read-only spreadsheet
-   workbook. Same sacred cyan-on-navy — the material is a financial readout,
-   not a card grid. Mirrors the .pkg-bar / .log-bar chrome of sibling pages. */
-.xls-bar {
-  margin-top: 1.5rem;
-}
-
-.xls-bar__prompt {
-  color: var(--accent-primary);
-  font-weight: 700;
-  margin-right: 0.5rem;
-}
-
-.xls-bar__count {
-  color: var(--text-faint);
-  white-space: nowrap;
-}
+   workbook, on Line 1's yellow (the accent comes from .line--business). The
+   material is a financial readout, not a card grid. */
 
 /* ── Workbook ──────────────────────────────────────────── */
 .xls-book {
@@ -157,13 +143,6 @@
   overflow: visible;
 }
 
-.xls-cell--links a {
-  color: var(--accent-primary);
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.xls-cell--links a:hover { text-decoration: underline; }
 
 /* Expanded note under a row (experience detail), spanning the full sheet. */
 .xls-note {
@@ -233,6 +212,7 @@
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.1em;
+  text-transform: uppercase;
   color: var(--accent-primary);
   margin-bottom: 0.9rem;
 }
@@ -269,10 +249,6 @@
   font-family: var(--font-mono);
   font-size: 11px;
   color: rgba(var(--text-rgb), 0.75);
-}
-
-@media (max-width: 768px) {
-  .xls-bar { font-size: 11px; }
 }
 
 /* Phones are most of the traffic, and a 540px-wide row inside a ~330px column
