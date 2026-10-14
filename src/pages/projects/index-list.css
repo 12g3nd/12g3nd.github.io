@@ -1,0 +1,157 @@
+/* ── The index (tools, the archive, the studio's own projects) ──
+   One row per project: number, a small screenshot, the name and write-up,
+   the links on the end. */
+
+.proj-index {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid rgba(var(--text-rgb), 0.12);
+}
+
+.proj-row {
+  display: grid;
+  grid-template-columns: 2.5rem 136px minmax(0, 1fr) auto;
+  gap: 1rem 1.6rem;
+  align-items: start;
+  padding: 1.6rem 0;
+  border-bottom: 1px solid rgba(var(--text-rgb), 0.12);
+}
+
+.proj-row__num {
+  padding-top: 0.3rem;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-stretch: 75%;
+  font-size: 1.1rem;
+  color: var(--accent-primary);
+}
+
+.proj-row__thumb {
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid rgba(var(--text-rgb), 0.15);
+  background: var(--bg-surface);
+}
+
+.proj-row__thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+/* No screenshot: the first item of the stack, set small, so the column
+   still lines up. */
+.proj-row__thumb.is-empty {
+  display: grid;
+  place-items: center;
+  border-style: dashed;
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.proj-row__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.8rem;
+}
+
+.proj-row__name {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-stretch: 75%;
+  font-size: 1.65rem;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--text-primary);
+}
+
+.proj-row .proj-credit {
+  margin-top: 0.35rem;
+}
+
+.proj-row .proj-metric {
+  margin-top: 0.7rem;
+}
+
+.proj-row .proj-metric__value {
+  font-size: 1.8rem;
+}
+
+.proj-row__desc {
+  margin: 0.6rem 0 0;
+  max-width: 72ch;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text-muted);
+  /* The snapchat entry's note is a second paragraph in the data. */
+  white-space: pre-line;
+}
+
+.proj-row .proj-stack {
+  margin-top: 0.8rem;
+}
+
+/* The links stack down the end of the row, the front door on top. */
+.proj-row .proj-links {
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.7rem;
+  margin-top: 0;
+}
+
+/* The studio's projects sit one step down from the studio's own row. */
+.proj-index--children {
+  border-top: 0;
+}
+
+.proj-index--children .proj-row {
+  grid-template-columns: 3rem 120px minmax(0, 1fr) auto;
+  padding: 1.25rem 0;
+}
+
+.proj-index--children .proj-row__name {
+  font-size: 1.4rem;
+}
+
+@media (max-width: 860px) {
+  .proj-row,
+  .proj-index--children .proj-row {
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+  }
+
+  /* A compact index on one column: the words carry it, and a stack of
+     screenshots under every entry would put back the length the index took
+     out. The case rows above keep theirs. */
+  .proj-row__thumb {
+    display: none;
+  }
+
+  .proj-row__main {
+    grid-column: 2;
+  }
+
+  .proj-row .proj-links {
+    grid-column: 2;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .proj-row,
+  .proj-index--children .proj-row {
+    grid-template-columns: 2rem minmax(0, 1fr);
+    gap: 0.8rem 0.9rem;
+  }
+}

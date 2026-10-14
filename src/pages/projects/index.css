@@ -1,13 +1,12 @@
 /* Projects page styles, one file per part of the page.
  *
- * Split out of a 677-line Projects.css. The order below is the cascade: it
- * reproduces the order these rules appeared in originally. Nothing here shares
- * an element across files — the cards, the child projects and
- * the shelf headings are separate elements — so the order is not load-bearing
- * the way home/index.css is. Keep it anyway; it costs nothing and the next
- * person should not have to re-derive that.
+ * shelf: the four group heads and the folded archive. case: the case-study
+ * rows for selected work and the studio, plus the parts every project shares
+ * (status pill, metric, stack, links). index-list: the compact rows for tools,
+ * the archive and the studio's own projects, which reuse those shared parts,
+ * so it comes after case.
  */
 
-@import './card.css';
-@import './children.css';
 @import './shelf.css';
+@import './case.css';
+@import './index-list.css';

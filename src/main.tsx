@@ -2,6 +2,7 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import './styles/lines.css'
+import './styles/chrome.css'
 import App from './App.tsx'
 import { preloadPostBody } from './data/postBodies'
 // Last on purpose. CSS lands in the bundle in module-graph order, so anything

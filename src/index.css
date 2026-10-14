@@ -194,15 +194,6 @@
     drop-shadow(0.025em 0.025em 0 var(--pop));
 }
 
-/* Watermark numerals were near-invisible cyan-on-navy values; on parchment bump
-   them so they read as faint debossed numbers instead of nothing. */
-.theme-light .project-card__num { color: rgba(var(--accent-rgb), 0.16); }
-
-/* Project status chip rode a translucent-navy fill; give it a parchment fill and
-   pull the "viral" amber down to the readable warm ink. */
-.theme-light .project-card__status { background: rgba(247, 239, 218, 0.92); }
-.theme-light .project-card__status--viral { color: var(--accent-warm); }
-
 /* The boot self-test is the machine powering on — it should always be a dark CRT.
    Re-pin the dark palette on its subtree so a light-theme reload doesn't bleed
    parchment into the vignette or hide the cream log text. */

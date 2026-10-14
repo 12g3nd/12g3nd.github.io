@@ -1,0 +1,244 @@
+/* ── Case-study rows (selected work, the studio) ───────────
+   A big screenshot beside the full write-up, alternating sides down the
+   shelf. The screenshots are 2:1 captures (scripts/capture-previews.mjs). */
+
+.case-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+}
+
+.case {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 2rem 3rem;
+  align-items: start;
+}
+
+/* Every second row puts the picture on the right. (Reveal wraps each row.) */
+.case-list > :nth-child(even) .case__shot {
+  order: 2;
+}
+
+.case__shot {
+  margin: 0;
+  aspect-ratio: 2 / 1;
+  overflow: hidden;
+  border-radius: 6px;
+  border: 1px solid rgba(var(--accent-rgb), 0.35);
+  background: var(--bg-surface);
+  /* A wide wash of the line colour behind the glass, like a lit platform ad. */
+  box-shadow: 0 0 0 6px color-mix(in srgb, var(--page-line) 14%, transparent);
+}
+
+.case__shot img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+
+.case__placeholder {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-stretch: 75%;
+  font-size: 2rem;
+  color: var(--text-faint);
+}
+
+.case__kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.case__num {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-stretch: 75%;
+  font-size: 1.15rem;
+  color: var(--accent-primary);
+}
+
+.case__name {
+  margin: 0.45rem 0 0.35rem;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-stretch: 75%;
+  font-size: clamp(2.2rem, 3.6vw, 3.1rem);
+  line-height: 0.95;
+  letter-spacing: -0.015em;
+  text-transform: none;
+  color: var(--text-primary);
+}
+
+.case__desc {
+  margin: 1rem 0 0;
+  max-width: 62ch;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--text-dim);
+}
+
+/* ── The studio's own projects, under its row ──────────── */
+
+.case__children {
+  grid-column: 1 / -1;
+  padding-top: 1.75rem;
+  border-top: 1px dashed rgba(var(--accent-rgb), 0.35);
+}
+
+.case__children-label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin: 0 0 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.case__children-label span {
+  font-weight: 400;
+  color: var(--text-faint);
+}
+
+/* ── Shared project parts (case rows and index rows) ───── */
+
+.proj-credit {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-faint);
+}
+
+.proj-metric {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  margin: 1.1rem 0 0;
+}
+
+.proj-metric__value {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-stretch: 75%;
+  font-size: 2.5rem;
+  line-height: 1;
+  color: var(--accent-primary);
+}
+
+.proj-metric__label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.proj-metric__note {
+  text-transform: none;
+  letter-spacing: 0.02em;
+  color: var(--text-faint);
+}
+
+.proj-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 1.1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.proj-stack li {
+  padding: 0.2rem 0.55rem;
+  border: 1px solid rgba(var(--text-rgb), 0.18);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.proj-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.4rem;
+  margin-top: 1.4rem;
+}
+
+/* Status: a small outlined pill in the status's own colour. */
+.proj-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--text-muted);
+}
+
+.proj-status--live,
+.proj-status--shipped {
+  color: var(--accent-primary);
+}
+
+.proj-status--award {
+  color: #ffd76b;
+}
+
+.proj-status--paused,
+.proj-status--studio,
+.proj-status--viral {
+  color: var(--accent-warm);
+}
+
+.proj-status--in-the-lab {
+  color: #b9a8ff;
+}
+
+.proj-status--repo,
+.proj-status--archive {
+  color: var(--text-faint);
+}
+
+.theme-light .proj-status--award {
+  color: #8a6100;
+}
+
+.theme-light .proj-status--in-the-lab {
+  color: var(--accent-secondary);
+}
+
+@media (max-width: 860px) {
+  .case {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+
+  /* On one column the picture always leads. */
+  .case-list > :nth-child(even) .case__shot {
+    order: 0;
+  }
+
+  .case-list {
+    gap: 3.5rem;
+  }
+}

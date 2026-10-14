@@ -1,42 +1,100 @@
-/* ── Shelves ────────────────────────────────────────────────
-   The page is four labelled shelves rather than one long grid, so a visitor
-   can stop reading at any boundary and still have seen a coherent set. The
-   page-level pkg-bar keeps the total; these are the dividers under it. */
+/* ── Shelves ───────────────────────────────────────────────
+   The four groups down the page. Each head is a stop on Line 2: a ringed
+   dot in the line colour, the shelf's name, and what is on it. */
 
-.projects-shelf {
-  margin-top: 3rem;
+.proj-shelf {
+  margin-top: 4.5rem;
 }
 
-.projects-shelf:first-of-type {
-  margin-top: 1.5rem;
+.proj-shelf:first-of-type {
+  margin-top: 0;
 }
 
-.projects-shelf__head {
+.proj-shelf__head {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-  padding-bottom: 0.6rem;
-  border-bottom: 1px solid rgba(var(--accent-rgb), 0.25);
+  gap: 0.5rem 2rem;
+  padding-bottom: 0.9rem;
+  margin-bottom: 2.25rem;
+  border-bottom: 1px solid rgba(var(--text-rgb), 0.14);
 }
 
-.projects-shelf__label {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+.proj-shelf__label {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-stretch: 75%;
+  font-size: 2rem;
+  letter-spacing: -0.01em;
+  text-transform: none;
   color: var(--text-primary);
 }
 
-.projects-shelf__label .slash {
+/* The stop: the same ringed circle the home page's stops use. */
+.proj-shelf__label::before {
+  content: '';
+  flex: 0 0 auto;
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 50%;
+  border: 0.17em solid var(--page-line);
+  background: var(--bg-base);
+}
+
+.proj-shelf__blurb {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.proj-shelf__count {
+  padding: 0.1rem 0.5rem;
+  border: 1px solid rgba(var(--accent-rgb), 0.45);
+  border-radius: 999px;
   color: var(--accent-primary);
 }
 
-.projects-shelf__blurb {
+/* ── The archive, folded ───────────────────────────────────
+   Retired work starts closed; the summary is the shelf head itself, with a
+   show/hide cue on the end. */
+
+.proj-archive > summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+.proj-archive > summary::-webkit-details-marker {
+  display: none;
+}
+
+.proj-archive > summary .proj-shelf__head::after {
+  content: 'Show ▾';
   font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  color: var(--text-faint);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+}
+
+.proj-archive[open] > summary .proj-shelf__head::after {
+  content: 'Hide ▴';
+}
+
+.proj-archive > summary:hover .proj-shelf__label {
+  color: var(--accent-primary);
+}
+
+/* Archived work reads as archived: the shelf's own colour is drained. */
+.proj-archive .proj-shelf__label::before {
+  border-color: rgba(var(--text-rgb), 0.35);
 }

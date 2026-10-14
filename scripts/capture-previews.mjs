@@ -22,8 +22,8 @@ import path from 'node:path';
 
 const OUT_DIR = path.resolve('public', 'projects');
 
-// 2:1 — .project-card__preview is a 170px-tall `object-fit: contain` box, so a
-// wide capture fills it instead of letterboxing into a strip.
+// 2:1 — the Projects page shows these in 2:1 frames (.case__shot, .proj-row__thumb),
+// so a wide capture fills them instead of being cropped to a strip.
 const VIEWPORT = { width: 1280, height: 640 };
 
 // JPEG, not PNG: these are photographic full-page captures where PNG lands

@@ -1,0 +1,92 @@
+/* Y2K chrome capsules, shared by every page.
+ *
+ * Moved out of home/cards.css once the inner pages started using them for
+ * the actions their [BRACKETED] links used to be. Imported from main.tsx
+ * after lines.css, ahead of the page stylesheets.
+ */
+
+/* Y2K chrome capsules: a hard highlight band across the middle (the 45/50%
+   stops), a bright rim on top and a shadowed one underneath. The primary is
+   cyan glass, the secondary polished chrome; both are objects, so they keep
+   their colours in either theme. Pressing sinks them a pixel. */
+.btn-primary,
+.btn-ghost,
+.btn-line {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.6rem;
+  border: 0;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #0a1320;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.25),
+    0 2px 8px rgba(0, 0, 0, 0.4);
+  transition: filter 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+}
+
+.btn-primary {
+  background: linear-gradient(#b8faff 0%, #3fe8ff 45%, #00b8d4 50%, #19d9f2 80%, #9cf6ff 100%);
+}
+
+.btn-ghost {
+  background: linear-gradient(#ffffff 0%, #d7dde4 45%, #9aa3ad 50%, #c7ced6 80%, #eef1f4 100%);
+}
+
+.btn-primary:hover,
+.btn-ghost:hover,
+.btn-line:hover,
+.btn-primary:focus-visible,
+.btn-ghost:focus-visible,
+.btn-line:focus-visible {
+  filter: brightness(1.08) saturate(1.1);
+}
+
+.btn-primary:active,
+.btn-ghost:active,
+.btn-line:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 -1px 3px rgba(0, 0, 0, 0.3),
+    0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+/* In a page's own line: the same capsule, glazed in --page-line instead of
+   cyan (src/styles/lines.css), so a Projects button is Line 2 green and a
+   Poetry one Line 4 purple. color-mix builds the highlight band and the
+   shadowed rim from the one colour. */
+.btn-line {
+  color: var(--on-page-line, #0a1320);
+  text-shadow: none;
+  background: linear-gradient(
+    color-mix(in srgb, var(--page-line, #00e5ff) 35%, #ffffff) 0%,
+    color-mix(in srgb, var(--page-line, #00e5ff) 85%, #ffffff) 45%,
+    color-mix(in srgb, var(--page-line, #00e5ff) 80%, #000000) 50%,
+    var(--page-line, #00e5ff) 80%,
+    color-mix(in srgb, var(--page-line, #00e5ff) 55%, #ffffff) 100%
+  );
+}
+
+/* The compact size, for a row of actions under a project or an entry. */
+.btn-sm {
+  padding: 0.5rem 1.05rem;
+  font-size: 12px;
+  gap: 0.4rem;
+}
+
+@media (pointer: coarse) {
+  .btn-sm {
+    min-height: 44px;
+  }
+}
