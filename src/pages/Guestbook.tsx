@@ -26,7 +26,7 @@ export default function Guestbook() {
       <section className="section">
         <div className="section-header">
           <h2>
-            <ScrambleText text="GUESTBOOK" />
+            <ScrambleText text="Guestbook" accentFrom={5} />
           </h2>
           <p className="section-desc">
             visitors who've left their mark (drawn signatures &amp; three words)

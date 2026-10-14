@@ -9,10 +9,10 @@ export default function Footer() {
     <footer className="brutalist-footer">
       <div className="webring-container">
         <div className="webring-widget">
-          <a href="https://uoftwebring.com/redirect?nav=prev&id=40" className="webring-nav">
-            [ ← ]
+          <a href="https://uoftwebring.com/redirect?nav=prev&id=40" className="webring-nav" aria-label="Previous site in the UofT Webring">
+            ←
           </a>
-          <a href="https://uoftwebring.com" target="_blank" rel="noopener noreferrer" className="webring-logo-link">
+          <a href="https://uoftwebring.com" target="_blank" rel="noopener noreferrer" className="webring-logo-link" aria-label="UofT Webring">
             {/* Served from public/ rather than uoftwebring.com. The remote copy
                 was the footer's one third-party fetch, and because it is sized
                 `height: auto` the footer stood at one height before it arrived
@@ -22,14 +22,14 @@ export default function Footer() {
                 ever redesigns its logo. */}
             <img
               src="/ring_logo.svg"
-              alt="UofT Webring"
+              alt=""
               className="webring-logo-img"
               width="28"
               height="28"
             />
           </a>
-          <a href="https://uoftwebring.com/redirect?nav=next&id=40" className="webring-nav">
-            [ → ]
+          <a href="https://uoftwebring.com/redirect?nav=next&id=40" className="webring-nav" aria-label="Next site in the UofT Webring">
+            →
           </a>
         </div>
 

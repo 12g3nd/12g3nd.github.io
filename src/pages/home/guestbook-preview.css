@@ -1,31 +1,187 @@
-/* ── Guestbook preview ─────────────────────────────────── */
+/* ── Guestbook + blogroll ──────────────────────────────── */
 
 /* The cards themselves (.gb-card / .gb-skeleton / .gb-notice) are styled in
    Guestbook.css, which is bundled globally — only the preview layout lives here. */
 
-.guestbook-preview-grid {
+/* Two halves with a hairline between them; stacked on narrow screens. */
+.gb-roll {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+  grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr);
+  gap: 3rem;
+}
+
+.gb-roll__rule {
+  background: rgba(var(--text-rgb), 0.12);
+}
+
+/* The latest entries as a short stack: each one tucks a little under the one
+   before and sits at its own slight angle, so it reads as a pile of slips. */
+.guestbook-preview-grid {
+  display: flex;
+  flex-direction: column;
+  /* Room for the first slip's tilt under the tagline. */
+  margin-top: 1.5rem;
 }
 
 .guestbook-preview-grid > * {
   min-width: 0;
 }
 
+.guestbook-preview-grid > * + * {
+  margin-top: -14px;
+}
+
+/* On the card, not the grid item: the item is Reveal's wrapper, whose
+   transform framer-motion owns. */
+.guestbook-preview-grid > :nth-child(1):is(.gb-skeleton),
+.guestbook-preview-grid > :nth-child(1) .gb-card { transform: rotate(-1.2deg); }
+.guestbook-preview-grid > :nth-child(2):is(.gb-skeleton),
+.guestbook-preview-grid > :nth-child(2) .gb-card { transform: rotate(0.9deg) translateX(12px); }
+.guestbook-preview-grid > :nth-child(3):is(.gb-skeleton),
+.guestbook-preview-grid > :nth-child(3) .gb-card { transform: rotate(-0.5deg) translateX(4px); }
+
+.guestbook-preview-grid .gb-skeleton {
+  min-height: 150px;
+}
+
 .guestbook-preview-footer {
-  margin-top: 1.5rem;
-  text-align: center;
+  margin-top: 1.75rem;
+}
+
+/* ── The blogroll ─────────────────────────────────────── */
+.blogroll {
+  list-style: none;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.blogroll a {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 18px;
+  border: 1px solid rgba(var(--text-rgb), 0.2);
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.blogroll a:hover,
+.blogroll a:focus-visible {
+  border-color: var(--accent-primary);
+  background-color: rgba(var(--accent-rgb), 0.05);
+}
+
+/* The friend's portrait, dithered in their line colour and framed in it.
+   pixelated, so the dither stays square pixels rather than being smoothed. */
+.blogroll__photo {
+  display: block;
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  image-rendering: pixelated;
+  border: 3px solid var(--tile);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35);
+}
+
+.blogroll__text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.blogroll__name {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 700;
+  font-stretch: 80%;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  text-transform: none;
+}
+
+.blogroll__about {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.blogroll__domain {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--accent-primary);
+  white-space: nowrap;
+}
+
+.blogroll__note {
+  margin-top: 1rem;
+  font-family: var(--font-reading);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--text-faint);
 }
 
 @media (max-width: 900px) {
-  .guestbook-preview-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .gb-roll {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .gb-roll__rule {
+    height: 1px;
   }
 }
 
-@media (max-width: 600px) {
-  .guestbook-preview-grid {
-    grid-template-columns: 1fr;
+@media (max-width: 480px) {
+  /* The domain moves under the name rather than squeezing it. */
+  .blogroll a {
+    grid-template-columns: 44px minmax(0, 1fr);
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .blogroll__photo {
+    width: 44px;
+    height: 44px;
+  }
+
+  .blogroll__name {
+    font-size: 22px;
+  }
+
+  .blogroll__domain {
+    grid-column: 2;
+  }
+}
+
+/* The retry inside the offline notice: reads as part of the bracketed line.
+   The notice is a paper slip in both themes, so the link takes the deep teal
+   the ticket uses on paper, not the cyan accent (about 1.4:1 on cream). */
+.gb-retry {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  color: #0a6270;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.gb-retry:hover,
+.gb-retry:focus-visible {
+  color: var(--paper-ink);
+}
+
+@media (pointer: coarse) {
+  .gb-retry {
+    padding: 14px 6px;
+    margin: -14px -6px;
   }
 }

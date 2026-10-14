@@ -13,9 +13,9 @@ import './PillarsMenu.css';
 
 const PILLARS = [
   // Same pairs as the nav (Navigation.tsx): the line, and the ink that reads on it.
-  { to: '/business', label: 'Business', line: '#ffc41e', onLine: '#0a1320' },
-  { to: '/projects', label: 'Projects', line: '#00a54f', onLine: '#0a1320' },
-  { to: '/poetry', label: 'Poetry', line: '#a21a68', onLine: '#fdf6e3' },
+  { to: '/business', label: 'Business', line: 'var(--line-business)', onLine: 'var(--on-line-dark)' },
+  { to: '/projects', label: 'Projects', line: 'var(--line-projects)', onLine: 'var(--on-line-dark)' },
+  { to: '/poetry', label: 'Poetry', line: 'var(--line-poetry)', onLine: 'var(--on-line-light)' },
 ] as const;
 
 export default function PillarsMenu() {
@@ -72,7 +72,7 @@ export default function PillarsMenu() {
         onClick={() => setOpen((v) => !v)}
         onKeyDown={onButtonKey}
       >
-        [PILLARS <span className="pillars__caret" aria-hidden="true">▾</span>]
+        PILLARS <span className="pillars__caret" aria-hidden="true">▾</span>
       </button>
       {open && (
         <ul className="pillars__menu" id={menuId} role="menu" aria-label="Pillars" onKeyDown={onMenuKey}>

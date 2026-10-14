@@ -13,15 +13,9 @@
  * cage rather than a silhouette), once wide and additive for the glow, and once
  * thin for the line itself. The same pass draws the turntable.
  *
- * Their colour is the supplied gradient (scripts/fixtures/surfer-gradient.png):
- * the site's neon cyan from the top left (it was purple in the art), red from
- * the bottom right, falling to near black
- * along the diagonal between them. It is fixed to the frame, stretched over the
- * box the figure can turn within, so the figure turns *through* it. It is
- * rebuilt here as arithmetic rather than sampled from the image, for one
- * reason: the image's diagonal is truly black, and black lines on the navy
- * page vanish. GRADIENT keeps its hues and its fall-off but stops the dark band
- * at a floor, so the middle of the figure dims without disappearing.
+ * Everything is drawn in the one colour, uCool: the site's neon cyan, deeper
+ * on the light theme (Incubator.tsx sets it). Depth comes from the faint
+ * back strands and the glow, not from shading the colour.
  *
  * Geometry is public/surfer.bin, written by scripts/export-surfer.py.
  */
@@ -29,7 +23,7 @@
 export type SurferScene = {
   /** Draw one frame. `angle` in radians; `time` in seconds. */
   draw: (angle: number, time: number, reveal: number, scan: number) => void;
-  /** The gradient's cool end, as linear 0–1 RGB. */
+  /** The line colour, as linear 0–1 RGB. */
   setCool: (rgb: [number, number, number]) => void;
   resize: () => void;
   dispose: () => void;
@@ -58,19 +52,9 @@ vec3 spin(vec3 p) {
   return vec3(c * p.x + s * p.z, p.y, -s * p.x + c * p.z);
 }`;
 
-const GRADIENT = /* glsl */ `
-uniform vec4 uBox; // the figure's box in canvas pixels: x0, y0, x1, y1 (y up)
-uniform vec3 uCool; // the top-left colour; deeper on the light theme
-vec3 gradient(vec2 frag) {
-  vec2 uv = (frag - uBox.xy) / (uBox.zw - uBox.xy);
-  uv.y = 1.0 - uv.y; // image space: y down
-  // The dividing line runs from (0, 0.76) to (1, 0.39) in the image.
-  float side = uv.y - (0.76 - 0.37 * uv.x);
-  float k = clamp(abs(side) / 0.62, 0.0, 1.0);
-  vec3 red = vec3(0.86, 0.04, 0.06);
-  vec3 hue = side < 0.0 ? uCool : red;
-  return hue * mix(0.34, 1.0, smoothstep(0.0, 1.0, k));
-}`;
+const COLOUR = /* glsl */ `
+uniform vec3 uCool; // the one line colour; deeper on the light theme
+`;
 
 const LINE_VS = /* glsl */ `#version 300 es
 in vec2 aCorner;
@@ -104,7 +88,7 @@ precision highp float;
 in float vY;
 in float vSide;
 uniform float uAlpha;
-${GRADIENT}
+${COLOUR}
 uniform float uReveal;
 uniform float uScan;
 out vec4 outColor;
@@ -114,7 +98,7 @@ void main() {
   float scan = exp(-pow((vY - uScan) / 0.045, 2.0));
   float front = exp(-pow((vY - uReveal) / 0.03, 2.0));
   float heat = clamp(scan + front, 0.0, 1.0);
-  vec3 g = gradient(gl_FragCoord.xy);
+  vec3 g = uCool;
   float a = clamp(uAlpha * (1.0 + heat * 2.5), 0.0, 1.0) * soft;
   outColor = vec4(mix(g, vec3(1.0), heat * 0.55) * a, a);
 }`;
@@ -150,12 +134,12 @@ void main() {
 const MOTE_FS = /* glsl */ `#version 300 es
 precision mediump float;
 in float vFade;
-${GRADIENT}
+${COLOUR}
 out vec4 outColor;
 void main() {
   float d = length(gl_PointCoord - 0.5);
   float a = (1.0 - smoothstep(0.2, 0.5, d)) * vFade * 0.7;
-  vec3 g = gradient(gl_FragCoord.xy);
+  vec3 g = uCool;
   outColor = vec4(mix(g, vec3(1.0), 0.25) * a, a);
 }`;
 
@@ -285,7 +269,6 @@ export function createScene(canvas: HTMLCanvasElement, mesh: Mesh): SurferScene 
   gl.bindVertexArray(null);
 
   let viewProj = new Float32Array(16);
-  let box = new Float32Array(4);
   let cool: [number, number, number] = [0, 0.9, 1];
   let dpr = 1;
 
@@ -304,22 +287,6 @@ export function createScene(canvas: HTMLCanvasElement, mesh: Mesh): SurferScene 
     const target = [0, 0.6, 0];
     const eye = [0, target[1] + dist * 0.2, dist];
     viewProj = mul(perspective(fovy, aspect, 0.1, 50), lookAt(eye, target));
-
-    // The gradient's frame: the box the figure can sweep while it turns, i.e.
-    // a cylinder of the board's half-length from the plate to the head.
-    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
-    for (let i = 0; i < 16; i++) {
-      const a = (i / 16) * Math.PI * 2;
-      for (const y of [0, 1.3]) {
-        const p = [Math.cos(a) * 1, y, Math.sin(a) * 1];
-        const cx = viewProj[0] * p[0] + viewProj[4] * p[1] + viewProj[8] * p[2] + viewProj[12];
-        const cy = viewProj[1] * p[0] + viewProj[5] * p[1] + viewProj[9] * p[2] + viewProj[13];
-        const cw = viewProj[3] * p[0] + viewProj[7] * p[1] + viewProj[11] * p[2] + viewProj[15];
-        const sx = (cx / cw * 0.5 + 0.5) * canvas.width, sy = (cy / cw * 0.5 + 0.5) * canvas.height;
-        x0 = Math.min(x0, sx); x1 = Math.max(x1, sx); y0 = Math.min(y0, sy); y1 = Math.max(y1, sy);
-      }
-    }
-    box = new Float32Array([x0, y0, x1, y1]);
   };
   resize();
 
@@ -356,7 +323,6 @@ export function createScene(canvas: HTMLCanvasElement, mesh: Mesh): SurferScene 
     gl.uniformMatrix4fv(line.u('uViewProj'), false, viewProj);
     gl.uniform2f(line.u('uViewport'), canvas.width / 2, canvas.height / 2);
     gl.uniform1f(line.u('uAngle'), angle);
-    gl.uniform4fv(line.u('uBox'), box);
     gl.uniform3fv(line.u('uCool'), cool);
     gl.uniform1f(line.u('uReveal'), reveal);
     gl.uniform1f(line.u('uScan'), scan);
@@ -381,7 +347,6 @@ export function createScene(canvas: HTMLCanvasElement, mesh: Mesh): SurferScene 
     gl.uniform1f(mote.u('uAngle'), angle * 0.35);
     gl.uniform1f(mote.u('uTime'), time);
     gl.uniform1f(mote.u('uDpr'), dpr);
-    gl.uniform4fv(mote.u('uBox'), box);
     gl.uniform3fv(mote.u('uCool'), cool);
     gl.bindVertexArray(moteVao);
     gl.drawArrays(gl.POINTS, 0, MOTES);

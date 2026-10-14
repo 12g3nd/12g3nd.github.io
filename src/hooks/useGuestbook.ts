@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import type { GuestbookEntry, StrokePoint } from '../types/guestbook';
 
 /**
@@ -61,15 +61,18 @@ async function fetchEntries(): Promise<GuestbookEntry[]> {
 /**
  * Loads the approved guestbook entries once per session (module-cached).
  * Returns the same array on every consumer so Home and /guestbook stay in sync.
+ * `retry` re-runs a failed load; it only ever reads, like the first attempt.
  */
 export default function useGuestbook(): {
   entries: GuestbookEntry[];
   loading: boolean;
   error: string | null;
+  retry: () => void;
 } {
   const [entries, setEntries] = useState<GuestbookEntry[]>(cache.entries ?? []);
   const [loading, setLoading] = useState(cache.entries === null);
   const [error, setError] = useState<string | null>(null);
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     let active = true;
@@ -104,7 +107,13 @@ export default function useGuestbook(): {
     return () => {
       active = false;
     };
+  }, [attempt]);
+
+  const retry = useCallback(() => {
+    setError(null);
+    setLoading(true);
+    setAttempt((n) => n + 1);
   }, []);
 
-  return { entries, loading, error };
+  return { entries, loading, error, retry };
 }

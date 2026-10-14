@@ -32,7 +32,7 @@
   }
 
   .section-header h2 {
-    font-size: 2.25rem;
+    font-size: 2.75rem;
   }
 }
 
@@ -40,4 +40,29 @@
   .section {
     padding: 100px 3rem;
   }
+}
+
+/* A section on a slightly raised desk with a fine dot grid, faded out at the
+   top and bottom so it has no hard edge against its neighbours. Used by the
+   guestbook + blogroll and by Connect. */
+.section--desk {
+  /* Named, so things cut out of the section (the ticket's punch holes) can
+     show the same colour through them. */
+  --desk-bg: color-mix(in srgb, var(--bg-surface) 40%, var(--bg-base));
+  position: relative;
+  isolation: isolate;
+  background-color: var(--desk-bg);
+}
+
+.section--desk::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(rgba(var(--text-rgb), 0.11) 1px, transparent 1.3px);
+  background-size: 22px 22px;
+  background-position: 11px 11px;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 14%, #000 86%, transparent);
+  pointer-events: none;
 }

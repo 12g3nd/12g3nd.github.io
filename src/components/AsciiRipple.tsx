@@ -16,7 +16,8 @@ import {
 } from './asciiRipple.engine';
 import './AsciiRipple.css';
 
-const CREAM: RGB = { r: 253, g: 246, b: 227 };
+// The resting colour; --star-rgb in AsciiRipple.css overrides it per theme.
+const ORANGE: RGB = { r: 245, g: 128, b: 37 };
 const CYAN: RGB = { r: 0, g: 229, b: 255 };
 
 // Animate only with a real hovering cursor and no reduced-motion preference.
@@ -63,11 +64,11 @@ export default function AsciiRipple() {
 
     const pointerClient = { x: -9999, y: -9999, has: false };
     const pointer: Pointer = { x: -9999, y: -9999, active: false };
-    const palette = { cream: CREAM, cyan: CYAN };
+    const palette = { rest: ORANGE, cyan: CYAN };
 
     const readPalette = () => {
       const cs = getComputedStyle(canvas);
-      palette.cream = parseRgbTriple(cs.getPropertyValue('--text-rgb'), CREAM);
+      palette.rest = parseRgbTriple(cs.getPropertyValue('--star-rgb'), ORANGE);
       palette.cyan = parseRgbTriple(cs.getPropertyValue('--accent-rgb'), CYAN);
     };
 
@@ -103,7 +104,7 @@ export default function AsciiRipple() {
         const k = Math.min(disp / DISP_NORM, 1);
         const breathing = 0.86 + 0.14 * Math.sin(t * 0.0015 + g.phase);
         const alpha = Math.min((BASE_ALPHA + k * 0.5) * breathing, 0.95);
-        const col = k > 0.04 ? palette.cyan : palette.cream;
+        const col = k > 0.04 ? palette.cyan : palette.rest;
         if (k > GLOW_THRESHOLD) {
           ctx.shadowColor = `rgba(${palette.cyan.r},${palette.cyan.g},${palette.cyan.b},${k * 0.6})`;
           ctx.shadowBlur = 12 * k;

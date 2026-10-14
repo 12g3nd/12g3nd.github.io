@@ -3,6 +3,15 @@
   z-index: 1;
 }
 
+/* The skyline above already ends on a ground line, so the usual 80px on top
+   of the hero's own 80px read as an empty band between the two. Phones keep
+   their tighter section padding untouched. */
+@media (min-width: 769px) {
+  .tenets-section {
+    padding-top: 48px;
+  }
+}
+
 .tenets-section::before {
   content: '';
   position: absolute;
@@ -50,6 +59,11 @@
 /* Outlined like JARABANA, with an offset accent shadow. The !important beats
    the shared .section-header h2 colour. */
 .tenets-title {
+  /* Stays Anton: it is one of the dressed-up uses. */
+  font-family: var(--font-display) !important;
+  font-weight: 400 !important;
+  font-stretch: normal !important;
+  line-height: 1 !important;
   color: transparent !important;
   -webkit-text-stroke: 2px var(--text-primary);
   text-shadow: 0.05em 0.05em 0 rgba(var(--accent-rgb), 0.35);
@@ -57,13 +71,10 @@
   letter-spacing: 0.01em;
 }
 
-.tenets-subtitle {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--text-faint);
-  margin-top: -1rem;
-  margin-bottom: 1rem;
-  letter-spacing: 0.05em;
+/* On parchment the translucent cyan offset mixes with the paper into a muddy
+   sage; a solid offset in the accent keeps the outline crisp. */
+.theme-light .tenets-title {
+  text-shadow: 0.05em 0.05em 0 var(--accent-primary);
 }
 
 .divider-line {

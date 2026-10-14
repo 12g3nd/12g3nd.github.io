@@ -23,3 +23,16 @@
   80%  { opacity: 1; transform: translateX(0); }
   100% { opacity: 0; transform: translateX(0); }
 }
+
+/* Calm mode and reduced motion: the face fades in place rather than sliding. */
+@keyframes smiley-fade {
+  0%   { opacity: 0; }
+  5%, 80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .whimsy-smiley {
+    animation-name: smiley-fade;
+  }
+}

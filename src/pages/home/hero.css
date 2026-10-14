@@ -6,7 +6,7 @@
   font-family: var(--font-mono), monospace;
   font-size: clamp(10px, 1.2vw, 18px);
   line-height: 1.2;
-  color: rgba(var(--text-rgb), 0.16);
+  color: rgba(var(--star-rgb), 0.38);
   pointer-events: none;
   z-index: 0;
   white-space: pre;
@@ -22,7 +22,7 @@
   font-family: var(--font-mono), monospace;
   font-size: clamp(8px, 1vw, 16px);
   line-height: 1.2;
-  color: rgba(var(--text-rgb), 0.16);
+  color: rgba(var(--star-rgb), 0.38);
   pointer-events: none;
   z-index: 0;
   white-space: pre;
@@ -44,15 +44,24 @@
 
 /* The ID strip: crest | program | year, one outlined bar split into cells.
    The year is the filled cell, so it reads as the stamp on the card. */
+/* Purple, its own colour rather than the accent: the ID strip is the one
+   thing in the hero that is about the university, not the site. */
 .badge-row {
+  --badge: #b388ff;
+  --on-badge: #0a1320;
   display: inline-flex;
   align-items: stretch;
   max-width: fit-content;
-  border: 1px solid var(--accent-primary);
+  border: 1px solid var(--badge);
   font-family: var(--font-mono);
   font-size: 14px;
   text-transform: uppercase;
-  color: var(--accent-primary);
+  color: var(--badge);
+}
+
+.theme-light .badge-row {
+  --badge: #5a3fc0;
+  --on-badge: #fdf6e3;
 }
 
 .badge-cell {
@@ -63,7 +72,7 @@
 }
 
 .badge-cell + .badge-cell {
-  border-left: 1px solid var(--accent-primary);
+  border-left: 1px solid var(--badge);
 }
 
 .badge-cell--crest {
@@ -75,7 +84,7 @@
 }
 
 /* The Rotman Commerce wordmark, used as a mask so it takes the strip's colour
-   (cyan here, teal on the light theme) rather than shipping its own. */
+   rather than shipping its own. */
 .rotman-logo {
   display: block;
   height: 26px;
@@ -86,8 +95,8 @@
 }
 
 .badge-cell--year {
-  background: var(--accent-primary);
-  color: var(--bg-base);
+  background: var(--badge);
+  color: var(--on-badge);
   font-weight: 700;
 }
 
@@ -130,20 +139,42 @@
   color: var(--text-primary);
 }
 
+/* The crest, masked like the Rotman wordmark so it is the strip's purple. */
 .crest-icon {
   display: block;
   height: 28px;
-  width: auto;
+  aspect-ratio: 1;
   cursor: pointer;
-  filter: brightness(0) saturate(100%) invert(75%) sepia(35%) saturate(7174%) hue-rotate(143deg) brightness(104%) contrast(101%);
+  background-color: currentColor;
+  -webkit-mask: url('/crest.png') center / contain no-repeat;
+  mask: url('/crest.png') center / contain no-repeat;
   transition: transform 0.15s ease, filter 0.15s ease;
 }
 
-.crest-icon:hover,
-.crest-icon:focus-visible {
+.crest-icon:hover {
   transform: scale(1.15);
-  filter: brightness(0) saturate(100%) invert(75%) sepia(35%) saturate(7174%) hue-rotate(143deg) brightness(140%) contrast(101%);
+  filter: brightness(1.25);
+}
+
+/* The crest is drawn through a mask, and a mask clips the element's own
+   outline, so the keyboard ring goes on the cell around it instead. */
+.crest-icon:focus-visible {
   outline: none;
+}
+
+.badge-cell--crest:has(.crest-icon:focus-visible) {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: -2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .crest-icon {
+    transition: none;
+  }
+
+  .crest-icon:hover {
+    transform: none;
+  }
 }
 
 .right-column {
@@ -187,10 +218,17 @@
     0.03em 0.03em 0 var(--pop),
     0.04em 0.04em 0 var(--pop),
     0.05em 0.05em 0 var(--pop);
+}
+
+/* Each word is its own block line and lifts on its own, as when they were two
+   headings. */
+.hero-name > span {
+  display: block;
+  width: fit-content;
   transition: transform 0.2s ease, text-shadow 0.2s ease;
 }
 
-.giant-text h1:hover {
+.hero-name > span:hover {
   transform: translate(-0.02em, -0.02em);
   text-shadow:
     0.01em 0.01em 0 var(--pop),
@@ -207,14 +245,13 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .giant-text h1 {
+  .hero-name > span {
     transition: none;
   }
 }
 
 .title-srihith {
   position: relative;
-  display: inline-block;
 }
 
 .y2k-accent {
@@ -239,12 +276,10 @@
   transition: transform 0.2s ease, filter 0.2s ease;
 }
 
-.y2k-accent:hover,
-.y2k-accent:focus-visible {
+.y2k-accent:hover {
   transform: scale(1.18) rotate(8deg);
   filter: drop-shadow(0.025em 0.025em 0 var(--pop)) drop-shadow(0.025em 0.025em 0 var(--pop))
     drop-shadow(0.025em 0.025em 0 var(--pop)) drop-shadow(0 0 16px rgba(var(--accent-rgb), 0.5));
-  outline: none;
 }
 
 /* Spins for the duration of whimsy mode (toggled from Home.tsx). */
@@ -258,6 +293,14 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .y2k-accent {
+    transition: none;
+  }
+
+  .y2k-accent:hover {
+    transform: none;
+  }
+
   .y2k-accent.y2k-spinning {
     animation: none;
   }

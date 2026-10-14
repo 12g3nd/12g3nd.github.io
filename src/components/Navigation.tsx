@@ -15,13 +15,13 @@ import './Navigation.css';
  * cyan for BLOG. `onLine` is the text colour that reads on a full fill of it.
  */
 const PAGES = [
-  { to: '/business', label: 'BUSINESS', line: '#ffc41e', onLine: '#0a1320' },
-  { to: '/projects', label: 'PROJECTS', line: '#00a54f', onLine: '#0a1320' },
-  { to: '/poetry', label: 'POETRY', line: '#a21a68', onLine: '#fdf6e3' },
-  { to: '/media', label: 'MEDIA', line: '#f58025', onLine: '#0a1320' },
-  { to: '/travel', label: 'TRAVEL', line: '#ff2e4d', onLine: '#0a1320' },
-  { to: '/guestbook', label: 'GUESTBOOK', line: '#a8a8a8', onLine: '#0a1320' },
-  { to: '/blog', label: 'BLOG', line: '#00e5ff', onLine: '#0a1320' },
+  { to: '/business', label: 'BUSINESS', line: 'var(--line-business)', onLine: 'var(--on-line-dark)' },
+  { to: '/projects', label: 'PROJECTS', line: 'var(--line-projects)', onLine: 'var(--on-line-dark)' },
+  { to: '/poetry', label: 'POETRY', line: 'var(--line-poetry)', onLine: 'var(--on-line-light)' },
+  { to: '/media', label: 'MEDIA', line: 'var(--line-media)', onLine: 'var(--on-line-dark)' },
+  { to: '/travel', label: 'TRAVEL', line: 'var(--line-travel)', onLine: 'var(--on-line-dark)' },
+  { to: '/guestbook', label: 'GUESTBOOK', line: 'var(--line-guestbook)', onLine: 'var(--on-line-dark)' },
+  { to: '/blog', label: 'BLOG', line: 'var(--line-blog)', onLine: 'var(--on-line-dark)' },
 ] as const;
 
 // The brand cycles through these on a triple-click, laid over the logo, then
@@ -134,6 +134,9 @@ export default function Navigation() {
             alt="SJ's World — home"
             draggable={false}
           />
+          {/* The logo printed in metal: the PNG's alpha as a mask over a
+              brushed-steel gradient. The img stays for its size and its alt. */}
+          <span className="nav-brand__metal" aria-hidden="true" />
           {brandGlitch && (
             <span className="nav-brand__glitch" aria-hidden="true"><ScrambleText text={brand} /></span>
           )}

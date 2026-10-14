@@ -4,37 +4,57 @@
   flex-wrap: wrap;
 }
 
-.btn-primary {
-  background-color: var(--accent-primary);
-  color: var(--bg-base);
+/* Y2K chrome capsules: a hard highlight band across the middle (the 45/50%
+   stops), a bright rim on top and a shadowed one underneath. The primary is
+   cyan glass, the secondary polished chrome; both are objects, so they keep
+   their colours in either theme. Pressing sinks them a pixel. */
+.btn-primary,
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.6rem;
+  border: 0;
+  border-radius: 999px;
   font-family: var(--font-mono);
   font-size: 14px;
-  font-weight: bold;
-  padding: 0.75rem 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  border-radius: 0;
-
+  text-decoration: none;
+  color: #0a1320;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.25),
+    0 2px 8px rgba(0, 0, 0, 0.4);
+  transition: filter 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
 }
 
-.btn-primary:hover {
-  background-color: var(--text-primary);
+.btn-primary {
+  background: linear-gradient(#b8faff 0%, #3fe8ff 45%, #00b8d4 50%, #19d9f2 80%, #9cf6ff 100%);
 }
 
 .btn-ghost {
-  background-color: transparent;
-  color: var(--accent-primary);
-  border: 1px solid rgba(var(--accent-rgb), 0.6);
-  font-family: var(--font-mono);
-  font-size: 14px;
-  font-weight: bold;
-  padding: 0.75rem 1.5rem;
-  text-transform: uppercase;
-  border-radius: 0;
+  background: linear-gradient(#ffffff 0%, #d7dde4 45%, #9aa3ad 50%, #c7ced6 80%, #eef1f4 100%);
 }
 
-.btn-ghost:hover {
-  background-color: rgba(var(--accent-rgb), 0.1);
-  border-color: rgba(var(--accent-rgb), 1);
+.btn-primary:hover,
+.btn-ghost:hover,
+.btn-primary:focus-visible,
+.btn-ghost:focus-visible {
+  filter: brightness(1.08) saturate(1.1);
+}
+
+.btn-primary:active,
+.btn-ghost:active {
+  transform: translateY(1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 -1px 3px rgba(0, 0, 0, 0.3),
+    0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 /* ── "afraid of elevators" easter egg ──────────────────── */
@@ -126,13 +146,17 @@
 .bio__claim {
   position: relative;
   display: inline-block;
-  padding: 0.12em 0.45em 0.08em 0.35em;
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 3.4vw, 3.1rem);
+  padding: 0.14em 0.5em 0.12em 0.38em;
+  /* The heading face, but at full width rather than the headings' narrow
+     cut, so it reads as its own voice and not as another section title. */
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-stretch: 100%;
+  font-size: clamp(1.7rem, 2.9vw, 2.6rem);
   line-height: 1;
-  letter-spacing: 0.01em;
+  letter-spacing: -0.025em;
   text-transform: uppercase;
-  color: var(--bg-base);
+  color: #0a1320;
   isolation: isolate;
 }
 
@@ -141,7 +165,7 @@
   position: absolute;
   z-index: -1;
   inset: 0;
-  background: var(--accent-primary);
+  background: #3ee07f;
   transform: skewX(-20deg);
   transform-origin: left;
   box-shadow: 0.12em 0.12em 0 #ff2e4d;
@@ -153,8 +177,38 @@
   animation: bio-lift 0.45s cubic-bezier(0.25, 1, 0.5, 1) 0.55s both;
 }
 
+/* Deeper on parchment, with light letters, so it holds its contrast. */
+.theme-light .bio__claim {
+  color: #fdf6e3;
+}
+
 .theme-light .bio__claim::before {
+  background: #0f7a3d;
   box-shadow: 0.12em 0.12em 0 #d1172f;
+}
+
+/* "world", scribbled out by hand in red: a zigzag drawn over the word rather
+   than a typographic strike, so it reads as a change of mind. */
+.bio__struck {
+  position: relative;
+  text-decoration: none;
+  color: var(--text-muted);
+}
+
+.bio__struck::after {
+  content: '';
+  position: absolute;
+  left: -0.15em;
+  right: -0.15em;
+  top: 50%;
+  height: 0.75em;
+  transform: translateY(-50%) rotate(-3deg);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cpath d='M2 12 L10 6 L16 14 L24 5 L31 15 L39 6 L46 14 L54 5 L61 15 L69 6 L76 14 L84 5 L91 14 L98 8' fill='none' stroke='%23ff2e4d' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  pointer-events: none;
+}
+
+.theme-light .bio__struck::after {
+  filter: brightness(0.85);
 }
 
 .bio__welcome {
@@ -172,16 +226,13 @@
   from { opacity: 0; transform: translateY(0.25em); }
 }
 
-/* Keeps the claim on one line on the narrowest phones. */
-@media (max-width: 380px) {
+/* Keeps the claim on one line on phones. The line is about 14.5em wide with
+   the stripe's padding, so below 430px it scales with the viewport (5.9vw
+   leaves room for the 1rem gutters) instead of stepping at fixed sizes, which
+   still broke at 375. */
+@media (max-width: 430px) {
   .bio__claim {
-    font-size: 1.7rem;
-  }
-}
-
-@media (max-width: 340px) {
-  .bio__claim {
-    font-size: 1.5rem;
+    font-size: min(1.7rem, 5.9vw);
   }
 }
 
@@ -197,9 +248,231 @@
   order: 2;
   position: relative;
   z-index: 1;
+  isolation: isolate;
   display: grid;
   gap: 3rem;
   margin-top: 2.5rem;
+}
+
+/* A night sky behind the stops and the skyline, bled out to the page edges.
+   Scattered dots come from small radial gradients repeating at sizes that
+   share no factor, so the field never visibly tiles; a second layer of
+   brighter points and Y2K sparkles twinkles slowly. Faded in at the top so
+   it rises out of the hero rather than starting on a line. */
+.hero-lower::before,
+.hero-lower::after {
+  content: '';
+  position: absolute;
+  inset: -1.5rem -2rem 0;
+  z-index: -1;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 22%);
+  mask-image: linear-gradient(to bottom, transparent, #000 22%);
+}
+
+.hero-lower::before {
+  background-image:
+    radial-gradient(circle, rgba(var(--text-rgb), 0.55) 0.8px, transparent 1.3px),
+    radial-gradient(circle, rgba(var(--text-rgb), 0.35) 0.7px, transparent 1.2px),
+    radial-gradient(circle, rgba(var(--text-rgb), 0.45) 0.9px, transparent 1.4px),
+    radial-gradient(circle, rgba(var(--accent-rgb), 0.5) 0.8px, transparent 1.3px);
+  background-size: 97px 113px, 151px 89px, 211px 173px, 263px 197px;
+  background-position: 13px 41px, 71px 7px, 140px 96px, 33px 150px;
+}
+
+.hero-lower::after {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M10 0C10.8 7 13 9.2 20 10C13 10.8 10.8 13 10 20C9.2 13 7 10.8 0 10C7 9.2 9.2 7 10 0Z' fill='%23fdf6e3'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M10 0C10.8 7 13 9.2 20 10C13 10.8 10.8 13 10 20C9.2 13 7 10.8 0 10C7 9.2 9.2 7 10 0Z' fill='%23fdf6e3'/%3E%3C/svg%3E"),
+    radial-gradient(circle, rgba(var(--text-rgb), 0.9) 1.1px, transparent 1.8px),
+    radial-gradient(circle, rgba(var(--text-rgb), 0.8) 1px, transparent 1.7px);
+  background-size: 11px 11px, 7px 7px, 337px 229px, 419px 271px;
+  background-repeat: no-repeat, no-repeat, repeat, repeat;
+  background-position: 18% 34%, 71% 22%, 120px 60px, 260px 180px;
+  animation: stars-twinkle 4.5s ease-in-out infinite alternate;
+}
+
+/* The bleed matches the section's side padding at each width, so the sky
+   reaches the page edge and never past it. */
+@media (max-width: 768px) {
+  .hero-lower::before,
+  .hero-lower::after {
+    inset: -1rem -1.25rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-lower::before,
+  .hero-lower::after {
+    inset: -1rem -1rem 0;
+  }
+}
+
+@keyframes stars-twinkle {
+  from { opacity: 0.35; }
+  to { opacity: 1; }
+}
+
+/* On parchment the sky is ink specks rather than light. */
+.theme-light .hero-lower::after {
+  filter: brightness(0) opacity(0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-lower::after {
+    animation: none;
+  }
+}
+
+/* ── The monitor ────────────────────────────────────────────────────────────
+   The board sits in a plastic bezel with a chin (badge and power LED), hung
+   from MonitorArm off the page's right edge. The monitor stops short of the
+   column's edge to leave the arm its room; the arm's box overhangs by the
+   section's padding so its wall plate lands on the page edge itself. */
+.monitor {
+  --arm: #3a4352;
+  --arm-shine: #8f99a8;
+  --arm-joint: #1b2230;
+  position: relative;
+  width: min(100%, 440px);
+  margin-right: 116px;
+}
+
+.theme-light .monitor {
+  --arm: #59616b;
+  --arm-shine: #b9c0c8;
+  --arm-joint: #2c323a;
+}
+
+.monitor-arm {
+  position: absolute;
+  top: -70px;
+  left: calc(100% - 36px);
+  width: 180px;
+  height: 240px;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.monitor-arm__bar {
+  stroke: var(--arm);
+  stroke-width: 13;
+  stroke-linecap: round;
+}
+
+.monitor-arm__shine {
+  stroke: var(--arm-shine);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  opacity: 0.7;
+  transform: translate(-2px, -3px);
+}
+
+.monitor-arm__strut {
+  stroke: var(--arm-shine);
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: 0.55;
+}
+
+.monitor-arm__plate {
+  fill: var(--arm);
+  stroke: var(--arm-shine);
+  stroke-width: 1;
+  stroke-opacity: 0.5;
+}
+
+.monitor-arm__bolt {
+  fill: var(--arm-joint);
+  stroke: var(--arm-shine);
+  stroke-width: 0.8;
+}
+
+.monitor-arm__joint {
+  fill: var(--arm-joint);
+  stroke: var(--arm-shine);
+  stroke-width: 2;
+}
+
+.monitor-arm__cap {
+  fill: #00e5ff;
+}
+
+.monitor-arm__cable {
+  fill: none;
+  stroke: var(--arm-joint);
+  stroke-width: 3;
+  stroke-linecap: round;
+}
+
+/* The bezel, a touch off level, as anything on an arm is. */
+.monitor__bezel {
+  position: relative;
+  padding: 12px 12px 0;
+  border-radius: 14px;
+  background: linear-gradient(#262e3c, #161c26);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.4),
+    0 18px 34px rgba(0, 0, 0, 0.5);
+  transform: rotate(-1.2deg);
+  transform-origin: 100% 40%;
+}
+
+.monitor__chin {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 30px;
+  padding: 0 6px;
+}
+
+.monitor__brand {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: rgba(253, 246, 227, 0.4);
+}
+
+.monitor__led {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #3ee07f;
+  box-shadow: 0 0 6px #3ee07f;
+}
+
+/* Glass on the screen: a faint diagonal reflection over the board. */
+.monitor__bezel .dep-board {
+  max-width: none;
+  border-radius: 6px;
+  border-color: #0b0f16;
+  overflow: hidden;
+}
+
+.monitor__bezel .dep-board::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(125deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 38%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+@media (max-width: 1100px) {
+  /* Too tight for the arm: the monitor sits on its own. */
+  .monitor {
+    margin-right: 0;
+  }
+
+  .monitor-arm {
+    display: none;
+  }
+
+  .monitor__bezel {
+    transform: none;
+  }
 }
 
 /* The board is a device, not a page surface: dark glass and amber LEDs in both
@@ -287,6 +560,8 @@
 
 .stop {
   position: relative;
+  display: flex;
+  flex-direction: column;
   padding: 3.5rem 2rem 0 0;
 }
 
@@ -314,14 +589,84 @@
 }
 
 .stop h3 {
-  font-family: var(--font-display);
-  font-size: 28px;
-  font-weight: 400;
+  font-family: var(--font-heading);
+  font-size: 30px;
+  font-weight: 700;
+  font-stretch: 80%;
   line-height: 1;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  text-transform: none;
   color: var(--text-primary);
   margin-bottom: 0.6rem;
+}
+
+/* Each stop's engraving (drawn in Affinity, sources in scripts/fixtures/),
+   set as a figure plate hanging off its stop: a thin rule in the line colour
+   drops from the line to the plate, the plate blocks out the stars behind it,
+   and the drawing is inked in the stop's own colour through a mask of the
+   line art, so it belongs to that stop rather than floating over the page.
+   Pushed to the bottom of each stop, so the three plates sit level. */
+.stop__plate {
+  --ink: color-mix(in srgb, var(--line) 62%, #fdf6e3);
+  position: relative;
+  margin: auto 0 0;
+  padding-top: 1.75rem;
+  max-width: 340px;
+}
+
+/* The drop rule, from the stop's text down to the plate. */
+.stop__plate::before {
+  content: '';
+  position: absolute;
+  top: 0.35rem;
+  left: 17px;
+  height: calc(1.75rem - 0.35rem);
+  border-left: 2px dotted var(--line);
+  opacity: 0.8;
+}
+
+.stop__art {
+  display: block;
+  aspect-ratio: 480 / 220;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--line) 45%, transparent);
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--line) 7%, var(--bg-base));
+  position: relative;
+}
+
+/* The drawing itself: a layer the size of the plate, inked through the art. */
+.stop__art::after {
+  content: '';
+  position: absolute;
+  inset: 8px 10px 4px;
+  background: var(--ink);
+  -webkit-mask: var(--art) center / contain no-repeat;
+  mask: var(--art) center / contain no-repeat;
+}
+
+.stop__plate figcaption {
+  display: flex;
+  gap: 0.6rem;
+  margin-top: 0.45rem;
+  font-family: var(--font-reading);
+  font-style: italic;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.stop__plate figcaption span {
+  font-family: var(--font-mono);
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.theme-light .stop__plate {
+  --ink: color-mix(in srgb, var(--line) 70%, #2a2418);
 }
 
 .stop p {
@@ -346,6 +691,10 @@
 
   .dep-board {
     max-width: none;
+  }
+
+  .monitor {
+    width: 100%;
   }
 
   .stops {
@@ -373,6 +722,11 @@
 
   .stop h3 {
     font-size: 24px;
+  }
+
+  /* On the vertical line the plate already sits beside it; no drop rule. */
+  .stop__plate::before {
+    display: none;
   }
 }
 

@@ -1,0 +1,110 @@
+/* Fridge-poetry magnets: off-white tiles with serif words, a little crooked,
+   with a hard shadow where they stand off the door. They are objects, so the
+   colours stay put in both themes. */
+.magnets__lines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.magnets__lines li {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.magnet {
+  display: inline-block;
+  padding: 0.18em 0.42em 0.16em;
+  font-family: var(--font-reading);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 2.6vw, 2.3rem);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: #1c1a16;
+  background: #faf6ec;
+  border-radius: 2px;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.8) inset,
+    0 2px 0 rgba(0, 0, 0, 0.35),
+    0 8px 14px rgba(0, 0, 0, 0.35);
+  rotate: var(--tilt, 0deg);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: rotate 0.2s ease, box-shadow 0.2s ease, scale 0.2s ease;
+}
+
+.magnet--colour {
+  background: var(--tile);
+  color: var(--ink);
+  font-style: italic;
+}
+
+.magnet:hover {
+  rotate: 0deg;
+}
+
+/* Lifted off the door while it is being moved. */
+.magnet.is-held {
+  cursor: grabbing;
+  scale: 1.06;
+  rotate: 0deg;
+  position: relative;
+  z-index: 2;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.8) inset,
+    0 14px 24px rgba(0, 0, 0, 0.45);
+}
+
+/* Sliding home after a reset. */
+.magnet.is-returning {
+  transition: translate 0.42s cubic-bezier(0.25, 1, 0.5, 1), rotate 0.2s ease;
+}
+
+.magnets__reset {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  letter-spacing: inherit;
+  color: var(--accent-primary);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.magnets__reset:hover,
+.magnets__reset:focus-visible {
+  color: var(--text-primary);
+}
+
+/* The link is one line of 12px text; on a touchscreen the padding grows its
+   target to 44px tall and the negative margin gives the space back, so the
+   line looks the same. */
+@media (pointer: coarse) {
+  .magnets__reset {
+    padding: 14px 6px;
+    margin: -14px -6px;
+  }
+}
+
+.magnets__hint {
+  margin-top: 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .magnet,
+  .magnet.is-returning {
+    transition: none;
+  }
+}

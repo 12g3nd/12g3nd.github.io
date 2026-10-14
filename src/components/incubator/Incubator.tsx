@@ -1,4 +1,4 @@
-import { useEffect, useRef, type PointerEvent as ReactPointerEvent } from 'react';
+import { useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
 import { createScene, loadSurfer } from './surferGL';
 import './Incubator.css';
 
@@ -16,6 +16,10 @@ import './Incubator.css';
  * carry-on and no return to spinning. That first frame is drawn synchronously,
  * not on rAF, because scripts/visual.mjs pauses the clock and a rAF frame
  * would never come.
+ *
+ * Without WebGL2 (or if the mesh fails to load) it shows public/surfer-still.webp
+ * instead, a frame rendered from this same scene, so the hero never holds an
+ * empty chamber. The image is only requested in that case.
  */
 
 const IDLE = (Math.PI * 2) / 18; // rad/s: a turn every 18 seconds
@@ -34,6 +38,7 @@ const reducedMotion = () =>
 
 export default function Incubator() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [failed, setFailed] = useState(false);
   // Shared between the pointer handlers and the render loop.
   const ctl = useRef({ hovered: false, dragging: false, lastX: 0, lastT: 0, angle: START_ANGLE, omega: IDLE, redraw: () => {} });
 
@@ -51,7 +56,10 @@ export default function Incubator() {
       .then((mesh) => {
         if (cancelled) return;
         const scene = createScene(canvas, mesh);
-        if (!scene) return;
+        if (!scene) {
+          setFailed(true);
+          return;
+        }
         scene.setCool(coolForTheme());
 
         const still = reducedMotion();
@@ -106,7 +114,7 @@ export default function Incubator() {
           scene.dispose();
         };
       })
-      .catch(() => {});
+      .catch(() => { if (!cancelled) setFailed(true); });
 
     return () => { cancelled = true; cleanup(); };
   }, []);
@@ -152,7 +160,11 @@ export default function Incubator() {
         onPointerCancel={onUp}
       >
         <span className="incubator__beam" aria-hidden="true" />
-        <canvas ref={canvasRef} className="incubator__canvas" role="img" aria-label="A wireframe surfer turning on a turntable; drag to spin it" />
+        {failed ? (
+          <img className="incubator__still" src="/surfer-still.webp" width="560" height="535" alt="A wireframe surfer on a turntable" />
+        ) : (
+          <canvas ref={canvasRef} className="incubator__canvas" role="img" aria-label="A wireframe surfer turning on a turntable; drag to spin it" />
+        )}
       </div>
     </figure>
   );

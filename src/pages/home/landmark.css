@@ -21,6 +21,31 @@
   background-image: radial-gradient(rgba(var(--text-rgb), 0.16) 1px, transparent 1.4px);
   background-size: 7px 9px;
   background-position: 3px 5px;
+  transition: background-color 1.2s ease, box-shadow 1.2s ease;
+}
+
+/* Night: the blocks go dark and their windows light up warm. Two lit grids
+   at different pitches, each offset per block (--wx, --wy from Home.tsx), so
+   some windows are on and most are not, and no two buildings match. A faint
+   cool window here and there is someone's TV. */
+.skyline--night .skyline__block {
+  background-color: #0d1626;
+  background-image:
+    radial-gradient(rgba(255, 196, 92, 0.95) 1.1px, transparent 1.7px),
+    radial-gradient(rgba(255, 170, 70, 0.75) 1.1px, transparent 1.7px),
+    radial-gradient(rgba(140, 220, 255, 0.7) 1px, transparent 1.6px),
+    radial-gradient(rgba(var(--text-rgb), 0.08) 1px, transparent 1.4px);
+  background-size: 14px 27px, 21px 18px, 35px 45px, 7px 9px;
+  background-position:
+    calc(3px + var(--wx, 0px)) calc(5px + var(--wy, 0px)),
+    calc(10px + var(--wy, 0px)) calc(14px + var(--wx, 0px)),
+    calc(17px + var(--wx, 0px)) calc(23px + var(--wy, 0px)),
+    3px 5px;
+  box-shadow: 0 -6px 22px -10px rgba(255, 180, 70, 0.35);
+}
+
+.theme-light .skyline--night .skyline__block {
+  background-color: #24324a;
 }
 
 /* The landmark: both images in one box, one shown at a time. Hover swaps

@@ -42,10 +42,71 @@
   pointer-events: none;
 }
 
-/* Cream ink drawn for the navy bar; on the light theme's parchment it would
-   vanish, so it prints dark there instead. */
-.theme-light .nav-brand__logo {
-  filter: brightness(0) opacity(0.82);
+.nav-brand {
+  position: relative;
+}
+
+/* The img only holds the space and the alt text; the metal is drawn over it. */
+.nav-brand__logo {
+  opacity: 0;
+}
+
+/* Brushed steel: a hard-banded gradient (the bands are the reflections) over
+   fine vertical brushing, cut to the logo by its own alpha. Chrome on the
+   navy bar, darker gunmetal on parchment so it still reads as ink. */
+.nav-brand__metal {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 3px),
+    linear-gradient(172deg, #f4f6f8 0%, #c3c9d0 22%, #7c848d 38%, #e9edf1 52%, #9aa1a9 66%, #5d646c 82%, #c9ced4 100%);
+  -webkit-mask: url('/sj-world@2x.png') center / contain no-repeat;
+  mask: url('/sj-world@2x.png') center / contain no-repeat;
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.55));
+}
+
+/* A glint: a soft white band that sweeps across the metal every few
+   seconds, and right away under the pointer. It is a child of the masked
+   element, so it only ever lights the logo's own strokes. */
+.nav-brand__metal::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.85) 49%, #fff 50%, rgba(255, 255, 255, 0.85) 51%, transparent 60%);
+  background-size: 250% 100%;
+  background-repeat: no-repeat;
+  background-position: 150% 0;
+  animation: brand-glint 7s cubic-bezier(0.45, 0, 0.25, 1) 1.2s infinite;
+}
+
+.nav-brand:hover .nav-brand__metal::after,
+.nav-brand:focus-visible .nav-brand__metal::after {
+  animation: brand-glint-now 0.9s cubic-bezier(0.45, 0, 0.25, 1);
+}
+
+@keyframes brand-glint {
+  0% { background-position: 150% 0; }
+  16% { background-position: -50% 0; }
+  100% { background-position: -50% 0; }
+}
+
+@keyframes brand-glint-now {
+  from { background-position: 150% 0; }
+  to { background-position: -50% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-brand__metal::after,
+  .nav-brand:hover .nav-brand__metal::after {
+    animation: none;
+  }
+}
+
+.theme-light .nav-brand__metal {
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.06) 0 1px, transparent 1px 3px),
+    linear-gradient(172deg, #6f767e 0%, #3e444a 24%, #24282c 40%, #5c636a 54%, #33383d 70%, #1c1f22 84%, #4b5157 100%);
 }
 
 /* The triple-click glitch, laid over the logo so nothing beside it moves. */
@@ -386,7 +447,7 @@
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(var(--text-rgb), 0.35);
+  color: var(--text-faint);
   pointer-events: none;
   white-space: nowrap;
   transition: color 0.15s ease;
@@ -517,6 +578,14 @@
   animation: blink 1s step-end infinite; /* @keyframes blink lives in index.css */
 }
 
+/* A block that blinks forever is exactly what reduced motion asks to stop
+   (WCAG 2.2.2); a steady cursor still says "type here". */
+@media (prefers-reduced-motion: reduce) {
+  .terminal-cursor {
+    animation: none;
+  }
+}
+
 /* Mobile terminal row — hidden on desktop, shown on mobile below the nav */
 .terminal-mobile-row {
   display: none;
@@ -579,7 +648,7 @@
     flex: 0 0 auto;
     margin-left: auto;
     padding-left: 0.75rem;
-    font-size: 9px;
+    font-size: 10px;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -661,7 +730,7 @@
   }
 
   .nav-links a {
-    font-size: 10px;
+    font-size: 11px;
   }
 }
 
@@ -676,7 +745,7 @@
   font-size: 10px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(var(--text-rgb), 0.35);
+  color: var(--text-faint);
   white-space: nowrap;
   transition: color 0.15s ease;
 }

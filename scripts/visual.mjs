@@ -240,6 +240,7 @@ const FACES = [
   '400 16px "Space Mono"',
   '700 16px "Space Mono"',
   '400 16px Anton',
+  '800 16px "Bricolage Grotesque"',
   '400 16px "Source Serif 4"',
   '600 16px "Source Serif 4"',
   'italic 400 16px "Source Serif 4"',

@@ -40,6 +40,9 @@
   --accent-warm-ink: #a8651a;
 
   --font-display: 'Anton', sans-serif;
+  /* Section headings and subheads. Anton is kept for the places it is dressed
+     up (the name, TENETS, the tapes, the stripes); plain headings get this. */
+  --font-heading: 'Bricolage Grotesque', 'Arial Narrow', sans-serif;
   --font-mono: 'Space Mono', monospace;
   /* Long-form reading voice, used inside the document while the SJ.EXE chrome
      around it stays monospace. The fallback chain is the same system serif the
@@ -54,6 +57,23 @@
      light theme can warm/soften them in one place instead of per component. */
   --shadow-paper: 0 2px 0 rgba(0, 0, 0, 0.4), 0 14px 30px rgba(0, 0, 0, 0.55);
   --term-green: #0f0;
+
+  /* ── Transit lines ────────────────────────────────────────
+     One colour per page, the way a subway map colours its lines (see
+     Navigation.tsx). They are signage, so unlike almost everything above they
+     are NOT redefined under .theme-light: a line is the same yellow on either
+     side of the switch. The nav, the PILLARS menu, the stops, the tenet cards
+     and the magnets all read from here, so the copies cannot drift.
+     --on-line-* is the ink that reads on a full fill of a line. */
+  --line-business: #ffc41e;
+  --line-projects: #00a54f;
+  --line-poetry: #a21a68;
+  --line-media: #f58025;
+  --line-travel: #ff2e4d;
+  --line-guestbook: #a8a8a8;
+  --line-blog: #00e5ff;
+  --on-line-dark: #0a1320;
+  --on-line-light: #fdf6e3;
 }
 
 /* Easter-egg "heresy" theme (terminal: `theme light`). Cyan-on-navy is the real
@@ -149,28 +169,12 @@
     0 0 26px -6px rgba(181, 101, 29, 0.25);
 }
 
-/* Home: the beliefs (kepler) graphic uses the same invert/screen trick — flip it
-   to dark ink on parchment too. */
-.theme-light .kepler-link img {
-  filter: sepia(0.25) saturate(1.1) brightness(0.9);
-  mix-blend-mode: multiply;
-}
-
-/* CN-tower landmark + crest seal are tinted near-white to glow on navy, so they
-   vanish on parchment. Recolor to dark ink (filter only — leave the landmark's
+/* The CN-tower landmark is tinted near-white to glow on navy, so it vanishes
+   on parchment. Recolor to dark ink (filter only — leave the landmark's
    opacity-driven hover swap alone). */
 .theme-light .landmark-default,
 .theme-light .landmark-hover {
   filter: brightness(0) saturate(100%);
-}
-.theme-light .crest-icon {
-  filter: brightness(0) saturate(100%);
-  opacity: 0.72;
-}
-.theme-light .crest-icon:hover,
-.theme-light .crest-icon:focus-visible {
-  filter: brightness(0) saturate(100%);
-  opacity: 1;
 }
 
 /* The y2k sparkle ships cream (to glow on navy); on parchment recolor it to the
@@ -298,11 +302,23 @@ h1, h2, h3, h4, h5, h6 {
   padding: 80px 2rem;
 }
 
+/* Condensed and heavy, in cream, tightly set; an `.accent` tail (from
+   ScrambleText's accentFrom) takes the accent colour. */
 .section-header h2 {
-  font-family: var(--font-display);
-  font-size: 3rem;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-stretch: 75%;
+  font-size: 3.6rem;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  /* Set as written: "Guestbook" stays mixed case, "LEDGER.XLSX" stays caps. */
+  text-transform: none;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.section-header h2 .accent {
   color: var(--accent-primary);
-  margin-bottom: 2rem;
 }
 
 /* Tagline under a section title (Media, Poetry, …). */

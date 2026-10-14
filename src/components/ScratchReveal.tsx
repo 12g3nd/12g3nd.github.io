@@ -29,7 +29,7 @@ const SAMPLE_STEP = 12;
  * touch-action: pan-y, so a thumb dragging up the page still scrolls it — the
  * scratch is the side-to-side motion a real ticket gets anyway.
  */
-export default function ScratchReveal({ email, label = '[ SCRATCH TO REVEAL ]' }: ScratchRevealProps) {
+export default function ScratchReveal({ email, label = 'SCRATCH TO REVEAL' }: ScratchRevealProps) {
   const [revealed, setRevealed] = useState(false);
   const boxRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -67,7 +67,8 @@ export default function ScratchReveal({ email, label = '[ SCRATCH TO REVEAL ]' }
       ctx.stroke();
     }
 
-    const size = Math.max(24, Math.min(width / 11, 88));
+    // Capped by height as well as width, so it fits a short panel too.
+    const size = Math.max(16, Math.min(width / 11, height * 0.5, 88));
     ctx.font = `${size}px Anton, 'Arial Narrow', sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -158,7 +159,9 @@ export default function ScratchReveal({ email, label = '[ SCRATCH TO REVEAL ]' }
         aria-hidden={!revealed}
         tabIndex={revealed ? undefined : -1}
       >
-        {email}
+        {/* The @ gets breathing room from margins, not spaces, so a copied
+            address is still the real one. */}
+        {email.split('@')[0]}<span className="scratch-box__at">@</span>{email.split('@').slice(1).join('@')}
       </a>
       <canvas
         ref={canvasRef}

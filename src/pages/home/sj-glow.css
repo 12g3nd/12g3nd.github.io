@@ -16,3 +16,16 @@
   display: inline-block;
   animation: letter-glow-pulse 1.8s ease-out forwards;
 }
+
+/* Without motion the letters still light up, they just hold and go out
+   instead of pulsing. */
+@keyframes letter-glow-still {
+  0%, 80% { filter: drop-shadow(0 0 8px var(--accent-primary)); }
+  100% { filter: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .letter-glow {
+    animation-name: letter-glow-still;
+  }
+}

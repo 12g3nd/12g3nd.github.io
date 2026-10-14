@@ -5,14 +5,21 @@ const CHARS = '!<>-_\\/[]{}=+*^?#%@01';
 interface ScrambleTextProps {
   text: string;
   className?: string;
+  /** Characters from this index on are wrapped in `.accent`, so a heading can
+   *  carry a second colour ("Guest" + "book") through the scramble. */
+  accentFrom?: number;
 }
 
 /**
  * "Decrypts" its text on mount: each character scrambles through random glyphs,
  * then settles to its final value in a left-to-right stagger. Respects
  * prefers-reduced-motion (renders the final text immediately).
+ *
+ * The glyphs are for the eye only: a screen reader landing on the heading
+ * mid-scramble would otherwise read out "Guestb-?1". It gets the final text
+ * from a hidden copy, and the animated one is aria-hidden.
  */
-export default function ScrambleText({ text, className }: ScrambleTextProps) {
+export default function ScrambleText({ text, className, accentFrom }: ScrambleTextProps) {
   const [display, setDisplay] = useState(text);
   const raf = useRef(0);
 
@@ -52,5 +59,17 @@ export default function ScrambleText({ text, className }: ScrambleTextProps) {
     return () => cancelAnimationFrame(raf.current);
   }, [text]);
 
-  return <span className={className}>{display}</span>;
+  return (
+    <span className={className}>
+      <span className="sr-only">{text}</span>
+      {accentFrom === undefined ? (
+        <span aria-hidden="true">{display}</span>
+      ) : (
+        <span aria-hidden="true">
+          {display.slice(0, accentFrom)}
+          <span className="accent">{display.slice(accentFrom)}</span>
+        </span>
+      )}
+    </span>
+  );
 }

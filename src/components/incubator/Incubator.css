@@ -1,6 +1,6 @@
 /* No case at all: a light bar overhead and the beam it throws, fading out
    before the floor so nothing draws a hard edge against the page. The figure
-   carries its own colour (the gradient, in surferGL.ts). */
+   draws itself in cyan (surferGL.ts); the light here matches it. */
 .incubator {
   display: flex;
   flex-direction: column;
@@ -21,7 +21,7 @@
   height: 3px;
   border-radius: 2px;
   background: #effeff;
-  box-shadow: 0 0 10px 2px rgba(0, 229, 255, 0.75), 0 0 28px 6px rgba(255, 60, 90, 0.3);
+  box-shadow: 0 0 10px 2px rgba(0, 229, 255, 0.75), 0 0 28px 6px rgba(0, 229, 255, 0.25);
 }
 
 .incubator__chamber {
@@ -45,7 +45,7 @@
   position: absolute;
   inset: 0 10% 4%;
   clip-path: polygon(19% 0, 81% 0, 100% 100%, 0 100%);
-  background: linear-gradient(to bottom, rgba(120, 240, 255, 0.16), rgba(255, 90, 120, 0.05) 70%, transparent);
+  background: linear-gradient(to bottom, rgba(120, 240, 255, 0.16), rgba(0, 229, 255, 0.04) 70%, transparent);
   pointer-events: none;
 }
 
@@ -56,15 +56,15 @@
   right: 6%;
   bottom: 4%;
   height: 22%;
-  background: radial-gradient(closest-side, rgba(0, 229, 255, 0.14), rgba(255, 60, 90, 0.06) 60%, transparent);
+  background: radial-gradient(closest-side, rgba(0, 229, 255, 0.14), rgba(0, 229, 255, 0.05) 60%, transparent);
 }
 
 .theme-light .incubator__beam {
-  background: linear-gradient(to bottom, rgba(10, 120, 140, 0.13), rgba(170, 20, 40, 0.04) 70%, transparent);
+  background: linear-gradient(to bottom, rgba(10, 120, 140, 0.13), rgba(10, 120, 140, 0.04) 70%, transparent);
 }
 
 .theme-light .incubator__beam::after {
-  background: radial-gradient(closest-side, rgba(10, 120, 140, 0.12), rgba(170, 20, 40, 0.05) 60%, transparent);
+  background: radial-gradient(closest-side, rgba(10, 120, 140, 0.12), rgba(10, 120, 140, 0.05) 60%, transparent);
 }
 
 .incubator__canvas {
@@ -73,6 +73,22 @@
   width: 100%;
   height: 100%;
   display: block;
+}
+
+/* The fallback frame for browsers without WebGL2. It was rendered in the dark
+   theme's cyan; on parchment it is darkened toward the light theme's deeper
+   line colour, as the live scene does. */
+.incubator__still {
+  position: absolute;
+  inset: 8% 6% 4%;
+  width: 88%;
+  height: 88%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.theme-light .incubator__still {
+  filter: brightness(0.7) saturate(1.2);
 }
 
 @media (max-width: 768px) {

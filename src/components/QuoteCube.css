@@ -1,0 +1,383 @@
+/* Each face is the cream paper stock the single quote card used to be: the
+   paper tokens, which hold one value in both themes, and the same faint
+   diagonal grid. No high-frequency grain, for the reason quotes.css gave it:
+   a 3px texture beats against the global CRT scanlines into a moire. */
+.qcube {
+  --s: 320px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qcube__stage {
+  position: relative;
+  width: 100%;
+  height: calc(var(--s) + 90px);
+  display: grid;
+  place-items: center;
+  perspective: 1100px;
+}
+
+.qcube__cube {
+  position: relative;
+  width: var(--s);
+  height: var(--s);
+  transform-style: preserve-3d;
+  transition: transform 0.9s cubic-bezier(0.65, 0, 0.35, 1);
+  cursor: grab;
+  /* A sideways drag spins it; a vertical one still scrolls the page. */
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.qcube__cube.is-dragging {
+  transition: none;
+  cursor: grabbing;
+}
+
+.qcube__cube.is-still {
+  transition: none;
+}
+
+/* A face is a grid: the portrait and the name share the top row, the quote
+   runs the full width under them. The markup keeps quote-then-caption order
+   for reading; the grid areas place them. */
+.qcube__face {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas:
+    'img by'
+    'q q';
+  align-content: center;
+  gap: 18px 16px;
+  background-color: var(--paper-bg);
+  background-image:
+    repeating-linear-gradient(45deg, rgba(42, 36, 24, 0.035) 0, rgba(42, 36, 24, 0.035) 1px, transparent 1px, transparent 16px),
+    repeating-linear-gradient(-45deg, rgba(42, 36, 24, 0.035) 0, rgba(42, 36, 24, 0.035) 1px, transparent 1px, transparent 16px);
+  border: 1px solid rgba(42, 36, 24, 0.3);
+  color: var(--paper-ink);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+
+.qcube__face blockquote {
+  grid-area: q;
+  margin: 0;
+  font-family: var(--font-reading);
+  font-style: italic;
+  font-size: 22px;
+  line-height: 1.32;
+}
+
+.qcube__face.is-long blockquote {
+  font-size: 18px;
+}
+
+/* The name, set as a plate beside the portrait. */
+.qcube__face figcaption {
+  grid-area: by;
+  align-self: end;
+  font-family: var(--font-display);
+  font-size: 26px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  border-top: 2px solid var(--paper-ink);
+  padding-top: 8px;
+}
+
+.qcube__face figcaption a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.qcube__aside {
+  display: block;
+  margin-bottom: 4px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--paper-ink-soft);
+}
+
+.qcube__face figcaption a:hover,
+.qcube__face figcaption a:focus-visible {
+  text-decoration: underline;
+}
+
+.qcube__img {
+  grid-area: img;
+  width: 90px;
+  height: 120px;
+  object-fit: cover;
+  object-position: top;
+  filter: contrast(1.05) sepia(0.15);
+  border: 1px solid rgba(42, 36, 24, 0.35);
+  box-shadow: 3px 3px 0 rgba(42, 36, 24, 0.18);
+}
+
+.qcube__face.is-pending {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qcube__pending {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper-ink-soft);
+}
+
+/* While rolling, the cube takes longer and overshoots a touch on landing,
+   the way a thrown die rocks before it stops. */
+.qcube__cube.is-rolling {
+  transition: transform 1.7s cubic-bezier(0.2, 0.75, 0.25, 1.06);
+  cursor: progress;
+}
+
+.qcube__controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 14px 18px;
+  margin-top: 1.6rem;
+}
+
+.qcube__dice {
+  display: flex;
+  gap: 8px;
+}
+
+/* The face picker: six little dice, ivory with ink pips, set a touch crooked
+   like dice tipped out of a cup. The chosen one is cyan. */
+.qcube__die {
+  width: 34px;
+  height: 34px;
+  padding: 5px;
+  border: 0;
+  border-radius: 7px;
+  background: linear-gradient(145deg, #fffdf6, #e8e0cb);
+  box-shadow:
+    inset 0 -2px 0 rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 3px 0 rgba(0, 0, 0, 0.35),
+    0 6px 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  rotate: var(--tilt, 0deg);
+  transition: transform 0.15s ease, rotate 0.15s ease, background 0.15s ease;
+}
+
+.qcube__die:nth-child(1) { --tilt: -4deg; }
+.qcube__die:nth-child(2) { --tilt: 3deg; }
+.qcube__die:nth-child(3) { --tilt: -2deg; }
+.qcube__die:nth-child(4) { --tilt: 5deg; }
+.qcube__die:nth-child(5) { --tilt: -3deg; }
+.qcube__die:nth-child(6) { --tilt: 2deg; }
+
+.qcube__die:hover,
+.qcube__die:focus-visible {
+  transform: translateY(-3px);
+  rotate: 0deg;
+}
+
+.qcube__die[aria-pressed='true'] {
+  background: linear-gradient(145deg, #7ff2ff, #00b8d4);
+  rotate: 0deg;
+  transform: translateY(-3px);
+}
+
+.qcube__die:disabled {
+  cursor: progress;
+}
+
+.qcube__pips {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  width: 100%;
+  height: 100%;
+}
+
+.qcube__pips i {
+  display: block;
+  width: 5px;
+  height: 5px;
+  margin: auto;
+  border-radius: 50%;
+}
+
+.qcube__pips i.is-on {
+  background: #1c1a16;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.qcube__die[aria-pressed='true'] .qcube__pips i.is-on {
+  background: #0a1320;
+}
+
+/* ROLL: a chrome capsule (the site's buttons) with a die that tumbles while
+   the cube is in the air. */
+.qcube__roll {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 1.2rem 0.55rem 0.6rem;
+  border: 0;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0a1320;
+  background: linear-gradient(#ffffff 0%, #d7dde4 45%, #9aa3ad 50%, #c7ced6 80%, #eef1f4 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -2px 4px rgba(0, 0, 0, 0.25),
+    0 2px 8px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  transition: filter 0.15s ease, transform 0.1s ease;
+}
+
+.qcube__roll:hover,
+.qcube__roll:focus-visible {
+  filter: brightness(1.08);
+}
+
+.qcube__roll:active {
+  transform: translateY(1px);
+}
+
+.qcube__roll:disabled {
+  cursor: progress;
+}
+
+.qcube__roll-die {
+  display: block;
+  width: 24px;
+  height: 24px;
+  padding: 3px;
+  border-radius: 5px;
+  background: #0a1320;
+}
+
+.qcube__roll-die .qcube__pips i {
+  width: 4px;
+  height: 4px;
+}
+
+.qcube__roll-die .qcube__pips i.is-on {
+  background: #fdf6e3;
+}
+
+.qcube__roll.is-rolling .qcube__roll-die {
+  animation: die-tumble 0.42s cubic-bezier(0.4, 0, 0.6, 1) 4;
+}
+
+@keyframes die-tumble {
+  0% { transform: rotate(0deg) translateY(0); }
+  50% { transform: rotate(180deg) translateY(-5px); }
+  100% { transform: rotate(360deg) translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .qcube__die,
+  .qcube__roll {
+    transition: none;
+  }
+
+  .qcube__roll.is-rolling .qcube__roll-die {
+    animation: none;
+  }
+}
+
+.qcube__credits {
+  margin-top: 1rem;
+  max-width: 34rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--text-faint);
+  text-align: center;
+}
+
+.qcube__credits summary {
+  cursor: pointer;
+}
+
+.qcube__credits summary:hover,
+.qcube__credits summary:focus-visible {
+  color: var(--accent-primary);
+}
+
+.qcube__credits ul {
+  list-style: none;
+  margin: 0.6rem 0 0.4rem;
+  padding: 0;
+}
+
+.qcube__credits a {
+  color: var(--text-muted);
+}
+
+@media (max-width: 480px) {
+  .qcube {
+    --s: 260px;
+  }
+
+  .qcube__face {
+    padding: 18px;
+    gap: 12px;
+  }
+
+  .qcube__face blockquote {
+    font-size: 17px;
+  }
+
+  .qcube__face figcaption {
+    font-size: 20px;
+  }
+
+  .qcube__img {
+    width: 66px;
+    height: 88px;
+  }
+
+}
+
+/* Phones: dice big enough for a thumb. Each is drawn at 36px and an
+   invisible ::before takes the target to 44px; with the 8px gap the
+   neighbouring targets tile exactly rather than overlap. ROLL drops to its
+   own row so six of them fit. */
+@media (max-width: 768px) {
+  .qcube__dice {
+    gap: 8px;
+  }
+
+  .qcube__die {
+    position: relative;
+    width: 36px;
+    height: 36px;
+  }
+
+  .qcube__die::before {
+    content: '';
+    position: absolute;
+    inset: -4px;
+  }
+
+  .qcube__credits summary {
+    padding: 12px 0;
+  }
+}

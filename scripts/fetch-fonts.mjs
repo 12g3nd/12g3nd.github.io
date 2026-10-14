@@ -29,6 +29,10 @@ import path from 'node:path';
 const GOOGLE_CSS =
   'https://fonts.googleapis.com/css2' +
   '?family=Anton' +
+  // Variable, and asked for as ranges: the section headings use the narrow end
+  // of the width axis and the heavy end of the weight axis, and the optical-
+  // size axis tunes the letterforms to the size they are set at.
+  '&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,500..800' +
   '&family=Source+Serif+4:ital,wght@0,400;0,600;1,400' +
   '&family=Space+Mono:wght@400;700' +
   '&display=swap';
@@ -73,7 +77,9 @@ function parseFaces(css) {
       url,
       family: block.match(/font-family:\s*'([^']+)'/)?.[1],
       style: block.match(/font-style:\s*(\w+)/)?.[1] ?? 'normal',
-      weight: block.match(/font-weight:\s*(\d+)/)?.[1] ?? '400',
+      // A variable face gives a range ("500 800") rather than one weight.
+      weight: block.match(/font-weight:\s*(\d+(?:\s+\d+)?)/)?.[1] ?? '400',
+      stretch: block.match(/font-stretch:\s*([^;]+);/)?.[1],
       range: block.match(/unicode-range:\s*([^;]+);/)?.[1],
     });
   }
@@ -90,7 +96,8 @@ function parseFaces(css) {
 function filenameFor(face) {
   const family = face.family.toLowerCase().replace(/\s+/g, '-');
   const style = face.style === 'italic' ? '-italic' : '';
-  return `${family}-${face.weight}${style}-${face.subset}.woff2`;
+  const weight = face.weight.replace(/\s+/g, '-');
+  return `${family}-${weight}${style}-${face.subset}.woff2`;
 }
 
 async function main() {
@@ -161,6 +168,7 @@ async function main() {
       `        font-family: '${face.family}';`,
       `        font-style: ${face.style};`,
       `        font-weight: ${face.weight};`,
+      ...(face.stretch ? [`        font-stretch: ${face.stretch};`] : []),
       // swap still matters even same-origin: it is what guarantees text paints
       // in a fallback immediately rather than sitting invisible on a slow link.
       '        font-display: swap;',

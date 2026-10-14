@@ -2,6 +2,17 @@
    hero content (z-index 0), and never intercepts pointer events so clicks/links in
    the hero keep working. The static-fallback path reuses .ascii-art-bg /
    .ascii-art-secondary from Home.css. */
+/* The star field rests in orange (the nav's MEDIA line) and flares cyan where
+   the cursor disturbs it. Deeper on parchment so it still reads. Read by
+   AsciiRipple.tsx as well as the static fallback in home/hero.css. */
+:root {
+  --star-rgb: 245, 128, 37;
+}
+
+.theme-light {
+  --star-rgb: 190, 88, 14;
+}
+
 .ascii-ripple {
   position: absolute;
   inset: 0;
