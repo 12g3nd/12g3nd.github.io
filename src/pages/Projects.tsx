@@ -29,7 +29,7 @@ type Child = {
   name: string;
   description: string;
   stack: string[];
-  status: 'SHIPPED' | 'IN THE LAB' | 'PAUSED';
+  status: 'SHIPPED' | 'IN THE LAB' | 'PAUSED' | 'INTERNAL';
   links: Link[];
   logo?: string;
   metric?: Metric;
@@ -37,7 +37,7 @@ type Child = {
   credit?: string;
 };
 
-/* The page reads as four shelves rather than one undifferentiated grid. A
+/* The page reads as five shelves rather than one undifferentiated grid. A
    visitor who only looks at the first shelf should still have seen the work
    worth judging me on; a visitor who reaches the last one should know they are
    looking at retired work on purpose. */
@@ -51,6 +51,11 @@ const SECTIONS = [
     key: 'studio',
     label: 'Studio work',
     blurb: 'everything shipping under FI99 Inc.',
+  },
+  {
+    key: 'work',
+    label: 'Work',
+    blurb: 'built on the job, kept in-house',
   },
   {
     key: 'tools',
@@ -131,6 +136,33 @@ const projects: Project[] = [
           { href: 'https://github.com/FI99-Inc/write', text: 'Repo ↗' },
         ],
         logo: '/projects/write.jpg',
+      },
+    ],
+  },
+  {
+    key: 'sartorial',
+    section: 'work',
+    name: 'Sartorial Wealth',
+    description:
+      "Where I work as a Research Associate. Alongside the research, I build the firm's own tools for the portfolio managers and the CEO, with AI-assisted and agentic development doing a lot of the lifting. What they do stays in-house; the names below are about as much as I can say.",
+    stack: ['Python', 'SQL', 'FactSet', 'Agentic coding'],
+    links: [],
+    status: 'INTERNAL',
+    credit: 'proprietary · built at work',
+    children: [
+      {
+        name: 'Sartorial Suite',
+        description: 'A set of internal research tools for the team. Proprietary, so no screenshots.',
+        stack: ['Python', 'SQL'],
+        status: 'INTERNAL',
+        links: [],
+      },
+      {
+        name: 'Dual Basis',
+        description: 'An internal tool. The name is the public part.',
+        stack: ['Python'],
+        status: 'INTERNAL',
+        links: [],
       },
     ],
   },
@@ -251,6 +283,56 @@ const projects: Project[] = [
     status: 'REPO',
   },
   {
+    key: 'stillwell',
+    section: 'tools',
+    name: 'Stillwell',
+    description:
+      'An offline Windows photo editor with editable layers and local version history: filters, clone and spot-heal, painting and liquify, TIFF, SVG and PSD import, print sizing, borders and PDF export. Originals stay untouched, and the running app blocks every network request.',
+    stack: ['TypeScript', 'Electron', 'Windows'],
+    links: [{ href: 'https://github.com/12g3nd/stillwell', text: 'View repo ↗' }],
+    status: 'REPO',
+  },
+  {
+    key: 'aubade',
+    section: 'tools',
+    name: 'Aubade',
+    description:
+      "A finite, personal morning edition for iPhone: obligations first, then a small edit of the world and something curious to enjoy. Private analysis stays on the device, and it only says you're caught up when every source actually answered. Built from Windows, with the Swift core tested on a hosted macOS runner.",
+    stack: ['Swift', 'iOS', 'GitHub Actions'],
+    links: [{ href: 'https://github.com/12g3nd/aubade', text: 'View repo ↗' }],
+    status: 'IN THE LAB',
+  },
+  {
+    key: 'trace',
+    section: 'tools',
+    name: 'Trace',
+    description:
+      "A personal TODO.txt replacement for Windows 11: the zero-friction feel of typing a line into a text file, with local SQLite storage, priority tags and a global summon hotkey. Its Orbit Sidecar sits in the taskbar with app launchers, a media bay and a system-load readout.",
+    stack: ['Svelte', 'TypeScript', 'Rust', 'Tauri'],
+    links: [{ href: 'https://github.com/12g3nd/trace', text: 'View repo ↗' }],
+    status: 'REPO',
+  },
+  {
+    key: 'personal-atlas',
+    section: 'tools',
+    name: 'Personal Atlas',
+    description:
+      'A private, offline Windows notebook laid out like a board game: life areas are territories on a cream board, pages are tokens, connections are routes. Version history, daily backups, quick capture from anywhere, and no telemetry, account, sync or AI.',
+    stack: ['TypeScript', 'Rust', 'Tauri', 'SQLite'],
+    links: [],
+    status: 'PRIVATE',
+  },
+  {
+    key: 'oikist',
+    section: 'tools',
+    name: 'oikist',
+    description:
+      'An agent-native development environment for Windows, where coding agents are first-class objects rather than processes inside terminal panes, and every status says how it is known instead of guessing. The first build taught enough that it is starting again from a clean product brief.',
+    stack: ['TypeScript', 'Rust', 'Tauri'],
+    links: [],
+    status: 'IN THE LAB',
+  },
+  {
     key: 'drift',
     section: 'tools',
     name: 'drift',
@@ -289,6 +371,16 @@ const projects: Project[] = [
     logo: '/filter.png',
     status: 'VIRAL',
     metric: { value: '198K', label: 'lens plays' },
+  },
+  {
+    key: 'reddit-video-opener',
+    section: 'archive',
+    name: 'Reddit Video Opener',
+    description:
+      "A Chrome extension for opening Reddit videos in a new tab, which Reddit won't let you do, using the fallback stream in each post's .json. No audio yet.",
+    stack: ['JavaScript', 'Chrome'],
+    links: [{ href: 'https://github.com/12g3nd/Reddit-Video-Opener', text: 'View repo ↗' }],
+    status: 'REPO',
   },
   {
     key: 'spring-break',
@@ -345,9 +437,11 @@ function Stack({ stack }: { stack: string[] }) {
 /* The first destination is the project's front door, so it gets the chrome
    button in the line's green; the rest (repos, forks, write-ups) are plain
    links beside it. */
-function Links({ links }: { links: Link[] }) {
+function Links({ links, status }: { links: Link[]; status?: string }) {
   const [first, ...rest] = links;
-  if (!first) return null;
+  if (!first) {
+    return <p className="proj-links proj-links--none">{status === 'INTERNAL' ? 'Proprietary' : 'Private repo'}</p>;
+  }
   return (
     <div className="proj-links">
       <a className="btn-line btn-sm" href={first.href} target="_blank" rel="noreferrer">{first.text}</a>
@@ -406,7 +500,7 @@ function IndexRow({ n, name, level: Heading = 'h3', status, statusLabel, logo, c
         <p className="proj-row__desc">{description}</p>
         <Stack stack={stack} />
       </div>
-      <Links links={links} />
+      <Links links={links} status={status} />
     </li>
   );
 }
@@ -438,7 +532,10 @@ function CaseRow({ project }: { project: Project }) {
         {project.logo ? (
           <img src={project.logo} alt={`${project.name} preview`} loading="lazy" decoding="async" />
         ) : (
-          <span className="case__placeholder">{project.name}</span>
+          <span className="case__placeholder">
+            {project.name}
+            {project.status === 'INTERNAL' && <small>screenshots stay in-house</small>}
+          </span>
         )}
       </figure>
       <div className="case__body">
@@ -451,12 +548,13 @@ function CaseRow({ project }: { project: Project }) {
         <MetricLine metric={project.metric} />
         <p className="case__desc">{project.description}</p>
         <Stack stack={project.stack} />
-        <Links links={project.links} />
+        <Links links={project.links} status={project.status} />
       </div>
       {project.children && (
         <div className="case__children">
           <p className="case__children-label">
-            Shipped under the studio <span>{project.children.length} projects</span>
+            {project.section === 'studio' ? 'Shipped under the studio' : 'Built for the firm'}{' '}
+            <span>{project.children.length} projects</span>
           </p>
           <ol className="proj-index proj-index--children">
             {project.children.map((child, j) => (
@@ -495,7 +593,7 @@ function ShelfHead({ label, blurb, count }: { label: string; blurb: string; coun
 
 export default function Projects() {
   useDocumentMeta(routeMeta.projects.title, routeMeta.projects.description);
-  const [selected, studio, tools, archive] = shelves;
+  const [selected, studio, work, tools, archive] = shelves;
   return (
     <PageTransition>
       <section className="section line--projects">
@@ -522,6 +620,17 @@ export default function Projects() {
           <ShelfHead label={studio.label} blurb={studio.blurb} />
           <div className="case-list case-list--studio">
             {studio.items.map((project) => (
+              <Reveal key={project.key}>
+                <CaseRow project={project} />
+              </Reveal>
+            ))}
+          </div>
+        </section>
+
+        <section className="proj-shelf">
+          <ShelfHead label={work.label} blurb={work.blurb} />
+          <div className="case-list case-list--studio">
+            {work.items.map((project) => (
               <Reveal key={project.key}>
                 <CaseRow project={project} />
               </Reveal>

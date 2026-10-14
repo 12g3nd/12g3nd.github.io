@@ -1,12 +1,15 @@
 /* ── Shelves ───────────────────────────────────────────────
-   The four groups down the page. Each head is a stop on Line 2: a ringed
+   The five groups down the page. Each head is a stop on Line 2: a ringed
    dot in the line colour, the shelf's name, and what is on it. */
 
 .proj-shelf {
   margin-top: 4.5rem;
 }
 
-.proj-shelf:first-of-type {
+/* The first shelf sits right under the sign. (Not :first-of-type: the
+   archive is the page's only <details>, so it matched too and lost its top
+   margin.) */
+.station + .proj-shelf {
   margin-top: 0;
 }
 
