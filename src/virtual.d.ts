@@ -9,6 +9,8 @@ declare module 'virtual:letterboxd' {
     link: string;
     poster: string | null;
     liked: boolean;
+    /** YYYY-MM-DD watched; absent in a cache written before it was recorded. */
+    logged?: string | null;
   };
 
   export const films: Film[];

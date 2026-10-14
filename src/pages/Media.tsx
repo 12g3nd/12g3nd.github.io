@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import { useState, type CSSProperties } from 'react';
 import { films } from 'virtual:letterboxd';
 import PageTransition from '../components/PageTransition';
 import Reveal from '../components/Reveal';
@@ -160,6 +160,42 @@ const playlists = [
   { id: '5rf3uGwkVsXQtUxiEYALE3', label: 'THE LAETUS TAPE' },
 ];
 
+/* The preview: the latest few logs, newest first. A cache written before
+   watch dates were recorded has none, so it falls back to the feed's own
+   order, which is also newest first. */
+const PREVIEW = 6;
+const latest = [...films]
+  .map((film, i) => ({ film, i }))
+  .sort((a, b) => (b.film.logged ?? '').localeCompare(a.film.logged ?? '') || a.i - b.i)
+  .slice(0, PREVIEW)
+  .map(({ film }) => film);
+
+type Film = (typeof films)[number];
+
+function FilmTile({ film }: { film: Film }) {
+  return (
+    <li>
+      <a href={film.link} target="_blank" rel="noreferrer">
+        <span className="cover cover--poster">
+          {film.poster ? (
+            <img src={film.poster} alt="" loading="lazy" decoding="async" />
+          ) : (
+            <span className="cover__title">{film.title}</span>
+          )}
+        </span>
+        <span className="rated__title">
+          {film.title} <span className="rated__year">{film.year}</span>
+        </span>
+        <span className="rated__stars">
+          <span aria-hidden="true">{film.stars}</span>
+          <span className="sr-only">{film.rating} out of 5</span>
+          {film.liked && <span className="rated__like" title="liked">♥</span>}
+        </span>
+      </a>
+    </li>
+  );
+}
+
 function split(text: string, byline: boolean): { title: string; by?: string } {
   if (!byline) return { title: text };
   const at = text.lastIndexOf(' - ');
@@ -197,6 +233,7 @@ function ShelfItem({ item, kind, byline }: { item: Item; kind: Kind; byline: boo
 
 export default function Media() {
   useDocumentMeta(routeMeta.media.title, routeMeta.media.description);
+  const [allFilms, setAllFilms] = useState(false);
 
   return (
     <PageTransition>
@@ -265,29 +302,23 @@ export default function Media() {
                 All on Letterboxd ↗
               </a>
             </header>
-            <ul className="rated">
-              {films.map((film) => (
-                <li key={film.link}>
-                  <a href={film.link} target="_blank" rel="noreferrer">
-                    <span className="cover cover--poster">
-                      {film.poster ? (
-                        <img src={film.poster} alt="" loading="lazy" decoding="async" />
-                      ) : (
-                        <span className="cover__title">{film.title}</span>
-                      )}
-                    </span>
-                    <span className="rated__title">
-                      {film.title} <span className="rated__year">{film.year}</span>
-                    </span>
-                    <span className="rated__stars">
-                      <span aria-hidden="true">{film.stars}</span>
-                      <span className="sr-only">{film.rating} out of 5</span>
-                      {film.liked && <span className="rated__like" title="liked">♥</span>}
-                    </span>
-                  </a>
-                </li>
+            <p className="rated__label">{allFilms ? 'All of them, best first' : 'Latest logs'}</p>
+            <ul className="rated" id="rated-films">
+              {(allFilms ? films : latest).map((film) => (
+                <FilmTile key={film.link} film={film} />
               ))}
             </ul>
+            {films.length > PREVIEW && (
+              <button
+                type="button"
+                className="rated__toggle"
+                aria-expanded={allFilms}
+                aria-controls="rated-films"
+                onClick={() => setAllFilms((v) => !v)}
+              >
+                {allFilms ? 'Show fewer ▴' : `Show all ${films.length} ▾`}
+              </button>
+            )}
           </section>
         )}
       </section>

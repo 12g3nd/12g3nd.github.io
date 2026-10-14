@@ -7,8 +7,9 @@
 // the Media page through a virtual module.
 //
 // Freshness therefore equals deploy cadence, which is why .github/workflows
-// carries a nightly scheduled rebuild. The page renders ratings rather than
-// watch dates, so a build that is a day behind never claims to be live.
+// carries a nightly scheduled rebuild. The page previews the latest few logs
+// and labels them "latest", never "now", so a build that is a day behind never
+// claims to be live; the full wall is ordered by rating.
 //
 // A failed fetch must not fail the build — a personal site should still deploy
 // when a third party is down. On success the response is written to a cache
@@ -35,6 +36,8 @@ export type Film = {
   link: string;
   poster: string | null;
   liked: boolean;
+  /** YYYY-MM-DD the film was watched (or, failing that, logged). */
+  logged: string | null;
 };
 
 function tag(block: string, name: string): string | null {
@@ -80,10 +83,18 @@ function parse(xml: string): Film[] {
         link,
         poster,
         liked: tag(block, 'letterboxd:memberLike') === 'Yes',
+        logged: tag(block, 'letterboxd:watchedDate') ?? isoDay(tag(block, 'pubDate')),
       };
     })
     .filter((f): f is Film => f !== null)
     .sort((a, b) => b.rating - a.rating);
+}
+
+/** RFC 822 pubDate -> YYYY-MM-DD, for entries with no watched date. */
+function isoDay(rfc: string | null): string | null {
+  if (!rfc) return null;
+  const d = new Date(rfc);
+  return Number.isNaN(d.getTime()) ? null : d.toISOString().slice(0, 10);
 }
 
 /** The feed escapes apostrophes in titles; nothing else shows up in practice. */
