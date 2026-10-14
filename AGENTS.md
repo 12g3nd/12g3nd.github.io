@@ -41,6 +41,8 @@ scripts/              vite plugins (feed, letterboxd, prerender, build-info)
                       visual.mjs, fetch-fonts.mjs, optimize-images.mjs) — see
                       the header of each
 worker/               Cloudflare Worker: guestbook entries and the visit count
+nowplaying/           Cloudflare Worker: what Spotify is playing, for /media's
+                      turntable; owns no data, deployed by hand (DEPLOY.md)
 public/               static assets; og/ cards are generated and committed
 ```
 
