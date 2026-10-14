@@ -61,7 +61,10 @@ async function accessToken(env: Env): Promise<string> {
     },
     body: new URLSearchParams({ grant_type: 'refresh_token', refresh_token: env.SPOTIFY_REFRESH_TOKEN }),
   });
-  if (!res.ok) throw new Error(`token ${res.status}`);
+  // Spotify's error body says which part is wrong (invalid_client: the ID or
+  // secret; invalid_grant: the refresh token). It goes to the Worker's log
+  // only (`npx wrangler tail`), never to the page.
+  if (!res.ok) throw new Error(`token ${res.status} ${await res.text()}`);
   const data = (await res.json()) as { access_token: string; expires_in: number };
   token = { value: data.access_token, expires: Date.now() + data.expires_in * 1000 };
   return token.value;
@@ -105,7 +108,7 @@ async function nowPlaying(env: Env) {
     const data = (await res.json()) as { is_playing?: boolean; item?: SpotifyTrack | null };
     if (data.is_playing && data.item) return { playing: true, ...describe(data.item) };
   } else if (!res.ok) {
-    throw new Error(`player ${res.status}`);
+    throw new Error(`player ${res.status} ${await res.text()}`);
   }
 
   // Dormant: say what was last on, if Spotify will tell us.
@@ -141,8 +144,10 @@ export default {
     } else {
       try {
         body = JSON.stringify(await nowPlaying(env));
-      } catch {
-        // Spotify down or a bad token: the turntable just sits still.
+      } catch (err) {
+        // Spotify down or a bad token: the turntable just sits still, and the
+        // reason goes to the log.
+        console.error('nowplaying:', err instanceof Error ? err.message : String(err));
         body = JSON.stringify({ playing: false });
       }
       ctx.waitUntil(
