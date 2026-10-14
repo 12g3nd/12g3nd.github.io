@@ -12,12 +12,8 @@ import './Navigation.css';
  * The pages, each on its own line colour, the way a transit map colours its
  * lines: Toronto's subway lines for the first four (it is the TSJ's terminus),
  * the TSJ's own red for TRAVEL, Line 6's silver for GUESTBOOK, and the site's
- * cyan for TRANSMISSIONS. `onLine` is the text colour that reads on a full fill
- * of it.
- *
- * The stripes hold nine letters (GUESTBOOK); TRANSMISSIONS needs about 110px
- * of a 70-92px stripe at every width, so its tab says TRANSMIT and `name`
- * gives the link its full accessible name.
+ * cyan for BLOG (the page itself is titled Transmissions). `onLine` is the text
+ * colour that reads on a full fill of it.
  */
 const PAGES = [
   { to: '/business', label: 'BUSINESS', line: 'var(--line-business)', onLine: 'var(--on-line-dark)' },
@@ -26,7 +22,7 @@ const PAGES = [
   { to: '/media', label: 'MEDIA', line: 'var(--line-media)', onLine: 'var(--on-line-dark)' },
   { to: '/travel', label: 'TRAVEL', line: 'var(--line-travel)', onLine: 'var(--on-line-dark)' },
   { to: '/guestbook', label: 'GUESTBOOK', line: 'var(--line-guestbook)', onLine: 'var(--on-line-dark)' },
-  { to: '/blog', label: 'TRANSMIT', name: 'Transmissions', line: 'var(--line-blog)', onLine: 'var(--on-line-dark)' },
+  { to: '/blog', label: 'BLOG', line: 'var(--line-blog)', onLine: 'var(--on-line-dark)' },
 ] as const;
 
 // The brand cycles through these on a triple-click, laid over the logo, then
@@ -161,7 +157,6 @@ export default function Navigation() {
               key={p.to}
               to={p.to}
               style={{ '--line': p.line, '--on-line': p.onLine } as CSSProperties}
-              aria-label={'name' in p ? p.name : undefined}
             >
               <span className="nav-label">{p.label}</span>
             </NavLink>
