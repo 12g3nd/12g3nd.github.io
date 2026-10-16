@@ -466,7 +466,7 @@
 
 .tsj-notes {
   display: grid;
-  grid-template-columns: minmax(160px, 0.7fr) minmax(0, 2fr);
+  grid-template-columns: minmax(0, 1fr);
   gap: 1.5rem;
   align-items: start;
 }
@@ -480,6 +480,16 @@
 
 .tsj-notes ul {
   padding-left: 1.1rem;
+}
+
+.tsj-notes__before ul {
+  columns: 2 35ch;
+  column-gap: 2rem;
+}
+
+.tsj-notes__before li {
+  break-inside: avoid;
+  margin-bottom: 0.4rem;
 }
 
 .tsj-notes__days {
