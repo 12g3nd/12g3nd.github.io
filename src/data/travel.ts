@@ -47,10 +47,16 @@ export type Station = Place & {
   date: string;
   /** Path under public/ to the scanned print; omitted until it exists. */
   print?: string;
+  printAlt?: string;
+  /** Reserves the scan's space before its lazy image loads. */
+  printSize?: { width: number; height: number };
   /** Rough notes written before the trip. */
   before?: string[];
   /** Rough notes written after it. */
-  after?: string[];
+  after?: {
+    summary: string;
+    days: { day: string; summary: string; notes: string[] }[];
+  };
 };
 
 export const stationCode = (s: Pick<Station, 'code'>) => `TM-${String(s.code).padStart(2, '0')}`;
@@ -59,7 +65,61 @@ export const stationCode = (s: Pick<Station, 'code'>) => `TM-${String(s.code).pa
 export const TERMINUS_ID = 'toronto';
 
 export const stations: Station[] = [
-  { id: 'london-uk', code: 1, city: 'London', region: 'England', country: 'United Kingdom', lat: 51.51, lng: -0.13, date: 'Oct 2026' },
+  {
+    id: 'london-uk', code: 1, city: 'London', region: 'England', country: 'United Kingdom', lat: 51.51, lng: -0.13, date: 'Oct 2026',
+    print: '/travel/tm-01.jpg',
+    printSize: { width: 1200, height: 1888 },
+    printAlt: 'Scanned travel card with a photo by Dad at Covent Garden, London, on 9 October 2026. Handwritten caption: First time Europe; with parents.',
+    // Reconstructed from memory; replace if the original pre-trip note turns up.
+    before: [
+      'Not in a great mood.',
+      'Failed the G test due to a stupid mistake.',
+      'Going through a slump in general.',
+      'Sick the last two weeks.',
+      'Imposter syndrome; feel like I should be doing more.',
+    ],
+    after: {
+      summary: 'Was able to do pretty much everything I wanted.',
+      days: [
+        {
+          day: 'Friday',
+          summary: 'Exploring modern London, reminiscent of proper downtown Toronto.',
+          notes: [
+            'Trafalgar Square, Covent Garden, etc.',
+            'Tired, fatigued, tired.',
+          ],
+        },
+        {
+          day: 'Saturday',
+          summary: 'All the super tourist destinations and Madame Tussaud’s (for my Mom) wax museum, which was cool.',
+          notes: [
+            'London Eye was kinda cool to be honest.',
+            'Westminster station was insanely busy.',
+            'Tesco Express was a lifesaver for White Monster, but can’t believe you have to be 16+ to buy.',
+          ],
+        },
+        {
+          day: 'Sunday',
+          summary: 'We went to the Cotswolds villages (specifically Bibury), and that night I went to Liverpool.',
+          notes: [
+            'Felt bad for the villagers, but realized I was a tourist too.',
+            'Liverpool station was busy, a lot of Eagles fans.',
+            'Went to Old Blue Last, went way too early.',
+            'Was awkward, stood near the bar, drinking some beer, leaning against the counter like a loser.',
+            'Music (Saint Julian / Black Mask) was interesting and cool; I want to see things like that again.',
+          ],
+        },
+        {
+          day: 'Monday',
+          summary: 'We checked out Windsor.',
+          notes: [
+            'There’s John Deere tractors even in Windsor.',
+            'On the Virgin Atlantic flight back, they handed out some landing candy and made me put one back when I took two; pissed me off.',
+          ],
+        },
+      ],
+    },
+  },
 ];
 
 export const homes: Home[] = [
@@ -69,6 +129,23 @@ export const homes: Home[] = [
   { id: 'ajax', city: 'Ajax', region: 'Ontario', country: 'Canada', lat: 43.85, lng: -79.02, lived: ['Jul – Aug 2025', 'May – Aug 2026'] },
   { id: 'toronto', city: 'Toronto', region: 'Ontario', country: 'Canada', lat: 43.65, lng: -79.38, lived: ['Sep 2025 – Apr 2026', 'Sep 2026 – present'] },
 ];
+
+// Returns belong in the chronology, while the map still gets one dot per home.
+// Reference the display dates above rather than parsing them to guess the order.
+export const homeTimeline = [
+  { id: 'columbus', stay: 0 },
+  { id: 'kitchener', stay: 0 },
+  { id: 'oakville', stay: 0 },
+  { id: 'ajax', stay: 0 },
+  { id: 'toronto', stay: 0 },
+  { id: 'ajax', stay: 1 },
+  { id: 'toronto', stay: 1 },
+].map(({ id, stay }) => {
+  const home = homes.find((h) => h.id === id);
+  const when = home?.lived[stay];
+  if (!home || !when) throw new Error(`Missing home timeline stay: ${id} (${stay})`);
+  return { home, when };
+});
 
 // The India summers: Guraja most years, the cities on the way most of those.
 const INDIA_SUMMERS = ['Jul–Aug 2019', 'Jul–Aug 2017', 'Jul–Aug 2014', 'a few times before that'];

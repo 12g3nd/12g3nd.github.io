@@ -8,11 +8,13 @@
 .travel-page {
   --tsj: #ff2e4d;
   --home-mark: var(--accent-secondary);
-  --visit-mark: var(--accent-primary);
+  /* Travel's page accent is red; ordinary visits keep the site's cyan. */
+  --visit-mark: var(--line-blog);
 }
 
 .theme-light .travel-page {
   --tsj: #d1172f;
+  --visit-mark: #00778a;
 }
 
 /* ── The TSJ notice: a station service board ─────────────── */
@@ -123,7 +125,7 @@
   flex: 0 0 auto;
 }
 
-.travel-chip--tsj .travel-chip__key { background: var(--tsj); border-radius: 50%; }
+.travel-chip--tsj .travel-chip__key { width: 14px; height: 14px; border: 3px solid var(--tsj); border-radius: 50%; }
 .travel-chip--visit .travel-chip__key { background: var(--visit-mark); border-radius: 50%; width: 8px; height: 8px; }
 .travel-chip--home .travel-chip__key { background: var(--home-mark); }
 
@@ -134,7 +136,7 @@
 /* ── Map + card ───────────────────────────────────────────── */
 .travel-stage {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
   align-items: start;
 }
@@ -315,8 +317,24 @@
   font-size: 13px;
   line-height: 1.6;
   color: var(--text-dim);
-  min-height: 100%;
+  scroll-margin-top: 130px;
 }
+
+.travel-card__station {
+  display: grid;
+  grid-template-columns: minmax(200px, 280px) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+.travel-card__empty {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.5rem;
+}
+
+.travel-card__empty .travel-card__eyebrow { margin: 0; }
 
 .travel-card__eyebrow {
   text-transform: uppercase;
@@ -424,10 +442,33 @@
   text-align: center;
 }
 
+/* The scan already includes its paper border and handwritten caption. */
+.tsj-scan {
+  margin: 0 auto;
+  width: min(100%, 360px);
+}
+
+.tsj-scan a,
+.tsj-scan img {
+  display: block;
+}
+
+.tsj-scan img {
+  width: 100%;
+  height: auto;
+}
+
+.tsj-scan figcaption {
+  margin-top: 0.5rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
 .tsj-notes {
-  margin-top: 1.1rem;
   display: grid;
-  gap: 0.8rem;
+  grid-template-columns: minmax(160px, 0.7fr) minmax(0, 2fr);
+  gap: 1.5rem;
+  align-items: start;
 }
 
 .tsj-notes h4 {
@@ -441,12 +482,29 @@
   padding-left: 1.1rem;
 }
 
+.tsj-notes__days {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.1rem 1.5rem;
+  margin-top: 1rem;
+}
+
+.tsj-notes__day h5 {
+  font-size: inherit;
+  color: var(--text-primary);
+  margin-bottom: 0.3rem;
+}
+
+.tsj-notes__day ul {
+  margin-top: 0.3rem;
+}
+
 /* Empty state + legend */
 .travel-legend {
   list-style: none;
-  margin-top: 1rem;
-  display: grid;
-  gap: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
 }
 
 .travel-legend li {
@@ -461,7 +519,7 @@
   height: 14px;
 }
 
-.travel-legend__key--tsj { border-radius: 50%; background: var(--text-primary); box-shadow: inset 0 0 0 3px var(--tsj); }
+.travel-legend__key--tsj { border-radius: 50%; border: 3px solid var(--tsj); }
 .travel-legend__key--line { height: 4px; background: var(--tsj); }
 .travel-legend__key--home { width: 10px; height: 10px; margin: 0 2px; background: var(--home-mark); }
 .travel-legend__key--visit { width: 8px; height: 8px; margin: 0 3px; border-radius: 50%; background: var(--visit-mark); }
@@ -469,9 +527,17 @@
 /* ── Index below the map ──────────────────────────────────── */
 .travel-index {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr);
-  gap: 1.5rem 2rem;
-  margin-top: 2.5rem;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.travel-index__col {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 1rem 1.5rem;
+  align-items: start;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(var(--text-rgb), 0.18);
 }
 
 .travel-index__title {
@@ -482,15 +548,80 @@
   margin-bottom: 0.75rem;
 }
 
-.travel-index__col--wide {
+.travel-index__countries {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-  gap: 0 1.5rem;
-  align-content: start;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.5rem;
 }
 
-.travel-index__col--wide .travel-index__title {
-  grid-column: 1 / -1;
+.home-timeline {
+  display: grid;
+  grid-template-columns: repeat(var(--stays), minmax(0, 1fr));
+  list-style: none;
+  padding: 0.4rem 0 0;
+}
+
+.home-timeline li {
+  position: relative;
+  min-width: 0;
+}
+
+.home-timeline li:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 6px;
+  right: -6px;
+  height: 2px;
+  background: var(--home-mark);
+  opacity: 0.5;
+}
+
+.home-timeline__stop {
+  position: relative;
+  display: grid;
+  gap: 0.4rem;
+  width: 100%;
+  padding: 1.5rem 1rem 0.25rem 0;
+  background: none;
+  border: none;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.home-timeline__stop::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  background: var(--home-mark);
+  box-shadow: 0 0 0 3px var(--bg-base);
+}
+
+.home-timeline__stop:hover,
+.home-timeline__stop[aria-pressed='true'] {
+  color: var(--home-mark);
+}
+
+.home-timeline__stop--current::before {
+  background: var(--bg-base);
+  border: 3px solid var(--home-mark);
+}
+
+.home-timeline__when {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--text-faint);
+}
+
+.home-timeline__stop--current .home-timeline__when {
+  color: var(--home-mark);
 }
 
 .travel-index__country-name {
@@ -503,12 +634,11 @@
 }
 
 .travel-index__country {
-  margin-bottom: 1rem;
+  min-width: 0;
 }
 
 .travel-index__list {
   list-style: none;
-  border-top: 1px solid rgba(var(--text-rgb), 0.12);
 }
 
 .travel-index__list li {
@@ -516,13 +646,11 @@
 }
 
 .travel-index__item {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 0.75rem;
+  display: grid;
+  gap: 0.25rem;
   width: 100%;
   min-height: 36px;
-  padding: 0.4rem 0;
+  padding: 0.55rem 0;
   background: none;
   border: none;
   text-align: left;
@@ -538,14 +666,19 @@
 }
 
 .travel-index__when {
-  /* Shrinks and wraps rather than spilling into the next column: some
-     entries are dates, some are "too many times to date". */
-  flex: 0 1 auto;
   min-width: 0;
-  max-width: 60%;
   font-size: 12px;
   line-height: 1.35;
   color: var(--text-faint);
+}
+
+.travel-index__list--stations .travel-index__item {
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: baseline;
+}
+
+.travel-index__list--stations .travel-index__when {
   text-align: right;
 }
 
@@ -596,16 +729,59 @@
     max-width: 440px;
   }
 
-  .travel-stage {
+  .travel-card__station {
+    grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+  }
+
+  .tsj-notes {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .travel-index {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  .travel-index__col {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
   }
 
-  .travel-index__col--wide {
-    grid-column: 1 / -1;
+  .home-timeline {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 0;
+  }
+
+  .home-timeline li:not(:last-child)::before {
+    top: 6px;
+    bottom: -6px;
+    left: 5px;
+    right: auto;
+    width: 2px;
+    height: auto;
+  }
+
+  .home-timeline__stop {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    padding: 0 0 1.1rem 1.75rem;
+  }
+
+  .home-timeline__stop::before { top: 4px; }
+
+  .home-timeline__when { text-align: right; }
+
+  .home-timeline li:last-child .home-timeline__stop {
+    padding-bottom: 0;
+  }
+}
+
+@media (max-width: 800px) {
+  .travel-card__station {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tsj-notes__days {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .travel-index__countries {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -630,8 +806,22 @@
     max-width: calc(100% - 7.5rem);
   }
 
-  .travel-index {
+  .tsj-notes__days,
+  .home-timeline__stop {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-timeline__when { text-align: left; }
+
+  .travel-card__station { gap: 1.25rem; }
+
+  .travel-index__list--stations .travel-index__item {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .travel-index__list--stations .travel-index__when {
+    grid-column: 2;
+    text-align: left;
   }
 
   .tsj-notice {

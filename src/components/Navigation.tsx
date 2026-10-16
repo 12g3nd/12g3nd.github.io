@@ -20,8 +20,8 @@ const PAGES = [
   { to: '/projects', label: 'PROJECTS', line: 'var(--line-projects)', onLine: 'var(--on-line-dark)' },
   { to: '/poetry', label: 'POETRY', line: 'var(--line-poetry)', onLine: 'var(--on-line-light)' },
   { to: '/media', label: 'MEDIA', line: 'var(--line-media)', onLine: 'var(--on-line-dark)' },
-  { to: '/travel', label: 'TRAVEL', line: 'var(--line-travel)', onLine: 'var(--on-line-dark)' },
   { to: '/guestbook', label: 'GUESTBOOK', line: 'var(--line-guestbook)', onLine: 'var(--on-line-dark)' },
+  { to: '/travel', label: 'TRAVEL', line: 'var(--line-travel)', onLine: 'var(--on-line-dark)' },
   { to: '/blog', label: 'BLOG', line: 'var(--line-blog)', onLine: 'var(--on-line-dark)' },
 ] as const;
 

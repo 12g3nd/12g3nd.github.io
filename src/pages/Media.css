@@ -81,7 +81,8 @@
 .shelf__item {
   display: flex;
   flex-direction: column;
-  flex: 1 1 0;
+  /* Different artwork shapes shrink to the same height on their shelf. */
+  flex: var(--ar) 1 0;
   min-width: 0;
   max-width: calc(var(--h) * var(--ar));
 }
@@ -126,6 +127,10 @@
 /* Books: a spine down the left edge, light catching its curve. */
 .cover--book {
   border-radius: 2px 4px 4px 2px;
+}
+
+.cover--book img {
+  object-fit: contain;
 }
 
 .cover--book::after {

@@ -1,10 +1,11 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react';
 import PageTransition from '../components/PageTransition';
 import StationHeader from '../components/StationHeader';
 import useDocumentMeta from '../hooks/useDocumentMeta';
 import { routeMeta } from '../data/routeMeta';
 import {
   homes,
+  homeTimeline,
   regions,
   stationCode,
   stations,
@@ -181,7 +182,8 @@ export default function Travel() {
   const [vb, setVb] = useState<ViewBox | null>(null);
   const [pxWidth, setPxWidth] = useState(1000);
   const svgRef = useRef<SVGSVGElement>(null);
-  const mapRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLElement>(null);
+  const scrollToCard = useRef(false);
   const vbRef = useRef<ViewBox | null>(null);
 
   useEffect(() => {
@@ -372,13 +374,23 @@ export default function Travel() {
   const visible = allItems.filter((i) => shown[i.kind]);
   const selectedItem = allItems.find((i) => i.place.id === selected) ?? null;
 
+  useLayoutEffect(() => {
+    if (!scrollToCard.current) return;
+    scrollToCard.current = false;
+    cardRef.current?.scrollIntoView({ behavior: prefersReducedMotion() ? 'instant' : 'smooth', block: 'start' });
+  }, [selected]);
+
   const select = (item: Item, fromList = false) => {
     if (!fromList && gesture.current.moved) return; // the end of a drag, not a click
+    if (selected === item.place.id) {
+      cardRef.current?.scrollIntoView({ behavior: prefersReducedMotion() ? 'instant' : 'smooth', block: 'start' });
+    } else {
+      scrollToCard.current = true;
+    }
     setSelected(item.place.id);
     setExpanded((prev) => new Set(prev).add(groupOf(item)));
     if (fromList) {
       setRegion(regionFor(item.place.lat, item.place.lng));
-      mapRef.current?.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'nearest' });
     }
   };
 
@@ -469,7 +481,7 @@ export default function Travel() {
           })
         }
       >
-        {expanded.has(group) ? 'Show less' : `+ ${total - LIST_LIMIT} more in ${name}`}
+        {expanded.has(group) ? 'Show less' : `+ ${total - LIST_LIMIT} more ${name}`}
       </button>
     ) : null;
 
@@ -543,7 +555,7 @@ export default function Travel() {
         </div>
 
         <div className="travel-stage">
-          <div className="travel-map" ref={mapRef} style={world ? { aspectRatio: `${world.width} / ${world.height}` } : undefined}>
+          <div className="travel-map" style={world ? { aspectRatio: `${world.width} / ${world.height}` } : undefined}>
             {world && vb ? (
               <svg
                 ref={svgRef}
@@ -586,7 +598,7 @@ export default function Travel() {
             </p>
           </div>
 
-          <aside className="travel-card" aria-live="polite">
+          <aside className="travel-card" ref={cardRef} aria-live="polite">
             {selectedItem ? <PlaceCard item={selectedItem} onClose={() => setSelected(null)} /> : (
               <div className="travel-card__empty">
                 <p className="travel-card__eyebrow">No stop selected</p>
@@ -606,55 +618,59 @@ export default function Travel() {
           {shown.tsj && (
             <div className="travel-index__col">
               <h3 className="travel-index__title">TSJ stations</h3>
-              <ol className="travel-index__list">
-                <li><span className="travel-index__terminus">TORONTO · TERMINUS</span></li>
-                {limited('tsj', stations).map((s) => (
-                  <li key={s.id}>
-                    <button type="button" className="travel-index__item" aria-pressed={selected === s.id} onClick={() => select({ kind: 'tsj', place: s }, true)}>
-                      <span className="travel-index__code">{stationCode(s)}</span> {s.city}, {s.country}
-                      <span className="travel-index__when">{s.date}</span>
-                    </button>
-                  </li>
-                ))}
-              </ol>
-              {moreButton('tsj', stations.length, 'STATIONS')}
+              <div>
+                <ol className="travel-index__list travel-index__list--stations">
+                  <li><span className="travel-index__terminus">TORONTO · TERMINUS</span></li>
+                  {limited('tsj', stations).map((s) => (
+                    <li key={s.id}>
+                      <button type="button" className="travel-index__item" aria-pressed={selected === s.id} onClick={() => select({ kind: 'tsj', place: s }, true)}>
+                        <span className="travel-index__code">{stationCode(s)}</span>
+                        <span>{s.city}, {s.country}</span>
+                        <span className="travel-index__when">{s.date}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ol>
+                {moreButton('tsj', stations.length, 'STATIONS')}
+              </div>
             </div>
           )}
           {shown.home && (
             <div className="travel-index__col">
               <h3 className="travel-index__title">Lived</h3>
-              <ul className="travel-index__list">
-                {limited('home', homes).map((h) => (
-                  <li key={h.id}>
-                    <button type="button" className="travel-index__item" aria-pressed={selected === h.id} onClick={() => select({ kind: 'home', place: h }, true)}>
-                      {h.city}, {h.region}
-                      <span className="travel-index__when">{h.lived.join(' · ')}</span>
+              <ol className="home-timeline" aria-label="Places lived, oldest to newest" style={{ '--stays': homeTimeline.length } as CSSProperties}>
+                {homeTimeline.map(({ home, when }) => (
+                  <li key={`${home.id}-${when}`}>
+                    <button type="button" className={`home-timeline__stop${when.endsWith('present') ? ' home-timeline__stop--current' : ''}`} aria-pressed={selected === home.id} onClick={() => select({ kind: 'home', place: home }, true)}>
+                      <span>{home.city}, {home.region}</span>
+                      <span className="home-timeline__when">{when}</span>
                     </button>
                   </li>
                 ))}
-              </ul>
-              {moreButton('home', homes.length, 'HOMES')}
+              </ol>
             </div>
           )}
           {shown.visit && (
-            <div className="travel-index__col travel-index__col--wide">
+            <div className="travel-index__col">
               <h3 className="travel-index__title">Non-TSJ</h3>
-              {byCountry(visits).map(([country, list]) => (
-                <div key={country} className="travel-index__country">
-                  <h4 className="travel-index__country-name">{country}</h4>
-                  <ul className="travel-index__list">
-                    {limited(`visit:${country}`, list).map((v) => (
-                      <li key={v.id}>
-                        <button type="button" className="travel-index__item" aria-pressed={selected === v.id} onClick={() => select({ kind: 'visit', place: v }, true)}>
-                          {v.city}
-                          <span className="travel-index__when">{v.when[0]}{v.when.length > 1 ? ` +${v.when.length - 1}` : ''}</span>
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                  {moreButton(`visit:${country}`, list.length, 'IN ' + country.toUpperCase())}
-                </div>
-              ))}
+              <div className="travel-index__countries">
+                {byCountry(visits).map(([country, list]) => (
+                  <div key={country} className="travel-index__country">
+                    <h4 className="travel-index__country-name">{country}</h4>
+                    <ul className="travel-index__list">
+                      {limited(`visit:${country}`, list).map((v) => (
+                        <li key={v.id}>
+                          <button type="button" className="travel-index__item" aria-pressed={selected === v.id} onClick={() => select({ kind: 'visit', place: v }, true)}>
+                            <span>{v.city}</span>
+                            <span className="travel-index__when">{v.when[0]}{v.when.length > 1 ? ` +${v.when.length - 1}` : ''}</span>
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                    {moreButton(`visit:${country}`, list.length, 'IN ' + country.toUpperCase())}
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
@@ -678,38 +694,52 @@ function PlaceCard({ item, onClose }: { item: Item; onClose: () => void }) {
       <p className="travel-card__where">{where}</p>
 
       {item.kind === 'tsj' && (
-        <>
-          <figure className="tsj-print">
-            <div className="tsj-print__photo">
-              {item.place.print ? (
-                <img src={item.place.print} alt={`The ${place.city} print, ${stationCode(item.place)}`} loading="lazy" decoding="async" />
-              ) : (
+        <div className="travel-card__station">
+          {item.place.print ? (
+            <figure className="tsj-scan">
+              <a href={item.place.print} target="_blank" rel="noreferrer" aria-label={`View the full-size ${place.city} travel card (opens in a new tab)`}>
+                <img src={item.place.print} alt={item.place.printAlt ?? `The ${place.city} print, ${stationCode(item.place)}`} width={item.place.printSize?.width} height={item.place.printSize?.height} loading="lazy" decoding="async" />
+              </a>
+              <figcaption>{String(item.place.code).padStart(2, '0')} · {place.city} · {item.place.date}</figcaption>
+            </figure>
+          ) : (
+            <figure className="tsj-print">
+              <div className="tsj-print__photo">
                 <span className="tsj-print__pending">print pending</span>
-              )}
-            </div>
-            <figcaption className="tsj-print__caption">
-              {String(item.place.code).padStart(2, '0')} · {place.city} · {item.place.date}
-            </figcaption>
-          </figure>
-          {item.place.before?.length || item.place.after?.length ? (
+              </div>
+              <figcaption className="tsj-print__caption">
+                {String(item.place.code).padStart(2, '0')} · {place.city} · {item.place.date}
+              </figcaption>
+            </figure>
+          )}
+          {item.place.before?.length || item.place.after ? (
             <div className="tsj-notes">
               {item.place.before?.length ? (
-                <div>
-                  <h4>Before</h4>
+                <div className="tsj-notes__before">
+                  <h4>Pre {place.city}</h4>
                   <ul>{item.place.before.map((n) => <li key={n}>{n}</li>)}</ul>
                 </div>
               ) : null}
-              {item.place.after?.length ? (
-                <div>
-                  <h4>After</h4>
-                  <ul>{item.place.after.map((n) => <li key={n}>{n}</li>)}</ul>
+              {item.place.after ? (
+                <div className="tsj-notes__after">
+                  <h4>Post {place.city}</h4>
+                  <p>{item.place.after.summary}</p>
+                  <div className="tsj-notes__days">
+                    {item.place.after.days.map(({ day, summary, notes }) => (
+                      <div className="tsj-notes__day" key={day}>
+                        <h5>{day}</h5>
+                        <p>{summary}</p>
+                        <ul>{notes.map((n) => <li key={n}>{n}</li>)}</ul>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ) : null}
             </div>
           ) : (
             <p className="travel-card__note">Before and after notes to come.</p>
           )}
-        </>
+        </div>
       )}
 
       {item.kind === 'home' && (

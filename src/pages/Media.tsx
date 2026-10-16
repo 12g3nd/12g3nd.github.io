@@ -24,6 +24,8 @@ type Item = {
   text: string;
   /** public/Media/covers/<cover>.webp. Without one the item is drawn in type. */
   cover?: string;
+  /** Landscape key art keeps its shape instead of floating in a portrait box. */
+  aspect?: number;
 };
 
 type Category = {
@@ -38,9 +40,8 @@ type Category = {
   items: Item[];
 };
 
-/* Covers are local copies (public/Media/covers/), fetched once from Open
-   Library (books) and each work's Wikipedia article (sleeves, posters, title
-   cards, box art) and shrunk to 320px; nothing on this page hotlinks a
+/* Covers are local copies (public/Media/covers/), supplied by hand or fetched
+   once from Open Library and Wikipedia and shrunk to 320px; nothing hotlinks a
    cover except Letterboxd's own posters below. */
 const collection: Category[] = [
   {
@@ -92,7 +93,7 @@ const collection: Category[] = [
     byline: true,
     items: [
       { text: 'SICKO MODE - Travis Scott ft. Drake', cover: 'sicko-mode' },
-      { text: 'Rattlesnake - Jack Van Cleaf ft. Zach Bryan' },
+      { text: 'Rattlesnake - Jack Van Cleaf ft. Zach Bryan', cover: 'rattlesnake' },
       { text: 'Run Away With Me - Carly Rae Jepsen', cover: 'run-away' },
       { text: 'NOT FAIR - The Kid LAROI ft. Corbin', cover: 'not-fair' },
       { text: 'Fast Car - Tracy Chapman', cover: 'fast-car' },
@@ -118,9 +119,9 @@ const collection: Category[] = [
     kind: 'screen',
     byline: false,
     items: [
-      { text: 'Suits' },
+      { text: 'Suits', cover: 'suits' },
       { text: 'Henry Danger', cover: 'henry-danger' },
-      { text: 'Mindhunter' },
+      { text: 'Mindhunter', cover: 'mindhunter' },
       { text: 'South Park', cover: 'south-park' },
     ],
   },
@@ -131,7 +132,7 @@ const collection: Category[] = [
     kind: 'box',
     byline: false,
     items: [
-      { text: 'Minecraft', cover: 'minecraft' },
+      { text: 'Minecraft', cover: 'minecraft', aspect: 16 / 9 },
       { text: 'Fallout: New Vegas', cover: 'new-vegas' },
       { text: 'Halo 3', cover: 'halo-3' },
       { text: 'Stardew Valley', cover: 'stardew' },
@@ -212,7 +213,7 @@ const inkFor = (s: string) => SPINE_INKS[[...s].reduce((n, c) => n + c.charCodeA
 function ShelfItem({ item, kind, byline }: { item: Item; kind: Kind; byline: boolean }) {
   const { title, by } = split(item.text, byline);
   return (
-    <li className="shelf__item">
+    <li className="shelf__item" style={item.aspect ? { '--ar': item.aspect } as CSSProperties : undefined}>
       {item.cover ? (
         <span className={`cover cover--${kind}`}>
           <img src={`/Media/covers/${item.cover}.webp`} alt="" loading="lazy" decoding="async" />
