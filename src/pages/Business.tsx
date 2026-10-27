@@ -102,6 +102,16 @@ const coverage = [
       { label: 'Article ↗', href: 'https://thevarsity.ca/2026/09/21/the-bets-behind-the-big-screen/' },
     ],
   },
+  {
+    ref: 'ED-002',
+    title: 'MANUFACTURING GENIUS',
+    chip: 'SELF-PUBLISHED',
+    note: 'A statistical feature, published October 2026, asking what a winning score actually says about the winner when players get to choose how much risk to take. It opens with a last-round game you can play, and every number comes from an exact calculation or a reproducible simulation.',
+    links: [
+      { label: 'Article ↗', href: 'https://manufacturinggenius.jarabana.com' },
+      { label: 'Repo ↗', href: 'https://github.com/12g3nd/manufacturing-genius' },
+    ],
+  },
 ];
 
 const trackRecord = [
