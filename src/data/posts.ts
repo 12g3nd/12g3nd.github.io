@@ -17,7 +17,7 @@ export const posts: Post[] = [
     title: 'To let go',
     subtitle: 'The teenager critique',
     abstract:
-      'On turning twenty next May, the teenage experiences that were supposed to come first, and trying to tell what I actually want from what I just feel I should’ve done by now.',
+      'On turning twenty next May, the teenage experiences that were supposed to come first, and telling what I want from what I feel I should’ve done.',
   },
   {
     slug: 'youll-pick-it-up',
