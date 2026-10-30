@@ -119,6 +119,7 @@ const ROUTES = [
   { route: '/travel', name: '07a-travel' },
   { route: '/blog', name: '08-blog' },
   // Suffixed rather than renumbered, so every existing baseline keeps its name.
+  { route: '/blog/to-let-go', name: '08b-post-letgo' },
   { route: '/blog/youll-pick-it-up', name: '08a-post-pickup' },
   { route: '/blog/whats-a-god-to-a-non-believer', name: '09-post-god' },
   { route: '/blog/performative', name: '10-post-performative' },

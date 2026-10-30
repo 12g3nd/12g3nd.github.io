@@ -12,6 +12,14 @@ export interface Post {
 
 export const posts: Post[] = [
   {
+    slug: 'to-let-go',
+    date: '2026-10-30',
+    title: 'To let go',
+    subtitle: 'The teenager critique',
+    abstract:
+      'On turning twenty next May, the teenage experiences that were supposed to come first, and trying to tell what I actually want from what I just feel I should’ve done by now.',
+  },
+  {
     slug: 'youll-pick-it-up',
     date: '2026-09-30',
     title: 'You’ll Pick It Up',
