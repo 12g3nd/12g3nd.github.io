@@ -68,7 +68,7 @@ export const stations: Station[] = [
   {
     id: 'london-uk', code: 1, city: 'London', region: 'England', country: 'United Kingdom', lat: 51.51, lng: -0.13, date: 'Oct 2026',
     print: '/travel/tm-01.jpg',
-    printSize: { width: 1200, height: 1888 },
+    printSize: { width: 810, height: 1160 },
     printAlt: 'Scanned travel card with a photo by Dad at Covent Garden, London, on 9 October 2026. Handwritten caption: First time Europe; with parents.',
     before: [
       'Bad week',
